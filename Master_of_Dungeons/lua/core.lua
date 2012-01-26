@@ -83,5 +83,56 @@ function menu_item_new_scenario()
              )
 end
 
+-- Returns a number that approximates how hard to make a scenario.
+-- You can adjust based on the number returned.
+function dynamic_difficulty(side_num)
+   local recalls     = wesnoth.get_recall_units{side = side_num}
+   local player_gold = wesnoth.get_side(side_num).gold
+   local recall_cost = 20
+
+   local function recall_value(unit)
+      local cost = wesnoth.unit_types[unit.type].cost
+      local xp_percent = unit.experience / unit.max_experience
+      local promotions = unit.advances_to
+      local promotion_avg = 0
+
+      for i, promotion in ipairs(promotions) do
+         promotion_avg = promotion_avg + wesnoth.unit_types[promotion].cost
+      end
+
+      promotion_avg = promotion_avg / table.getn(promotions)
+
+      local value = (1 - xp_percent) * cost + xp_percent * promotion_avg - recall_cost
+
+      if value >= 0 then
+         return value
+      else
+         return 0
+      end
+   end
+
+   local strength_table = {}
+
+   for i, unit in ipairs(recalls) do
+      table.insert(strength_table, recall_value(unit))
+   end
+
+   table.sort(strength_table)
+
+   local max_recalls = math.floor(player_gold / recall_cost)
+   local recall_strength = 0
+   local counter = 1
+
+   while max_recalls >= 0 and counter <= table.getn(strength_table) do
+      recall_strength = recall_strength + strength_table[counter]
+      counter = counter + 1
+      max_recalls = max_recalls - 1
+   end
+
+   return recall_strength
+end
+
+debugOut(dynamic_difficulty(2))
+
 >>
 #enddef
