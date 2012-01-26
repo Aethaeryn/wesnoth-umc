@@ -1,0 +1,57 @@
+MASTER OF DUNGEONS TODO LIST (82% Progress)
+When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
+Each point removed yields 2% completion.
+
+ (1) [inventory.cfg; shops.cfg] Inventory
+     (a) Shops
+         (i)   place shops (host only)
+         (ii)  stock items in shops (host only)
+         (iii) buy items from shops (at cost)
+         (iv)  sell to (at 4/5 nearest integer of cost)
+
+     (b) Give inventory from unit to adjacent unit.
+         (i) also give gold from the unit's side to the adjacent unit's side
+
+     (c) Allow the host to attach gold or items to chests (picked up when opened).
+         (i)  Treat chests like units for adding inventory, but with no use inventory.
+         (ii) Make it a part of a place object menu item for hosts.
+
+     (d) Drop a unit's inventory into a leather-pack.png on death; functions like chest.
+
+     (e) Implement potion effects.
+         (i) Green potions: Haste. Extra melee strike, +2 MP. Small = 2 turns, Medium = 4 turns. Multiple potions stack the turn duration, not the effect strength. 
+         (ii) Ale: +5 max HP for 3 turns, 25% chance of also becoming drunk (berserk melee) for that duration; more ale = longer duration (and more effect?)
+
+     (f) Implement effects for the scrolls.
+
+
+ (2) [upgrades.cfg] On advancement, units earn an upgrade point.
+     (*) Make default AMLA for all units not raise max hitpoints, but instead increment an upgrade point variable. (Regular advances should do this too.)
+     (a) + 1 movement (three points, capped at 2)
+     (b) + 3 hitpoints (one point)
+     (c) + 1 to range or melee damage (starts at two points; increases by one each purchase)
+     (d) - 20% XP to next promotion (two points, capped at 2)
+
+
+ (3) Add/Remove Objects
+     (a) Intramap teleporters.
+     (b) Traps.
+     (c) Keys/locks for doors/chests/etc.
+
+
+ (4) Miscellaneous
+     (*) Allow unit import/export through persistant variables if possible!
+     (a) [modify_terrain.cfg] Allow a repeat overlay, move overlays to second position, fix remove overlay, fix bridges.
+     (b) All units, terrains, and overlays available in-game should be usable in MoD.
+     (c) Gender of summoners/summons? Perhaps a "Default spawn gender" thing.
+     (d) Add some preset super-summoners for the late game.
+     (e) Make the miniboss healthy+regenerates toggleable on/off on all units.
+     (f) [modify_side.cfg] Fix the ability to change objectives, using a new, more limited way.
+     (g) Allow the host to make any unit a leader or not a leader.
+
+
+ (5) Finally...
+     (a) Add a way to control the recalling of units and recall lists in a campaign.
+     (b) Rewrite older parts of the code and make sure it's in three layers: objects, functions, and configurations.
+     (c) Allow the host to be able to change village cap, gpv, and other variables with EoT compatability code.
+     (d) Work on compatability code with other eras.

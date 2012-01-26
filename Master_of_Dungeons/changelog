@@ -1,0 +1,14 @@
+MASTER OF DUNGEONS       VERSION 0.3.0+svn
+VERSION 0.3.0+svn
+ - Master of Dungeons moved to its own add-on.
+ - TODO. Explain what is added.
+
+VERSION 0.3 for Wesnoth 1.8.1 (10 May 2010)
+ - included in Aethaeryn's Maps 0.5.2
+ - bugfix: Summon Nature works again
+ - added orcish summon type so that most mainline generic badguys are now available
+ - the master's units can now speak cutomized dialog messages to add to the plot
+ - cleaned up the right-click options
+
+MERSION 0.2 for Wesnoth 1.8.1 (02 May 2010)
+ - scenario created; updated to version 0.2; included in Aethaeryn's Maps 0.5.1
