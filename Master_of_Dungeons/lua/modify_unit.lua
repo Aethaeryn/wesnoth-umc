@@ -16,7 +16,7 @@ function change_unit_stat(stat)
                    message  = "What should the new value of "..stat.." be?",
                    image    = "wesnoth-icon.png",
                    show_for = side_number,
-                   T.text_input {
+                   T["text_input"] {
                       variable  = "new_stat_change",
                       label     = "Unit:",
                       max_chars = 50
@@ -76,7 +76,7 @@ function change_stats(variable)
                       message  = "What unit do you want it to transform to?",
                       image    = "wesnoth-icon.png",
                       show_for = side_number,
-                      T.text_input {
+                      T["text_input"] {
                          variable  = "transform_unit_to",
                          label     = "Unit:",
                          max_chars = 50
@@ -101,23 +101,15 @@ function change_stats(variable)
          code           = "wesnoth.set_variable('change_role', '$input1')"
       }
 
-      options:fire {
-         {"Undead"},
-         {"Nature"},
-         {"Elves"},
-         {"Fire"},
-         {"Loyalists"},
-         {"Outlaws"},
-         {"Orcs"},
-         {"Dwarves"},
-         {"Earth"},
-         {"Swamp"},
-         {"Water"},
-         {"None"}
-      }
+      local roles = {}
 
-      -- if unit.canrecruit == true then
-      ---- do something about not changing the overlay
+      for i, v in ipairs(SUMMON_ROLES) do
+         roles[i] = SUMMON_ROLES[i]
+      end
+
+      table.insert(roles, "None")
+
+      options:short_fire(roles)
 
       local chosen_role = wesnoth.get_variable('change_role')
 
@@ -143,8 +135,8 @@ end
 
 function filter_modify_unit(permissions)
    if permissions == "DM" then
-      return T.show_if {
-         T.have_unit {
+      return T["show_if"] {
+         T["have_unit"] {
             x = "$x1",
             y = "$y1"
          }, {
@@ -154,8 +146,8 @@ function filter_modify_unit(permissions)
          }
       }
    else
-      return T.show_if {
-         T.have_unit {
+      return T["show_if"] {
+         T["have_unit"] {
             side = side_number,
             x    = "$x1",
             y    = "$y1"
@@ -171,13 +163,8 @@ function menu_unit_change_stats()
       code           = "change_unit_stat('$input1')"
    }
 
-   options:fire {
-      {"Hitpoints"},
-      {"Max Hitpoints"},
-      {"Moves"},
-      {"Experience"},
-      {"Max Experience"}
-   }
+   options:short_fire {"Hitpoints", "Max_Hitpoints", "Moves",
+                       "Experience", "Max Experience"}
 
 end
 
@@ -188,16 +175,7 @@ function menu_unit_change_side()
       code           = "change_side($input1)",
    }
 
-   options:fire({
-                   {1},
-                   {2},
-                   {3},
-                   {4},
-                   {5},
-                   {6},
-                   {7},
-                   {8},
-                })
+   options:short_fire(SIDES)
 end
 
 function menu_item_unit_change_stats()
@@ -207,7 +185,7 @@ function menu_item_unit_change_stats()
       menu_image     = "misc/icon-amla-tough.png",
       
       root_message   = "What stat do you want to modify?",
-     option_message = "$input1",
+      option_message = "$input1",
       code           = "change_stats('$input1')",
    }
 
@@ -227,19 +205,19 @@ function menu_item_unit_message()
                    description = "Unit Message",
                    image       = "misc/ums.png", 
                    filter_modify_unit("all"),
-                   T.command {
-                      T.message {
+                   T["command"] {
+                      T["message"] {
                          speaker  = "unit",
                          caption  = "Unit Message",
                          message  = "What will you say?",
                          show_for = side_number,
-                         T.text_input {
+                         T["text_input"] {
                             variable  = "aeth_custom_message",
                             label     = "Type Here:",
                             max_chars = 50
                          }
                       },
-                      T.message {
+                      T["message"] {
                          side    = side_number,
                          speaker = "unit",
                          message = "$aeth_custom_message"

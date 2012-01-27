@@ -9,13 +9,13 @@ function filter_host(form)
       host_side = 6
    end
 
-   local filter = T.variable {
+   local filter = T["variable"] {
       name = "side_number",
       equals = host_side
    }
 
    if form == "long" then
-      return T.show_if {
+      return T["show_if"] {
          filter
       }
       
@@ -26,8 +26,8 @@ end
 
 -- For menu items that affect certain units; check that a unit is present on that hex.
 function filter_unit()
-   return T.show_if {
-      T.have_unit {
+   return T["show_if"] {
+      T["have_unit"] {
          side = side_number,
          x = "$x1",
          y = "$y1"

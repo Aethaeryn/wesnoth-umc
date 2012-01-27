@@ -123,7 +123,7 @@ function menu_boss_type()
       option_message = "$input1",
       code           = "menu_boss('$input1')"
    }
-   
+
    options:short_fire(SUMMON_ROLES)
 end
 

@@ -31,7 +31,7 @@ DungeonOpt = {
              }
 
              -- This is actually the *last* item in every menu, after the options.
-             local cancel = T.option {
+             local cancel = T["option"] {
                 message = "Cancel"
              }
 
@@ -59,10 +59,10 @@ DungeonOpt = {
                 end
 
                 -- This is a basic WML table for a Lua-runnning [option] that should serve most purposes.
-                local output = T.option {
+                local output = T["option"] {
                    message = out_message,
-                   T.command {
-                      T.lua {
+                   T["command"] {
+                      T["lua"] {
                          code = out_code
                       }
                    }
@@ -113,7 +113,7 @@ DungeonOpt = {
                              description = self.menu_desc,
                              image       = self.menu_image,
                              filter, 
-                             T.command {
+                             T["command"] {
                                 self:menu_command(inputs, effect)
                              }
                           }
@@ -130,7 +130,7 @@ DungeonOpt = {
                         
                      else
                         return
-                        T.lua {
+                        T["lua"] {
                            code = effect
                         }, {
                            self:show(inputs)

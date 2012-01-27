@@ -7,7 +7,7 @@ function menu_change_var(side_num, variable, old_value)
                       message  = "The old value of "..variable.." is: "..old_value,
                       image    = "wesnoth-icon.png",
                       show_for = side_number,
-                      T.text_input {
+                      T["text_input"] {
                          variable  = "change_"..variable,
                          label     = "New value:",
                          max_chars = 50
@@ -42,7 +42,7 @@ function menu_change_var_all(variable)
                       message  = "Choose a new value for "..variable,
                       image    = "wesnoth-icon.png",
                       show_for = side_number,
-                      T.text_input {
+                      T["text_input"] {
                          variable  = "change_"..variable,
                          label     = "New value:",
                          max_chars = 50
@@ -80,12 +80,7 @@ function menu_view_side(side_num)
          code           = "menu_change_var_all('$input1')"
       }
 
-      options:fire{
-         {"gold"},
-         {"village_gold"},
-         {"base_income"},
-         {"objectives"}
-      }
+      options:short_fire{"gold", "village_gold", "base_income", "objectives"}
    else
       local options = DungeonOpt:new{
          root_message   = "Which variable do you want to change?",
@@ -119,24 +114,20 @@ function menu_item_modify_side()
       code           = "menu_view_side('$input1')"
    }
 
+   local sides = {"All"}
+
+   for i, v in ipairs(SIDES) do
+      sides[i + 1] = SIDES[i]
+   end
+
    wesnoth.fire("set_menu_item", {
                    id          = "040_Modify_Side",
                    description = "Modify Side",
                    image       = "misc/ums.png",
                    filter_host("long"),
-                   T.command {
+                   T["command"] {
                       {
-                         options:show {
-                            {"All"},
-                            {1},
-                            {2},
-                            {3},
-                            {4},
-                            {5},
-                            {6},
-                            {7},
-                            {8}
-                         }
+                         options:short_show(sides)
                       }
                    }
                 }

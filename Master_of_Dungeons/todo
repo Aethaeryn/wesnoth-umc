@@ -40,6 +40,8 @@ Each point removed yields 2% completion.
 
 
  (4) Miscellaneous
+     (*) Test to see where the "Cancel" options are broken.
+     (*) The last menus/options that use WML tables and fire() should stop... Rewrite DungeonOpt for this.
      (*) Allow unit import/export through persistant variables if possible!
      (a) [modify_terrain.cfg] Allow a repeat overlay, move overlays to second position, fix remove overlay, fix bridges.
      (b) All units, terrains, and overlays available in-game should be usable in MoD.

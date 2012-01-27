@@ -77,7 +77,7 @@ function DungeonInventory:submenu_inventory_quantity (item)
                    message  = "How much of "..item.." do you want to give?",
                    image    = "wesnoth-icon.png",
                    show_for = side_number,
-                   T.text_input {
+                   T["text_input"] {
                       variable  = "place_"..item,
                       label     = "Quantity:",
                       max_chars = 50
