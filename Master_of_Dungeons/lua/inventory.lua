@@ -27,19 +27,19 @@ function inventory()
             name   = "Small Haste Potion",
             image  = "icons/potion_green_small.png", 
             msg    = "* Gives the haste ability for 2 turns.",
-            price  = 20,
+            price  = 30,
             effect = "use_potion('Haste', 'Small')",
          }, {
             name   = "Haste Potion",
             image  = "icons/potion_green_medium.png",
             msg    = "* Gives the haste ability for 4 turns.",
-            price  = 45,
+            price  = 55,
             effect = "use_potion('Haste', 'Normal')",
          }, {
             name   = "Ale",
             image  = "icons/letter_and_ale.png",
             msg    = "* Raises maximum HP by 5 for 3 turns.\n* 1/4 chance to get drunk (berserk melee).",
-            price  = 30,
+            price  = 25,
             effect = "",
          }, {
             name   = "Scroll",

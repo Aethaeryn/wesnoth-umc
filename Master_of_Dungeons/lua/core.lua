@@ -53,7 +53,7 @@ function end_scenario(new_scenario)
                    result = "victory",
                    next_scenario = scenario,
                    bonus = false,
-                   carryover_add = true,
+                   carryover_add = false,
                    carryover_percentage = 100,
                 })
 end
@@ -132,7 +132,7 @@ function dynamic_difficulty(side_num)
    return recall_strength
 end
 
-debugOut(dynamic_difficulty(2))
+-- debugOut(dynamic_difficulty(2))
 
 >>
 #enddef
