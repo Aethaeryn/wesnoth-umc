@@ -1,28 +1,30 @@
 #define MOD_LUA_MODIFY_UNIT
 <<
 function change_side(new_side)
-   local event_data = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(event_data.x1, event_data.y1)
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
    unit.side = new_side
 end
 
 function change_unit_stat(stat)
-   local event_data = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(event_data.x1, event_data.y1)
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
    local unit_data = unit.__cfg
 
-   wesnoth.fire("message", {
-                   speaker  = "narrator",
-                   message  = "What should the new value of "..stat.." be?",
-                   image    = "wesnoth-icon.png",
-                   show_for = side_number,
-                   T["text_input"] {
-                      variable  = "new_stat_change",
-                      label     = "Unit:",
-                      max_chars = 50
+   if stat ~= "Gender" and stat ~= "Leader" then
+      wesnoth.fire("message", {
+                      speaker  = "narrator",
+                      message  = "What should the new value of "..stat.." be?",
+                      image    = "wesnoth-icon.png",
+                      show_for = side_number,
+                      T["text_input"] {
+                         variable  = "new_stat_change",
+                         label     = "Unit:",
+                         max_chars = 50
+                      }
                    }
-                }
-             )
+                )
+   end
 
    local change = wesnoth.get_variable("new_stat_change")
 
@@ -61,16 +63,40 @@ function change_unit_stat(stat)
    elseif stat == "Max Experience" then
       unit_data.max_experience = change
 
+   elseif stat == "Gender" then
+      if unit_data.gender == "male" then
+         unit_data.gender = "female"
+
+      elseif unit_data.gender == "female" then
+         unit_data.gender = "male"
+      end
+
+   elseif stat == "Leader" then
+      if unit_data.canrecruit == true then
+         unit_data.canrecruit = false
+
+      else
+         unit_data.canrecruit = true
+      end
    end
 
-   wesnoth.put_unit(event_data.x1, event_data.y1, unit_data)
+   wesnoth.put_unit(e.x1, e.y1, unit_data)
+
+   -- Makes sure that the summoner crown shows on non-leader summoners.
+   if unit_data.role ~= "None" and unit_data.role ~= "" then
+      if unit_data.canrecruit == true then
+         wesnoth.wml_actions.remove_unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
+      else
+         wesnoth.wml_actions.unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
+      end
+   end
 end
 
 function change_stats(variable)
-   local event_data = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(event_data.x1, event_data.y1)
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
 
-   if variable == "Transform" then
+   local function transform()
       wesnoth.fire("message", {
                       speaker  = "narrator",
                       message  = "What unit do you want it to transform to?",
@@ -84,7 +110,7 @@ function change_stats(variable)
                    }
                 )
 
-      local types =  wesnoth.get_unit_type_ids()
+      local types = wesnoth.get_unit_type_ids()
       local new_unit = wesnoth.get_variable("transform_unit_to")
 
       -- checks to make sure the unit type is valid
@@ -93,8 +119,9 @@ function change_stats(variable)
             wesnoth.transform_unit(unit, new_unit)
          end
       end
+   end
 
-   elseif variable == "Role" then
+   local function role()
       local options = DungeonOpt:new {
          root_message   = "Select a new role for the unit.",
          option_message = "$input1",
@@ -116,20 +143,42 @@ function change_stats(variable)
       unit.role = chosen_role
 
       if chosen_role ~= "None" and unit.canrecruit ~= true then
-         wesnoth.wml_actions.unit_overlay{role  = chosen_role,
-                                          image = "misc/hero-icon.png"}
+         wesnoth.wml_actions.unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
 
       elseif chosen_role == "None" then
-         wesnoth.wml_actions.remove_unit_overlay{x = event_data.x1,
-                                                 y = event_data.y1,
-                                                 image = "misc/hero-icon.png"}         
+         wesnoth.wml_actions.remove_unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
       end
+   end
 
-   elseif variable == "Side" then
-      menu_unit_change_side()
+   local function side()
+      local options = DungeonOpt:new {
+         root_message   = "Select a target side.",
+         option_message = "Side $input1",
+         code           = "change_side($input1)",
+      }
 
-   elseif variable == "Stats" then
-      menu_unit_change_stats()
+      options:short_fire(SIDES)
+   end
+
+   local function stats() 
+      local options = DungeonOpt:new {
+         root_message   = "Which stat do you want to change?",
+         option_message = "$input1",
+         code           = "change_unit_stat('$input1')"
+      }
+
+      options:short_fire {"Hitpoints", "Max Hitpoints", "Moves",
+                          "Experience", "Max Experience", "Gender",
+                          "Leader"}
+   end
+
+   if variable == "Transform" then transform()
+   elseif variable == "Role"  then role()
+   elseif variable == "Side"  then side()
+   elseif variable == "Stats" then stats()
+   elseif variable == "Save"  then
+      -- fixme: finish
+      wesnoth.wml_actions.set_global_variable{namespace="MoD"}
    end
 end
 
@@ -156,28 +205,6 @@ function filter_modify_unit(permissions)
    end
 end
 
-function menu_unit_change_stats() 
-   local options = DungeonOpt:new {
-      root_message   = "Which stat do you want to change?",
-      option_message = "$input1",
-      code           = "change_unit_stat('$input1')"
-   }
-
-   options:short_fire {"Hitpoints", "Max_Hitpoints", "Moves",
-                       "Experience", "Max Experience"}
-
-end
-
-function menu_unit_change_side()
-   local options = DungeonOpt:new {
-      root_message   = "Select a target side.",
-      option_message = "Side $input1",
-      code           = "change_side($input1)",
-   }
-
-   options:short_fire(SIDES)
-end
-
 function menu_item_unit_change_stats()
    local options = DungeonOpt:new {
       menu_id        = "021_Unit_Change_Stats",
@@ -193,7 +220,8 @@ function menu_item_unit_change_stats()
                    {"Side"},
                    {"Transform"},
                    {"Role"},
-                   {"Stats"}
+                   {"Stats"},
+                   {"Save"}
                 },
                 filter_modify_unit("DM")
              )

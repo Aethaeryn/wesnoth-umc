@@ -2,7 +2,7 @@ MASTER OF DUNGEONS TODO LIST (82% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 Each point removed yields 2% completion.
 
- (1) [inventory.cfg; shops.cfg] Inventory
+ (1) Inventory
      (a) Shops
          (i)   place shops (host only)
          (ii)  stock items in shops (host only)
@@ -25,7 +25,7 @@ Each point removed yields 2% completion.
      (f) Implement effects for the scrolls.
 
 
- (2) [upgrades.cfg] On advancement, units earn an upgrade point.
+ (2) On advancement, units earn an upgrade point.
      (*) Make default AMLA for all units not raise max hitpoints, but instead increment an upgrade point variable. (Regular advances should do this too.)
      (a) + 1 movement (three points, capped at 2)
      (b) + 3 hitpoints (one point)
@@ -41,16 +41,19 @@ Each point removed yields 2% completion.
 
  (4) Miscellaneous
      (*) Test to see where the "Cancel" options are broken.
+     (*) Add cancel options to [text_input] stuff
      (*) The last menus/options that use WML tables and fire() should stop... Rewrite DungeonOpt for this.
      (*) Allow unit import/export through persistant variables if possible!
-     (a) [modify_terrain.cfg] Allow a repeat overlay, move overlays to second position, fix remove overlay, fix bridges.
-     (b) All units, terrains, and overlays available in-game should be usable in MoD.
-     (c) Gender of summoners/summons? Perhaps a "Default spawn gender" thing.
-     (d) Add some preset super-summoners for the late game.
-     (e) Make the miniboss healthy+regenerates toggleable on/off on all units.
-     (f) [modify_side.cfg] Fix the ability to change objectives, using a new, more limited way.
-     (g) Allow the host to make any unit a leader or not a leader.
+     (*) Write a DungeonOpt function for text_input
+     (*) Make the miniboss healthy+regenerates toggleable on/off on all units.
+     (*) [modify_side.cfg] Fix the ability to change objectives, using a new, more limited way.
 
+
+ (4b) Terrains/Units
+     (*) [modify_terrain] Repeat overlay, move overlays to second position, fix remove overlay, fix bridges, test all terrains/overlays again.
+     (*) All units, terrains, and overlays available in-game should be usable in MoD.
+     (*) Add a "default summoner gender" for when two genders are possible for summoners.
+     (*) Add some preset super-summoners for the late game.
 
  (5) Finally...
      (a) Add a way to control the recalling of units and recall lists in a campaign.
