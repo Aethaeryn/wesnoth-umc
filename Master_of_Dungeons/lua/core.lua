@@ -26,6 +26,14 @@ function filter_host(form)
          filter
       }
 
+   elseif form == "summoner" then
+      return T["and"] {
+         filter,
+         T["and"] {
+            check_wesnoth_variable("MoD_summon_summoner")
+         }
+      }
+
    elseif form == "editor" then
       return T["show_if"] {
          filter,
@@ -47,7 +55,6 @@ function filter_host(form)
             }
          }
       }
-
    else
       return filter
    end

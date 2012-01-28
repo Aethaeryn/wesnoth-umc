@@ -147,9 +147,7 @@ function menu_item_summon_summoner()
                             }
                          }
                       },
-                      T["and"] {
-                         filter_host("short")
-                      }
+                      filter_host("summoner")
                    },
                    T["command"] {
                       T["lua"] {

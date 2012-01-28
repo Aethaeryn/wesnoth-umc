@@ -180,11 +180,23 @@ function unit_editor_toggle()
    end
 end
 
+function summoner_spawning_toggle()
+   local summon_summoner = wesnoth.get_variable('MoD_summon_summoner')
+
+   if summon_summoner == true then
+      wesnoth.set_variable('MoD_summon_summoner', false)
+   else
+      wesnoth.set_variable('MoD_summon_summoner', true)
+   end
+end
+
 function option_settings_choose(option)
    if option == "side" then
       menu_modify_side()
    elseif option == "scenario" then
       menu_new_scenario()
+   elseif option == "summoner" then
+      summoner_spawning_toggle()
    elseif option == "unit" then
       unit_editor_toggle()
    elseif option == "terrain" then
@@ -205,6 +217,7 @@ function menu_item_modify_side()
 
    local opt_list = {{"side", "Modify Side"},
                     {"scenario", "New Scenario"},
+                    {"summoner", "Toggle Summon Summoners"},
                     {"unit", "Toggle Unit Editor"},
                     {"terrain", "Toggle Terrain Editor"}}
 
