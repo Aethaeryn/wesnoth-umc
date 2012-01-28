@@ -1,9 +1,7 @@
 #define MOD_LUA_DUNGEONINVENTORY
 <<
--- Creates an object that handles inventory, with menu_item_inventory() handling the unit inventory.
--- Another function will handle the shop inventory code.
 DungeonInventory = {
-   menu_id    = "000_Inventory",
+   menu_id    = "000",
    menu_desc  = "Menu Name",
    menu_image = "misc/key.png",
 
@@ -119,10 +117,6 @@ function DungeonInventory:submenu_inventory ()
       code           = "globalInv:item_use('$input1', '$input3')",
    }
 
-   -- Testing code; gives units starting inventory.
-   -- self:add_item("Small Haste Potion", 53, true)
-   -- self:add_item("Ale", 21, true)
-   
    options_table = self:option_find()
 
    options:fire(options_table)
@@ -134,6 +128,12 @@ function DungeonInventory:option_inventory (option)
 
    elseif option == "Add Item" then
       self:submenu_inventory_add()
+
+   elseif option == "Upgrades" then
+      menu_upgrade_unit()
+
+   elseif option == "Speak" then
+      option_unit_message()
    end
 end
 
@@ -145,13 +145,15 @@ function DungeonInventory:menu_item_inventory ()
       menu_desc      = self.menu_desc,
       menu_image     = self.menu_image,
 
-      root_message   = "What do you want to do with this unit's inventory?",
+      root_message   = "What do you want to do with this unit?",
       option_message = "&$input2= $input1",
       code           = "globalInv:option_inventory('$input1')",
    }
 
    local menu_options = {
-      {"Use Item", "icons/letter_and_ale.png"},
+      {"Use Item", "icons/potion_red_small.png"},
+      {"Upgrades", "attacks/woodensword.png"},
+      {"Speak", "icons/letter_and_ale.png"}
    }
 
    -- Hosts get more options

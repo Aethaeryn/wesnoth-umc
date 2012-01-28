@@ -2,8 +2,8 @@
 <<
 function inventory()
    inventory = DungeonInventory:new { 
-      menu_id    = "005_Unit_Inventory",
-      menu_desc  = "Unit Inventory",
+      menu_id    = "005_Unit",
+      menu_desc  = "Unit Commands",
 
       -- Name:   A unique string that identifies what it is called.
       -- Image:  Anything from icons/ or attacks/ should work.

@@ -227,37 +227,30 @@ function menu_item_unit_change_stats()
              )
 end
 
-function menu_item_unit_message()
-   wesnoth.fire("set_menu_item", {
-                   id          = "025_Unit_Message",
-                   description = "Unit Message",
-                   image       = "misc/ums.png", 
-                   filter_modify_unit("all"),
-                   T["command"] {
-                      T["message"] {
-                         speaker  = "unit",
-                         caption  = "Unit Message",
-                         message  = "What will you say?",
-                         show_for = side_number,
-                         T["text_input"] {
-                            variable  = "aeth_custom_message",
-                            label     = "Type Here:",
-                            max_chars = 50
-                         }
-                      },
-                      T["message"] {
-                         side    = side_number,
-                         speaker = "unit",
-                         message = "$aeth_custom_message"
-                      }
+function option_unit_message()
+   wesnoth.fire("message", {
+                   speaker  = "unit",
+                   caption  = "Unit Message",
+                   message  = "What will you say?",
+                   show_for = side_number,
+                   T["text_input"] {
+                      variable  = "aeth_custom_message",
+                      label     = "Type Here:",
+                      max_chars = 50
                    }
+                }
+             )
+
+   wesnoth.fire("message", {
+                   side    = side_number,
+                   speaker = "unit",
+                   message = "$aeth_custom_message"
                 }
              )
 end
 
 function modify_unit()
    menu_item_unit_change_stats()
-   menu_item_unit_message()
 end
 >>
 #enddef

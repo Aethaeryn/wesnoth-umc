@@ -3,6 +3,15 @@ When this list is complete/empty and extensive testing and bugfixing has been do
 Each point removed yields 2% completion.
 
  (1) Inventory
+     (*) Associate inventory with a location on the map.
+     (*) If a location has associated inventory it must have an indicator.
+     (*) A location is either a container (chest or leather pack) or a shop.
+     (*) If it is a container, units can add or remove items from it freely.
+     (*) If it is a shop, units have to buy or sell to it.
+     (*) If it is a shop or chest and the last item is removed by a player or DM it remains.
+     (*) If it is a pack and the last item is removed, it is removed from the map automatically.
+     (*) A unit's inventory is automatically dropped onto a leather pack if they die unless they die on a location that already has a container or shop, in which case the existing item holder picks up the items.
+
      (a) Shops
          (i)   place shops (host only)
          (ii)  stock items in shops (host only)
@@ -16,17 +25,16 @@ Each point removed yields 2% completion.
          (i)  Treat chests like units for adding inventory, but with no use inventory.
          (ii) Make it a part of a place object menu item for hosts.
 
-     (d) Drop a unit's inventory into a leather-pack.png on death; functions like chest.
-
-     (e) Implement potion effects.
+     (d) Implement potion effects.
          (i) Green potions: Haste. Extra melee strike, +2 MP. Small = 2 turns, Medium = 4 turns. Multiple potions stack the turn duration, not the effect strength. 
          (ii) Ale: +5 max HP for 3 turns, 25% chance of also becoming drunk (berserk melee) for that duration; more ale = longer duration (and more effect?)
 
-     (f) Implement effects for the scrolls.
+     (e) Implement effects for the scrolls.
+
+     (f) Implement equipment, which once "Use Item" are placed in the equipment submenu and can be unequipped back to the regular inventory list. When the unit dies, it drops just as if it were a regular drop.
 
 
  (2) On advancement, units earn an upgrade point.
-     (*) Make default AMLA for all units not raise max hitpoints, but instead increment an upgrade point variable. (Regular advances should do this too.)
      (a) + 1 movement (three points, capped at 2)
      (b) + 3 hitpoints (one point)
      (c) + 1 to range or melee damage (starts at two points; increases by one each purchase)
@@ -37,6 +45,7 @@ Each point removed yields 2% completion.
      (a) Intramap teleporters.
      (b) Traps.
      (c) Keys/locks for doors/chests/etc.
+     (d) Piles of gold.
 
 
  (4) Miscellaneous
@@ -47,6 +56,8 @@ Each point removed yields 2% completion.
      (*) Write a DungeonOpt function for text_input
      (*) Make the miniboss healthy+regenerates toggleable on/off on all units.
      (*) [modify_side.cfg] Fix the ability to change objectives, using a new, more limited way.
+     (*) Block right click menu items on map border where location is invalid.
+     (*) DungeonInventory is terribly coded, make it simply use functions like the others.
 
 
  (4b) Terrains/Units
@@ -55,8 +66,10 @@ Each point removed yields 2% completion.
      (*) Add a "default summoner gender" for when two genders are possible for summoners.
      (*) Add some preset super-summoners for the late game.
 
+
  (5) Finally...
-     (a) Add a way to control the recalling of units and recall lists in a campaign.
-     (b) Rewrite older parts of the code and make sure it's in three layers: objects, functions, and configurations.
-     (c) Allow the host to be able to change village cap, gpv, and other variables with EoT compatability code.
-     (d) Work on compatability code with other eras.
+     (*) Finish testing the dynamic_difficulty() function to get it to work.
+     (*) Add a way to control the recalling of units and recall lists in a campaign.
+     (*) Rewrite older parts of the code and make sure it's in three layers: objects, functions, and configurations.
+     (*) Allow the host to be able to change EoT variables.
+     (*) Work on compatability code with other eras.
