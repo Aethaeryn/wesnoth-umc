@@ -160,33 +160,13 @@ function menu_new_scenario()
                 }
 end
 
-function terrain_editor_toggle()
-   local terrain_editor = wesnoth.get_variable('MoD_terrain_editor')
+function feature_toggle(variable)
+   local check_variable = wesnoth.get_variable(variable)
 
-   if terrain_editor == true then
-      wesnoth.set_variable('MoD_terrain_editor', false)
+   if check_variable == true then
+      wesnoth.set_variable(variable, false)
    else
-      wesnoth.set_variable('MoD_terrain_editor', true)
-   end
-end
-
-function unit_editor_toggle()
-   local unit_editor = wesnoth.get_variable('MoD_unit_editor')
-
-   if unit_editor == true then
-      wesnoth.set_variable('MoD_unit_editor', false)
-   else
-      wesnoth.set_variable('MoD_unit_editor', true)
-   end
-end
-
-function summoner_spawning_toggle()
-   local summon_summoner = wesnoth.get_variable('MoD_summon_summoner')
-
-   if summon_summoner == true then
-      wesnoth.set_variable('MoD_summon_summoner', false)
-   else
-      wesnoth.set_variable('MoD_summon_summoner', true)
+      wesnoth.set_variable(variable, true)
    end
 end
 
@@ -196,11 +176,11 @@ function option_settings_choose(option)
    elseif option == "scenario" then
       menu_new_scenario()
    elseif option == "summoner" then
-      summoner_spawning_toggle()
+      feature_toggle('MoD_summon_summoner')
    elseif option == "unit" then
-      unit_editor_toggle()
+      feature_toggle('MoD_unit_editor')
    elseif option == "terrain" then
-      terrain_editor_toggle()
+      feature_toggle('MoD_terrain_editor')
    end
 end
 
