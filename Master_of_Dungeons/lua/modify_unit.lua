@@ -208,7 +208,7 @@ end
 function menu_item_unit_change_stats()
    local options = DungeonOpt:new {
       menu_id        = "021_Unit_Change_Stats",
-      menu_desc      = "Change Unit Stats",
+      menu_desc      = "Change Unit",
       menu_image     = "misc/icon-amla-tough.png",
       
       root_message   = "What stat do you want to modify?",

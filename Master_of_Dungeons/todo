@@ -82,8 +82,6 @@ Each point removed yields 2% completion.
 
 
  (4) Miscellaneous
-     * DungeonInventory.lua
-       * Get rid of this file/style and what's left of it should go in inventory.lua as functions
      * DungeonOpt
        * Test to see where the "cancel" options are broken.
        * Write a method for handling text_input
