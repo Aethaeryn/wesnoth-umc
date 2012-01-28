@@ -46,43 +46,6 @@ wesnoth.fire("set_recruit", {
                 recruit = ""
              })
 
-function end_scenario(new_scenario)
-   scenario = 'aeth_mod_'..new_scenario
-
-   wesnoth.fire("endlevel", {
-                   result = "victory",
-                   next_scenario = scenario,
-                   bonus = false,
-                   carryover_add = false,
-                   carryover_percentage = 100,
-                })
-end
-
-function menu_item_new_scenario()
-   local options = DungeonOpt:new {
-      menu_id        = "100_New_Scenario",
-      menu_desc      = "New_Scenario",
-      menu_image     = "misc/reloaded.png",
-
-      root_message   = "Which scenario do you want to start?",
-      option_message = "$input1",
-      code           = "end_scenario('$input1')",
-   }
-
-   options:menu({
-                   {"intro"},
-                   {"intro2"},
-                   {"battle"},
-                   {"cavern"},
-                   {"classic"},
-                   {"hide_and_seek"},
-                   {"open_dungeon"},
-                   {"woods"},
-                },
-                filter_host("long")
-             )
-end
-
 -- Returns a number that approximates how hard to make a scenario.
 -- You can adjust based on the number returned.
 function dynamic_difficulty(side_num)

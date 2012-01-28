@@ -1,5 +1,17 @@
 #define MOD_SETTINGS
 <<
+function end_scenario(new_scenario)
+   scenario = 'aeth_mod_'..new_scenario
+
+   wesnoth.fire("endlevel", {
+                   result = "victory",
+                   next_scenario = scenario,
+                   bonus = false,
+                   carryover_add = false,
+                   carryover_percentage = 100,
+                })
+end
+
 function menu_change_var(side_num, variable, old_value)
    if variable ~= "objectives" then
       wesnoth.fire("message", {
@@ -107,31 +119,71 @@ function menu_view_side(side_num)
    end
 end
 
-function menu_item_modify_side()
+function menu_modify_side()
    local options = DungeonOpt:new{
       root_message   = "Which side do you want to modify?",
       option_message = "$input1",
       code           = "menu_view_side('$input1')"
    }
 
-   local sides = {"All"}
+   function get_sides()
+      local sides = {"All"}
 
-   for i, v in ipairs(SIDES) do
-      sides[i + 1] = SIDES[i]
+      for i, v in ipairs(SIDES) do
+         sides[i + 1] = SIDES[i]
+      end
+
+      return sides
    end
 
-   wesnoth.fire("set_menu_item", {
-                   id          = "040_Modify_Side",
-                   description = "Modify Side",
-                   image       = "misc/ums.png",
-                   filter_host("long"),
-                   T["command"] {
-                      {
-                         options:short_show(sides)
-                      }
-                   }
+   local sides = get_sides()
+
+   options:short_fire(sides)
+end
+
+function menu_new_scenario()
+   local options = DungeonOpt:new {
+      root_message   = "Which scenario do you want to start?",
+      option_message = "$input2",
+      code           = "end_scenario('$input1')",
+   }
+
+   options:fire{
+                   {"intro", "Introduction"},
+                   {"intro2", "Introduction (Underground)"},
+                   {"battle", "Battle"},
+                   {"cavern", "Cavern"},
+                   {"classic", "Classic"},
+                   {"hide_and_seek", "Hide and Seek"},
+                   {"open_dungeon", "Open Dungeon"},
+                   {"woods", "Woods"},
                 }
-             )
+end
+
+function option_settings_choose(option)
+   if option == "Modify Side" then
+      menu_modify_side()
+   elseif option == "New Scenario" then
+      menu_new_scenario()
+   end
+end
+
+function menu_item_modify_side()
+   local options = DungeonOpt:new{
+      menu_id        = "040_Settings",
+      menu_desc      = "Settings",
+      menu_image     = "misc/ums.png",
+
+      root_message   = "What action do you want to do?",
+      option_message = "$input1",
+      code           = "option_settings_choose('$input1')",
+   }
+
+   options:menu({
+                   {"Modify Side"},
+                   {"New Scenario"}
+                },
+                filter_host("long"))
 end
 
 function settings()
