@@ -119,4 +119,3 @@ Each point removed yields 2% completion.
        * Rewrite Underlands RPG to be a pre-scripted RPG campaign for MoD, and improve the scripting, etc., in MoD so that every aspect of it is changeable.
      * Rewrite the older parts of the MoD code.
        * Make sure that it's in three layers: objects and functions that are useful in other add-ons, core MoD action functions, and data/config files.
-     * Make a game options thing.

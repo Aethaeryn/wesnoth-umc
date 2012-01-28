@@ -423,19 +423,9 @@ function menu_overlay_choose()
       code           = "option_overlay_options('$input1')"
    }
 
-   options:fire{
-      {"Water"},
-      {"Desert"},
-      {"Embellishments"},
-      {"Forest"},
-      {"Frozen"},
-      {"Rough"},
-      {"Cave"},
-      {"Village"},
-      {"Bridge"},
-      {"Special"},
-      {"Remove overlay"}
-   }
+   local overlays = {"Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
+
+   options:short_fire(overlays)
 end
 
 function menu_terrain_radius()
@@ -445,11 +435,9 @@ function menu_terrain_radius()
       code           = "terrain_radius = $input1",
    }
 
-   options:fire{
-      {0},
-      {1},
-      {2}
-   }
+   local radius_size = {0, 1, 2}
+
+   options:short_fire(radius_size)
 end
 
 -- A separate function is necessary because if it is kept in the code string of menu_item_change_terrain,
