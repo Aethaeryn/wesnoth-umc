@@ -1,4 +1,4 @@
-#define MOD_LUA_MODIFY_SIDE
+#define MOD_SETTINGS
 <<
 function menu_change_var(side_num, variable, old_value)
    if variable ~= "objectives" then
@@ -134,7 +134,7 @@ function menu_item_modify_side()
              )
 end
 
-function modify_side()
+function settings()
    menu_item_modify_side()
 end
 >>
