@@ -112,7 +112,7 @@ DungeonOpt = {
                              id          = self.menu_id,
                              description = self.menu_desc,
                              image       = self.menu_image,
-                             filter, 
+                             filter,
                              T["command"] {
                                 self:menu_command(inputs, effect)
                              }
@@ -127,7 +127,7 @@ DungeonOpt = {
                         return {
                            self:show(inputs)
                         }
-                        
+
                      else
                         return
                         T["lua"] {

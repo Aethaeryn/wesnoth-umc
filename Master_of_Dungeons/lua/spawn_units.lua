@@ -30,9 +30,9 @@ function boss_spawner(unit_type, unit_role)
                        }
                     }
                  )
-   
+
    unit = wesnoth.get_unit(e.x1, e.y1)
-   
+
    wesnoth.add_modification(unit, "object", {
                                T["effect"] {
                                   apply_to = "new_ability", {
@@ -49,7 +49,7 @@ function reg_spawner(unit_type, unit_role, unit_cost)
    local unit_traits_reg = wesnoth.get_variable("unit_traits_reg")
    local role_summoners  = wesnoth.get_units {side = side_number, role = unit_role}
    local max_hp          = 0
-   
+
    -- This goes over all the possible summoners and chooses one with the highest HP in the area. --
    for key,value in pairs(role_summoners) do
       if role_summoners[key].x <= e.x1 + 1 and role_summoners[key].x >= e.x1 - 1 then
@@ -140,7 +140,7 @@ function menu_item_summon_summoner()
                          T["have_location"] {
                             x = "$x1",
                             y = "$y1",
-                            terrain = BAD_TERRAIN 
+                            terrain = BAD_TERRAIN
                          },
                          T["or"] {
                             T["have_unit"] {

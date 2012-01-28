@@ -181,7 +181,7 @@ function menu_item_unit_change_stats()
       menu_id        = "021_Unit_Change_Stats",
       menu_desc      = "Change Unit",
       menu_image     = "misc/icon-amla-tough.png",
-      
+
       root_message   = "What stat do you want to modify?",
       option_message = "$input1",
       code           = "change_stats('$input1')",

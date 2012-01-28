@@ -97,7 +97,7 @@ function submenu_inventory_add ()
       option_message = "&$input2=<b>$input1</b>\n$input3",
       code           = "submenu_inventory_quantity('$input1')",
    }
-   
+
    options_table = option_find_all()
 
    options:fire(options_table)

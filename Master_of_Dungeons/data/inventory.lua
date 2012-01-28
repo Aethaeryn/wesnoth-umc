@@ -20,7 +20,7 @@ item_table = {
       effect = "use_potion('Healing', 'Normal')",
    }, {
       name   = "Small Haste Potion",
-      image  = "icons/potion_green_small.png", 
+      image  = "icons/potion_green_small.png",
       msg    = "* Gives the haste ability for 2 turns.",
       price  = 30,
       effect = "use_potion('Haste', 'Small')",
