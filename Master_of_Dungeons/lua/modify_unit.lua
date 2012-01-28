@@ -182,29 +182,6 @@ function change_stats(variable)
    end
 end
 
-function filter_modify_unit(permissions)
-   if permissions == "DM" then
-      return T["show_if"] {
-         T["have_unit"] {
-            x = "$x1",
-            y = "$y1"
-         }, {
-            "and", {
-               filter_host("short")
-            }
-         }
-      }
-   else
-      return T["show_if"] {
-         T["have_unit"] {
-            side = side_number,
-            x    = "$x1",
-            y    = "$y1"
-         }
-      }
-   end
-end
-
 function menu_item_unit_change_stats()
    local options = DungeonOpt:new {
       menu_id        = "021_Unit_Change_Stats",
@@ -223,7 +200,7 @@ function menu_item_unit_change_stats()
                    {"Stats"},
                    {"Save"}
                 },
-                filter_modify_unit("DM")
+                filter_host("unit")
              )
 end
 

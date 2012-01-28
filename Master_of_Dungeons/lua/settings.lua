@@ -161,15 +161,23 @@ function menu_new_scenario()
 end
 
 function terrain_editor_toggle()
-   local terrain_editor = wesnoth.get_variable("terrain_editor")
+   local terrain_editor = wesnoth.get_variable('MoD_terrain_editor')
 
    if terrain_editor == true then
-      wesnoth.set_variable('terrain_editor', false)
+      wesnoth.set_variable('MoD_terrain_editor', false)
    else
-      wesnoth.set_variable('terrain_editor', true)
+      wesnoth.set_variable('MoD_terrain_editor', true)
    end
+end
 
-   menu_item_modify_side()
+function unit_editor_toggle()
+   local unit_editor = wesnoth.get_variable('MoD_unit_editor')
+
+   if unit_editor == true then
+      wesnoth.set_variable('MoD_unit_editor', false)
+   else
+      wesnoth.set_variable('MoD_unit_editor', true)
+   end
 end
 
 function option_settings_choose(option)
@@ -177,7 +185,9 @@ function option_settings_choose(option)
       menu_modify_side()
    elseif option == "scenario" then
       menu_new_scenario()
-   elseif option == "editor" then
+   elseif option == "unit" then
+      unit_editor_toggle()
+   elseif option == "terrain" then
       terrain_editor_toggle()
    end
 end
@@ -195,11 +205,8 @@ function menu_item_modify_side()
 
    local opt_list = {{"side", "Modify Side"},
                     {"scenario", "New Scenario"},
-                    {"editor", "Turn Terrain Editor On"}}
-
-   if wesnoth.get_variable("terrain_editor") == true then
-      opt_list[3][2] = "Turn Terrain Editor Off"
-   end
+                    {"unit", "Toggle Unit Editor"},
+                    {"terrain", "Toggle Terrain Editor"}}
 
    options:menu(opt_list, filter_host("long"))
 end

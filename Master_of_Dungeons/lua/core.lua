@@ -4,6 +4,13 @@
 function filter_host(form)
    local host_side = 1
 
+   local function check_wesnoth_variable(variable)
+      return T["variable"] {
+         name = variable,
+         equals = true,
+      }
+   end
+
    -- The menus should also render for side 6.
    if wesnoth.get_variable("side_number") == 6 then
       host_side = 6
@@ -23,9 +30,20 @@ function filter_host(form)
       return T["show_if"] {
          filter,
          T["and"] {
-            T["variable"] {
-               name = "terrain_editor",
-               equals = true,
+            check_wesnoth_variable("MoD_terrain_editor")
+         }
+      }
+
+   elseif form == "unit" then
+      return T["show_if"] {
+         T["have_unit"] {
+            x = "$x1",
+            y = "$y1"
+         },
+         T["and"] {
+            filter,
+            T["and"] {
+               check_wesnoth_variable("MoD_unit_editor")
             }
          }
       }
