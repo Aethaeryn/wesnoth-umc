@@ -160,11 +160,25 @@ function menu_new_scenario()
                 }
 end
 
+function terrain_editor_toggle()
+   local terrain_editor = wesnoth.get_variable("terrain_editor")
+
+   if terrain_editor == true then
+      wesnoth.set_variable('terrain_editor', false)
+   else
+      wesnoth.set_variable('terrain_editor', true)
+   end
+
+   menu_item_modify_side()
+end
+
 function option_settings_choose(option)
-   if option == "Modify Side" then
+   if option == "side" then
       menu_modify_side()
-   elseif option == "New Scenario" then
+   elseif option == "scenario" then
       menu_new_scenario()
+   elseif option == "editor" then
+      terrain_editor_toggle()
    end
 end
 
@@ -175,18 +189,26 @@ function menu_item_modify_side()
       menu_image     = "misc/ums.png",
 
       root_message   = "What action do you want to do?",
-      option_message = "$input1",
+      option_message = "$input2",
       code           = "option_settings_choose('$input1')",
    }
 
-   options:menu({
-                   {"Modify Side"},
-                   {"New Scenario"}
-                },
-                filter_host("long"))
+   local opt_list = {{"side", "Modify Side"},
+                    {"scenario", "New Scenario"},
+                    {"editor", "Turn Terrain Editor On"}}
+
+   if wesnoth.get_variable("terrain_editor") == true then
+      opt_list[3][2] = "Turn Terrain Editor Off"
+   end
+
+   options:menu(opt_list, filter_host("long"))
 end
 
 function settings()
+   inventory()
+   spawn_units()
+   modify_unit()
+   terrain_editor()
    menu_item_modify_side()
 end
 >>

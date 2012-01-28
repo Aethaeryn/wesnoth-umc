@@ -495,7 +495,7 @@ function menu_item_change_terrain()
                    {"Set an overlay"},
                    {"Change radius"}
                 },
-                filter_host("long"),
+                filter_host("editor"),
                 "change_terrain_generate()"
              )
 end

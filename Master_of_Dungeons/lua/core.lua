@@ -11,14 +11,25 @@ function filter_host(form)
 
    local filter = T["variable"] {
       name = "side_number",
-      equals = host_side
+      equals = host_side,
    }
 
    if form == "long" then
       return T["show_if"] {
          filter
       }
-      
+
+   elseif form == "editor" then
+      return T["show_if"] {
+         filter,
+         T["and"] {
+            T["variable"] {
+               name = "terrain_editor",
+               equals = true,
+            }
+         }
+      }
+
    else
       return filter
    end
