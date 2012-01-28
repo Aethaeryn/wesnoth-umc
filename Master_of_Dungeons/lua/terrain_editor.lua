@@ -426,11 +426,11 @@ end
 -- A separate function is necessary because if it is kept in the code string of menu_item_change_terrain,
 -- the terrain_radius will never change.
 function change_terrain_generate()
-   local args = wesnoth.current.event_context
+   local e = wesnoth.current.event_context
 
    change_terrain = wesnoth.get_locations{
-      x = args.x1,
-      y = args.y1,
+      x = e.x1,
+      y = e.y1,
       radius = terrain_radius
    }
 end

@@ -5,8 +5,8 @@ function use_coins()
 end
 
 function use_potion(potion, size)
-   local event_data = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(event_data.x1, event_data.y1)
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
    if potion == "Healing" then
       local hp_effect = 14
 
