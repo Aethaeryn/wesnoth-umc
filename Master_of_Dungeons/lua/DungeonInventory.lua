@@ -1,15 +1,10 @@
 #define MOD_LUA_DUNGEONINVENTORY
 <<
-DungeonInventory = {
-   menu_id    = "000",
-   menu_desc  = "Menu Name",
-   menu_image = "misc/key.png",
+function item_use (name, quantity)
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
 
-   unit       = "",
-}
-
-function DungeonInventory:item_use (name, quantity)
-   self.unit.variables[name] = self.unit.variables[name] - 1
+   unit.variables[name] = unit.variables[name] - 1
 
    local effect
 
@@ -25,41 +20,20 @@ function DungeonInventory:item_use (name, quantity)
       local run = loadstring(effect)
       run()
    end
-
 end
 
-function DungeonInventory:option_find ()
-   local options_table = {}
+function add_item (name, quantity, start_only)
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
 
-   for i, item in ipairs(item_table) do
-      quantity = self.unit.variables[item.name]
-      if quantity ~= nil and quantity > 0 then
-         table.insert(options_table, {item.name, item.image, quantity, item.msg})
-      end
-   end
-
-   return options_table
-end
-
-function DungeonInventory:option_find_all ()
-   local options_table = {}
-
-   for i, item in ipairs(item_table) do
-      table.insert(options_table, {item.name, item.image, item.msg})
-   end
-
-   return options_table
-end
-
-function DungeonInventory:add_item (name, quantity, start_only)
-   if self.unit.variables[name] == nil then
-      self.unit.variables[name] = quantity
+   if unit.variables[name] == nil then
+      unit.variables[name] = quantity
    elseif start_only == false then
-      self.unit.variables[name] = self.unit.variables[name] + quantity
+      unit.variables[name] = unit.variables[name] + quantity
    end
 end
 
-function DungeonInventory:submenu_inventory_quantity (item)
+function submenu_inventory_quantity (item)
    wesnoth.fire("message", {
                    speaker  = "narrator",
                    message  = "How much of "..item.." do you want to give?",
@@ -79,45 +53,68 @@ function DungeonInventory:submenu_inventory_quantity (item)
       item_count = 0
    end
 
-   self:add_item(item, item_count, false)
+   add_item(item, item_count, false)
 end
 
-function DungeonInventory:submenu_inventory_add ()
-   local args = wesnoth.current.event_context
-   self.unit = wesnoth.get_unit(args.x1, args.y1)
+function submenu_inventory_add ()
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
+
+   local function option_find_all ()
+      local options_table = {}
+
+      for i, item in ipairs(item_table) do
+         table.insert(options_table, {item.name, item.image, item.msg})
+      end
+
+      return options_table
+   end
 
    local options = DungeonOpt:new{
       root_message   = "Select an item for more information.",
       option_message = "&$input2=<b>$input1</b>\n$input3",
-      code           = "globalInv:submenu_inventory_quantity('$input1')",
+      code           = "submenu_inventory_quantity('$input1')",
    }
    
-   options_table = self:option_find_all()
+   options_table = option_find_all()
 
    options:fire(options_table)
 end
 
-function DungeonInventory:submenu_inventory ()
-   local args = wesnoth.current.event_context
-   self.unit = wesnoth.get_unit(args.x1, args.y1)
+function submenu_inventory ()
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
+
+   local function option_find ()
+      local options_table = {}
+
+      for i, item in ipairs(item_table) do
+         quantity = unit.variables[item.name]
+         if quantity ~= nil and quantity > 0 then
+            table.insert(options_table, {item.name, item.image, quantity, item.msg})
+         end
+      end
+
+      return options_table
+   end
 
    local options = DungeonOpt:new{
       root_message   = "Select an item for more information.",
       option_message = "&$input2=<b>$input1</b>\nQuantity: $input3\n$input4",
-      code           = "globalInv:item_use('$input1', '$input3')",
+      code           = "item_use('$input1', '$input3')",
    }
 
-   options_table = self:option_find()
+   options_table = option_find()
 
    options:fire(options_table)
 end
 
-function DungeonInventory:option_inventory (option)
+function option_inventory (option)
    if option == "Use Item" then
-      self:submenu_inventory()
+      submenu_inventory()
 
    elseif option == "Add Item" then
-      self:submenu_inventory_add()
+      submenu_inventory_add()
 
    elseif option == "Upgrades" then
       menu_upgrade_unit()
@@ -127,17 +124,15 @@ function DungeonInventory:option_inventory (option)
    end
 end
 
-function DungeonInventory:menu_item_inventory ()
-   globalInv = self
-
+function menu_item_inventory ()
    local options = DungeonOpt:new{
-      menu_id        = self.menu_id,
-      menu_desc      = self.menu_desc,
-      menu_image     = self.menu_image,
+      menu_id        = "005_Unit",
+      menu_desc      = "Unit Commands",
+      menu_image     = "misc/key.png",
 
       root_message   = "What do you want to do with this unit?",
       option_message = "&$input2= $input1",
-      code           = "globalInv:option_inventory('$input1')",
+      code           = "option_inventory('$input1')",
    }
 
    local menu_options = {
@@ -155,13 +150,6 @@ function DungeonInventory:menu_item_inventory ()
       menu_options,
       filter_unit()
    )
-end
-
-function DungeonInventory:new (o)
-   o = o or {}
-   setmetatable(o, self)
-   self.__index = self
-   return o
 end
 >>
 #enddef

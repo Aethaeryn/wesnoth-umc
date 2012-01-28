@@ -1,55 +1,76 @@
 MASTER OF DUNGEONS TODO LIST (82% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
-Each point removed yields 2% completion, except (1) yields 4% completion.
+Each point removed yields 2% completion.
 
- (1) Inventory
-     * Associate an item container with map coordinates (make sure it expires each scenario).
-       * Item containers are either generated (on unit death there) or created by the host. 
-       * A location is either a container (chest or leather pack) or a shop.
-       * If it is a container, units can add or remove items from it for free.
-     * If it is a shop, units have to buy or sell to it.
-       * Sold items are stocked into the shop.
-     * If it is a shop or chest and the last item is removed, it remains until removed by the DM..
-     * If it is a pack and the last item is removed, it is removed from the map automatically.
-     * A unit's inventory is automatically dropped onto a leather pack if they die unless they die on a location that already has a container or shop, in which case the existing item holder picks up the items.
+ (1) Inventory Containers
+     * Add item containers.
+       * Item containers are associated with map coordinates and last only one scenario.
+       * There can only be one visible item container on a hex.
+         * The priority of visibility is (1) shops, (2) chests, (3) packs
+       * Item containers can be created by the host.
+       * A pack is automatically generated on a unit death if there is no other container there.       
 
-     (a) Shop actions
-         * place/remove shops (host only)
-         * stock/remove items in shops (host only)
-         * buy items from shops (if unit on or next to shop)
-         * sell to (at math.floor(.80 * cost); if unit on or next to shop)
+     * An item container is either normal (chest or leather pack) or a shop.
+       * If it is a container, units can add items it to and remove items from it for free.
+         * The host can stock/remove items from a container and disable adding to a container.
+       * If it is a shop, units have to buy from it or sell to it.
+       * Sold items are stocked into the shop and give the player the integer floor of 80% face value by default.
+         * The host can alter the sellback behavior or disable selling to a shop.
 
-     (b) Container actions
-         * place/remove containers (host only)
-         * stock/remove items in shops (host only) 
+     * When a container has its last item removed, different ones behave in different ways:
+       * A pack is removed from the map automatically.
+       * All other containers persist until being removed by the host.
 
-     (b) Give inventory from unit to adjacent unit.
+     * When a unit dies, its inventory is automatically dropped into a newly created leather pack.
+
+     * There are several allowed shop actions.
+       * Host-only:
+         * Place shops
+         * Configure shops
+         * Adjust inventory of shops
+         * Remove shops
+       * Any unit on hex or immediately adjecent to hex:
+         * Buy items from shops.
+         * Sell items to hex.
+
+     * There are several allowed container actions.
+       * Host-only:
+         * Place/remove containers.
+       * Any unit on hex:
+         * Add item to container (if allowed)
+         * Remove item from container
+
+
+ (2) Inventory
+     (a) Give inventory from unit to adjacent unit.
          * also give gold from the unit's side to the adjacent unit's side
 
-     (c) Haste potion.
+     (b) Haste potion.
          * Extra melee strike, +2 total moves.
          * Small = 2 turns, Medium = 4 turns.
          * Multiple potions stack the turn duration, not the effect strength.
 
-     (d) Ale.
+     (c) Ale.
          * "Confidence" ability: +5 max HP for 3 turns.
          * 25% chance of also becoming drunk (berserk melee) for that duration
          * More ale stacks the turn duration, not the effect strength, but the 25% chance of berserk melee is on applying each ale.
          * Perhaps un-marskman all marksman attacks for that duration too.
 
-     (e) Implement effects for the scrolls.
-         * Each spell has a different scroll.
-         * Scrolls are exhausted as soon as the spell is cast and are all single-use.
-         * There are many, many possible spells including experience-increasing, healing, etc.
+     (d) Implement effects for the scrolls.
+         * Possible spells:
+           * Increase experience
+           * Healing (perhaps working with radius or group or friendly to differentiate from potions)
+           * Summon unit/type (enables you to summon once and then disables summoning)
 
-     (f) Implement equipment.
+     (e) Implement equipment.
          * Using the item equips it into an equipment spot.
          * Unequipping it is possible from its own menu.
          * When the unit dies, all equipment are unequipped so equipment are on drops.
          * When equipping an item to a spot that already has something, the old equipment is automatically unequipped.
 
 
- (2) On advancement, units earn an upgrade point.
+ (3) Upgrades
+     * Units store upgrade points and a counter of every upgrade bought.
      * Let the DM be able to alter a unit's advancement points.
        * Do this via modify_unit, and move "add item" to this area too.
      * Include the following possible advancements:
@@ -60,7 +81,7 @@ Each point removed yields 2% completion, except (1) yields 4% completion.
        * - 20% XP to next promotion (cost: 2, cap: 2)
 
 
- (3) Miscellaneous
+ (4) Miscellaneous
      * DungeonInventory.lua
        * Get rid of this file/style and what's left of it should go in inventory.lua as functions
      * DungeonOpt
@@ -73,7 +94,7 @@ Each point removed yields 2% completion, except (1) yields 4% completion.
        * Save units when they die so that they can be resurrected.
      * Place/remove interactive objects on the map.
        * teleporters
-       * traps
+      * traps
        * keys/locks for doors/chests/etc.
        * piles of gold
      * Block right click menu items on map border.
@@ -92,12 +113,12 @@ Each point removed yields 2% completion, except (1) yields 4% completion.
      * Have summons give some xp back to their summoners (perhaps only in certain circumstances, like a player summoner)
      * Finish testing the dynamic_difficulty() function to get it to work
      * Add a way to control the recalling of units, recall lists, and saving of items, dead units, etc., across scenarios in a campaign.
+       * Prevent the traditional keep-and-gold recalling of units.
      * Work on compatability code with other eras.
        * Allow the host to be able to change EoT variables.
      * Work on allowing MoD mods.
-       * Include a "card game" mod where summons, items, etc., are "drawn" from a deck and you can only use something that's in your hand.
-         * This requires having an exhaustable quantity of summonable units.
+       * Include a "card game" mod where items (including summon unit scrolls) are "drawn" from a deck and you can only use something that's in your hand.
        * Rewrite Underlands RPG to be a pre-scripted RPG campaign for MoD, and improve the scripting, etc., in MoD so that every aspect of it is changeable.
      * Rewrite the older parts of the MoD code.
        * Make sure that it's in three layers: objects and functions that are useful in other add-ons, core MoD action functions, and data/config files.
-
+     * Make a game options thing.

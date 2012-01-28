@@ -1,15 +1,5 @@
 #define MOD_LUA_INVENTORY
 <<
-function inventory()
-   inventory = DungeonInventory:new { 
-      menu_id    = "005_Unit",
-      menu_desc  = "Unit Commands",
-
-   }
-
-   inventory:menu_item_inventory()
-end
-
 function use_coins()
    this_side.gold = this_side.gold + 10
 end
@@ -30,6 +20,10 @@ function use_potion(potion, size)
          unit.hitpoints = unit.hitpoints + hp_effect
       end
    end
+end
+
+function inventory()
+   menu_item_inventory()
 end
 >>
 #enddef
