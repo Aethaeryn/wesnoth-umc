@@ -1,76 +1,103 @@
 MASTER OF DUNGEONS TODO LIST (82% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
-Each point removed yields 2% completion.
+Each point removed yields 2% completion, except (1) yields 4% completion.
 
  (1) Inventory
-     (*) Associate inventory with a location on the map.
-     (*) If a location has associated inventory it must have an indicator.
-     (*) A location is either a container (chest or leather pack) or a shop.
-     (*) If it is a container, units can add or remove items from it freely.
-     (*) If it is a shop, units have to buy or sell to it.
-     (*) If it is a shop or chest and the last item is removed by a player or DM it remains.
-     (*) If it is a pack and the last item is removed, it is removed from the map automatically.
-     (*) A unit's inventory is automatically dropped onto a leather pack if they die unless they die on a location that already has a container or shop, in which case the existing item holder picks up the items.
+     * Associate an item container with map coordinates (make sure it expires each scenario).
+       * Item containers are either generated (on unit death there) or created by the host. 
+       * A location is either a container (chest or leather pack) or a shop.
+       * If it is a container, units can add or remove items from it for free.
+     * If it is a shop, units have to buy or sell to it.
+       * Sold items are stocked into the shop.
+     * If it is a shop or chest and the last item is removed, it remains until removed by the DM..
+     * If it is a pack and the last item is removed, it is removed from the map automatically.
+     * A unit's inventory is automatically dropped onto a leather pack if they die unless they die on a location that already has a container or shop, in which case the existing item holder picks up the items.
 
-     (a) Shops
-         (i)   place shops (host only)
-         (ii)  stock items in shops (host only)
-         (iii) buy items from shops (at cost)
-         (iv)  sell to (at 4/5 nearest integer of cost)
+     (a) Shop actions
+         * place/remove shops (host only)
+         * stock/remove items in shops (host only)
+         * buy items from shops (if unit on or next to shop)
+         * sell to (at math.floor(.80 * cost); if unit on or next to shop)
+
+     (b) Container actions
+         * place/remove containers (host only)
+         * stock/remove items in shops (host only) 
 
      (b) Give inventory from unit to adjacent unit.
-         (i) also give gold from the unit's side to the adjacent unit's side
+         * also give gold from the unit's side to the adjacent unit's side
 
-     (c) Allow the host to attach gold or items to chests (picked up when opened).
-         (i)  Treat chests like units for adding inventory, but with no use inventory.
-         (ii) Make it a part of a place object menu item for hosts.
+     (c) Haste potion.
+         * Extra melee strike, +2 total moves.
+         * Small = 2 turns, Medium = 4 turns.
+         * Multiple potions stack the turn duration, not the effect strength.
 
-     (d) Implement potion effects.
-         (i) Green potions: Haste. Extra melee strike, +2 MP. Small = 2 turns, Medium = 4 turns. Multiple potions stack the turn duration, not the effect strength. 
-         (ii) Ale: +5 max HP for 3 turns, 25% chance of also becoming drunk (berserk melee) for that duration; more ale = longer duration (and more effect?)
+     (d) Ale.
+         * "Confidence" ability: +5 max HP for 3 turns.
+         * 25% chance of also becoming drunk (berserk melee) for that duration
+         * More ale stacks the turn duration, not the effect strength, but the 25% chance of berserk melee is on applying each ale.
+         * Perhaps un-marskman all marksman attacks for that duration too.
 
      (e) Implement effects for the scrolls.
+         * Each spell has a different scroll.
+         * Scrolls are exhausted as soon as the spell is cast and are all single-use.
+         * There are many, many possible spells including experience-increasing, healing, etc.
 
-     (f) Implement equipment, which once "Use Item" are placed in the equipment submenu and can be unequipped back to the regular inventory list. When the unit dies, it drops just as if it were a regular drop.
+     (f) Implement equipment.
+         * Using the item equips it into an equipment spot.
+         * Unequipping it is possible from its own menu.
+         * When the unit dies, all equipment are unequipped so equipment are on drops.
+         * When equipping an item to a spot that already has something, the old equipment is automatically unequipped.
 
 
  (2) On advancement, units earn an upgrade point.
-     (a) + 1 movement (cost: 3, cap: 2)
-     (b) + 3 hitpoints (cost: 1)
-     (c) + 1 to melee attacks' damage (cost: 2, increases by 1 each time)
-     (d) + 1 to range attacks' damage (cost: 2, increases by 1 each time)
-     (e) - 20% XP to next promotion (cost: 2, cap: 2)
+     * Let the DM be able to alter a unit's advancement points.
+       * Do this via modify_unit, and move "add item" to this area too.
+     * Include the following possible advancements:
+       * + 1 movement (cost: 3, cap: 2)
+       * + 3 hitpoints (cost: 1)
+       * + 1 to melee attacks' damage (cost: 2, increases by 1 each time)
+       * + 1 to range attacks' damage (cost: 2, increases by 1 each time)
+       * - 20% XP to next promotion (cost: 2, cap: 2)
 
 
- (3) Add/Remove Objects
-     (a) Intramap teleporters.
-     (b) Traps.
-     (c) Keys/locks for doors/chests/etc.
-     (d) Piles of gold.
+ (3) Miscellaneous
+     * DungeonInventory.lua
+       * Get rid of this file/style and what's left of it should go in inventory.lua as functions
+     * DungeonOpt
+       * Test to see where the "cancel" options are broken.
+       * Write a method for handling text_input
+         * Add a cancel option.
+       * Rewrite to handle the extra filters and other things that prevent all files from using DungeonOpt.
+     * Manage units.
+       * Allow unit import/export through persistant variables.
+       * Save units when they die so that they can be resurrected.
+     * Place/remove interactive objects on the map.
+       * teleporters
+       * traps
+       * keys/locks for doors/chests/etc.
+       * piles of gold
+     * Block right click menu items on map border.
+     * Fix the way objectives are changed, change only subsections of the objectives rather than the whole thing.
+     * Make the miniboss healthy+regenerates toggleable on/off on all units.
+       * Compensate by giving minibosses an extra trait?
+     * Terrains and units.
+       * Repeat last overlay.
+       * Move overlays to second position on the menu.
+       * Fix remove overlay.
+       * Fix bridges and other broken overlays.
+       * Test all terrains/overlays over again.
+       * All units/terrains/overlays/etc. available in-game should be usable in MoD.
+       * Add a default summoner gender for when two genders are possible for summoners so it doesn't always default to male.
+       * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
+     * Have summons give some xp back to their summoners (perhaps only in certain circumstances, like a player summoner)
+     * Finish testing the dynamic_difficulty() function to get it to work
+     * Add a way to control the recalling of units, recall lists, and saving of items, dead units, etc., across scenarios in a campaign.
+     * Work on compatability code with other eras.
+       * Allow the host to be able to change EoT variables.
+     * Work on allowing MoD mods.
+       * Include a "card game" mod where summons, items, etc., are "drawn" from a deck and you can only use something that's in your hand.
+         * This requires having an exhaustable quantity of summonable units.
+       * Rewrite Underlands RPG to be a pre-scripted RPG campaign for MoD, and improve the scripting, etc., in MoD so that every aspect of it is changeable.
+     * Rewrite the older parts of the MoD code.
+       * Make sure that it's in three layers: objects and functions that are useful in other add-ons, core MoD action functions, and data/config files.
 
-
- (4) Miscellaneous
-     (*) Test to see where the "Cancel" options are broken.
-     (*) Add cancel options to [text_input] stuff
-     (*) The last menus/options that use WML tables and fire() should stop... Rewrite DungeonOpt for this.
-     (*) Allow unit import/export through persistant variables if possible!
-     (*) Write a DungeonOpt function for text_input
-     (*) Make the miniboss healthy+regenerates toggleable on/off on all units.
-     (*) [modify_side.cfg] Fix the ability to change objectives, using a new, more limited way.
-     (*) Block right click menu items on map border where location is invalid.
-     (*) DungeonInventory is terribly coded, make it simply use functions like the others.
-
-
- (4b) Terrains/Units
-     (*) [modify_terrain] Repeat overlay, move overlays to second position, fix remove overlay, fix bridges, test all terrains/overlays again.
-     (*) All units, terrains, and overlays available in-game should be usable in MoD.
-     (*) Add a "default summoner gender" for when two genders are possible for summoners.
-     (*) Add some preset super-summoners for the late game.
-
-
- (5) Finally...
-     (*) Finish testing the dynamic_difficulty() function to get it to work.
-     (*) Add a way to control the recalling of units and recall lists in a campaign.
-     (*) Rewrite older parts of the code and make sure it's in three layers: objects, functions, and configurations.
-     (*) Allow the host to be able to change EoT variables.
-     (*) Work on compatability code with other eras.
