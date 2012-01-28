@@ -71,8 +71,6 @@ Each point removed yields 2% completion.
 
  (3) Upgrades
      * Units store upgrade points and a counter of every upgrade bought.
-     * Let the DM be able to alter a unit's advancement points.
-       * Do this via modify_unit, and move "add item" to this area too.
      * Include the following possible advancements:
        * + 1 movement (cost: 3, cap: 2)
        * + 3 hitpoints (cost: 1)
@@ -82,40 +80,67 @@ Each point removed yields 2% completion.
 
 
  (4) Miscellaneous
+     * Make the host modification/management of units more powerful.
+       * Toggle the boss healthy/regenerate on/off.
+         * Perhaps give bosses extra traits so this doesn't break.
+       * Add items through here instead of the item menu.
+       * Alter a unit's advancement points.
+       * Allow a unit to be saved into persistant variables for import.
+
+     * Getting units to the game.
+       * Allow the placement of any unit (summoner, boss unit without summons, and summoned) instantly.
+       * Allow import of units saved in persistant variables.
+       * Save units when they die to a resurrection table.
+         * The host should be able to resurrect, and perhaps there should be a resurrection scroll as well.
+       * Add a way to control the recalling of units, recall lists, and saving of items, dead units, etc., across scenarios in a campaign.
+         * Prevent the traditional keep-and-gold recalling of units.
+
      * DungeonOpt
        * Test to see where the "cancel" options are broken.
        * Write a method for handling text_input
          * Add a cancel option.
        * Rewrite to handle the extra filters and other things that prevent all files from using DungeonOpt.
-     * Manage units.
-       * Allow unit import/export through persistant variables.
-       * Save units when they die so that they can be resurrected.
+       * Add helper functions for more option/menu functions than just options_list_short()
+
      * Place/remove interactive objects on the map.
        * teleporters
-      * traps
+       * traps
        * keys/locks for doors/chests/etc.
        * piles of gold
-     * Block right click menu items on map border.
-     * Fix the way objectives are changed, change only subsections of the objectives rather than the whole thing.
-     * Make the miniboss healthy+regenerates toggleable on/off on all units.
-       * Compensate by giving minibosses an extra trait?
-     * Terrains and units.
-       * Repeat last overlay.
+
+     * Existing issues.
+       * Block right click menu items on map border because they cause Lua errors.
+       * Fix the changing objectives so that it works again.
+         * Have the new interface change subsections (victory, loss, etc.) instead of the whole thing so that formatting can be preserved.
+
+     * Terrains.
+       * Add repeat last overlay.
        * Move overlays to second position on the menu.
        * Fix remove overlay.
-       * Fix bridges and other broken overlays.
+       * Fix some bridges and other broken overlays.
        * Test all terrains/overlays over again.
-       * All units/terrains/overlays/etc. available in-game should be usable in MoD.
+       * All terrains/overlays/etc. available in-game should be usable in MoD.
+
+    * Summoners and units.
+       * Make sure all units in the game are a summoner or a summoned unit.
        * Add a default summoner gender for when two genders are possible for summoners so it doesn't always default to male.
        * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
-     * Have summons give some xp back to their summoners (perhaps only in certain circumstances, like a player summoner)
+       * Have summons give some xp back to their summoners (perhaps only in certain circumstances, like a player summoner)
+       * Have game options enable something else instead of deduction of HP for summoning.
+       * Cap or balance the number of summons (perhaps on a per-summoner basis) somehow.
+         * Perhaps reduce total HP per active summoned unit.
+
      * Finish testing the dynamic_difficulty() function to get it to work
-     * Add a way to control the recalling of units, recall lists, and saving of items, dead units, etc., across scenarios in a campaign.
-       * Prevent the traditional keep-and-gold recalling of units.
+
+     * Rewrite the older parts of the MoD code.
+       * Make sure that it's in three layers: objects and functions that are useful in other add-ons, core MoD action functions, and data/config files.
+
+
+ (4b) Features for after 1.0... 
      * Work on compatability code with other eras.
        * Allow the host to be able to change EoT variables.
+
      * Work on allowing MoD mods.
        * Include a "card game" mod where items (including summon unit scrolls) are "drawn" from a deck and you can only use something that's in your hand.
        * Rewrite Underlands RPG to be a pre-scripted RPG campaign for MoD, and improve the scripting, etc., in MoD so that every aspect of it is changeable.
-     * Rewrite the older parts of the MoD code.
-       * Make sure that it's in three layers: objects and functions that are useful in other add-ons, core MoD action functions, and data/config files.
+
