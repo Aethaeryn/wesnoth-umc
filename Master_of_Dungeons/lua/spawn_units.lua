@@ -17,7 +17,7 @@ end
 function boss_spawner(unit_type, unit_role)
    local unit_traits_boss = wesnoth.get_variable("unit_traits_boss")
    local regenerates      = wesnoth.get_variable("regenerates")
-   
+
    wesnoth.put_unit(args.x1, args.y1, {
                        type     = unit_type,
                        side     = side_number,

@@ -1,5 +1,8 @@
 #define MOD_LUA_TERRAIN_EDITOR
 <<
+options_overlay = {"Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
+
+options_radius = {0, 1, 2}
 
 function terrain_set(terrain_symbol)
    -- Creates a global variable that is remembered for terrain_repeat()
@@ -409,35 +412,15 @@ function option_terrain_choose(name)
       }
 
    elseif name == "Set an overlay" then
-      menu_overlay_choose()
+      options_list_short("Which terrain would you like to switch to?",
+                         "option_overlay_options('$input1')",
+                         options_overlay)
 
    elseif name == "Change radius" then
-      menu_terrain_radius()
+      options_list_short("What do you want to set the terrain radius as?",
+                         "terrain_radius = $input1",
+                         options_radius)
    end
-end
-
-function menu_overlay_choose()
-   local options = DungeonOpt:new{
-      root_message   = "Which terrain would you like to switch to?",
-      option_message = "$input1",
-      code           = "option_overlay_options('$input1')"
-   }
-
-   local overlays = {"Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
-
-   options:short_fire(overlays)
-end
-
-function menu_terrain_radius()
-   local options = DungeonOpt:new{
-      root_message   = "What do you want to set the terrain radius as?",
-      option_message = "$input1",
-      code           = "terrain_radius = $input1",
-   }
-
-   local radius_size = {0, 1, 2}
-
-   options:short_fire(radius_size)
 end
 
 -- A separate function is necessary because if it is kept in the code string of menu_item_change_terrain,

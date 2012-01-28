@@ -47,14 +47,11 @@ function menu_upgrade_unit()
       points = 0
    end
 
-   local options = DungeonOpt:new {
-      root_message   = "What do you want to upgrade? You have "..points.." point(s).",
-      option_message = "$input1",
-      code           = "upgrade_unit('$input1')",
-   }
+   local upgrades = {"Hello world!"}
 
-   options:short_fire{"Hello world!"}
-
+   options_list_short("What do you want to upgrade? You have "..points.." points(s).",
+                      "upgrade_unit('$input1')",
+                      upgrades)
 end
 
 >>

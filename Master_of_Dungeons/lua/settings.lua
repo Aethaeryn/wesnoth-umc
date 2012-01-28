@@ -86,13 +86,12 @@ end
 
 function menu_view_side(side_num)
    if side_num == "All" then
-      local options = DungeonOpt:new{
-         root_message   = "Which variable of all sides do you want to change?",
-         option_message = "$input1",
-         code           = "menu_change_var_all('$input1')"
-      }
+      local all_stats = {"gold", "village_gold", "base_income", "objectives"}
 
-      options:short_fire{"gold", "village_gold", "base_income", "objectives"}
+      options_list_short("Which variable of all sides do you want to change?",
+                         "menu_change_var_all('$input1')",
+                         all_stats)
+
    else
       local options = DungeonOpt:new{
          root_message   = "Which variable do you want to change?",
@@ -120,13 +119,7 @@ function menu_view_side(side_num)
 end
 
 function menu_modify_side()
-   local options = DungeonOpt:new{
-      root_message   = "Which side do you want to modify?",
-      option_message = "$input1",
-      code           = "menu_view_side('$input1')"
-   }
-
-   function get_sides()
+   local function get_sides()
       local sides = {"All"}
 
       for i, v in ipairs(SIDES) do
@@ -136,9 +129,9 @@ function menu_modify_side()
       return sides
    end
 
-   local sides = get_sides()
-
-   options:short_fire(sides)
+   options_list_short("Which side do you want to modify?",
+                      "menu_view_side('$input1')",
+                      get_sides())
 end
 
 function menu_new_scenario()

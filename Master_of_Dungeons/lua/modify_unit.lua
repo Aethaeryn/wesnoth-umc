@@ -122,21 +122,21 @@ function change_stats(variable)
    end
 
    local function role()
-      local options = DungeonOpt:new {
-         root_message   = "Select a new role for the unit.",
-         option_message = "$input1",
-         code           = "wesnoth.set_variable('change_role', '$input1')"
-      }
+      local function get_roles()
+         local roles = {}
 
-      local roles = {}
+         for i, v in ipairs(SUMMON_ROLES) do
+            roles[i] = SUMMON_ROLES[i]
+         end
 
-      for i, v in ipairs(SUMMON_ROLES) do
-         roles[i] = SUMMON_ROLES[i]
+         table.insert(roles, "None")
+
+         return roles
       end
 
-      table.insert(roles, "None")
-
-      options:short_fire(roles)
+      options_list_short("Select a new role for the unit.",
+                         "wesnoth.set_variable('change_role', '$input1')",
+                         get_roles())
 
       local chosen_role = wesnoth.get_variable('change_role')
 
@@ -151,25 +151,19 @@ function change_stats(variable)
    end
 
    local function side()
-      local options = DungeonOpt:new {
-         root_message   = "Select a target side.",
-         option_message = "Side $input1",
-         code           = "change_side($input1)",
-      }
-
-      options:short_fire(SIDES)
+      options_list_short("Select a target side.",
+                         "change_side($input1)",
+                         SIDES)
    end
 
-   local function stats() 
-      local options = DungeonOpt:new {
-         root_message   = "Which stat do you want to change?",
-         option_message = "$input1",
-         code           = "change_unit_stat('$input1')"
-      }
+   local function stats()
+      local stats = {"Hitpoints", "Max Hitpoints", "Moves",
+                     "Experience", "Max Experience", "Gender",
+                     "Leader"}
 
-      options:short_fire {"Hitpoints", "Max Hitpoints", "Moves",
-                          "Experience", "Max Experience", "Gender",
-                          "Leader"}
+      options_list_short("What stat do you want to change?",
+                         "change_unit_stat('$input1')",
+                         stats)
    end
 
    if variable == "Transform" then transform()
