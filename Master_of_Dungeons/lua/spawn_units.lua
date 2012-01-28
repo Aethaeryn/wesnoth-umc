@@ -15,10 +15,12 @@ function add_type(units, type)
 end
 
 function boss_spawner(unit_type, unit_role)
+   local e = wesnoth.current.event_context
+
    local unit_traits_boss = wesnoth.get_variable("unit_traits_boss")
    local regenerates      = wesnoth.get_variable("regenerates")
 
-   wesnoth.put_unit(args.x1, args.y1, {
+   wesnoth.put_unit(e.x1, e.y1, {
                        type     = unit_type,
                        side     = side_number,
                        overlays = "misc/hero-icon.png",
@@ -29,7 +31,7 @@ function boss_spawner(unit_type, unit_role)
                     }
                  )
    
-   unit = wesnoth.get_unit(args.x1, args.y1)
+   unit = wesnoth.get_unit(e.x1, e.y1)
    
    wesnoth.add_modification(unit, "object", {
                                T["effect"] {
@@ -42,14 +44,16 @@ function boss_spawner(unit_type, unit_role)
 end
 
 function reg_spawner(unit_type, unit_role, unit_cost)
+   local e = wesnoth.current.event_context
+
    local unit_traits_reg = wesnoth.get_variable("unit_traits_reg")
    local role_summoners  = wesnoth.get_units {side = side_number, role = unit_role}
    local max_hp          = 0
    
    -- This goes over all the possible summoners and chooses one with the highest HP in the area. --
    for key,value in pairs(role_summoners) do
-      if role_summoners[key].x <= args.x1 + 1 and role_summoners[key].x >= args.x1 - 1 then
-         if role_summoners[key].y <= args.y1 + 1 and role_summoners[key].y >= args.y1 -1 then
+      if role_summoners[key].x <= e.x1 + 1 and role_summoners[key].x >= e.x1 - 1 then
+         if role_summoners[key].y <= e.y1 + 1 and role_summoners[key].y >= e.y1 -1 then
             if role_summoners[key].hitpoints > max_hp then
                max_hp  = role_summoners[key].hitpoints
                max_key = key
@@ -61,7 +65,7 @@ function reg_spawner(unit_type, unit_role, unit_cost)
    -- Creates the unit if there is enough HP --
    if role_summoners[max_key].hitpoints > unit_cost then
       role_summoners[max_key].hitpoints = role_summoners[max_key].hitpoints - unit_cost
-      wesnoth.put_unit(args.x1, args.y1, {
+      wesnoth.put_unit(e.x1, e.y1, {
                           type = unit_type,
                           side = side_number, {
                              "modifications",
@@ -86,7 +90,6 @@ function menu_boss(type)
 end
 
 function menu_reg(level, type)
-   args = wesnoth.current.event_context
    local options = DungeonOpt:new {
       root_message   = "Select a unit to summon.",
       option_message = "&$unit_image~RC(magenta>red)=$input1 - $unit_cost HP",
@@ -116,7 +119,6 @@ function menu_reg_levels(type)
 end
 
 function menu_boss_type()
-   args = wesnoth.current.event_context
    local options = DungeonOpt:new{
       root_message   = "Select a unit to summon.",
       image_string   = "portraits/undead/transparent/lich.png",
