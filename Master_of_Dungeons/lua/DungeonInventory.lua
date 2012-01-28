@@ -6,16 +6,6 @@ DungeonInventory = {
    menu_image = "misc/key.png",
 
    unit       = "",
-
-   item_table = {
-      {
-         name   = "Sample Item",
-         image  = "icons/letter_and_ale.png",
-         msg    = "* Line 1.\n* Line 2..",
-         price  = 53,
-         effect = "",
-      },
-   },
 }
 
 function DungeonInventory:item_use (name, quantity)
@@ -25,7 +15,7 @@ function DungeonInventory:item_use (name, quantity)
 
    this_side = wesnoth.sides[side_number]
 
-   for i, item in ipairs(self.item_table) do
+   for i, item in ipairs(item_table) do
       if item.name == name then
          effect = item.effect
       end
@@ -41,7 +31,7 @@ end
 function DungeonInventory:option_find ()
    local options_table = {}
 
-   for i, item in ipairs(self.item_table) do
+   for i, item in ipairs(item_table) do
       quantity = self.unit.variables[item.name]
       if quantity ~= nil and quantity > 0 then
          table.insert(options_table, {item.name, item.image, quantity, item.msg})
@@ -54,7 +44,7 @@ end
 function DungeonInventory:option_find_all ()
    local options_table = {}
 
-   for i, item in ipairs(self.item_table) do
+   for i, item in ipairs(item_table) do
       table.insert(options_table, {item.name, item.image, item.msg})
    end
 

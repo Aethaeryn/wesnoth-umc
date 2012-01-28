@@ -35,10 +35,11 @@ Each point removed yields 2% completion.
 
 
  (2) On advancement, units earn an upgrade point.
-     (a) + 1 movement (three points, capped at 2)
-     (b) + 3 hitpoints (one point)
-     (c) + 1 to range or melee damage (starts at two points; increases by one each purchase)
-     (d) - 20% XP to next promotion (two points, capped at 2)
+     (a) + 1 movement (cost: 3, cap: 2)
+     (b) + 3 hitpoints (cost: 1)
+     (c) + 1 to melee attacks' damage (cost: 2, increases by 1 each time)
+     (d) + 1 to range attacks' damage (cost: 2, increases by 1 each time)
+     (e) - 20% XP to next promotion (cost: 2, cap: 2)
 
 
  (3) Add/Remove Objects

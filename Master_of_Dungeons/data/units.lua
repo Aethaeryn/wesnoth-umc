@@ -1,4 +1,4 @@
-#define MOD_LUA_UNITS
+#define MOD_DATA_UNITS
 <<
 SIDES = {1, 2, 3, 4, 5, 6, 7, 8}
 
