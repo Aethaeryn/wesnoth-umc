@@ -202,6 +202,7 @@ function settings()
    spawn_units()
    modify_unit()
    terrain_editor()
+   object_placement()
    menu_item_modify_side()
 end
 >>

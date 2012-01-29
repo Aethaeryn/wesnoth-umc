@@ -4,24 +4,18 @@ Each point removed yields 2% completion.
 
  (1) Inventory Containers
      * Add item containers.
+       * Make them have their proper effects.
        * Item containers are associated with map coordinates and last only one scenario.
-       * There can only be one visible item container on a hex.
-         * The priority of visibility is (1) shops, (2) chests, (3) packs
-       * Item containers can be created by the host.
-       * A pack is automatically generated on a unit death if there is no other container there.       
 
-     * An item container is either normal (chest or leather pack) or a shop.
-       * If it is a container, units can add items it to and remove items from it for free.
-         * The host can stock/remove items from a container and disable adding to a container.
-       * If it is a shop, units have to buy from it or sell to it.
-       * Sold items are stocked into the shop and give the player the integer floor of 80% face value by default.
-         * The host can alter the sellback behavior or disable selling to a shop.
+     * If it is a normal container, units can add items it to and remove items from it for free.
+     * The host can stock/remove items from a container and disable adding to a container.
 
      * When a container has its last item removed, different ones behave in different ways:
        * A pack is removed from the map automatically.
        * All other containers persist until being removed by the host.
 
      * When a unit dies, its inventory is automatically dropped into a newly created leather pack.
+       * fixme: Handle a unit dying on a hex with an existing container. Allow multiple packs to be on a single hex and only show the top visible one and hide packs if something else is on top?
 
      * There are several allowed shop actions.
        * Host-only:
@@ -31,7 +25,9 @@ Each point removed yields 2% completion.
          * Remove shops
        * Any unit on hex or immediately adjecent to hex:
          * Buy items from shops.
-         * Sell items to hex.
+         * Sell items to shop.
+           * Buying price defaults to math.floor(.8 * cost)
+           * Allow the host to alter default buying price or disable feature.
 
      * There are several allowed container actions.
        * Host-only:
@@ -88,25 +84,26 @@ Each point removed yields 2% completion.
        * Allow a unit to be saved into persistant variables for import.
 
      * Getting units to the game.
-       * Allow the placement of any unit (summoner, boss unit without summons, and summoned) instantly.
+       * Allow the placement of any unit instantly. 
+         * Allow bosses that aren't summoners and "regular" units.
        * Allow import of units saved in persistant variables.
        * Save units when they die to a resurrection table.
          * The host should be able to resurrect, and perhaps there should be a resurrection scroll as well.
        * Add a way to control the recalling of units, recall lists, and saving of items, dead units, etc., across scenarios in a campaign.
          * Prevent the traditional keep-and-gold recalling of units.
 
+     * Implement additional objects on maps:.
+       * teleporters
+       * traps
+       * keys/locks for doors/chests/etc.
+
+ (4b) Details
      * DungeonOpt
        * Test to see where the "cancel" options are broken.
        * Write a method for handling text_input
          * Add a cancel option.
        * Rewrite to handle the extra filters and other things that prevent all files from using DungeonOpt.
        * Add helper functions for more option/menu functions than just options_list_short()
-
-     * Place/remove interactive objects on the map.
-       * teleporters
-       * traps
-       * keys/locks for doors/chests/etc.
-       * piles of gold
 
      * Existing issues.
        * Block right click menu items on map border because they cause Lua errors.
@@ -136,7 +133,7 @@ Each point removed yields 2% completion.
        * Make sure that it's in three layers: objects and functions that are useful in other add-ons, core MoD action functions, and data/config files.
 
 
- (4b) Features for after 1.0... 
+ (4c) Features for after 1.0... 
      * Work on compatability code with other eras.
        * Allow the host to be able to change EoT variables.
 
