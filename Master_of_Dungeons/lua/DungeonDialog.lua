@@ -1,8 +1,81 @@
-#define MOD_LUA_DUNGEONOPT
+#define MOD_LUA_DUNGEONDIALOG
 <<
+function test_dialog()
+   local dialog = {
+      T["tooltip"] { id = "tooltip_large" },
+      T["helptip"] { id = "tooltip_large" },
+      T["grid"] {
+         T["row"] {
+            T["column"] {
+               T["grid"] {
+                  T["row"] {
+                     T["column"] {
+                        horizontal_grow = true,
+                        T["listbox"] {
+                           id = "the_list",
+                           T["list_definition"] {
+                              T["row"] {
+                                 T["column"] {
+                                    horizontal_grow = true,
+                                    T["toggle_panel"] {
+                                       T["grid"] {
+                                          T["row"] {
+                                             T["column"] {
+                                                horizontal_alignment = "left",
+                                                T["label"] { id = "the_label" }
+                                             },
+                                             T["column"] {
+                                                T["image"] {
+                                                   id = "the_icon"
+                  }}}}}}}}}}},
+                  T["row"] {
+                     T["column"] {
+                        T["grid"] {
+                           T["row"] {
+                              T["column"] {
+                                 T["button"] {id = "ok", label = "OK" }
+                              },
+                              T["column"] {
+                                 T["button"] { id = "cancel", label = "Cancel" }
+            }}}}}}},
+            T["column"] {
+               T["label"] { id = "the_msg" } }
+   }}}
+
+   local function preshow()
+      local inv = { "Small Healing Potion" }
+
+      local function select()
+         local i = wesnoth.get_dialog_value "the_list"
+         local type = inv[i]
+         wesnoth.set_dialog_value(item_table[i].msg, "the_msg")
+      end
+
+      wesnoth.set_dialog_callback(select, "the_list")
+
+      for i,v in ipairs(inv) do
+         local type = inv[i]
+         wesnoth.set_dialog_value(item_table[i].name, "the_list", i, "the_label")
+         wesnoth.set_dialog_value(item_table[i].image, "the_list", i, "the_icon")
+      end
+
+      wesnoth.set_dialog_value(1, "the_list")
+
+      select()
+   end
+
+   local li = 0
+   local function postshow()
+      li = wesnoth.get_dialog_value "the_list"
+   end
+
+   local r = wesnoth.show_dialog(dialog, preshow, postshow)
+   wesnoth.message(string.format("Button %d pressed. Item %d selected.", r, li))
+end
+
 -- Creates object by setting object = DungeonOpt:new{ option_message = "string", code = "lua code in a string" }
 -- The other table items are also changeable.
-DungeonOpt = {
+DungeonDialog = {
    -- Root [message] tags with reasonable defaults.
    speaker_string = "narrator",
    root_message   = "Please select an option: ",
@@ -12,11 +85,6 @@ DungeonOpt = {
    -- code id Lua code to be run when the option is selected.
    option_message = "",
    code           = "",
-
-   -- These variables are only used in the function menu, and so only need to be customized if you're doing a menu.
-   menu_id        = "000_Blank",
-   menu_desc      = "Blank Menu Item",
-   menu_image     = "misc/dot-white.png",
 
    -- Proper syntax: object:show{ {"item"}, {"item"}, {"etc."} }
    -- Both tables can have as many arguments as you want.
@@ -103,40 +171,6 @@ DungeonOpt = {
    short_fire = function(self, inputs)
                    wesnoth.fire(self:short_show(inputs))
                 end,
-
-   -- This is a more complicated shortcut, for menu items.
-   -- The last argument, effect, is optional and is used if the menu runs something in addition to a message.
-   -- The actual command to be run is determined in the menu_command() function below.
-   menu = function(self, inputs, filter, effect)
-             wesnoth.fire("set_menu_item", {
-                             id          = self.menu_id,
-                             description = self.menu_desc,
-                             image       = self.menu_image,
-                             filter,
-                             T["command"] {
-                                self:menu_command(inputs, effect)
-                             }
-                          }
-                       )
-          end,
-
-   -- This function is used in the menu function to determine the command to be run.
-   -- If there is no effect, only the menu is shown. If there is an effect, it is run before the menu.
-   menu_command = function(self, inputs, effect)
-                     if effect == nil then
-                        return {
-                           self:show(inputs)
-                        }
-
-                     else
-                        return
-                        T["lua"] {
-                           code = effect
-                        }, {
-                           self:show(inputs)
-                        }
-                     end
-                  end,
 
    -- Turns this table (DungeonOpt) into a class to allow for the creation of objects.
    new = function(self, o)
