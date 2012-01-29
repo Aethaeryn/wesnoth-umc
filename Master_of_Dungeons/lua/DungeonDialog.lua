@@ -22,12 +22,12 @@ function test_dialog()
                                           T["row"] {
                                              T["column"] {
                                                 horizontal_alignment = "left",
-                                                T["label"] { id = "the_label" }
+                                                T["image"] { id = "the_icon" }
                                              },
                                              T["column"] {
-                                                T["image"] {
-                                                   id = "the_icon"
-                  }}}}}}}}}}},
+                                                horizontal_alignment = "left",
+                                                T["label"] { id = "the_label" }
+                  }}}}}}}}}},
                   T["row"] {
                      T["column"] {
                         T["grid"] {
@@ -43,7 +43,11 @@ function test_dialog()
    }}}
 
    local function preshow()
-      local inv = { "Small Healing Potion" }
+      local inv = {}
+
+      for i, v in ipairs(item_table) do
+         table.insert(inv, v.name)
+      end
 
       local function select()
          local i = wesnoth.get_dialog_value "the_list"
