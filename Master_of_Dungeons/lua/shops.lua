@@ -7,20 +7,65 @@ if game_containers == nil then
    game_containers = {}
 end
 
+function clear_game_object()
+   local e = wesnoth.current.event_context
+   w_items.remove(e.x1, e.y1)
+
+   local coords = e.x1 * 1000 + e.y1
+
+   game_containers[coords] = nil
+end
+
+function interact_do(selection)
+   local e = wesnoth.current.event_context
+   local coords = e.x1 * 1000 + e.y1
+
+   -- todo: "Visit Shop", "Open Chest", "Investigate Drop"
+   -- todo: Add to these as host
+
+   if selection == "Collect Gold" then
+      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[coords]["gold"] 
+      clear_game_object()
+   end
+end
+
+function submenu_interact()
+   local e = wesnoth.current.event_context
+
+   local options = DungeonOpt:new{
+      root_message   = "How do you want to interact?",
+      option_message = "&$input2= $input1",
+      code           = "interact_do('$input1')",
+   }
+
+   local interactions = {}
+
+   local coords = e.x1 * 1000 + e.y1
+
+   if game_containers[coords] ~= nil then
+      if game_containers[coords]["shop"] ~= nil then
+         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
+
+      elseif game_containers[coords]["chest"] ~= nil then
+         table.insert(interactions, 1, {"Open Chest", "items/chest-plain-closed.png"})
+
+      elseif game_containers[coords]["pack"] ~= nil then
+         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png"})
+
+      elseif game_containers[coords]["gold"] ~= nil then
+         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
+      end
+   end
+
+   options:fire(interactions)
+end
+
+
 function place_object_choose(choice)
    local e = wesnoth.current.event_context
 
-   local function clear()
-      w_items.remove(e.x1, e.y1)
-
-      local coords = e.x1 * 1000 + e.y1
-
-      game_containers[coords] = nil
-      wesnoth.set_variable("MoD_gc_"..coords, false)
-   end
-
    local function simple_place(type, image, inventory)
-      clear()
+      clear_game_object()
       w_items.place_image(e.x1, e.y1, image)
  
       local coords = e.x1 * 1000 + e.y1
@@ -35,8 +80,6 @@ function place_object_choose(choice)
             game_containers[coords][type][item_name] = 0
          end
       end
-
-      wesnoth.set_variable("MoD_gc_"..coords, true)
    end
 
    local function gold()
@@ -84,7 +127,7 @@ function place_object_choose(choice)
       gold()
 
    elseif choice == "Clear Hex" then
-      clear()
+      clear_game_object()
    end
 end
 
@@ -96,7 +139,7 @@ function menu_item_placement()
 
       root_message   = "What item do you want to place on the map?",
       option_message = "$input1",
-      code           = "place_object_choose('$input1')", -- replace
+      code           = "place_object_choose('$input1')",
    }
 
    options:menu({

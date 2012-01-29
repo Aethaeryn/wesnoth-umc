@@ -166,11 +166,12 @@ function change_stats(variable)
                          stats)
    end
 
-   if variable == "Transform" then transform()
-   elseif variable == "Role"  then role()
-   elseif variable == "Side"  then side()
-   elseif variable == "Stats" then stats()
-   elseif variable == "Save"  then
+   if variable == "Transform"     then transform()
+   elseif variable == "Role"      then role()
+   elseif variable == "Inventory" then submenu_inventory('unit_add')
+   elseif variable == "Side"      then side()
+   elseif variable == "Stats"     then stats()
+   elseif variable == "Save"      then
       -- fixme: finish
       wesnoth.wml_actions.set_global_variable{namespace="MoD"}
    end
@@ -189,6 +190,7 @@ function menu_item_unit_change_stats()
 
    options:menu({
                    {"Side"},
+                   {"Inventory"},
                    {"Transform"},
                    {"Role"},
                    {"Stats"},
@@ -212,12 +214,16 @@ function option_unit_message()
                 }
              )
 
-   wesnoth.fire("message", {
-                   side    = side_number,
-                   speaker = "unit",
-                   message = "$aeth_custom_message"
-                }
-             )
+   local message = wesnoth.get_variable('aeth_custom_message')
+
+   if message ~= "" then
+      wesnoth.fire("message", {
+                      side    = side_number,
+                      speaker = "unit",
+                      message = "$aeth_custom_message"
+                   }
+                )
+   end
 end
 
 function modify_unit()

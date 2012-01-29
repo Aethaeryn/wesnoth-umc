@@ -126,18 +126,18 @@ function submenu_inventory(context)
    options:fire(options_table)
 end
 
-function option_inventory (option)
+function option_unit (option)
    if option == "Use Item" then
       submenu_inventory('unit_use')
-
-   elseif option == "Add Item" then
-      submenu_inventory('unit_add')
 
    elseif option == "Upgrades" then
       menu_upgrade_unit()
 
    elseif option == "Speak" then
       option_unit_message()
+
+   elseif option == "Interact" then
+      submenu_interact()
    end
 end
 
@@ -149,19 +149,15 @@ function menu_item_inventory ()
 
       root_message   = "What do you want to do with this unit?",
       option_message = "&$input2= $input1",
-      code           = "option_inventory('$input1')",
+      code           = "option_unit('$input1')",
    }
 
    local menu_options = {
+      {"Interact", "icons/coins_copper.png"},
       {"Use Item", "icons/potion_red_small.png"},
       {"Upgrades", "attacks/woodensword.png"},
       {"Speak", "icons/letter_and_ale.png"}
    }
-
-   -- Hosts get more options
-   if side_number == 1 or side_number == 6 then
-      table.insert(menu_options, {"Add Item", "attacks/blank-attack.png"})
-   end
 
    options:menu(
       menu_options,

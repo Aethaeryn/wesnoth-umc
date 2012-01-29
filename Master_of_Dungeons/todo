@@ -78,7 +78,6 @@ Each point removed yields 2% completion.
      * Make the host modification/management of units more powerful.
        * Toggle the boss healthy/regenerate on/off.
          * Perhaps give bosses extra traits so this doesn't break.
-       * Add items through here instead of the item menu.
        * Alter a unit's advancement points.
        * Allow a unit to be saved into persistant variables for import.
 
