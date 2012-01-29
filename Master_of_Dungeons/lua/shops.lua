@@ -7,6 +7,16 @@ if game_containers == nil then
    game_containers = {}
 end
 
+function chest_add(name)
+   local e = wesnoth.current.event_context
+   local coords = e.x1 * 1000 + e.y1
+   local unit = wesnoth.get_unit(e.x1, e.y1)
+
+   game_containers[coords]["chest"][name] = game_containers[coords]["chest"][name] + 1
+   unit.variables[name] = unit.variables[name] - 1
+
+end
+
 function clear_game_object()
    local e = wesnoth.current.event_context
    w_items.remove(e.x1, e.y1)
@@ -20,12 +30,15 @@ function interact_do(selection)
    local e = wesnoth.current.event_context
    local coords = e.x1 * 1000 + e.y1
 
-   -- todo: "Visit Shop", "Open Chest", "Investigate Drop"
+   -- todo: "Visit Shop", "Add to Chest", "Remove from Chest", "Investigate Drop"
    -- todo: Add to these as host
 
    if selection == "Collect Gold" then
       wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[coords]["gold"] 
       clear_game_object()
+
+   elseif selection == "Add to Chest" then
+      submenu_inventory('chest_add')
    end
 end
 
@@ -47,7 +60,8 @@ function submenu_interact()
          table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
 
       elseif game_containers[coords]["chest"] ~= nil then
-         table.insert(interactions, 1, {"Open Chest", "items/chest-plain-closed.png"})
+         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png"})
+         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png"})
 
       elseif game_containers[coords]["pack"] ~= nil then
          table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png"})

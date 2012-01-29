@@ -2,43 +2,45 @@ MASTER OF DUNGEONS TODO LIST (82% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 Each point removed yields 2% completion.
 
- (1) Inventory Containers
-     * Add item containers.
-       * Make them have their proper effects.
-
-     * If it is a normal container, units can add items it to and remove items from it for free.
-     * The host can stock/remove items from a container and disable adding to a container.
-
-     * When a container has its last item removed, different ones behave in different ways:
-       * A pack is removed from the map automatically.
-       * All other containers persist until being removed by the host.
-
-     * When a unit dies, its inventory is automatically dropped into a newly created leather pack.
-       * fixme: Handle a unit dying on a hex with an existing container. Allow multiple packs to be on a single hex and only show the top visible one and hide packs if something else is on top?
-
+ (1) Inventory Containers I
      * There are several allowed shop actions.
        * Host-only:
-         * Place shops
-         * Configure shops
-         * Adjust inventory of shops
-         * Remove shops
-       * Any unit on hex or immediately adjecent to hex:
+         * Alter stock of each item in a shop.
+       * Any unit on hex:
          * Buy items from shops.
          * Sell items to shop.
            * Buying price defaults to math.floor(.8 * cost)
-           * Allow the host to alter default buying price or disable feature.
 
      * There are several allowed container actions.
        * Host-only:
-         * Place/remove containers.
+         * Alter stock of each item in a container.
        * Any unit on hex:
-         * Add item to container (if allowed)
          * Remove item from container
+
+  (1b) Inventory Containers II
+       * Host shop configurations.
+         * Disable selling to the shop.
+         * Change the % that the shop will pay if it buys an item from you.
+         * Change the multiplying factor that the shop charges for items it sells (defaults to unit value)
+         * Make certain items unsellable.
+
+       * Host chest configurations.
+         * Disable players adding to the chest.
+
+       * When a container has its last item removed:
+         * A pack is removed from the map automatically.
+         * A chest is replaced with an open chest image until an item is put in it again.
+
+       * When a unit dies, its inventory is automatically dropped into a newly created leather pack.
+         * If it dies on a hex with an existing container that is not a pack, a pack is on the hex (hidden) and can be accessed.
+         * If it dies on a hex with an existing pack, the items are added to the pack's items.
 
 
  (2) Inventory
-     (a) Give inventory from unit to adjacent unit.
-         * also give gold from the unit's side to the adjacent unit's side
+     (a) Interaction
+         * Give to adjacent unit.
+           * Inventory
+           * Gold
 
      (b) Haste potion.
          * Extra melee strike, +2 total moves.
@@ -65,6 +67,7 @@ Each point removed yields 2% completion.
 
 
  (3) Upgrades
+     * Allow host to alter a unit's upgrade points.
      * Units store upgrade points and a counter of every upgrade bought.
      * Include the following possible advancements:
        * + 1 movement (cost: 3, cap: 2)
@@ -76,9 +79,9 @@ Each point removed yields 2% completion.
 
  (4) Miscellaneous
      * Make the host modification/management of units more powerful.
+       * Have the host modify inventory quantity rather than just add to it.
        * Toggle the boss healthy/regenerate on/off.
          * Perhaps give bosses extra traits so this doesn't break.
-       * Alter a unit's advancement points.
        * Allow a unit to be saved into persistant variables for import.
 
      * Getting units to the game.

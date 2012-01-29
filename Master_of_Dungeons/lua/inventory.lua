@@ -22,7 +22,7 @@ function use_potion(potion, size)
    end
 end
 
-function item_use (name, quantity)
+function item_use(name)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
 
@@ -44,7 +44,7 @@ function item_use (name, quantity)
    end
 end
 
-function add_item (name, quantity, start_only)
+function add_item(name, quantity, start_only)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
 
@@ -102,10 +102,17 @@ function submenu_inventory(context)
       end
    end
 
-   if context == "unit_use" then
-      msg = "Which item do you want to use?"
+   if context == "unit_use" or context == "chest_add" then
+      if context == "unit_use" then
+         msg = "Which item do you want to use?"
+         run = "item_use('$input1')"
+
+      else
+         msg = "What item do you want to put in the chest?"
+         run = "chest_add('$input1')"
+      end
+
       opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\nQuantity: $input4\n$input5"
-      run = "item_use('$input1', '$input3')"
 
       option_find()
 
@@ -126,7 +133,7 @@ function submenu_inventory(context)
    options:fire(options_table)
 end
 
-function option_unit (option)
+function option_unit(option)
    if option == "Use Item" then
       submenu_inventory('unit_use')
 
@@ -141,7 +148,7 @@ function option_unit (option)
    end
 end
 
-function menu_item_inventory ()
+function menu_item_inventory()
    local options = DungeonOpt:new{
       menu_id        = "005_Unit",
       menu_desc      = "Unit Commands",
