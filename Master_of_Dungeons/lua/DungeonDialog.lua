@@ -1,6 +1,22 @@
 #define MOD_LUA_DUNGEONDIALOG
 <<
 function test_dialog()
+   local function button(name)
+      return T["button"] {id = string.lower(name), label = name }
+   end
+
+   local function simple_grid(items)
+      local columns = { }
+
+      for i, item in ipairs(items) do
+         table.insert(columns, T["column"] { item })
+      end
+
+      -- return T["grid"] { T["row"] columns }
+      return T["grid"] { T["row"] { T["column"] { button("OK") }} }
+
+   end
+
    local dialog = {
       T["tooltip"] { id = "tooltip_large" },
       T["helptip"] { id = "tooltip_large" },
@@ -10,7 +26,7 @@ function test_dialog()
                T["grid"] {
                   T["row"] {
                      T["column"] {
-                        T["label"] { id = "the_msg"}
+                        T["label"] { id = "the_msg" }
                   }},
                   T["row"] {
                      T["column"] {
@@ -34,16 +50,8 @@ function test_dialog()
                   }}}}}}}}}},
                   T["row"] {
                      T["column"] {
-                        T["grid"] {
-                           T["row"] {
-                              T["column"] {
-                                 T["button"] {id = "ok", label = "OK" }
-                              },
-                              T["column"] {
-                                 T["button"] { id = "cancel", label = "Cancel" }
-            }}}}}}},
-   }}}
-
+                        simple_grid(button("OK"), button("Cancel"))
+   }}}}}}}
    local function preshow()
       local inv = {}
 
