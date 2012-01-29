@@ -3,7 +3,9 @@
 -- Because map coordinates are at most three digits right now,
 -- any location on the map can be represented in one dimension
 -- by x * 1000 + y.
-game_containers = {}
+if game_containers == nil then
+   game_containers = {}
+end
 
 function place_object_choose(choice)
    local e = wesnoth.current.event_context
@@ -17,7 +19,7 @@ function place_object_choose(choice)
       wesnoth.set_variable("MoD_gc_"..coords, false)
    end
 
-   local function simple_place(type, image)
+   local function simple_place(type, image, inventory)
       clear()
       w_items.place_image(e.x1, e.y1, image)
  
@@ -25,6 +27,14 @@ function place_object_choose(choice)
 
       game_containers[coords] = {}
       game_containers[coords][type] = {}
+
+      if inventory == true then
+         for i, v in ipairs(item_table) do
+            item_name = v["name"]
+
+            game_containers[coords][type][item_name] = 0
+         end
+      end
 
       wesnoth.set_variable("MoD_gc_"..coords, true)
    end
@@ -55,20 +65,20 @@ function place_object_choose(choice)
             gold_image = "items/gold-coins-large.png"
          end
 
-         simple_place("gold", gold_image)
+         simple_place("gold", gold_image, false)
 
          game_containers[e.x1 * 1000 + e.y1]["gold"] = gold
       end
    end
 
    if choice == "Place Shop" then
-      simple_place("shop", "scenery/tent-shop-weapons.png")
+      simple_place("shop", "scenery/tent-shop-weapons.png", true)
 
    elseif choice == "Place Chest" then
-      simple_place("chest", "items/chest-plain-closed.png")
+      simple_place("chest", "items/chest-plain-closed.png", true)
 
    elseif choice == "Place Pack" then
-      simple_place("pack", "items/leather-pack.png")
+      simple_place("pack", "items/leather-pack.png", true)
 
    elseif choice == "Place Gold Pile" then
       gold()

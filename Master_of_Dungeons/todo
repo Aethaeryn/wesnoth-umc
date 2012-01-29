@@ -5,7 +5,6 @@ Each point removed yields 2% completion.
  (1) Inventory Containers
      * Add item containers.
        * Make them have their proper effects.
-       * Item containers are associated with map coordinates and last only one scenario.
 
      * If it is a normal container, units can add items it to and remove items from it for free.
      * The host can stock/remove items from a container and disable adding to a container.

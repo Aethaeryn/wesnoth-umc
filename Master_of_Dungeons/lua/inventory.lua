@@ -55,7 +55,7 @@ function add_item (name, quantity, start_only)
    end
 end
 
-function submenu_inventory_quantity (item)
+function submenu_inventory_quantity(item)
    wesnoth.fire("message", {
                    speaker  = "narrator",
                    message  = "How much of "..item.." do you want to give?",
@@ -78,65 +78,60 @@ function submenu_inventory_quantity (item)
    add_item(item, item_count, false)
 end
 
-function submenu_inventory_add ()
+function submenu_inventory(context)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
 
-   local function option_find_all ()
-      local options_table = {}
+   local msg
+   local opt
+   local run
+   local options_table = {}
 
-      for i, item in ipairs(item_table) do
-         table.insert(options_table, {item.name, item.image, item.msg})
-      end
-
-      return options_table
-   end
-
-   local options = DungeonOpt:new{
-      root_message   = "Select an item for more information.",
-      option_message = "&$input2=<b>$input1</b>\n$input3",
-      code           = "submenu_inventory_quantity('$input1')",
-   }
-
-   options_table = option_find_all()
-
-   options:fire(options_table)
-end
-
-function submenu_inventory ()
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
-
-   local function option_find ()
-      local options_table = {}
-
+   local function option_find()
       for i, item in ipairs(item_table) do
          quantity = unit.variables[item.name]
          if quantity ~= nil and quantity > 0 then
-            table.insert(options_table, {item.name, item.image, quantity, item.msg})
+            table.insert(options_table, {item.name, item.image, item.price, quantity, item.msg})
          end
       end
+   end
 
-      return options_table
+   local function option_find_all()
+      for i, item in ipairs(item_table) do
+         table.insert(options_table, {item.name, item.image, item.price, item.msg})
+      end
+   end
+
+   if context == "unit_use" then
+      msg = "Which item do you want to use?"
+      opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\nQuantity: $input4\n$input5"
+      run = "item_use('$input1', '$input3')"
+
+      option_find()
+
+   elseif context == "unit_add" then
+      msg = "Which item do you want to add?"
+      opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\n$input4"
+      run = "submenu_inventory_quantity('$input1')"
+
+      option_find_all()
    end
 
    local options = DungeonOpt:new{
-      root_message   = "Select an item for more information.",
-      option_message = "&$input2=<b>$input1</b>\nQuantity: $input3\n$input4",
-      code           = "item_use('$input1', '$input3')",
+      root_message   = msg,
+      option_message = opt,
+      code           = run,
    }
-
-   options_table = option_find()
 
    options:fire(options_table)
 end
 
 function option_inventory (option)
    if option == "Use Item" then
-      submenu_inventory()
+      submenu_inventory('unit_use')
 
    elseif option == "Add Item" then
-      submenu_inventory_add()
+      submenu_inventory('unit_add')
 
    elseif option == "Upgrades" then
       menu_upgrade_unit()
