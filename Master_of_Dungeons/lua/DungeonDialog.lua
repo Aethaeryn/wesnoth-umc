@@ -10,9 +10,13 @@ function test_dialog()
                T["grid"] {
                   T["row"] {
                      T["column"] {
+                        T["label"] { id = "the_msg"}
+                  }},
+                  T["row"] {
+                     T["column"] {
                         horizontal_grow = true,
                         T["listbox"] {
-                           id = "the_list",
+                           id = "inventory_list",
                            T["list_definition"] {
                               T["row"] {
                                  T["column"] {
@@ -38,8 +42,6 @@ function test_dialog()
                               T["column"] {
                                  T["button"] { id = "cancel", label = "Cancel" }
             }}}}}}},
-            T["column"] {
-               T["label"] { id = "the_msg" } }
    }}}
 
    local function preshow()
@@ -49,28 +51,30 @@ function test_dialog()
          table.insert(inv, v.name)
       end
 
+      wesnoth.set_dialog_value("Please choose an item.", "the_msg")
+
       local function select()
-         local i = wesnoth.get_dialog_value "the_list"
+         local i = wesnoth.get_dialog_value "inventory_list"
          local type = inv[i]
-         wesnoth.set_dialog_value(item_table[i].msg, "the_msg")
+         -- wesnoth.set_dialog_value(item_table[i].msg, "item_stats")
       end
 
-      wesnoth.set_dialog_callback(select, "the_list")
+      wesnoth.set_dialog_callback(select, "inventory_list")
 
       for i,v in ipairs(inv) do
          local type = inv[i]
-         wesnoth.set_dialog_value(item_table[i].name, "the_list", i, "the_label")
-         wesnoth.set_dialog_value(item_table[i].image, "the_list", i, "the_icon")
+         wesnoth.set_dialog_value(item_table[i].name, "inventory_list", i, "the_label")
+         wesnoth.set_dialog_value(item_table[i].image, "inventory_list", i, "the_icon")
       end
 
-      wesnoth.set_dialog_value(1, "the_list")
+      wesnoth.set_dialog_value(1, "inventory_list")
 
       select()
    end
 
    local li = 0
    local function postshow()
-      li = wesnoth.get_dialog_value "the_list"
+      li = wesnoth.get_dialog_value "inventory_list"
    end
 
    local r = wesnoth.show_dialog(dialog, preshow, postshow)
