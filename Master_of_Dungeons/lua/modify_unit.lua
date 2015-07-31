@@ -110,13 +110,13 @@ function change_stats(variable)
                    }
                 )
 
-      local types = wesnoth.get_unit_type_ids()
       local new_unit = wesnoth.get_variable("transform_unit_to")
 
       -- checks to make sure the unit type is valid
-      for id, unit_type in pairs(types) do
+      for unit_type, i in pairs(wesnoth.unit_types) do
          if unit_type == new_unit then
             wesnoth.transform_unit(unit, new_unit)
+            unit.hitpoints = unit.max_hitpoints
          end
       end
    end

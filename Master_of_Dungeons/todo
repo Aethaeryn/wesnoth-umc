@@ -113,10 +113,13 @@ Each point removed yields 2% completion.
        * Make the toggle <foo> in settings say what the current state is.
 
      * Existing issues.
-       * wesnoth.get_unit_type_ids is deprecated, use wesnoth.unit_types instead
+       * Have healing potions cure poison if there's poison instead of healing or have a cure potion.
+       * Let people choose their own unit type in the intro screen if they're a peasant instead of relying on transform.
+       * Have the host restrict what's possible (level, etc.)
+       * If a unit is transferred to an Undead and then to something else they stay Undead in their traits.
        * Fix changing summoner role when set to none.
        * What does Change Unit > Save do?
-       * Block right click menu items on map border because they cause Lua errors.
+       * Block right click menu items on map border because they cause unpredictable bugs.
        * Fix the changing objectives so that it works again.
          * Have the new interface change subsections (victory, loss, etc.) instead of the whole thing so that formatting can be preserved.
 
@@ -131,9 +134,9 @@ Each point removed yields 2% completion.
        * Move a lot of terrains into overlays only (villages, forests, etc.)
 
     * Summoners and units.
-       * When adjusting max HP, also adjust unit HP.
        * Make sure all units in the game are a summoner or a summoned unit.
        * Add a toggleable default summoner gender for when two genders are possible for summoners so it doesn't always default to male.
+       * Allow gender changing in the unit stats change.
        * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
        * Have game options allow other methods of summoning than just HP deduction.
        * Reduce max HP on summoner by 1 per level of active summoned unit?
