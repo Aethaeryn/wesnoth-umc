@@ -1,93 +1,96 @@
 #define MOD_LUA_DUNGEONDIALOG
 <<
 function test_dialog()
-   local function button(name)
-      return T["button"] {id = string.lower(name), label = name }
-   end
-
-   local function simple_grid(items)
-      local columns = { }
-
-      for i, item in ipairs(items) do
-         table.insert(columns, T["column"] { item })
-      end
-
-      -- return T["grid"] { T["row"] columns }
-      return T["grid"] { T["row"] { T["column"] { button("OK") }} }
-
-   end
-
-   local dialog = {
-      T["tooltip"] { id = "tooltip_large" },
-      T["helptip"] { id = "tooltip_large" },
-      T["grid"] {
-         T["row"] {
-            T["column"] {
-               T["grid"] {
-                  T["row"] {
-                     T["column"] {
-                        T["label"] { id = "the_msg" }
-                  }},
-                  T["row"] {
-                     T["column"] {
-                        horizontal_grow = true,
-                        T["listbox"] {
-                           id = "inventory_list",
-                           T["list_definition"] {
-                              T["row"] {
-                                 T["column"] {
-                                    horizontal_grow = true,
-                                    T["toggle_panel"] {
-                                       T["grid"] {
-                                          T["row"] {
-                                             T["column"] {
-                                                horizontal_alignment = "left",
-                                                T["image"] { id = "the_icon" }
-                                             },
-                                             T["column"] {
-                                                horizontal_alignment = "left",
-                                                T["label"] { id = "the_label" }
-                  }}}}}}}}}},
-                  T["row"] {
-                     T["column"] {
-                        simple_grid(button("OK"), button("Cancel"))
-   }}}}}}}
-   local function preshow()
-      local inv = {}
-
-      for i, v in ipairs(item_table) do
-         table.insert(inv, v.name)
-      end
-
-      wesnoth.set_dialog_value("Please choose an item.", "the_msg")
-
-      local function select()
-         local i = wesnoth.get_dialog_value "inventory_list"
-         local type = inv[i]
-         -- wesnoth.set_dialog_value(item_table[i].msg, "item_stats")
-      end
-
-      wesnoth.set_dialog_callback(select, "inventory_list")
-
-      for i,v in ipairs(inv) do
-         local type = inv[i]
-         wesnoth.set_dialog_value(item_table[i].name, "inventory_list", i, "the_label")
-         wesnoth.set_dialog_value(item_table[i].image, "inventory_list", i, "the_icon")
-      end
-
-      wesnoth.set_dialog_value(1, "inventory_list")
-
-      select()
-   end
-
-   local li = 0
-   local function postshow()
-      li = wesnoth.get_dialog_value "inventory_list"
-   end
-
-   local r = wesnoth.show_dialog(dialog, preshow, postshow)
-   wesnoth.message(string.format("Button %d pressed. Item %d selected.", r, li))
+    return "temporarily disabled"
 end
+-- function test_dialog()
+--    local function button(name)
+--       return T["button"] {id = string.lower(name), label = name }
+--    end
+
+--    local function simple_grid(items)
+--       local columns = { }
+
+--       for i, item in ipairs(items) do
+--          table.insert(columns, T["column"] { item })
+--       end
+
+--       -- return T["grid"] { T["row"] columns }
+--       return T["grid"] { T["row"] { T["column"] { button("OK") }} }
+
+--    end
+
+--    local dialog = {
+--       T["tooltip"] { id = "tooltip_large" },
+--       T["helptip"] { id = "tooltip_large" },
+--       T["grid"] {
+--          T["row"] {
+--             T["column"] {
+--                T["grid"] {
+--                   T["row"] {
+--                      T["column"] {
+--                         T["label"] { id = "the_msg" }
+--                   }},
+--                   T["row"] {
+--                      T["column"] {
+--                         horizontal_grow = true,
+--                         T["listbox"] {
+--                            id = "inventory_list",
+--                            T["list_definition"] {
+--                               T["row"] {
+--                                  T["column"] {
+--                                     horizontal_grow = true,
+--                                     T["toggle_panel"] {
+--                                        T["grid"] {
+--                                           T["row"] {
+--                                              T["column"] {
+--                                                 horizontal_alignment = "left",
+--                                                 T["image"] { id = "the_icon" }
+--                                              },
+--                                              T["column"] {
+--                                                 horizontal_alignment = "left",
+--                                                 T["label"] { id = "the_label" }
+--                   }}}}}}}}}},
+--                   T["row"] {
+--                      T["column"] {
+--                         simple_grid(button("OK"), button("Cancel"))
+--    }}}}}}}
+--    local function preshow()
+--       local inv = {}
+
+--       for i, v in ipairs(item_table) do
+--          table.insert(inv, v.name)
+--       end
+
+--       wesnoth.set_dialog_value("Please choose an item.", "the_msg")
+
+--       local function select()
+--          local i = wesnoth.get_dialog_value "inventory_list"
+--          local type = inv[i]
+--          -- wesnoth.set_dialog_value(item_table[i].msg, "item_stats")
+--       end
+
+--       wesnoth.set_dialog_callback(select, "inventory_list")
+
+--       for i,v in ipairs(inv) do
+--          local type = inv[i]
+--          wesnoth.set_dialog_value(item_table[i].name, "inventory_list", i, "the_label")
+--          wesnoth.set_dialog_value(item_table[i].image, "inventory_list", i, "the_icon")
+--       end
+
+--       wesnoth.set_dialog_value(1, "inventory_list")
+
+--       select()
+--    end
+
+--    local li = 0
+--    local function postshow()
+--       li = wesnoth.get_dialog_value "inventory_list"
+--    end
+
+--    local r = wesnoth.show_dialog(dialog, preshow, postshow)
+--    wesnoth.message(string.format("Button %d pressed. Item %d selected.", r, li))
+-- end
 
 -- Creates object by setting object = DungeonOpt:new{ option_message = "string", code = "lua code in a string" }
 -- The other table items are also changeable.
