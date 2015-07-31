@@ -117,7 +117,7 @@ Each point removed yields 2% completion.
        * Let people choose their own unit type in the intro screen if they're a peasant instead of relying on transform.
        * Have the host restrict what's possible (level, etc.)
        * If a unit is transferred to an Undead and then to something else they stay Undead in their traits.
-       * Fix changing summoner role when set to none.
+       * Fix changing summoner role when cancelling.
        * What does Change Unit > Save do?
        * Block right click menu items on map border because they cause unpredictable bugs.
        * Fix the changing objectives so that it works again.
@@ -126,7 +126,6 @@ Each point removed yields 2% completion.
      * Terrains.
        * Make sure new 1.12 terrains are in the game.
        * Add repeat last overlay.
-       * Move overlays to second position on the menu.
        * Fix remove overlay.
        * Fix some bridges and other broken overlays.
        * Test all terrains/overlays over again.
@@ -136,9 +135,7 @@ Each point removed yields 2% completion.
     * Summoners and units.
        * Make sure all units in the game are a summoner or a summoned unit.
        * Add a toggleable default summoner gender for when two genders are possible for summoners so it doesn't always default to male.
-       * Allow gender changing in the unit stats change.
        * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
-       * Have game options allow other methods of summoning than just HP deduction.
        * Reduce max HP on summoner by 1 per level of active summoned unit?
 
      * Finish testing the dynamic_difficulty() function to get it to work
@@ -147,3 +144,6 @@ Each point removed yields 2% completion.
        * Make sure that it's in three layers: pseudo-libraries, core MoD action functions, and data/config files.
        * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
          * Allow modifying attacks and traits if possible.
+
+(5) Future
+    * Have game options allow other methods of summoning than just HP deduction.

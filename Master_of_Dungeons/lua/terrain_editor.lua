@@ -176,7 +176,14 @@ function option_terrain_choose(name)
    }
    if name == "Repeat last terrain" then
       terrain_set(last_terrain)
-
+   elseif name == "Change radius" then
+      options_list_short("What do you want to set the terrain radius as?",
+                         "terrain_radius = $input1",
+                         options_radius)
+   elseif name == "Set an overlay" then
+      options_list_short("Which terrain would you like to switch to?",
+                         "option_overlay_options('$input1')",
+                         options_overlay)
    elseif name == "Water" then
       options:fire{
          {"Wog",    "Grey Deep Water"        },
@@ -410,16 +417,6 @@ function option_terrain_choose(name)
       options:fire{
          {"Xv",      "Void"                           }
       }
-
-   elseif name == "Set an overlay" then
-      options_list_short("Which terrain would you like to switch to?",
-                         "option_overlay_options('$input1')",
-                         options_overlay)
-
-   elseif name == "Change radius" then
-      options_list_short("What do you want to set the terrain radius as?",
-                         "terrain_radius = $input1",
-                         options_radius)
    end
 end
 
@@ -452,6 +449,8 @@ function menu_item_change_terrain()
 
    options:menu({
                    {"Repeat last terrain"},
+                   {"Set an overlay"},
+                   {"Change radius"},
                    {"Water"},
                    {"Flat"},
                    {"Desert"},
@@ -462,9 +461,7 @@ function menu_item_change_terrain()
                    {"Obstacle"},
                    {"Village"},
                    {"Castle"},
-                   {"Special"},
-                   {"Set an overlay"},
-                   {"Change radius"}
+                   {"Special"}
                 },
                 filter_host("editor"),
                 "change_terrain_generate()"
