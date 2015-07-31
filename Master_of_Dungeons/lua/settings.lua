@@ -1,7 +1,7 @@
 #define MOD_SETTINGS
 <<
 function end_scenario(new_scenario)
-   scenario = 'aeth_mod_'..new_scenario
+   local scenario = 'aeth_mod_'..new_scenario
 
    wesnoth.fire("endlevel", {
                    result = "victory",
