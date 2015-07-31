@@ -2,45 +2,43 @@ MASTER OF DUNGEONS TODO LIST (82% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 Each point removed yields 2% completion.
 
- (1) Inventory Containers I
+ (1) Inventory Containers
      * There are several allowed shop actions.
        * Host-only:
          * Alter stock of each item in a shop.
+         * Include stock templates for various levels of advancement so shop can be populated quickly.
        * Any unit on hex:
          * Buy items from shops.
-         * Sell items to shop.
-           * Buying price defaults to math.floor(.8 * cost)
+         * Sell items to shop (math.floor(0.8 * cost)).
 
      * There are several allowed container actions.
        * Host-only:
          * Alter stock of each item in a container.
        * Any unit on hex:
-         * Remove item from container
+         * Remove item from container.
+         * Add item to container.
 
   (1b) Inventory Containers II
        * Host shop configurations.
-         * Disable selling to the shop.
-         * Change the % that the shop will pay if it buys an item from you.
-         * Change the multiplying factor that the shop charges for items it sells (defaults to unit value)
+         * Make a shop not able to buy items.
+         * Change shop buy percentage multiplier
+         * Change shop price multiplier
          * Make certain items unsellable.
-
-       * Host chest configurations.
-         * Disable players adding to the chest.
 
        * When a container has its last item removed:
          * A pack is removed from the map automatically.
          * A chest is replaced with an open chest image until an item is put in it again.
 
-       * When a unit dies, its inventory is automatically dropped into a newly created leather pack.
+       * When a unit with inventory dies, its inventory is automatically dropped into a newly created leather pack container.
          * If it dies on a hex with an existing container that is not a pack, a pack is on the hex (hidden) and can be accessed.
          * If it dies on a hex with an existing pack, the items are added to the pack's items.
-
 
  (2) Inventory
      (a) Interaction
          * Give to adjacent unit.
            * Inventory
-           * Gold
+           * Gold (if leader)
+           * Gold coins (item) if not leader (that can be given to leader to immediately cash in)
 
      (b) Haste potion.
          * Extra melee strike, +2 total moves.
@@ -54,21 +52,22 @@ Each point removed yields 2% completion.
          * Perhaps un-marskman all marksman attacks for that duration too.
 
      (d) Implement effects for the scrolls.
-         * Possible spells:
-           * Increase experience
-           * Healing (perhaps working with radius or group or friendly to differentiate from potions)
-           * Summon unit/type (enables you to summon once and then disables summoning)
+         * Gain wisdom (experience)
+         * Area healing (radius or group to differentiate from potions)
+         * Summon <type> (enables you to summon for one turn and then disables summoning)
+         * Resurrection (when resurrection table exists)
 
      (e) Implement equipment.
          * Using the item equips it into an equipment spot.
          * Unequipping it is possible from its own menu.
-         * When the unit dies, all equipment are unequipped so equipment are on drops.
+         * When the unit dies, all equipment is dropped with inventory.
          * When equipping an item to a spot that already has something, the old equipment is automatically unequipped.
+         * Certain units (e.g. wolves) can't equip things.
 
 
  (3) Upgrades
-     * Allow host to alter a unit's upgrade points.
-     * Units store upgrade points and a counter of every upgrade bought.
+     * All units get an upgrade point on promotion.
+     * Units store a counter of every upgrade bought.
      * Include the following possible advancements:
        * + 1 movement (cost: 3, cap: 2)
        * + 3 hitpoints (cost: 1)
@@ -89,13 +88,14 @@ Each point removed yields 2% completion.
          * Allow bosses that aren't summoners and "regular" units.
        * Allow import of units saved in persistant variables.
        * Save units when they die to a resurrection table.
-         * The host should be able to resurrect, and perhaps there should be a resurrection scroll as well.
+         * The host should be able to resurrect, there should be a resurrection scroll.
        * Add a way to control the recalling of units, recall lists, and saving of items, dead units, etc., across scenarios in a campaign.
          * Prevent the traditional keep-and-gold recalling of units.
 
      * Implement additional objects on maps:.
        * teleporters
-       * traps
+       * traps (damage and/or status modifier on touching a hex)
+       * doors (instead of manually removing walls)
        * keys/locks for doors/chests/etc.
 
  (4b) Details
@@ -107,38 +107,34 @@ Each point removed yields 2% completion.
        * Add helper functions for more option/menu functions than just options_list_short()
 
      * Existing issues.
+       * wesnoth.get_unit_type_ids is deprecated, use wesnoth.unit_types instead
+       * Fix changing summoner role when set to none.
+       * What does Change Unit > Save do?
        * Block right click menu items on map border because they cause Lua errors.
        * Fix the changing objectives so that it works again.
          * Have the new interface change subsections (victory, loss, etc.) instead of the whole thing so that formatting can be preserved.
 
      * Terrains.
+       * Make sure new 1.12 terrains are in the game.
        * Add repeat last overlay.
        * Move overlays to second position on the menu.
        * Fix remove overlay.
        * Fix some bridges and other broken overlays.
        * Test all terrains/overlays over again.
        * All terrains/overlays/etc. available in-game should be usable in MoD.
+       * Move a lot of terrains into overlays only (villages, forests, etc.)
 
     * Summoners and units.
+       * When adjusting max HP, also adjust unit HP.
        * Make sure all units in the game are a summoner or a summoned unit.
-       * Add a default summoner gender for when two genders are possible for summoners so it doesn't always default to male.
+       * Add a toggleable default summoner gender for when two genders are possible for summoners so it doesn't always default to male.
        * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
-       * Have summons give some xp back to their summoners (perhaps only in certain circumstances, like a player summoner)
-       * Have game options enable something else instead of deduction of HP for summoning.
-       * Cap or balance the number of summons (perhaps on a per-summoner basis) somehow.
-         * Perhaps reduce total HP per active summoned unit.
+       * Have game options allow other methods of summoning than just HP deduction.
+       * Reduce max HP on summoner by 1 per level of active summoned unit?
 
      * Finish testing the dynamic_difficulty() function to get it to work
 
      * Rewrite the older parts of the MoD code.
-       * Make sure that it's in three layers: objects and functions that are useful in other add-ons, core MoD action functions, and data/config files.
-
-
- (4c) Features for after 1.0... 
-     * Work on compatability code with other eras.
-       * Allow the host to be able to change EoT variables.
-
-     * Work on allowing MoD mods.
-       * Include a "card game" mod where items (including summon unit scrolls) are "drawn" from a deck and you can only use something that's in your hand.
-       * Rewrite Underlands RPG to be a pre-scripted RPG campaign for MoD, and improve the scripting, etc., in MoD so that every aspect of it is changeable.
-
+       * Make sure that it's in three layers: pseudo-libraries, core MoD action functions, and data/config files.
+       * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
+         * Allow modifying attacks and traits if possible.
