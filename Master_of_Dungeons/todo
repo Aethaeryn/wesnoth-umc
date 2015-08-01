@@ -2,44 +2,38 @@ MASTER OF DUNGEONS TODO LIST (82% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 Each top level point removed yields 2% completion.
 
+ (0) Upgrades
+     * Finish implementing.
+
  (1) Inventory Containers
-     * Interaction
-       * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
-       * When ambiguous (interacting with adjacent tile instead of with tile you're on) let players choose which unit interacts.
-       * Give to adjacent unit.
-         * Inventory
-         * Gold (if leader)
-         * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to use them)
-
-     * There are several allowed shop actions.
-       * Host-only:
-         * Alter stock of each item in a shop (number input).
-         * Include stock templates for various levels of advancement so shop can be populated quickly.
-       * Any unit on hex:
-         * Buy items from shops.
-         * Sell items to shop (math.floor(0.8 * cost)).
-
+    * Any unit on a hex should be able to buy items from shops if they have the money.
     * The host needs to be able to alter stock of each item in a container (number input).
 
  (1b) Inventory Containers II
-       * Host shop configurations.
+       * Include templates for various tiers of shop inventory for quick stocking.
+       * Let units sell items to shop (math.floor(0.8 * cost))
+       * Interaction
+         * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
+         * When ambiguous (interacting with adjacent tile instead of with tile you're on) let players choose which unit interacts if there's more than one unit nearby.
+         * Give to adjacent unit.
+           * Inventory
+           * Gold (if leader)
+           * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to use them)
+         * Most containers should require you to be on the hex, but the shops should permit adjacent use like interacting with units as long as there is not a hostile unit on the shop hex.
+       * Shop options toggleable by host:
          * Make a shop not able to buy items.
-         * Change shop buy percentage multiplier
-         * Change shop price multiplier
-
+         * Change shop multiplier for item purchases
+         * Change shop price multiplier (for expensive shops)
        * When a container has its last item removed:
          * A pack is removed from the map automatically if it is emptied by a player.
          * An empty chest is has an open chest image until an item is put in it again.
-
        * Players should be able to add to and take from containers more than one at a time.
-
        * When a unit with inventory dies, its inventory is automatically dropped into a newly created leather pack container.
          * If it dies on a hex with an existing pack, the items are added to the pack's items.
          * If it dies on a hex with a gold pile, the gold pile is replaced by a pack and the gold is added to the pack.
          * If it dies on a hex with a shop, the inventory is added to the shop! Be careful!
          * If it dies on a hex with a chest, the inventory is added to the chest, even if it is locked. Be careful!
-
-       * Players need to be able to remove from packs.
+       * Players need to be able to remove items from packs (but not add to them).
 
  (2) Inventory
      (a) Haste potion.
@@ -70,10 +64,7 @@ Each top level point removed yields 2% completion.
          * When equipping an item to a spot that already has something, the old equipment is automatically unequipped.
          * Certain units (e.g. wolves) can't equip things.
 
- (3) Upgrades
-     * Implement.
-
- (4) Miscellaneous
+ (3) Miscellaneous
      * Make the host modification/management of units more powerful.
        * Handle negative numbers in inventory properly.
        * Let the host be able to see players' units' inventory.
@@ -91,7 +82,7 @@ Each top level point removed yields 2% completion.
        * doors (instead of manually removing walls)
        * keys/locks for doors/chests/etc.
 
- (4b) Details
+ (4) Details
      * DungeonOpt
        * Write a method for handling text_input
          * Add a cancel option to text stuff (speaking, transforming unit, etc.).
