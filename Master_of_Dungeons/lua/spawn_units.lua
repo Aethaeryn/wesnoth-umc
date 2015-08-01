@@ -20,13 +20,11 @@ end
 local function find_summoner(x, y, summoners)
    local max_hp = 0
    for key,value in pairs(summoners) do
-      if summoners[key].x <= x + 1 and summoners[key].x >= x - 1 then
-         if summoners[key].y <= y + 1 and summoners[key].y >= y -1 then
-            if summoners[key].hitpoints > max_hp then
-               max_hp  = summoners[key].hitpoints
-               max_key = key
-            end
-         end
+      if summoners[key].x <= x + 1 and summoners[key].x >= x - 1
+         and summoners[key].y <= y + 1 and summoners[key].y >= y -1
+         and summoners[key].hitpoints > max_hp then
+         max_hp  = summoners[key].hitpoints
+         max_key = key
       end
    end
    return summoners[max_key]
