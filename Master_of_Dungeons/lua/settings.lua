@@ -205,7 +205,7 @@ end
 
 function settings()
    inventory()
-   spawn_units()
+   spawn_units.spawn_units()
    modify_unit()
    terrain_editor()
    object_placement()

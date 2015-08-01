@@ -1,10 +1,12 @@
 #define MOD_LUA_SPAWN_UNITS
 <<
+spawn_units = {}
+
 -- These are impassable terrains, used to blacklist summoning there.
-local BAD_TERRAIN  = "X*, Q*, *^Xm, Mv"
+spawn_units.bad_terrain  = "X*, Q*, *^Xm, Mv"
 
 -- Turns a simple table of units or options into one that includes the type.
-function add_type(units, type)
+local function add_type(units, type)
    local new_table = {}
 
    for i, v in ipairs(units) do
@@ -14,7 +16,7 @@ function add_type(units, type)
    return new_table
 end
 
-function boss_spawner(unit_type, unit_role)
+function spawn_units.boss_spawner(unit_type, unit_role)
    local e = wesnoth.current.event_context
 
    local unit_traits_boss = wesnoth.get_variable("unit_traits_boss")
@@ -43,7 +45,7 @@ function boss_spawner(unit_type, unit_role)
                          )
 end
 
-function reg_spawner(unit_type, unit_role, unit_cost)
+function spawn_units.reg_spawner(unit_type, unit_role, unit_cost)
    local e = wesnoth.current.event_context
 
    local unit_traits_reg = wesnoth.get_variable("unit_traits_reg")
@@ -78,33 +80,33 @@ function reg_spawner(unit_type, unit_role, unit_cost)
    end
 end
 
-function menu_boss(type)
+function spawn_units.menu_boss(type)
    local options = DungeonOpt:new{
       root_message   = "Select a unit to summon.",
       option_message = "&$unit_image~RC(magenta>red)=$input1",
-      code           = "boss_spawner('$input1','$input2')"
+      code           = "spawn_units.boss_spawner('$input1','$input2')"
    }
 
    options.image_string = PORTRAIT[type]
    options:fire(add_type(summoners[type], type))
 end
 
-function menu_reg(level, type)
+function spawn_units.menu_reg(level, type)
    local options = DungeonOpt:new {
       root_message   = "Select a unit to summon.",
       option_message = "&$unit_image~RC(magenta>red)=$input1 - $unit_cost HP",
-      code           = "reg_spawner('$input1', '$input2', $unit_cost)"
+      code           = "spawn_units.reg_spawner('$input1', '$input2', $unit_cost)"
    }
 
    options.image_string = PORTRAIT[type]
    options:fire(add_type(regular[type][level], type))
 end
 
-function menu_reg_levels(type)
+function spawn_units.menu_reg_levels(type)
    local options = DungeonOpt:new {
       root_message   = "Select a unit level.",
       option_message = "$input1",
-      code           = "menu_reg('$input1', '$input2')"
+      code           = "spawn_units.menu_reg('$input1', '$input2')"
    }
 
    local levels = {}
@@ -118,18 +120,18 @@ function menu_reg_levels(type)
    options:fire(add_type(levels, type))
 end
 
-function menu_boss_type()
+function spawn_units.menu_boss_type()
    local options = DungeonOpt:new{
       root_message   = "Select a unit to summon.",
       image_string   = "portraits/undead/transparent/lich.png",
       option_message = "$input1",
-      code           = "menu_boss('$input1')"
+      code           = "spawn_units.menu_boss('$input1')"
    }
 
    options:short_fire(SUMMON_ROLES)
 end
 
-function menu_item_summon_summoner()
+function spawn_units.menu_item_summon_summoner()
    -- If they fire up the menu, then the boss selection menu is run.
    wesnoth.fire("set_menu_item", {
                    id          = "005_Summon_Summoner",
@@ -140,7 +142,7 @@ function menu_item_summon_summoner()
                          T["have_location"] {
                             x = "$x1",
                             y = "$y1",
-                            terrain = BAD_TERRAIN
+                            terrain = spawn_units.bad_terrain
                          },
                          T["or"] {
                             T["have_unit"] {
@@ -153,14 +155,14 @@ function menu_item_summon_summoner()
                    },
                    T["command"] {
                       T["lua"] {
-                         code = "menu_boss_type()"
+                         code = "spawn_units.menu_boss_type()"
                       }
                    }
                 }
              )
 end
 
-function menu_item_summon(unit_role)
+function spawn_units.menu_item_summon(unit_role)
    wesnoth.fire("set_menu_item", {
                    id          = "001_Summon_"..unit_role,
                    description = "Summon "..unit_role,
@@ -174,7 +176,7 @@ function menu_item_summon(unit_role)
                             role = unit_role
                          }
                       }, T["not"] {
-                         terrain = BAD_TERRAIN,
+                         terrain = spawn_units.bad_terrain,
                          -- this is prevents spawning over another unit
                          T["or"] {
                             T["filter"] { }
@@ -183,18 +185,18 @@ function menu_item_summon(unit_role)
                    },
                    T["command"] {
                       T["lua"] {
-                         code = "menu_reg_levels('"..unit_role.."')"
+                         code = "spawn_units.menu_reg_levels('"..unit_role.."')"
                       }
                    }
                 }
              )
 end
 
-function spawn_units()
-   menu_item_summon_summoner()
+function spawn_units.spawn_units()
+   spawn_units.menu_item_summon_summoner()
 
    for k, v in pairs(summoners) do
-      menu_item_summon(k)
+      spawn_units.menu_item_summon(k)
    end
 end
 >>
