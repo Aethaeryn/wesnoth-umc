@@ -1,6 +1,6 @@
 MASTER OF DUNGEONS TODO LIST (82% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
-Each point removed yields 2% completion.
+Each point removed yields 1% completion.
 
  (1) Inventory Containers
      * There are several allowed shop actions.
@@ -53,7 +53,7 @@ Each point removed yields 2% completion.
 
      (d) Implement effects for the scrolls.
          * Gain wisdom (experience)
-         * Area healing (radius or group to differentiate from potions)
+         * Radius healing (everything on one side within some radius for some amount of HP)
          * Summon <type> (enables you to summon for one turn and then disables summoning)
          * Resurrection (when resurrection table exists)
          * Flight (allows a temporary flying movetype)
@@ -93,7 +93,7 @@ Each point removed yields 2% completion.
          * Make sure they're loyal like summoned units.
        * Allow import of units saved in persistant variables.
        * Save units when they die to a resurrection table.
-         * The host should be able to resurrect, there should be a resurrection scroll.
+       * The host should be able to resurrect a unit.
        * Add a way to control the recalling of units, recall lists, and saving of items, dead units, etc., across scenarios in a campaign.
          * Prevent the traditional keep-and-gold recalling of units.
          * Make sure that NPCs/enemies can be recalled, not just player summons.
@@ -113,7 +113,6 @@ Each point removed yields 2% completion.
        * Make the toggle <foo> in settings say what the current state is.
 
      * Existing issues.
-       * Have healing potions cure poison if there's poison instead of healing or have a cure potion.
        * Let people choose their own unit type in the intro screen if they're a peasant instead of relying on transform.
        * Have the host restrict what's possible (level, etc.)
        * If a unit is transferred to an Undead and then to something else they stay Undead in their traits.
@@ -138,8 +137,6 @@ Each point removed yields 2% completion.
        * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
        * Reduce max HP on summoner by 1 per level of active summoned unit?
 
-     * Finish testing the dynamic_difficulty() function to get it to work
-
      * Rewrite the older parts of the MoD code.
        * Make sure that it's in three layers: pseudo-libraries, core MoD action functions, and data/config files.
        * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
@@ -147,3 +144,4 @@ Each point removed yields 2% completion.
 
 (5) Future
     * Have game options allow other methods of summoning than just HP deduction.
+    * Have dynamic_difficulty() working and optionally use it to scale the HP and damage of units spawned by player 1.

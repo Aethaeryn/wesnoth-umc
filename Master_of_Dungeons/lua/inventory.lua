@@ -11,6 +11,14 @@ function use_potion(potion, size)
       local hp_effect = 14
 
       if size == "Small" then
+         if unit.status.poisoned then
+            unit.status.poisoned = false
+            hp_effect = 0
+         else
+            hp_effect = 6
+         end
+      elseif unit.status.poisoned then
+         unit.status.poisoned = false
          hp_effect = 6
       end
 
