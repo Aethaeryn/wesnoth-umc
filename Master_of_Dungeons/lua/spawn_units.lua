@@ -16,6 +16,22 @@ local function add_type(units, type)
    return new_table
 end
 
+-- This goes over all the possible summoners and chooses one with the highest HP in the area.
+local function find_summoner(x, y, summoners)
+   local max_hp = 0
+   for key,value in pairs(summoners) do
+      if summoners[key].x <= x + 1 and summoners[key].x >= x - 1 then
+         if summoners[key].y <= y + 1 and summoners[key].y >= y -1 then
+            if summoners[key].hitpoints > max_hp then
+               max_hp  = summoners[key].hitpoints
+               max_key = key
+            end
+         end
+      end
+   end
+   return summoners[max_key]
+end
+
 function spawn_units.boss_spawner(unit_type, unit_role)
    local e = wesnoth.current.event_context
 
@@ -43,22 +59,6 @@ function spawn_units.boss_spawner(unit_type, unit_role)
                                }
                             }
                          )
-end
-
--- This goes over all the possible summoners and chooses one with the highest HP in the area.
-local function find_summoner(x, y, summoners)
-   local max_hp = 0
-   for key,value in pairs(summoners) do
-      if summoners[key].x <= x + 1 and summoners[key].x >= x - 1 then
-         if summoners[key].y <= y + 1 and summoners[key].y >= y -1 then
-            if summoners[key].hitpoints > max_hp then
-               max_hp  = summoners[key].hitpoints
-               max_key = key
-            end
-         end
-      end
-   end
-   return summoners[max_key]
 end
 
 function spawn_units.reg_spawner(unit_type, unit_role, unit_cost)
