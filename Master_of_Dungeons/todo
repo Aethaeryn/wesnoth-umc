@@ -3,6 +3,14 @@ When this list is complete/empty and extensive testing and bugfixing has been do
 Each top level point removed yields 2% completion.
 
  (1) Inventory Containers
+     * Interaction
+       * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
+       * When ambiguous (interacting with adjacent tile instead of with tile you're on) let players choose which unit interacts.
+       * Give to adjacent unit.
+         * Inventory
+         * Gold (if leader)
+         * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to use them)
+
      * There are several allowed shop actions.
        * Host-only:
          * Alter stock of each item in a shop (number input).
@@ -34,44 +42,35 @@ Each top level point removed yields 2% completion.
          * If it dies on a hex with an existing pack, the items are added to the pack's items.
 
  (2) Inventory
-     (a) Interaction
-         * Give to adjacent unit.
-           * Inventory
-           * Gold (if leader)
-           * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
-
-     (b) Haste potion.
+     (a) Haste potion.
          * Extra melee strike, +2 total moves.
          * Small = 2 turns, Medium = 4 turns.
          * Multiple potions stack the turn duration, not the effect strength.
 
-     (c) Ale.
+     (b) Ale.
          * "Confidence" ability: +5 max HP for 3 turns.
          * 25% chance of also becoming drunk (berserk melee) for that duration
          * More ale stacks the turn duration, not the effect strength, but the 25% chance of berserk melee is on applying each ale.
          * Perhaps un-marskman all marksman attacks for that duration too.
 
-     (d) Implement effects for the scrolls.
+     (c) Implement effects for the scrolls.
          * Gain wisdom (experience)
          * Radius healing (everything on one side within some radius for some amount of HP)
          * Summon <type> (enables you to summon for one turn and then disables summoning)
-         * Resurrection (when resurrection table exists)
          * Flight (allows a temporary flying movetype)
          * Teleportation (used twice, the first remembers a spot and then second teleports you back there)
          * Faerie fire (one turn)
          * Fireball (one turn)
 
-     (e) Implement equipment.
+     (d) Implement equipment.
          * Using the item equips it into an equipment spot.
          * Unequipping it is possible from its own menu.
          * When the unit dies, all equipment is dropped with inventory.
+           * Unless that unit is turned into a zombie with plague.
          * When equipping an item to a spot that already has something, the old equipment is automatically unequipped.
          * Certain units (e.g. wolves) can't equip things.
 
-
  (3) Upgrades
-     * All units get an upgrade point on promotion.
-     * Units store a counter of every upgrade bought.
      * Include the following possible advancements:
        * + 1 movement (cost: 3, cap: 2)
        * + 3 hitpoints (cost: 1)
@@ -80,26 +79,20 @@ Each top level point removed yields 2% completion.
          * Restrict to units with non-temporary range attack.
        * - 20% XP to next promotion (cost: 2, cap: 2)
 
-
  (4) Miscellaneous
      * Make the host modification/management of units more powerful.
-       * Have the host modify inventory quantity rather than just add to it.
+       * Handle negative numbers in inventory properly.
+       * Let the host be able to see players' units' inventory.
        * Toggle the boss healthy/regenerate on/off.
          * Perhaps give bosses extra traits so this doesn't break.
-       * Allow a unit to be saved into persistant variables for import.
 
      * Getting units to the game.
-       * Allow the placement of any unit instantly via textbox like Transform.
-         * Make sure they're loyal like summoned units.
-       * Allow import of units saved in persistant variables.
-       * Save units when they die to a resurrection table.
-       * The host should be able to resurrect a unit.
-       * Add a way to control the recalling of units, recall lists, and saving of items, dead units, etc., across scenarios in a campaign.
+       * Add a way to control the recalling of units and recall lists.
          * Prevent the traditional keep-and-gold recalling of units.
          * Make sure that NPCs/enemies can be recalled, not just player summons.
 
-     * Implement additional objects on maps:.
-       * teleporters
+     * Implement additional objects on maps:
+       * teleporters (very high priority for large maps!!!)
        * traps (damage and/or status modifier on touching a hex)
        * doors (instead of manually removing walls)
        * keys/locks for doors/chests/etc.
@@ -113,17 +106,18 @@ Each top level point removed yields 2% completion.
        * Make the toggle <foo> in settings say what the current state is.
 
      * Existing issues.
+       * Fix icon size for Summon <foo> and Summon Summoner.
+       * Fix deprecated code when Lua warnings pop up.
        * Let people choose their own unit type in the intro screen if they're a peasant instead of relying on transform.
        * Have the host restrict what's possible (level, etc.)
-       * If a unit is transferred to an Undead and then to something else they stay Undead in their traits.
+       * If a unit is transformed to Undead and then to something else they stay Undead in their traits.
        * Fix changing summoner role when cancelling.
-       * What does Change Unit > Save do?
        * Block right click menu items on map border because they cause unpredictable bugs.
        * Fix the changing objectives so that it works again.
          * Have the new interface change subsections (victory, loss, etc.) instead of the whole thing so that formatting can be preserved.
 
      * Terrains.
-       * Make sure new 1.12 terrains are in the game.
+       * Make sure new 1.10 and 1.12 terrains are in the game.
        * Add repeat last overlay.
        * Fix remove overlay.
        * Fix some bridges and other broken overlays.
@@ -131,7 +125,7 @@ Each top level point removed yields 2% completion.
        * All terrains/overlays/etc. available in-game should be usable in MoD.
        * Move a lot of terrains into overlays only (villages, forests, etc.)
 
-    * Summoners and units.
+    * Summoners.
        * Make sure all units in the game are a summoner or a summoned unit.
        * Add a toggleable default summoner gender for when two genders are possible for summoners so it doesn't always default to male.
        * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
@@ -145,3 +139,11 @@ Each top level point removed yields 2% completion.
 (5) Future
     * Have game options allow other methods of summoning than just HP deduction.
     * Have dynamic_difficulty() working and optionally use it to scale the HP and damage of units spawned by player 1.
+    * Resurrection.
+      * When units die they are saved in a resurrection table.
+      * The host can resurrect a unit. (rematches of old bosses?)
+      * A resurrection spell on a scroll should be able to resurrect a unit too.
+    * Allow the placement of any unit instantly via textbox like Transform.
+      * Make sure they're loyal like summoned units.
+    * Allow import of units saved in persistant variables. (Across scenarios? Is this Change Unit > Save?)
+    * Allow the saving of items (in chests/shops too?), etc., across scenarios in a campaign.
