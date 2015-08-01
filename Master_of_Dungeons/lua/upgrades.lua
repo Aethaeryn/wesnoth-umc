@@ -35,6 +35,10 @@ function event_advance()
 end
 
 function upgrade_unit(choice)
+   -- If you have enough points, and you are not at the cap, then you
+   -- lose as many upgrade points as the cost is and you gain the
+   -- desired modifier on the unit being upgraded. The count of how
+   -- many times you have that upgrade is incremented.
    debugOut(choice)
 end
 

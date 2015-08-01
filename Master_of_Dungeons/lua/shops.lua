@@ -53,7 +53,7 @@ function interact_do(selection)
       submenu_inventory('visit_shop', game_containers[coords]["shop"])
 
    elseif selection == "Collect Gold" then
-      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[coords]["gold"] 
+      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[coords]["gold"]
       clear_game_object()
 
    elseif selection == "Remove from Chest" then
@@ -61,6 +61,17 @@ function interact_do(selection)
 
    elseif selection == "Add to Chest" then
       submenu_inventory('chest_add', false)
+   end
+end
+
+function at_container()
+   local e = wesnoth.current.event_context
+   local coords = e.x1 * 1000 + e.y1
+
+   if game_containers[coords] ~= nil then
+      return true
+   else
+      return false
    end
 end
 
@@ -103,7 +114,7 @@ function place_object_choose(choice)
    local function simple_place(type, image, inventory)
       clear_game_object()
       w_items.place_image(e.x1, e.y1, image)
- 
+
       local coords = e.x1 * 1000 + e.y1
 
       game_containers[coords] = {}

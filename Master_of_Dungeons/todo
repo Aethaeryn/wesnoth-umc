@@ -2,14 +2,13 @@ MASTER OF DUNGEONS TODO LIST (82% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 Each top level point removed yields 2% completion.
 
- (0) Upgrades
-     * Finish implementing.
+  - Upgrades
 
- (1) Inventory Containers
+  - Shops
     * Any unit on a hex should be able to buy items from shops if they have the money.
     * The host needs to be able to alter stock of each item in a container (number input).
 
- (1b) Inventory Containers II
+ (1) Inventory Containers
        * Include templates for various tiers of shop inventory for quick stocking.
        * Let units sell items to shop (math.floor(0.8 * cost))
        * Interaction
@@ -20,14 +19,10 @@ Each top level point removed yields 2% completion.
            * Gold (if leader)
            * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to use them)
          * Most containers should require you to be on the hex, but the shops should permit adjacent use like interacting with units as long as there is not a hostile unit on the shop hex.
-       * Shop options toggleable by host:
-         * Make a shop not able to buy items.
-         * Change shop multiplier for item purchases
-         * Change shop price multiplier (for expensive shops)
        * When a container has its last item removed:
          * A pack is removed from the map automatically if it is emptied by a player.
          * An empty chest is has an open chest image until an item is put in it again.
-       * Players should be able to add to and take from containers more than one at a time.
+       * Players should be able to add to and take from containers more than one item at a time.
        * When a unit with inventory dies, its inventory is automatically dropped into a newly created leather pack container.
          * If it dies on a hex with an existing pack, the items are added to the pack's items.
          * If it dies on a hex with a gold pile, the gold pile is replaced by a pack and the gold is added to the pack.
@@ -91,6 +86,7 @@ Each top level point removed yields 2% completion.
        * Make the toggle <foo> in settings say what the current state is.
 
      * Existing issues.
+       * Shops can be placed on impassable and unwalkable territory. This shouldn't happen.
        * Handle Add to Chest when you have no inventory.
        * Fix icon size for Summon <foo> and Summon Summoner.
        * Fix deprecated code when Lua warnings pop up.
@@ -134,3 +130,7 @@ Each top level point removed yields 2% completion.
     * Allow import of units saved in persistant variables. (Across scenarios? Is this Change Unit > Save?)
     * Allow the saving of items (in chests/shops too?), etc., across scenarios in a campaign.
     * Story-important, unsellable items.
+    * Shop options toggleable by host:
+      * Make a shop not able to buy items.
+      * Change shop multiplier for item purchases
+      * Change shop price multiplier (for expensive shops)
