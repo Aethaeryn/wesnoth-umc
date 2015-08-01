@@ -86,18 +86,18 @@ function submenu_inventory_quantity(item)
    add_item(item, item_count, false)
 end
 
-function submenu_inventory(context)
+function submenu_inventory(context, container)
    local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
-
+   local unit = false
+   if not container then unit = wesnoth.get_unit(e.x1, e.y1) end
    local msg
    local opt
    local run
    local options_table = {}
 
-   local function option_find()
+   local function option_find(item_holder)
       for i, item in ipairs(item_table) do
-         quantity = unit.variables[item.name]
+         quantity = item_holder[item.name]
          if quantity ~= nil and quantity > 0 then
             table.insert(options_table, {item.name, item.image, item.price, quantity, item.msg})
          end
@@ -110,24 +110,32 @@ function submenu_inventory(context)
       end
    end
 
-   if context == "unit_use" or context == "chest_add" then
+   if context == "unit_use" or context == "chest_add" or context == "chest_remove" or context == "visit_shop" then
       if context == "unit_use" then
          msg = "Which item do you want to use?"
          run = "item_use('$input1')"
-
-      else
+      elseif context == "chest_add" then
          msg = "What item do you want to put in the chest?"
          run = "chest_add('$input1')"
+      elseif context == "chest_remove" then
+         msg = "What item do you want to remove from the chest?"
+         run = "chest_remove('$input1')"
+      elseif context == "visit_shop" then
+         msg = "What item do you want to purchase from the shop?"
+         run = "shop_buy('$input1')"
       end
-
       opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\nQuantity: $input4\n$input5"
 
-      option_find()
+      if unit then
+         option_find(unit.variables)
+      else
+         option_find(container)
+      end
 
    elseif context == "unit_add" then
       msg = "Which item do you want to add?"
       opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\n$input4"
-      run = "submenu_inventory_quantity('$input1')"
+      run = "submenu_inventory_quantity('$input1', false)"
 
       option_find_all()
    end

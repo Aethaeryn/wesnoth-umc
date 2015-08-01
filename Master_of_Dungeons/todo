@@ -19,27 +19,27 @@ Each top level point removed yields 2% completion.
          * Buy items from shops.
          * Sell items to shop (math.floor(0.8 * cost)).
 
-     * There are several allowed container actions.
-       * Host-only:
-         * Alter stock of each item in a container (number input).
-       * Any unit on hex:
-         * Remove item from container.
-         * Add item to container (number input).
+    * The host needs to be able to alter stock of each item in a container (number input).
 
-  (1b) Inventory Containers II
+ (1b) Inventory Containers II
        * Host shop configurations.
          * Make a shop not able to buy items.
          * Change shop buy percentage multiplier
          * Change shop price multiplier
-         * Make certain items unsellable.
 
        * When a container has its last item removed:
-         * A pack is removed from the map automatically.
-         * A chest is replaced with an open chest image until an item is put in it again.
+         * A pack is removed from the map automatically if it is emptied by a player.
+         * An empty chest is has an open chest image until an item is put in it again.
+
+       * Players should be able to add to and take from containers more than one at a time.
 
        * When a unit with inventory dies, its inventory is automatically dropped into a newly created leather pack container.
-         * If it dies on a hex with an existing container that is not a pack, a pack is on the hex (hidden) and can be accessed.
          * If it dies on a hex with an existing pack, the items are added to the pack's items.
+         * If it dies on a hex with a gold pile, the gold pile is replaced by a pack and the gold is added to the pack.
+         * If it dies on a hex with a shop, the inventory is added to the shop! Be careful!
+         * If it dies on a hex with a chest, the inventory is added to the chest, even if it is locked. Be careful!
+
+       * Players need to be able to remove from packs.
 
  (2) Inventory
      (a) Haste potion.
@@ -106,6 +106,7 @@ Each top level point removed yields 2% completion.
        * Make the toggle <foo> in settings say what the current state is.
 
      * Existing issues.
+       * Handle Add to Chest when you have no inventory.
        * Fix icon size for Summon <foo> and Summon Summoner.
        * Fix deprecated code when Lua warnings pop up.
        * Let people choose their own unit type in the intro screen if they're a peasant instead of relying on transform.
@@ -147,3 +148,4 @@ Each top level point removed yields 2% completion.
       * Make sure they're loyal like summoned units.
     * Allow import of units saved in persistant variables. (Across scenarios? Is this Change Unit > Save?)
     * Allow the saving of items (in chests/shops too?), etc., across scenarios in a campaign.
+    * Story-important, unsellable items.

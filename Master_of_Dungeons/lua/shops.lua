@@ -14,7 +14,24 @@ function chest_add(name)
 
    game_containers[coords]["chest"][name] = game_containers[coords]["chest"][name] + 1
    unit.variables[name] = unit.variables[name] - 1
+end
 
+function chest_remove(name)
+   local e = wesnoth.current.event_context
+   local coords = e.x1 * 1000 + e.y1
+   local unit = wesnoth.get_unit(e.x1, e.y1)
+
+   game_containers[coords]["chest"][name] = game_containers[coords]["chest"][name] - 1
+   unit.variables[name] = unit.variables[name] + 1
+end
+
+function shop_buy(name)
+   local e = wesnoth.current.event_context
+   local coords = e.x1 * 1000 + e.y1
+   local unit = wesnoth.get_unit(e.x1, e.y1)
+
+   game_containers[coords]["shop"][name] = game_containers[coords]["shop"][name] - 1
+   unit.variables[name] = unit.variables[name] - 1
 end
 
 function clear_game_object()
@@ -30,15 +47,20 @@ function interact_do(selection)
    local e = wesnoth.current.event_context
    local coords = e.x1 * 1000 + e.y1
 
-   -- todo: "Visit Shop", "Add to Chest", "Remove from Chest", "Investigate Drop"
-   -- todo: Add to these as host
+   -- todo: "Investigate Drop"
 
-   if selection == "Collect Gold" then
+   if selection == "Visit Shop" then
+      submenu_inventory('visit_shop', game_containers[coords]["shop"])
+
+   elseif selection == "Collect Gold" then
       wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[coords]["gold"] 
       clear_game_object()
 
+   elseif selection == "Remove from Chest" then
+      submenu_inventory('chest_remove', game_containers[coords]["chest"])
+
    elseif selection == "Add to Chest" then
-      submenu_inventory('chest_add')
+      submenu_inventory('chest_add', false)
    end
 end
 
@@ -132,7 +154,7 @@ function place_object_choose(choice)
       simple_place("shop", "scenery/tent-shop-weapons.png", true)
 
    elseif choice == "Place Chest" then
-      simple_place("chest", "items/chest-plain-closed.png", true)
+      simple_place("chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
 
    elseif choice == "Place Pack" then
       simple_place("pack", "items/leather-pack.png", true)

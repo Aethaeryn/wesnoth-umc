@@ -168,7 +168,7 @@ function change_stats(variable)
 
    if variable == "Transform"     then transform()
    elseif variable == "Role"      then role()
-   elseif variable == "Inventory" then submenu_inventory('unit_add')
+   elseif variable == "Inventory" then submenu_inventory('unit_add', false)
    elseif variable == "Side"      then side()
    elseif variable == "Stats"     then stats()
    elseif variable == "Save"      then
