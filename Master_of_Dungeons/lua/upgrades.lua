@@ -34,12 +34,16 @@ function event_advance()
    end
 end
 
-function upgrade_unit(choice)
+function upgrade_unit(choice, cost, current, cap)
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
+
    -- If you have enough points, and you are not at the cap, then you
    -- lose as many upgrade points as the cost is and you gain the
    -- desired modifier on the unit being upgraded. The count of how
    -- many times you have that upgrade is incremented.
    debugOut(choice)
+   debugOut(unit.name)
 end
 
 function menu_upgrade_unit()
@@ -63,7 +67,7 @@ function menu_upgrade_unit()
    local options = DungeonOpt:new{
       root_message = "What do you want to upgrade? You have "..points.." points(s).",
       option_message = "&$input2=<b>$input1</b>\nCost: $input3 points\nCurrent: $input4$input5\n$input6",
-      code = "upgrade_unit('$input1')",
+      code = "upgrade_unit('$input1', $input3, $input4, '$input5')",
    }
 
    options:fire(options_table)
