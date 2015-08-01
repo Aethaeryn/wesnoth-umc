@@ -32,25 +32,25 @@ local function find_summoner(x, y, summoners)
    return summoners[max_key]
 end
 
+local function spawn_unit(x, y, unit_type, side_number, icon, unit_role, traits)
+   local unit_stats = {type = unit_type,
+                       side = side_number,
+                       {"modifications", traits}}
+   if icon then
+      unit_stats.overlays = icon
+   end
+   if unit_role then
+      unit_stats.role = unit_role
+   end
+   wesnoth.put_unit(x, y, unit_stats)
+end
+
 function spawn_units.boss_spawner(unit_type, unit_role)
    local e = wesnoth.current.event_context
-
    local unit_traits_boss = wesnoth.get_variable("unit_traits_boss")
    local regenerates      = wesnoth.get_variable("regenerates")
-
-   wesnoth.put_unit(e.x1, e.y1, {
-                       type     = unit_type,
-                       side     = side_number,
-                       overlays = "misc/hero-icon.png",
-                       role     = unit_role, {
-                          "modifications",
-                          unit_traits_boss
-                       }
-                    }
-                 )
-
-   unit = wesnoth.get_unit(e.x1, e.y1)
-
+   spawn_unit(e.x1, e.y1, unit_type, side_number, "misc/hero-icon.png", unit_role, unit_traits_boss)
+   local unit = wesnoth.get_unit(e.x1, e.y1)
    wesnoth.add_modification(unit, "object", {
                                T["effect"] {
                                   apply_to = "new_ability", {
@@ -65,18 +65,9 @@ function spawn_units.reg_spawner(unit_type, unit_role, unit_cost)
    local e = wesnoth.current.event_context
    local unit_traits_reg = wesnoth.get_variable("unit_traits_reg")
    local summoner = find_summoner(e.x1, e.y1, wesnoth.get_units {side = side_number, role = unit_role})
-
-   -- Creates the unit if there is enough HP --
    if summoner.hitpoints > unit_cost then
       summoner.hitpoints = summoner.hitpoints - unit_cost
-      wesnoth.put_unit(e.x1, e.y1, {
-                          type = unit_type,
-                          side = side_number, {
-                             "modifications",
-                             unit_traits_reg
-                          }
-                       }
-                    )
+      spawn_unit(e.x1, e.y1, unit_type, side_number, false, false, unit_traits_reg)
    else
       wesnoth.message("Error", "Insufficient hitpoints on the attempted summoner.")
    end
