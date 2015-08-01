@@ -69,7 +69,7 @@ Each top level point removed yields 2% completion.
          * Faerie fire (new ranged attack for one turn)
          * Fireball (new ranged attack for one turn)
 
- (4) Miscellaneous
+ (4) Details I
      * Make the host modification/management of units more powerful.
        * Make sure to handle negative numbers properly.
        * Toggle the boss healthy/regenerate on/off.
@@ -85,7 +85,7 @@ Each top level point removed yields 2% completion.
        * keys/locks for doors/chests/etc.
        * triggers (perhaps runes?) for various things (including doors)
 
- (5) Details
+ (5) Details II
      * DungeonOpt
        * Write a method for handling text_input
          * Add a cancel option to text stuff (speaking, transforming unit, etc.).
@@ -95,6 +95,11 @@ Each top level point removed yields 2% completion.
        * Rewrite to be a function instead of an object?
     * Summoners.
        * Make sure all units in the game are a summoner or a summoned unit.
+         * Nature: Great Wolf, Direwolf
+         * Earth Summoner: Dwarvish Arcanister
+         * Loyalist: Royal Warrior
+         * Do something with boats?
+         * Khalifate units and falcons?
        * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
          * Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
          * Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
@@ -109,7 +114,16 @@ Each top level point removed yields 2% completion.
        * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
          * Allow modifying attacks and traits if possible.
        * If possible, move the stuff that doesn't require activation every side_turn to some other spot.
-     * Existing issues. (Discovered through playtesting.)
+     * Terrains.
+       * Make sure new 1.10 and 1.12 terrains are in the game. All terrains, etc., in the game should be usable.
+       * Clean up overlay code.
+         * Possibly rewrite how overlays are added.
+         * Add repeat last overlay.
+         * Fix remove overlay.
+         * Fix some bridges and other broken overlays.
+       * Move a lot of terrains into overlays only (villages, forests, etc.)
+
+ (6) Issues (Discovered through playtesting.)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
        * MAJOR BUG: Handle Add to Chest when you have no inventory.
        * MAJOR BUG: Fix changing summoner role when cancelling.
@@ -126,16 +140,9 @@ Each top level point removed yields 2% completion.
        * FEATURE: Fix the changing objectives so that it works again.
          * Have the new interface change subsections (victory, loss, etc.) so that formatting can be preserved.
        * FEATURE: Lock campaign to Default Era or lock it to Default + Khalifate Era and add Khalifate units for desert maps.
-     * Terrains.
-       * Make sure new 1.10 and 1.12 terrains are in the game. All terrains, etc., in the game should be usable.
-       * Clean up overlay code.
-         * Possibly rewrite how overlays are added.
-         * Add repeat last overlay.
-         * Fix remove overlay.
-         * Fix some bridges and other broken overlays.
-       * Move a lot of terrains into overlays only (villages, forests, etc.)
 
-(6) Future
+ (7) Future
+    * Is there a way to alter promotions? Lich -> Ancient Lich; Wolf -> Great Wolf -> Dire Wolf; Armageddon Drake; etc.
     * Remove shroud for intermission ("Intro") mini-maps and for the battle arena?
     * Implement spells for magical units, like scrolls but learnable for the duration of the game instead of temporary.
     * Implement equipment (an extension of the inventory concept).
