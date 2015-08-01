@@ -38,7 +38,7 @@ Each point removed yields 1% completion.
          * Give to adjacent unit.
            * Inventory
            * Gold (if leader)
-           * Gold coins (item) if not leader (that can be given to leader to immediately cash in)
+           * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
 
      (b) Haste potion.
          * Extra melee strike, +2 total moves.
