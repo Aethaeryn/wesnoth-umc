@@ -86,6 +86,7 @@ Each top level point removed yields 2% completion.
        * Make the toggle <foo> in settings say what the current state is.
 
      * Existing issues.
+       * When something spawns on a village they don't own they should lose all movement and take the village.
        * Shops can be placed on impassable and unwalkable territory. This shouldn't happen.
        * Handle Add to Chest when you have no inventory.
        * Fix icon size for Summon <foo> and Summon Summoner.
