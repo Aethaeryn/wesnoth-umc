@@ -83,6 +83,7 @@ summoners = {
       "Troll Shaman",
       "Dwarvish Runesmith",
       "Dwarvish Runemaster",
+      "Dwarvish Arcanister",
    },
 
    Swamp = {
@@ -143,11 +144,13 @@ regular = {
 
    Nature = {
       ['Level 0'] = {
+         "Falcon",
          "Mudcrawler",
          "Giant Rat",
       },
 
       ['Level 1'] = {
+         "Elder Falcon",
          "Giant Mudcrawler",
          "Giant Scorpion",
          "Young Ogre",
@@ -158,11 +161,13 @@ regular = {
       ['Level 2'] = {
          "Elder Wose",
          "Ogre",
+         "Great Wolf",
          "Gryphon",
       },
 
       ['Level 3'] = {
          "Ancient Wose",
+         "Direwolf",
          "Giant Spider",
       },
    },
@@ -188,6 +193,7 @@ regular = {
          "Elvish Marshal",
          "Elvish Sharpshooter",
          "Elvish Avenger",
+         "Elvish Lady",
       },
    },
 
@@ -256,6 +262,7 @@ regular = {
 
       ['Level 3'] = {
          "Royal Guard",
+         "Royal Warrior",
          "Halberdier",
          "Master at Arms",
          "Master Bowman",

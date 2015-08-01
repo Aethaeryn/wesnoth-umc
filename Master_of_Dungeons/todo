@@ -94,20 +94,10 @@ Each top level point removed yields 2% completion.
        * Make the toggle <foo> in settings say what the current state is.
        * Rewrite to be a function instead of an object?
     * Summoners.
-       * Make sure all units in the game are a summoner or a summoned unit.
-         * Nature: Great Wolf, Direwolf
-         * Earth Summoner: Dwarvish Arcanister
-         * Loyalist: Royal Warrior
-         * Do something with boats?
-         * Khalifate units and falcons?
+       * Khalifate units?
        * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
          * Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
          * Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
-       * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
-         * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
-         * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
-         * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
-       * Reduce max HP on summoner by 1 per level of active summoned unit?
      * Rewrite the older parts of the MoD code.
        * Make sure that it's in three layers: pseudo-libraries, core MoD action functions, and data/config files.
          * Perhaps move most of the later two into custom WML tags later.
@@ -142,6 +132,12 @@ Each top level point removed yields 2% completion.
        * FEATURE: Lock campaign to Default Era or lock it to Default + Khalifate Era and add Khalifate units for desert maps.
 
  (7) Future
+    * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
+      * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
+      * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
+      * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
+    * Reduce max HP on summoner by 1 per level of active summoned unit?
+    * Do something with boats?
     * Is there a way to alter promotions? Lich -> Ancient Lich; Wolf -> Great Wolf -> Dire Wolf; Armageddon Drake; etc.
     * Remove shroud for intermission ("Intro") mini-maps and for the battle arena?
     * Implement spells for magical units, like scrolls but learnable for the duration of the game instead of temporary.
