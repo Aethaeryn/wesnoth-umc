@@ -69,7 +69,7 @@ Each top level point removed yields 2% completion.
          * Faerie fire (new ranged attack for one turn)
          * Fireball (new ranged attack for one turn)
 
- (4) Details I
+ (4) Details (4%)
      * Make the host modification/management of units more powerful.
        * Make sure to handle negative numbers properly.
        * Toggle the boss healthy/regenerate on/off.
@@ -84,8 +84,6 @@ Each top level point removed yields 2% completion.
        * doors (instead of manually removing walls)
        * keys/locks for doors/chests/etc.
        * triggers (perhaps runes?) for various things (including doors)
-
- (5) Details II
      * DungeonOpt
        * Write a method for handling text_input
          * Add a cancel option to text stuff (speaking, transforming unit, etc.).
@@ -98,12 +96,8 @@ Each top level point removed yields 2% completion.
        * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
          * Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
          * Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
-     * Rewrite the older parts of the MoD code.
-       * Make sure that it's in three layers: pseudo-libraries, core MoD action functions, and data/config files.
-         * Perhaps move most of the later two into custom WML tags later.
        * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
          * Allow modifying attacks and traits if possible.
-       * If possible, move the stuff that doesn't require activation every side_turn to some other spot.
      * Terrains.
        * Make sure new 1.10 and 1.12 terrains are in the game. All terrains, etc., in the game should be usable.
        * Clean up overlay code.
@@ -113,7 +107,7 @@ Each top level point removed yields 2% completion.
          * Fix some bridges and other broken overlays.
        * Move a lot of terrains into overlays only (villages, forests, etc.)
 
- (6) Issues (Discovered through playtesting.)
+ (5) Issues (Discovered through playtesting.)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
        * MAJOR BUG: Handle Add to Chest when you have no inventory.
        * MAJOR BUG: Fix changing summoner role when cancelling.
@@ -131,7 +125,9 @@ Each top level point removed yields 2% completion.
          * Have the new interface change subsections (victory, loss, etc.) so that formatting can be preserved.
        * FEATURE: Lock campaign to Default Era or lock it to Default + Khalifate Era and add Khalifate units for desert maps.
 
- (7) Future
+ (6) Future
+    * Rewrite large parts of the code to make more sense now that it's been years.
+      * If possible, move the stuff that doesn't require activation every side_turn to some other spot.
     * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
       * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
       * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
