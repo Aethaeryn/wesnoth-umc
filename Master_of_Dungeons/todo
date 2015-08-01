@@ -1,4 +1,4 @@
-MASTER OF DUNGEONS TODO LIST (82% Progress)
+MASTER OF DUNGEONS TODO LIST (86% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 Each top level point removed yields 2% completion.
 
@@ -9,19 +9,11 @@ Each top level point removed yields 2% completion.
     * The host needs to be able to alter stock of each item in a container (number input).
 
  (1) Inventory Containers
-       * Have tiered templates for quick-stocking shops.
-       * Have tiered templates for quick-stocking chests.
+       * Templates:
+         * Have tiered templates for quick-stocking shops.
+         * Have tiered templates for quick-stocking chests.
+         * Have tiered templates for quick-stocking units (MOBs, player heroes, etc.)
        * Let units sell items to shop (math.floor(0.8 * cost))
-       * Interaction
-         * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
-         * Add interaction with neighboring tiles for units and for shops. Chests/gold should require you to be on the hex.
-           * Hostile units on the shop hex should block shop use, though.
-         * When interaction is ambiguous (more than one unit who can interact), first pop up a window to let players choose which unit does the interaction.
-         * Let units give things to adjacent friendly unit.
-           * Inventory (all unequipped items)
-           * Gold (if leader)
-           * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
-           * Not all units can be interacted with (e.g. zombies).
        * When a container has its last item removed:
          * A pack is removed from the map automatically if it is emptied by a player.
          * An empty chest switches to an open chest image.
@@ -45,7 +37,20 @@ Each top level point removed yields 2% completion.
          * The interface should be identical for containers, except with templates for containers.
          * In fact, units could have templates too once drops are implemented.
 
- (2) Inventory
+ (2) Interaction
+       * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
+       * Add interaction with neighboring tiles for units and for shops. Chests/gold should require you to be on the hex.
+         * Hostile units on the shop hex should block shop use, though.
+       * When interaction is ambiguous (more than one unit who can interact), first pop up a window to let players choose which unit does the interaction.
+       * Let units give things to adjacent friendly unit.
+         * Inventory (all unequipped items)
+         * Gold (if leader)
+         * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
+         * Not all units can be interacted with (e.g. zombies).
+       * This means those units (like zombies) can't use Unit Commands, either, but host can give them items and they can get items and equipment inherited if they were plagued.
+         * This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
+
+ (3) Inventory
      (a) Haste potion.
          * Extra melee strike, +2 total moves.
          * Small = 2 turns, Medium = 4 turns.
@@ -64,7 +69,7 @@ Each top level point removed yields 2% completion.
          * Faerie fire (new ranged attack for one turn)
          * Fireball (new ranged attack for one turn)
 
- (3) Miscellaneous
+ (4) Miscellaneous
      * Make the host modification/management of units more powerful.
        * Make sure to handle negative numbers properly.
        * Toggle the boss healthy/regenerate on/off.
@@ -80,7 +85,7 @@ Each top level point removed yields 2% completion.
        * keys/locks for doors/chests/etc.
        * triggers (perhaps runes?) for various things (including doors)
 
- (4) Details
+ (5) Details
      * DungeonOpt
        * Write a method for handling text_input
          * Add a cancel option to text stuff (speaking, transforming unit, etc.).
@@ -88,6 +93,22 @@ Each top level point removed yields 2% completion.
        * Add helper functions for more option/menu functions than just options_list_short()
        * Make the toggle <foo> in settings say what the current state is.
        * Rewrite to be a function instead of an object?
+    * Summoners.
+       * Make sure all units in the game are a summoner or a summoned unit.
+       * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
+         * Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
+         * Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
+       * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
+         * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
+         * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
+         * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
+       * Reduce max HP on summoner by 1 per level of active summoned unit?
+     * Rewrite the older parts of the MoD code.
+       * Make sure that it's in three layers: pseudo-libraries, core MoD action functions, and data/config files.
+         * Perhaps move most of the later two into custom WML tags later.
+       * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
+         * Allow modifying attacks and traits if possible.
+       * If possible, move the stuff that doesn't require activation every side_turn to some other spot.
      * Existing issues. (Discovered through playtesting.)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
        * MAJOR BUG: Handle Add to Chest when you have no inventory.
@@ -113,24 +134,9 @@ Each top level point removed yields 2% completion.
          * Fix remove overlay.
          * Fix some bridges and other broken overlays.
        * Move a lot of terrains into overlays only (villages, forests, etc.)
-    * Summoners.
-       * Make sure all units in the game are a summoner or a summoned unit.
-       * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
-         * Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
-         * Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
-       * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
-         * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
-         * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
-         * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
-       * Reduce max HP on summoner by 1 per level of active summoned unit?
-     * Rewrite the older parts of the MoD code.
-       * Make sure that it's in three layers: pseudo-libraries, core MoD action functions, and data/config files.
-         * Perhaps move most of the later two into custom WML tags later.
-       * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
-         * Allow modifying attacks and traits if possible.
-       * If possible, move the stuff that doesn't require activation every side_turn to some other spot.
 
-(5) Future
+(6) Future
+    * Remove shroud for intermission ("Intro") mini-maps and for the battle arena?
     * Implement spells for magical units, like scrolls but learnable for the duration of the game instead of temporary.
     * Implement equipment (an extension of the inventory concept).
       * Using the item equips it into an equipment spot.
@@ -141,21 +147,26 @@ Each top level point removed yields 2% completion.
       * Certain units (e.g. wolves) can't equip things.
       * Certain units (e.g. walking corpses) can have equipment, but can't manage it when alive.
     * Have game options allow other methods of summoning than just HP deduction.
-    * Have dynamic_difficulty() working and optionally use it to scale the HP and damage of units spawned by player 1.
+    * Fix dynamic_difficulty() and optionally use it to scale the HP and damage of units spawned by player 1.
     * Resurrection.
       * When units die they are saved in a resurrection table.
       * The host can resurrect a unit. (rematches of old bosses?)
       * A resurrection spell on a scroll should be able to resurrect a unit too.
     * Allow the placement of any unit instantly via textbox like Transform.
+      * Very useful for villages of NPCs with no summoners, or very weak non-mini-boss enemy encounters.
       * Make sure they're loyal like summoned units.
       * Make sure they can optionally gain healthy/regenerates if turned into a summoner.
     * Allow import of units saved in persistant variables. (Across scenarios? Is this Change Unit > Save?)
     * Allow the saving of items (in chests/shops too?), etc., across scenarios in a campaign.
     * Story-important, unsellable items.
-    * Shop options toggleable by host:
-      * Make a shop not able to buy items.
-      * Change shop price multiplier for selling to shop
-      * Change shop price multiplier for buying to shop (for expensive shops)
-    * Add more shop graphics for different flavor.
-    * Maybe find a way to keep the shops labelled as long as they are shops like many RPGs do?
+    * More Shop Stuff:
+      * Shop options toggleable by host:
+        * Make a shop not able to buy items.
+        * Change shop price multiplier for selling to shop
+        * Change shop price multiplier for buying to shop (for expensive shops)
+      * Add more shop graphics for different flavor.
+      * Maybe find a way to keep the shops labelled as long as they are shops like many RPGs do?
+    * Add a difficulty mode that restricts what the host can do so more people can play as a fair host?
+    * Generalize the API so things like terrain changes can be restricted, have costs, be done by units, etc.?
     * Require download, but make the Lua imported in a cleaner way and define some custom WML tags.
+      * Make sure that only things that need to be run every side_turn are run then.
