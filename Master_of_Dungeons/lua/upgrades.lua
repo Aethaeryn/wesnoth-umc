@@ -42,16 +42,27 @@ function menu_upgrade_unit()
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local points = unit.variables["advancement"]
+   local options_table = {}
 
    if points == nil then
       points = 0
    end
 
-   local upgrades = {"Foo", "Bar"}
+   for i, upgrade in ipairs(upgrade_table) do
+      local cap_info = ""
+      if upgrade.cap then
+         cap_info = " of "..upgrade.cap
+      end
+      table.insert(options_table, {upgrade.name, upgrade.image, upgrade.cost, 0, cap_info, upgrade.msg})
+   end
 
-   options_list_short("What do you want to upgrade? You have "..points.." points(s).",
-                      "upgrade_unit('$input1')",
-                      upgrades)
+   local options = DungeonOpt:new{
+      root_message = "What do you want to upgrade? You have "..points.." points(s).",
+      option_message = "&$input2=<b>$input1</b>\nCost: $input3 points\nCurrent: $input4$input5\n$input6",
+      code = "upgrade_unit('$input1')",
+   }
+
+   options:fire(options_table)
 end
 
 >>
