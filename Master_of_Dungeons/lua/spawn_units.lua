@@ -45,28 +45,30 @@ function spawn_units.boss_spawner(unit_type, unit_role)
                          )
 end
 
-function spawn_units.reg_spawner(unit_type, unit_role, unit_cost)
-   local e = wesnoth.current.event_context
-
-   local unit_traits_reg = wesnoth.get_variable("unit_traits_reg")
-   local role_summoners  = wesnoth.get_units {side = side_number, role = unit_role}
-   local max_hp          = 0
-
-   -- This goes over all the possible summoners and chooses one with the highest HP in the area. --
-   for key,value in pairs(role_summoners) do
-      if role_summoners[key].x <= e.x1 + 1 and role_summoners[key].x >= e.x1 - 1 then
-         if role_summoners[key].y <= e.y1 + 1 and role_summoners[key].y >= e.y1 -1 then
-            if role_summoners[key].hitpoints > max_hp then
-               max_hp  = role_summoners[key].hitpoints
+-- This goes over all the possible summoners and chooses one with the highest HP in the area.
+local function find_summoner(x, y, summoners)
+   local max_hp = 0
+   for key,value in pairs(summoners) do
+      if summoners[key].x <= x + 1 and summoners[key].x >= x - 1 then
+         if summoners[key].y <= y + 1 and summoners[key].y >= y -1 then
+            if summoners[key].hitpoints > max_hp then
+               max_hp  = summoners[key].hitpoints
                max_key = key
             end
          end
       end
    end
+   return summoners[max_key]
+end
+
+function spawn_units.reg_spawner(unit_type, unit_role, unit_cost)
+   local e = wesnoth.current.event_context
+   local unit_traits_reg = wesnoth.get_variable("unit_traits_reg")
+   local summoner = find_summoner(e.x1, e.y1, wesnoth.get_units {side = side_number, role = unit_role})
 
    -- Creates the unit if there is enough HP --
-   if role_summoners[max_key].hitpoints > unit_cost then
-      role_summoners[max_key].hitpoints = role_summoners[max_key].hitpoints - unit_cost
+   if summoner.hitpoints > unit_cost then
+      summoner.hitpoints = summoner.hitpoints - unit_cost
       wesnoth.put_unit(e.x1, e.y1, {
                           type = unit_type,
                           side = side_number, {
