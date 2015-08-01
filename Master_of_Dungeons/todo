@@ -71,13 +71,7 @@ Each top level point removed yields 2% completion.
          * Certain units (e.g. wolves) can't equip things.
 
  (3) Upgrades
-     * Include the following possible advancements:
-       * + 1 movement (cost: 3, cap: 2)
-       * + 3 hitpoints (cost: 1)
-       * + 1 to melee attacks' damage (cost: 2, increases by 1 each time)
-       * + 1 to range attacks' damage (cost: 2, increases by 1 each time)
-         * Restrict to units with non-temporary range attack.
-       * - 20% XP to next promotion (cost: 2, cap: 2)
+     * Implement.
 
  (4) Miscellaneous
      * Make the host modification/management of units more powerful.

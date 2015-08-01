@@ -47,7 +47,7 @@ function menu_upgrade_unit()
       points = 0
    end
 
-   local upgrades = {"Hello world!"}
+   local upgrades = {"Foo", "Bar"}
 
    options_list_short("What do you want to upgrade? You have "..points.." points(s).",
                       "upgrade_unit('$input1')",
