@@ -6,6 +6,34 @@ function change_side(new_side)
    unit.side = new_side
 end
 
+function change_unit_max_hitpoints(x, y, change)
+   local unit = wesnoth.get_unit(x, y)
+   local unit_data = unit.__cfg
+   local full_health = false
+   if unit_data.hitpoints == unit_data.max_hitpoints then
+      full_health = true
+   end
+   unit_data.max_hitpoints = change
+   if full_health == true then
+      unit_data.hitpoints = change
+   end
+   wesnoth.put_unit(x, y, unit_data)
+end
+
+function change_unit_max_moves(x, y, change)
+   local unit = wesnoth.get_unit(x, y)
+   local unit_data = unit.__cfg
+   local unmoved = false
+   if unit_data.moves == unit_data.max_moves then
+      unmoved = true
+   end
+   unit_data.max_moves = change
+   if unmoved == true then
+      unit_data.moves = change
+   end
+   wesnoth.put_unit(x, y, unit_data)
+end
+
 function change_unit_stat(stat)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
@@ -30,39 +58,14 @@ function change_unit_stat(stat)
 
    if stat == "Hitpoints" then
       unit_data.hitpoints = change
-
    elseif stat == "Max Hitpoints" then
-      local healthy = false
-
-      if unit_data.hitpoints == unit_data.max_hitpoints then
-         healthy = true
-      end
-
-      unit_data.max_hitpoints = change
-
-      if healthy == true then
-         unit_data.hitpoints = change
-      end
-
+      change_unit_max_hitpoints(e.x1, e.y1, change)
    elseif stat == "Moves" then
-      local unmoved = false
-
-      if unit_data.moves == unit_data.max_moves then
-         unmoved = true
-      end
-
-      unit_data.max_moves = change
-
-      if unmoved == true then
-         unit_data.moves = change
-      end
-
+      change_unit_max_moves(e.x1, e.y1, change)
    elseif stat == "Experience" then
       unit_data.experience = change
-
    elseif stat == "Max Experience" then
       unit_data.max_experience = change
-
    elseif stat == "Gender" then
       if unit_data.gender == "male" then
          unit_data.gender = "female"
@@ -70,17 +73,16 @@ function change_unit_stat(stat)
       elseif unit_data.gender == "female" then
          unit_data.gender = "male"
       end
-
    elseif stat == "Leader" then
       if unit_data.canrecruit == true then
          unit_data.canrecruit = false
-
       else
          unit_data.canrecruit = true
       end
    end
-
-   wesnoth.put_unit(e.x1, e.y1, unit_data)
+   if not (stat == "Max Hitpoints" or stat == "Moves") then
+      wesnoth.put_unit(e.x1, e.y1, unit_data)
+   end
 
    -- Makes sure that the summoner crown shows on non-leader summoners.
    if unit_data.role ~= "None" and unit_data.role ~= "" then

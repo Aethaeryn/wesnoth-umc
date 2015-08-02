@@ -44,6 +44,9 @@ DungeonOpt = {
                 -- There can now be as many table items as necessary and it will match the $input with the input.
                 -- Proper syntax: $input1 is replaced by the item with the index of 1 (j == 1), $input2 by j == 2, etc.
                 for j, item in ipairs(input) do
+                   if item == false then
+                      item = "false"
+                   end
                    out_message = string.gsub(out_message, "$input"..j, item)
                    out_code    = string.gsub(out_code,    "$input"..j, item)
                 end

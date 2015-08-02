@@ -2,8 +2,11 @@ MASTER OF DUNGEONS TODO LIST (86% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 Each top level point removed yields 2% completion.
 
- (0) Implement these before the next playtest:
   - Upgrades
+    - Strength
+    - Dexterity
+    - Intelligence
+    - Unit upgrades are probably not carried over on promotions. They are carried over on AMLA.
 
  (1) Inventory Containers
        * Templates:

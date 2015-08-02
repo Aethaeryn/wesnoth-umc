@@ -37,13 +37,27 @@ end
 function upgrade_unit(choice, cost, current, cap)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
-
-   -- If you have enough points, and you are not at the cap, then you
-   -- lose as many upgrade points as the cost is and you gain the
-   -- desired modifier on the unit being upgraded. The count of how
-   -- many times you have that upgrade is incremented.
-   debugOut(choice)
-   debugOut(unit.name)
+   local unit_data = unit.__cfg
+   if unit.variables["advancement"] ~= nil and unit.variables["advancement"] >= cost
+   and (cap == false or current < cap) then
+      unit.variables["advancement"] = unit.variables["advancement"] - cost
+      if unit.variables["upgrade"..choice] == nil then
+         unit.variables["upgrade"..choice] = 1
+      else
+         unit.variables["upgrade"..choice] = unit.variables["upgrade"..choice] + 1
+      end
+      if choice == "Speed" then
+         change_unit_max_moves(e.x1, e.y1, unit_data.max_moves + 1)
+      elseif choice == "Resilience" then
+         change_unit_max_hitpoints(e.x1, e.y1, unit_data.max_hitpoints + 4)
+      elseif choice == "Strength" then
+         debugOut("Strength is not yet implemented.")
+      elseif choice == "Dexterity" then
+         debugOut("Dexterity is not yet implemented.")
+      elseif choice == "Intelligence" then
+         debugOut("Intelligence is not yet implemented.")
+      end
+   end
 end
 
 function menu_upgrade_unit()
@@ -51,25 +65,31 @@ function menu_upgrade_unit()
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local points = unit.variables["advancement"]
    local options_table = {}
-
    if points == nil then
       points = 0
    end
-
    for i, upgrade in ipairs(upgrade_table) do
       local cap_info = ""
+      local current_advancement = unit.variables["upgrade"..upgrade.name]
+      if current_advancement == nil then
+         current_advancement = 0
+      end
       if upgrade.cap then
          cap_info = " of "..upgrade.cap
       end
-      table.insert(options_table, {upgrade.name, upgrade.image, upgrade.cost, 0, cap_info, upgrade.msg})
+      table.insert(options_table, {upgrade.name,
+                                   upgrade.image,
+                                   upgrade.cost,
+                                   current_advancement,
+                                   cap_info,
+                                   upgrade.msg,
+                                   upgrade.cap})
    end
-
    local options = DungeonOpt:new{
       root_message = "What do you want to upgrade? You have "..points.." points(s).",
       option_message = "&$input2=<b>$input1</b>\nCost: $input3 points\nCurrent: $input4$input5\n$input6",
-      code = "upgrade_unit('$input1', $input3, $input4, '$input5')",
+      code = "upgrade_unit('$input1', $input3, $input4, $input7)",
    }
-
    options:fire(options_table)
 end
 
