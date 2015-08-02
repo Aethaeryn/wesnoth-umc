@@ -9,28 +9,23 @@ end
 function change_unit_max_hitpoints(x, y, change)
    local unit = wesnoth.get_unit(x, y)
    local unit_data = unit.__cfg
-   local full_health = false
-   if unit_data.hitpoints == unit_data.max_hitpoints then
-      full_health = true
-   end
-   unit_data.max_hitpoints = change
-   if full_health == true then
+   -- Full health units stay at full health. Units with more health
+   -- than the new max have to lose health.
+   if unit_data.hitpoints == unit_data.max_hitpoints
+   or unit_data.hitpoints > change then
       unit_data.hitpoints = change
    end
+   unit_data.max_hitpoints = change
    wesnoth.put_unit(x, y, unit_data)
 end
 
 function change_unit_max_moves(x, y, change)
    local unit = wesnoth.get_unit(x, y)
    local unit_data = unit.__cfg
-   local unmoved = false
    if unit_data.moves == unit_data.max_moves then
-      unmoved = true
-   end
-   unit_data.max_moves = change
-   if unmoved == true then
       unit_data.moves = change
    end
+   unit_data.max_moves = change
    wesnoth.put_unit(x, y, unit_data)
 end
 
@@ -69,7 +64,6 @@ function change_unit_stat(stat)
    elseif stat == "Gender" then
       if unit_data.gender == "male" then
          unit_data.gender = "female"
-
       elseif unit_data.gender == "female" then
          unit_data.gender = "male"
       end

@@ -106,6 +106,7 @@ Each top level point removed yields 2% completion.
          * Fix remove overlay.
          * Fix some bridges and other broken overlays.
        * Move a lot of terrains into overlays only (villages, forests, etc.)
+     * Check how inventory's effects interact if promoted while the effect is still on.
 
  (5) Issues (Discovered through playtesting.)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
