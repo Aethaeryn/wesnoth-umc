@@ -4,8 +4,6 @@ Each top level point removed yields 2% completion.
 
  (0) Implement these before the next playtest:
   - Upgrades
-  - Shops and Chests
-    * Any unit on a hex should be able to buy items from shops if they have the money.
 
  (1) Inventory Containers
        * Templates:
@@ -117,6 +115,7 @@ Each top level point removed yields 2% completion.
        * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc.
+       * FEATURE: Replace non-debug uses of wesnoth.message() with a player-specific message box instead.
        * FEATURE: When something spawns on a village they don't own they should lose all movement and take the village.
        * FEATURE: When people are peasants on one of the two Intro maps (i.e. they died or it's a new campaign), let them pick a new unit.
        * FEATURE: Have the host restrict what units are possible for peasants to use (level, etc.)

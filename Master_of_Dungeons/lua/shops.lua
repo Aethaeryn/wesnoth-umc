@@ -33,13 +33,22 @@ function shop_buy(name)
    local e = wesnoth.current.event_context
    local coords = e.x1 * 1000 + e.y1
    local unit = wesnoth.get_unit(e.x1, e.y1)
-
-   -- Check to make sure you have enough money first.
-   game_containers[coords]["shop"][name] = game_containers[coords]["shop"][name] - 1
-   if unit.variables[name] == nil then
-      unit.variables[name] = 1
+   local price = 99999
+   for i, item in ipairs(item_table) do
+      if item.name == name then
+         price = item.price
+      end
+   end
+   if wesnoth.sides[side_number]["gold"] >= price then
+      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] - price
+      game_containers[coords]["shop"][name] = game_containers[coords]["shop"][name] - 1
+      if unit.variables[name] == nil then
+         unit.variables[name] = 1
+      else
+         unit.variables[name] = unit.variables[name] + 1
+      end
    else
-      unit.variables[name] = unit.variables[name] + 1
+      wesnoth.message("Error", "You can't afford that!")
    end
 end
 

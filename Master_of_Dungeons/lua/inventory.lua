@@ -72,9 +72,6 @@ function add_container_item(name, quantity, container_add, start_only)
    elseif container_add == "shop_modify" then
       container = "shop"
    end
-   if game_containers[coords][container] == nil then
-      debugOut(container)
-   end
    if game_containers[coords][container][name] == nil then
       game_containers[coords][container][name] = quantity
    elseif start_only == false then
@@ -99,7 +96,6 @@ function submenu_inventory_quantity(item, container)
    if item_count < 0 then
       item_count = 0
    end
-   debugOut(container)
    if container == "unit_inventory_modify" then
       add_unit_item(item, item_count, false)
    else
