@@ -1,8 +1,6 @@
 MASTER OF DUNGEONS TODO LIST (86% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 
-  - Intelligence (upgrade + upgrade again on non-AMLA promotion)
-
  (1) Inventory Containers (3%)
        * Templates:
          * Have tiered templates for quick-stocking shops.
@@ -65,6 +63,8 @@ When this list is complete/empty and extensive testing and bugfixing has been do
          * Fireball (new ranged attack for one turn)
 
  (4) Details (4%)
+     * Make upgrades warn you when you cannot buy them instead of failing silently.
+     * Raise the cap on intelligence upgrades so there can be more than one?
      * Add strength and dexterity upgrades.
        * They probably need to be implemented differently, with [object]
      * Make the host modification/management of units more powerful.

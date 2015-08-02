@@ -21,6 +21,9 @@ function event_post_advance()
       if unit.variables["upgradeResilience"] ~= nil then
          change_unit_max_hitpoints(e.x1, e.y1, unit_data.max_hitpoints + (unit.variables["upgradeResilience"] * 4))
       end
+      if unit.variables["upgradeIntelligence"] ~= nil then
+         change_unit_max_experience(e.x1, e.y1, unit_data.max_experience * .8)
+      end
    end
 end
 
@@ -46,12 +49,12 @@ function upgrade_unit(choice, cost, current, cap)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local unit_data = unit.__cfg
-   -- For debugging/testing, uncomment this and comment the test that
-   -- you have enough to pay for upgrades.
-   if unit.variables["advancement"] == nil then
-      unit.variables["advancement"] = 0
-   end
-   if unit.variables["advancement"] ~= nil -- and unit.variables["advancement"] >= cost
+   -- -- For debugging/testing, uncomment this and comment the test that
+   -- -- you have enough to pay for upgrades.
+   -- if unit.variables["advancement"] == nil then
+   --    unit.variables["advancement"] = 0
+   -- end
+   if unit.variables["advancement"] ~= nil and unit.variables["advancement"] >= cost
    and (cap == false or current < cap) then
       unit.variables["advancement"] = unit.variables["advancement"] - cost
       if unit.variables["upgrade"..choice] == nil then
@@ -68,8 +71,10 @@ function upgrade_unit(choice, cost, current, cap)
       elseif choice == "Dexterity" then
          debugOut("Dexterity is not yet implemented.")
       elseif choice == "Intelligence" then
-         debugOut("Intelligence is not yet implemented.")
+         change_unit_max_experience(e.x1, e.y1, unit_data.max_experience * .8)
       end
+   else
+      wesnoth.message("Error", "You cannot get that upgrade right now.")
    end
 end
 

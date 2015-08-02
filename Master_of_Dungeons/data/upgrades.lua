@@ -42,9 +42,9 @@ upgrade_table = {
     {
        name   = "Intelligence",
        image  = "attacks/faerie-fire.png",
-       msg    = "-20%% XP to next promotion",
+       msg    = "-20%% XP to promotion or AMLA",
        cost   = 2,
-       cap    = 2,
+       cap    = 1,
        effect = "",
     },
 }
