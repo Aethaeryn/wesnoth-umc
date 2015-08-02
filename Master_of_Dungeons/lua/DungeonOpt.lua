@@ -55,10 +55,10 @@ DungeonOpt = {
                 -- If $unit_cost is used, it is replaced with the default cost of that unit.
                 -- This assumes the unit is in the first input and any non-nil location of $unit will run this code.
                 if string.find(out_message, "%$unit") or string.find(out_message, "%$unit") then
-                   out_message = string.gsub(out_message, "$unit_image", wesnoth.get_unit_type(input[1]).__cfg.image)
-                   out_code    = string.gsub(out_code,    "$unit_image", wesnoth.get_unit_type(input[1]).__cfg.image)
-                   out_message = string.gsub(out_message, "$unit_cost", wesnoth.get_unit_type(input[1]).cost)
-                   out_code    = string.gsub(out_code,    "$unit_cost", wesnoth.get_unit_type(input[1]).cost)
+                   out_message = string.gsub(out_message, "$unit_image", wesnoth.unit_types[input[1]].__cfg.image)
+                   out_code    = string.gsub(out_code,    "$unit_image", wesnoth.unit_types[input[1]].__cfg.image)
+                   out_message = string.gsub(out_message, "$unit_cost", wesnoth.unit_types[input[1]].cost)
+                   out_code    = string.gsub(out_code,    "$unit_cost", wesnoth.unit_types[input[1]].cost)
                 end
 
                 -- This is a basic WML table for a Lua-runnning [option] that should serve most purposes.

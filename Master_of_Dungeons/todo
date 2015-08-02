@@ -115,7 +115,6 @@ Each top level point removed yields 2% completion.
        * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
        * BUG: Shops can be placed on impassable and unwalkable territory. This shouldn't happen.
        * BUG: Fix icon size for Summon <foo> and Summon Summoner.
-       * BUG: Fix deprecated code when Lua warnings pop up.
        * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc.
