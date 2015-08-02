@@ -22,7 +22,11 @@ function chest_remove(name)
    local unit = wesnoth.get_unit(e.x1, e.y1)
 
    game_containers[coords]["chest"][name] = game_containers[coords]["chest"][name] - 1
-   unit.variables[name] = unit.variables[name] + 1
+   if unit.variables[name] == nil then
+      unit.variables[name] = 1
+   else
+      unit.variables[name] = unit.variables[name] + 1
+   end
 end
 
 function shop_buy(name)
@@ -30,8 +34,13 @@ function shop_buy(name)
    local coords = e.x1 * 1000 + e.y1
    local unit = wesnoth.get_unit(e.x1, e.y1)
 
+   -- Check to make sure you have enough money first.
    game_containers[coords]["shop"][name] = game_containers[coords]["shop"][name] - 1
-   unit.variables[name] = unit.variables[name] - 1
+   if unit.variables[name] == nil then
+      unit.variables[name] = 1
+   else
+      unit.variables[name] = unit.variables[name] + 1
+   end
 end
 
 function clear_game_object()

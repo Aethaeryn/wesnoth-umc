@@ -6,7 +6,6 @@ Each top level point removed yields 2% completion.
   - Upgrades
   - Shops and Chests
     * Any unit on a hex should be able to buy items from shops if they have the money.
-    * BUG: Fix error on removing from chest (and probably a shop) an item that the unit hasn't had yet.
 
  (1) Inventory Containers
        * Templates:
