@@ -52,7 +52,7 @@ function item_use(name)
    end
 end
 
-function add_item(name, quantity, start_only)
+function add_unit_item(name, quantity, start_only)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
 
@@ -63,7 +63,26 @@ function add_item(name, quantity, start_only)
    end
 end
 
-function submenu_inventory_quantity(item)
+function add_container_item(name, quantity, container_add, start_only)
+   local e = wesnoth.current.event_context
+   local coords = e.x1 * 1000 + e.y1
+   local container = ""
+   if container_add == "chest_modify" then
+      container = "chest"
+   elseif container_add == "shop_modify" then
+      container = "shop"
+   end
+   if game_containers[coords][container] == nil then
+      debugOut(container)
+   end
+   if game_containers[coords][container][name] == nil then
+      game_containers[coords][container][name] = quantity
+   elseif start_only == false then
+      game_containers[coords][container][name] = game_containers[coords][container][name] + quantity
+   end
+end
+
+function submenu_inventory_quantity(item, container)
    wesnoth.fire("message", {
                    speaker  = "narrator",
                    message  = "How much of "..item.." do you want to give?",
@@ -76,14 +95,16 @@ function submenu_inventory_quantity(item)
                    }
                 }
              )
-
    local item_count = wesnoth.get_variable("place_"..item)
-
    if item_count < 0 then
       item_count = 0
    end
-
-   add_item(item, item_count, false)
+   debugOut(container)
+   if container == "unit_inventory_modify" then
+      add_unit_item(item, item_count, false)
+   else
+      add_container_item(item, item_count, container, false)
+   end
 end
 
 function submenu_inventory(context, container)
@@ -125,18 +146,20 @@ function submenu_inventory(context, container)
          run = "shop_buy('$input1')"
       end
       opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\nQuantity: $input4\n$input5"
-
       if unit then
          option_find(unit.variables)
       else
          option_find(container)
       end
-
+   elseif context == "chest_modify" or context == "shop_modify" then
+      msg = "Which item do you want to add?"
+      opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\n$input4"
+      run = "submenu_inventory_quantity('$input1', '"..context.."')"
+      option_find_all()
    elseif context == "unit_add" then
       msg = "Which item do you want to add?"
       opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\n$input4"
-      run = "submenu_inventory_quantity('$input1', false)"
-
+      run = "submenu_inventory_quantity('$input1', 'unit_inventory_modify')"
       option_find_all()
    end
 

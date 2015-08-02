@@ -43,11 +43,10 @@ function clear_game_object()
    game_containers[coords] = nil
 end
 
+-- todo "Investigate Drop"
 function interact_do(selection)
    local e = wesnoth.current.event_context
    local coords = e.x1 * 1000 + e.y1
-
-   -- todo: "Investigate Drop"
 
    if selection == "Visit Shop" then
       submenu_inventory('visit_shop', game_containers[coords]["shop"])
@@ -64,49 +63,65 @@ function interact_do(selection)
    end
 end
 
-function at_container()
+function modify_container_do(selection)
    local e = wesnoth.current.event_context
    local coords = e.x1 * 1000 + e.y1
 
-   if game_containers[coords] ~= nil then
-      return true
-   else
-      return false
+   if selection == "Modify Shop" then
+      submenu_inventory('shop_modify', game_containers[coords]["shop"])
+   elseif selection == "Modify Chest" then
+      submenu_inventory('chest_modify', game_containers[coords]["chest"])
    end
 end
 
 function submenu_interact()
    local e = wesnoth.current.event_context
-
    local options = DungeonOpt:new{
       root_message   = "How do you want to interact?",
       option_message = "&$input2= $input1",
       code           = "interact_do('$input1')",
    }
-
    local interactions = {}
-
    local coords = e.x1 * 1000 + e.y1
 
    if game_containers[coords] ~= nil then
       if game_containers[coords]["shop"] ~= nil then
          table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
-
       elseif game_containers[coords]["chest"] ~= nil then
          table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png"})
          table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png"})
-
       elseif game_containers[coords]["pack"] ~= nil then
          table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png"})
-
       elseif game_containers[coords]["gold"] ~= nil then
          table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
       end
    end
-
    options:fire(interactions)
 end
 
+function submenu_modify_container()
+   local e = wesnoth.current.event_context
+   local options = DungeonOpt:new{
+      root_message   = "Which container do you want to modify?",
+      option_message = "&$input2= $input1",
+      code           = "modify_container_do('$input1')",
+   }
+   local interactions = {}
+   local coords = e.x1 * 1000 + e.y1
+
+   if game_containers[coords] ~= nil then
+      if game_containers[coords]["shop"] ~= nil then
+         table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
+      elseif game_containers[coords]["chest"] ~= nil then
+         table.insert(interactions, 1, {"Modify Chest", "items/chest-plain-closed.png"})
+      elseif game_containers[coords]["pack"] ~= nil then
+         table.insert(interactions, 1, {"Modify Drop", "items/leather-pack.png"})
+      elseif game_containers[coords]["gold"] ~= nil then
+         table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
+      end
+   end
+   options:fire(interactions)
+end
 
 function place_object_choose(choice)
    local e = wesnoth.current.event_context

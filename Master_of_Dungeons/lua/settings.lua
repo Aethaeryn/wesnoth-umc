@@ -174,12 +174,12 @@ function option_settings_choose(option)
       feature_toggle('MoD_unit_editor')
    elseif option == "terrain" then
       feature_toggle('MoD_terrain_editor')
-   elseif option == "modify_shop" then
-      menu_modify_shop()
+   elseif option == "container" then
+      submenu_modify_container()
    end
 end
 
-function menu_item_modify_side()
+function menu_item_settings()
    local options = DungeonOpt:new{
       menu_id        = "040_Settings",
       menu_desc      = "Settings",
@@ -190,15 +190,12 @@ function menu_item_modify_side()
       code           = "option_settings_choose('$input1')",
    }
 
-   local opt_list = {{"side", "Modify Side"},
+   local opt_list = {{"container", "Modify Container"},
+                     {"side", "Modify Side"},
                      {"scenario", "New Scenario"},
                      {"summoner", "Toggle Summon Summoners"},
                      {"unit", "Toggle Unit Editor"},
                      {"terrain", "Toggle Terrain Editor"}}
-
-   -- if at_container() then
-   --    table.insert(opt_list, 1, {"modify_shop", "Modify Shop"})
-   -- end
 
    options:menu(opt_list, filter_host("long"))
 end
@@ -209,7 +206,7 @@ function settings()
    modify_unit()
    terrain_editor()
    object_placement()
-   menu_item_modify_side()
+   menu_item_settings()
 end
 >>
 #enddef

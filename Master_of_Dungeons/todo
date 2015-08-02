@@ -4,9 +4,9 @@ Each top level point removed yields 2% completion.
 
  (0) Implement these before the next playtest:
   - Upgrades
-  - Shops
+  - Shops and Chests
     * Any unit on a hex should be able to buy items from shops if they have the money.
-    * The host needs to be able to alter stock of each item in a container (number input).
+    * BUG: Fix error on removing from chest (and probably a shop) an item that the unit hasn't had yet.
 
  (1) Inventory Containers
        * Templates:
@@ -28,7 +28,7 @@ Each top level point removed yields 2% completion.
          * If it dies on a hex with a chest, the inventory is added to the chest, even if it is locked. Be careful!
          * If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
        * Players need to be able to remove items from packs (but not add to them).
-       * The host needs more power with inventory:
+       * The host needs more power with inventory (player and container):
          * Add item amount (implemented).
          * View inventory.
          * Change total quantity.
@@ -123,7 +123,8 @@ Each top level point removed yields 2% completion.
        * FEATURE: Have the host restrict what units are possible for peasants to use (level, etc.)
        * FEATURE: Fix the changing objectives so that it works again.
          * Have the new interface change subsections (victory, loss, etc.) so that formatting can be preserved.
-       * FEATURE: Lock campaign to Default Era or lock it to Default + Khalifate Era and add Khalifate units for desert maps.
+       * FEATURE: Lock campaign to Default Era or lock it to Default + Khalifate Era and add Khalifate units for desert maps?
+       * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
 
  (6) Future
     * Rewrite large parts of the code to make more sense now that it's been years.
@@ -167,5 +168,5 @@ Each top level point removed yields 2% completion.
       * Maybe find a way to keep the shops labelled as long as they are shops like many RPGs do?
     * Add a difficulty mode that restricts what the host can do so more people can play as a fair host?
     * Generalize the API so things like terrain changes can be restricted, have costs, be done by units, etc.?
-    * Require download, but make the Lua imported in a cleaner way and define some custom WML tags.
+    * Require download (as [modification]?), but make the Lua imported in a cleaner way and define some custom WML tags.
       * Make sure that only things that need to be run every side_turn are run then.
