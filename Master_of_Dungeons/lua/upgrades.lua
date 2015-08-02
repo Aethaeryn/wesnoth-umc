@@ -38,7 +38,12 @@ function upgrade_unit(choice, cost, current, cap)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local unit_data = unit.__cfg
-   if unit.variables["advancement"] ~= nil and unit.variables["advancement"] >= cost
+   -- For debugging/testing, uncomment this and comment the test that
+   -- you have enough to pay for upgrades.
+   if unit.variables["advancement"] == nil then
+      unit.variables["advancement"] = 0
+   end
+   if unit.variables["advancement"] ~= nil -- and unit.variables["advancement"] >= cost
    and (cap == false or current < cap) then
       unit.variables["advancement"] = unit.variables["advancement"] - cost
       if unit.variables["upgrade"..choice] == nil then

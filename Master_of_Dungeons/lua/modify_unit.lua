@@ -29,6 +29,13 @@ function change_unit_max_moves(x, y, change)
    wesnoth.put_unit(x, y, unit_data)
 end
 
+function change_unit_max_experience(x, y, change)
+   local unit = wesnoth.get_unit(x, y)
+   local unit_data = unit.__cfg
+   unit_data.max_experience = change
+   wesnoth.put_unit(x, y, unit_data)
+end
+
 function change_unit_stat(stat)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
@@ -60,7 +67,7 @@ function change_unit_stat(stat)
    elseif stat == "Experience" then
       unit_data.experience = change
    elseif stat == "Max Experience" then
-      unit_data.max_experience = change
+      change_unit_max_experience(e.x1, e.y1, change)
    elseif stat == "Gender" then
       if unit_data.gender == "male" then
          unit_data.gender = "female"
@@ -74,7 +81,7 @@ function change_unit_stat(stat)
          unit_data.canrecruit = true
       end
    end
-   if not (stat == "Max Hitpoints" or stat == "Moves") then
+   if not (stat == "Max Hitpoints" or stat == "Moves" or stat == "Max Experience") then
       wesnoth.put_unit(e.x1, e.y1, unit_data)
    end
 

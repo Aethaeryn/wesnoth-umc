@@ -5,7 +5,6 @@ When this list is complete/empty and extensive testing and bugfixing has been do
     - Strength
     - Dexterity
     - Intelligence
-    - Unit upgrades are probably not carried over on promotions. They are carried over on AMLA.
 
  (1) Inventory Containers (3%)
        * Templates:
@@ -74,6 +73,7 @@ When this list is complete/empty and extensive testing and bugfixing has been do
        * Toggle the boss healthy/regenerate on/off.
          * Perhaps give bosses extra traits so this doesn't break.
        * Make sure that everything that can be done in Lua to a unit is doable somehow.
+       * Allow modifying attacks and traits if possible.
      * Add a way to control the recalling of units and recall lists.
        * Prevent the traditional keep-and-gold recalling of units.
        * Make sure that NPCs/enemies can be recalled, not just player summons.
@@ -103,10 +103,13 @@ When this list is complete/empty and extensive testing and bugfixing has been do
          * Fix some bridges and other broken overlays.
        * Move a lot of terrains into overlays only (villages, forests, etc.)
      * Check how inventory's effects interact if promoted while the effect is still on.
-       * Also check to make sure inventory is kept.
+     * Check if upgrades are preserved on promotions. (They are on AMLAs.)
 
  (5) Issues (3%)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
+       * VERY MAJOR BUG: Upgrades and Change Unit Stats stuff are kept on AMLAs, but not on promotions.
+         * Except gender is kept on promotion.
+         * But if the gender changes and there is a promotion , the portrait is locked into the male portrait of the original unit.
        * MAJOR BUG: Handle Add to Chest when you have no inventory.
        * MAJOR BUG: Fix changing summoner role when cancelling.
        * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
@@ -114,7 +117,7 @@ When this list is complete/empty and extensive testing and bugfixing has been do
        * BUG: Fix icon size for Summon <foo> and Summon Summoner.
        * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
-       * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc.
+       * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
        * BUG: Display dashes instead of underscores in the menu for Qatif_al_nar/Qatif-al-nar
        * FEATURE: Replace non-debug uses of wesnoth.message() with a player-specific message box instead.
        * FEATURE: When something spawns on a village they don't own they should lose all movement and take the village.
@@ -127,8 +130,6 @@ When this list is complete/empty and extensive testing and bugfixing has been do
  (6) Future
     * Rewrite large parts of the code to make more sense now that it's been years.
       * If possible, move the stuff that doesn't require activation every side_turn to some other spot.
-    * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
-      * Allow modifying attacks and traits if possible.
     * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
       * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
       * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
