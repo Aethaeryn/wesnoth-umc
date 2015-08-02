@@ -1,6 +1,5 @@
 MASTER OF DUNGEONS TODO LIST (86% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
-Each top level point removed yields 2% completion.
 
   - Upgrades
     - Strength
@@ -8,7 +7,7 @@ Each top level point removed yields 2% completion.
     - Intelligence
     - Unit upgrades are probably not carried over on promotions. They are carried over on AMLA.
 
- (1) Inventory Containers
+ (1) Inventory Containers (3%)
        * Templates:
          * Have tiered templates for quick-stocking shops.
          * Have tiered templates for quick-stocking chests.
@@ -37,7 +36,7 @@ Each top level point removed yields 2% completion.
          * The interface should be identical for containers, except with templates for containers.
          * In fact, units could have templates too once drops are implemented.
 
- (2) Interaction
+ (2) Interaction (2%)
        * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
        * Add interaction with neighboring tiles for units and for shops. Chests/gold should require you to be on the hex.
          * Hostile units on the shop hex should block shop use, though.
@@ -50,7 +49,7 @@ Each top level point removed yields 2% completion.
        * This means those units (like zombies) can't use Unit Commands, either, but host can give them items and they can get items and equipment inherited if they were plagued.
          * This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
 
- (3) Inventory
+ (3) Inventory (2%)
      (a) Haste potion.
          * Extra melee strike, +2 total moves.
          * Small = 2 turns, Medium = 4 turns.
@@ -92,12 +91,9 @@ Each top level point removed yields 2% completion.
        * Make the toggle <foo> in settings say what the current state is.
        * Rewrite to be a function instead of an object?
     * Summoners.
-       * Khalifate units?
        * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
          * Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
          * Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
-       * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
-         * Allow modifying attacks and traits if possible.
      * Terrains.
        * Make sure new 1.10 and 1.12 terrains are in the game. All terrains, etc., in the game should be usable.
        * Clean up overlay code.
@@ -107,8 +103,9 @@ Each top level point removed yields 2% completion.
          * Fix some bridges and other broken overlays.
        * Move a lot of terrains into overlays only (villages, forests, etc.)
      * Check how inventory's effects interact if promoted while the effect is still on.
+       * Also check to make sure inventory is kept.
 
- (5) Issues (Discovered through playtesting.)
+ (5) Issues (3%)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
        * MAJOR BUG: Handle Add to Chest when you have no inventory.
        * MAJOR BUG: Fix changing summoner role when cancelling.
@@ -118,18 +115,20 @@ Each top level point removed yields 2% completion.
        * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc.
+       * BUG: Display dashes instead of underscores in the menu for Qatif_al_nar/Qatif-al-nar
        * FEATURE: Replace non-debug uses of wesnoth.message() with a player-specific message box instead.
        * FEATURE: When something spawns on a village they don't own they should lose all movement and take the village.
        * FEATURE: When people are peasants on one of the two Intro maps (i.e. they died or it's a new campaign), let them pick a new unit.
        * FEATURE: Have the host restrict what units are possible for peasants to use (level, etc.)
        * FEATURE: Fix the changing objectives so that it works again.
          * Have the new interface change subsections (victory, loss, etc.) so that formatting can be preserved.
-       * FEATURE: Lock campaign to Default Era or lock it to Default + Khalifate Era and add Khalifate units for desert maps?
        * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
 
  (6) Future
     * Rewrite large parts of the code to make more sense now that it's been years.
       * If possible, move the stuff that doesn't require activation every side_turn to some other spot.
+    * Make sure that all reasonable things that can be modified in Lua and/or WML are available to host menus.
+      * Allow modifying attacks and traits if possible.
     * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
       * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
       * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).

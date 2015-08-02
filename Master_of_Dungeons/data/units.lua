@@ -3,7 +3,7 @@
 SIDES = {1, 2, 3, 4, 5, 6, 7, 8}
 
 SUMMON_ROLES = {"Undead", "Nature", "Elves", "Fire", "Loyalists", "Outlaws",
-                "Orcs", "Dwarves", "Earth", "Swamp", "Water"}
+                "Orcs", "Dwarves", "Earth", "Swamp", "Water", "Khalifate"}
 
 PORTRAIT = {
    Undead    = "portraits/undead/transparent/spectre.png",
@@ -17,6 +17,7 @@ PORTRAIT = {
    Earth     = "portraits/trolls/transparent/troll.png",
    Swamp     = "portraits/saurians/transparent/augur.png",
    Water     = "portraits/merfolk/transparent/priestess.png",
+   Khalifate = "portraits/khalifate/transparent/hakim.png",
 }
 
 summoners = {
@@ -99,6 +100,15 @@ summoners = {
       "Mermaid Priestess",
       "Mermaid Diviner",
    },
+
+   Khalifate = {
+      "Arif",
+      "Ghazi",
+      "Mudafi",
+      "Shuja",
+      "Rasikh",
+      "Khalid",
+   },
 }
 
 regular = {
@@ -107,7 +117,6 @@ regular = {
          "Walking Corpse",
          "Vampire Bat",
       },
-
       ['Level 1'] = {
          "Soulless",
          "Skeleton Archer",
@@ -116,7 +125,6 @@ regular = {
          "Ghost",
          "Blood Bat",
       },
-
       ['Level 2'] = {
          "Bone Shooter",
          "Necrophage",
@@ -127,7 +135,6 @@ regular = {
          "Shadow",
          "Wraith",
       },
-
       ['Level 3'] = {
          "Banebow",
          "Ghast",
@@ -136,7 +143,6 @@ regular = {
          "Nightgaunt",
          "Spectre",
       },
-
       ['Level 4'] = {
          "Skeletal Dragon",
       },
@@ -148,7 +154,6 @@ regular = {
          "Mudcrawler",
          "Giant Rat",
       },
-
       ['Level 1'] = {
          "Elder Falcon",
          "Giant Mudcrawler",
@@ -157,14 +162,12 @@ regular = {
          "Wolf",
          "Wose",
       },
-
       ['Level 2'] = {
          "Elder Wose",
          "Ogre",
          "Great Wolf",
          "Gryphon",
       },
-
       ['Level 3'] = {
          "Ancient Wose",
          "Direwolf",
@@ -178,7 +181,6 @@ regular = {
          "Elvish Archer",
          "Elvish Scout",
       },
-
       ['Level 2'] = {
          "Elvish Rider",
          "Elvish Captain",
@@ -186,7 +188,6 @@ regular = {
          "Elvish Marksman",
          "Elvish Ranger",
       },
-
       ['Level 3'] = {
          "Elvish Outrider",
          "Elvish Champion",
@@ -205,7 +206,6 @@ regular = {
          "Fire Guardian",
          "Drake Burner",
       },
-
       ['Level 2'] = {
          "Sky Drake",
          "Drake Warrior",
@@ -214,7 +214,6 @@ regular = {
          "Drake Flare",
          "Fire Drake",
       },
-
       ['Level 3'] = {
          "Drake Flameheart",
          "Inferno Drake",
@@ -223,11 +222,9 @@ regular = {
          "Drake Blademaster",
          "Hurricane Drake",
       },
-
       ['Level 4'] ={
          "Armageddon Drake",
       },
-
       ['Level 5'] = {
          "Fire Dragon",
       },
@@ -238,7 +235,6 @@ regular = {
          "Peasant",
          "Woodsman",
       },
-
       ['Level 1'] = {
          "Bowman",
          "Spearman",
@@ -247,7 +243,6 @@ regular = {
          "Heavy Infantryman",
          "Horseman",
       },
-
       ['Level 2'] = {
          "Javelineer",
          "Pikeman",
@@ -259,7 +254,6 @@ regular = {
          "Knight",
          "Lancer",
       },
-
       ['Level 3'] = {
          "Royal Guard",
          "Royal Warrior",
@@ -278,19 +272,16 @@ regular = {
          "Ruffian",
          "Woodsman",
       },
-
       ['Level 1'] = {
          "Thief",
          "Thug",
          "Footpad",
       },
-
       ['Level 2'] = {
          "Bandit",
          "Rogue",
          "Outlaw",
       },
-
       ['Level 3'] = {
          "Assassin",
          "Highwayman",
@@ -302,7 +293,6 @@ regular = {
       ['Level 0'] = {
          "Goblin Spearman",
       },
-
       ['Level 1'] = {
          "Orcish Grunt",
          "Goblin Impaler",
@@ -311,7 +301,6 @@ regular = {
          "Orcish Assassin",
          "Wolf Rider",
       },
-
       ['Level 2'] = {
          "Orcish Crossbowman",
          "Orcish Warrior",
@@ -319,7 +308,6 @@ regular = {
          "Goblin Knight",
          "Orcish Slayer",
       },
-
       ['Level 3'] = {
          "Direwolf Rider",
          "Orcish Slurbow",
@@ -335,7 +323,6 @@ regular = {
          "Dwarvish Ulfserker",
          "Gryphon Rider",
       },
-
       ['Level 2'] = {
          "Dwarvish Pathfinder",
          "Dwarvish Thunderguard",
@@ -343,7 +330,6 @@ regular = {
          "Dwarvish Berserker",
          "Gryphon Master",
       },
-
       ['Level 3'] = {
          "Dwarvish Sentinel",
          "Dwarvish Explorer",
@@ -355,24 +341,20 @@ regular = {
       ['Level 0'] = {
          "Mudcrawler",
       },
-
       ['Level 1'] = {
          "Giant Mudcrawler",
          "Troll Whelp",
       },
-
       ['Level 2'] = {
          "Troll",
          "Troll Rocklobber",
          "Troll Hero",
       },
-
       ['Level 3'] = {
          "Troll Warrior",
          "Great Troll",
          "Giant Spider",
       },
-
       ['Level 4'] ={
          "Yeti",
       },
@@ -382,18 +364,15 @@ regular = {
       ['Level 0'] = {
          "Mudcrawler",
       },
-
       ['Level 1'] = {
          "Giant Mudcrawler",
          "Naga Fighter",
          "Saurian Skirmisher",
       },
-
       ['Level 2'] = {
          "Naga Warrior",
          "Saurian Ambusher",
       },
-
       ['Level 3'] = {
          "Naga Myrmidon",
          "Saurian Flanker",
@@ -406,7 +385,6 @@ regular = {
          "Merman Fighter",
          "Merman Hunter",
       },
-
       ['Level 2'] = {
          "Merman Warrior",
          "Merman Netcaster",
@@ -414,7 +392,6 @@ regular = {
          "Water Serpent",
          "Cuttle Fish",
       },
-
       ['Level 3'] = {
          "Merman Hoplite",
          "Merman Triton",
@@ -423,6 +400,33 @@ regular = {
          "Sea Serpent",
       },
    },
+
+   Khalifate = {
+      ['Level 1'] = {
+         "Hakim",
+         "Jundi",
+         "Khaiyal",
+         "Naffat",
+         "Rami",
+      },
+      ['Level 2'] = {
+         "Tabib",
+         "Monawish",
+         "Muharib",
+         "Faris",
+         "Qanas",
+         "Qatif_al_nar",
+         "Saree",
+      },
+      ['Level 3'] = {
+         "Mighwar",
+         "Batal",
+         "Mufariq",
+         "Hadaf",
+         "Tineen",
+         "Jawal",
+      }
+   }
 }
 >>
 #enddef
