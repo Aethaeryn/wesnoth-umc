@@ -1,10 +1,7 @@
 MASTER OF DUNGEONS TODO LIST (86% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 
-  - Upgrades
-    - Strength
-    - Dexterity
-    - Intelligence
+  - Intelligence (upgrade + upgrade again on non-AMLA promotion)
 
  (1) Inventory Containers (3%)
        * Templates:
@@ -68,6 +65,8 @@ When this list is complete/empty and extensive testing and bugfixing has been do
          * Fireball (new ranged attack for one turn)
 
  (4) Details (4%)
+     * Add strength and dexterity upgrades.
+       * They probably need to be implemented differently, with [object]
      * Make the host modification/management of units more powerful.
        * Make sure to handle negative numbers properly.
        * Toggle the boss healthy/regenerate on/off.
@@ -104,12 +103,12 @@ When this list is complete/empty and extensive testing and bugfixing has been do
        * Move a lot of terrains into overlays only (villages, forests, etc.)
      * Check how inventory's effects interact if promoted while the effect is still on.
      * Check if upgrades are preserved on promotions. (They are on AMLAs.)
+     * Don't have XP to next AMLA increase each AMLA?
+     * Let Sylphs and/or Shydes disguise themselves as regular Elvish Ladies.
+       * They would stay as summoners but lose the icon, being the only stealth summoners in the game.
 
  (5) Issues (3%)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
-       * VERY MAJOR BUG: Upgrades and Change Unit Stats stuff are kept on AMLAs, but not on promotions.
-         * Except gender is kept on promotion.
-         * But if the gender changes and there is a promotion , the portrait is locked into the male portrait of the original unit.
        * MAJOR BUG: Handle Add to Chest when you have no inventory.
        * MAJOR BUG: Fix changing summoner role when cancelling.
        * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
@@ -117,11 +116,17 @@ When this list is complete/empty and extensive testing and bugfixing has been do
        * BUG: Fix icon size for Summon <foo> and Summon Summoner.
        * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
+         * In fact, it locks the unit into the old portrait even if it promotes.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
        * BUG: Display dashes instead of underscores in the menu for Qatif_al_nar/Qatif-al-nar
        * FEATURE: Replace non-debug uses of wesnoth.message() with a player-specific message box instead.
        * FEATURE: When something spawns on a village they don't own they should lose all movement and take the village.
        * FEATURE: When people are peasants on one of the two Intro maps (i.e. they died or it's a new campaign), let them pick a new unit.
+         * data/units.lua probably can be reused if summoners are added to the regular unit list, but then filtered out in the actual Summon Foo
+         * This menu can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
+           * Just make sure they're loyal.
+           * Or find a way to get rid of unit upkeep altogether instead of making everything loyal.
+         * This menu could also then replace the textbox in Transform.
        * FEATURE: Have the host restrict what units are possible for peasants to use (level, etc.)
        * FEATURE: Fix the changing objectives so that it works again.
          * Have the new interface change subsections (victory, loss, etc.) so that formatting can be preserved.
@@ -153,10 +158,7 @@ When this list is complete/empty and extensive testing and bugfixing has been do
       * When units die they are saved in a resurrection table.
       * The host can resurrect a unit. (rematches of old bosses?)
       * A resurrection spell on a scroll should be able to resurrect a unit too.
-    * Allow the placement of any unit instantly via textbox like Transform.
-      * Very useful for villages of NPCs with no summoners, or very weak non-mini-boss enemy encounters.
-      * Make sure they're loyal like summoned units.
-      * Make sure they can optionally gain healthy/regenerates if turned into a summoner.
+    * Make sure units can optionally gain healthy/regenerates if turned into a summoner.
     * Allow import of units saved in persistant variables. (Across scenarios? Is this Change Unit > Save?)
     * Allow the saving of items (in chests/shops too?), etc., across scenarios in a campaign.
     * Story-important, unsellable items.

@@ -3,16 +3,24 @@
 is_amla = false
 
 function event_post_advance()
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
+   local unit_data = unit.__cfg
+   -- No AMLA bonus HP.
    if is_amla == true then
-      local e = wesnoth.current.event_context
-      local unit = wesnoth.get_unit(e.x1, e.y1).__cfg
-
-      unit.max_hitpoints = unit.max_hitpoints - 3
-      unit.hitpoints = unit.max_hitpoints
-
-      wesnoth.put_unit(e.x1, e.y1, unit)
-
+      unit_data.max_hitpoints = unit_data.max_hitpoints - 3
+      unit_data.hitpoints = unit_data.max_hitpoints
+      wesnoth.put_unit(e.x1, e.y1, unit_data)
       is_amla = false
+   -- If it's a regular promotion we need to keep the upgrades that
+   -- were set.
+   else
+      if unit.variables["upgradeSpeed"] ~= nil then
+         change_unit_max_moves(e.x1, e.y1, unit_data.max_moves + unit.variables["upgradeSpeed"])
+      end
+      if unit.variables["upgradeResilience"] ~= nil then
+         change_unit_max_hitpoints(e.x1, e.y1, unit_data.max_hitpoints + (unit.variables["upgradeResilience"] * 4))
+      end
    end
 end
 

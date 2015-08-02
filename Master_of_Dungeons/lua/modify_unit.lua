@@ -7,33 +7,30 @@ function change_side(new_side)
 end
 
 function change_unit_max_hitpoints(x, y, change)
-   local unit = wesnoth.get_unit(x, y)
-   local unit_data = unit.__cfg
+   local unit = wesnoth.get_unit(x, y).__cfg
    -- Full health units stay at full health. Units with more health
    -- than the new max have to lose health.
-   if unit_data.hitpoints == unit_data.max_hitpoints
-   or unit_data.hitpoints > change then
-      unit_data.hitpoints = change
+   if unit.hitpoints == unit.max_hitpoints
+   or unit.hitpoints > change then
+      unit.hitpoints = change
    end
-   unit_data.max_hitpoints = change
-   wesnoth.put_unit(x, y, unit_data)
+   unit.max_hitpoints = change
+   wesnoth.put_unit(x, y, unit)
 end
 
 function change_unit_max_moves(x, y, change)
-   local unit = wesnoth.get_unit(x, y)
-   local unit_data = unit.__cfg
-   if unit_data.moves == unit_data.max_moves then
-      unit_data.moves = change
+   local unit = wesnoth.get_unit(x, y).__cfg
+   if unit.moves == unit.max_moves then
+      unit.moves = change
    end
-   unit_data.max_moves = change
-   wesnoth.put_unit(x, y, unit_data)
+   unit.max_moves = change
+   wesnoth.put_unit(x, y, unit)
 end
 
 function change_unit_max_experience(x, y, change)
-   local unit = wesnoth.get_unit(x, y)
-   local unit_data = unit.__cfg
-   unit_data.max_experience = change
-   wesnoth.put_unit(x, y, unit_data)
+   local unit = wesnoth.get_unit(x, y).__cfg
+   unit.max_experience = change
+   wesnoth.put_unit(x, y, unit)
 end
 
 function change_unit_stat(stat)
