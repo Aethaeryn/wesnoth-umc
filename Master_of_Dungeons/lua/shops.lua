@@ -1,27 +1,28 @@
 #define MOD_LUA_SHOPS
 <<
--- Because map coordinates are at most three digits right now,
--- any location on the map can be represented in one dimension
--- by x * 1000 + y.
 if game_containers == nil then
    game_containers = {}
 end
 
+function check_x_coord(x)
+   if game_containers[x] == nil then
+      game_containers[x] = {}
+   end
+end
+
 function chest_add(name)
    local e = wesnoth.current.event_context
-   local coords = e.x1 * 1000 + e.y1
    local unit = wesnoth.get_unit(e.x1, e.y1)
-
-   game_containers[coords]["chest"][name] = game_containers[coords]["chest"][name] + 1
+   check_x_coord(e.x1)
+   game_containers[e.x1][e.y1]["chest"][name] = game_containers[e.x1][e.y1]["chest"][name] + 1
    unit.variables[name] = unit.variables[name] - 1
 end
 
 function chest_remove(name)
    local e = wesnoth.current.event_context
-   local coords = e.x1 * 1000 + e.y1
    local unit = wesnoth.get_unit(e.x1, e.y1)
-
-   game_containers[coords]["chest"][name] = game_containers[coords]["chest"][name] - 1
+   check_x_coord(e.x1)
+   game_containers[e.x1][e.y1]["chest"][name] = game_containers[e.x1][e.y1]["chest"][name] - 1
    if unit.variables[name] == nil then
       unit.variables[name] = 1
    else
@@ -31,9 +32,9 @@ end
 
 function shop_buy(name)
    local e = wesnoth.current.event_context
-   local coords = e.x1 * 1000 + e.y1
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local price = 99999
+   check_x_coord(e.x1)
    for i, item in ipairs(item_table) do
       if item.name == name then
          price = item.price
@@ -41,7 +42,7 @@ function shop_buy(name)
    end
    if wesnoth.sides[side_number]["gold"] >= price then
       wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] - price
-      game_containers[coords]["shop"][name] = game_containers[coords]["shop"][name] - 1
+      game_containers[e.x1][e.y1]["shop"][name] = game_containers[e.x1][e.y1]["shop"][name] - 1
       if unit.variables[name] == nil then
          unit.variables[name] = 1
       else
@@ -55,21 +56,21 @@ end
 function clear_game_object()
    local e = wesnoth.current.event_context
    w_items.remove(e.x1, e.y1)
-
-   local coords = e.x1 * 1000 + e.y1
-
-   game_containers[coords] = nil
+   if game_containers[e.x1] ~= nil then
+      game_containers[e.x1][e.y1] = nil
+   end
 end
 
 -- todo "Investigate Drop"
-function interact_do(selection, coords)
+function interact_do(selection, x, y)
+   check_x_coord(x)
    if selection == "Visit Shop" then
-      submenu_inventory('visit_shop', game_containers[coords]["shop"])
+      submenu_inventory('visit_shop', game_containers[x][y]["shop"])
    elseif selection == "Collect Gold" then
-      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[coords]["gold"]
+      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[x][y]["gold"]
       clear_game_object()
    elseif selection == "Remove from Chest" then
-      submenu_inventory('chest_remove', game_containers[coords]["chest"])
+      submenu_inventory('chest_remove', game_containers[x][y]["chest"])
    elseif selection == "Add to Chest" then
       submenu_inventory('chest_add', false)
    end
@@ -77,12 +78,11 @@ end
 
 function modify_container_do(selection)
    local e = wesnoth.current.event_context
-   local coords = e.x1 * 1000 + e.y1
-
+   check_x_coord(e.x1)
    if selection == "Modify Shop" then
-      submenu_inventory('shop_modify', game_containers[coords]["shop"])
+      submenu_inventory('shop_modify', game_containers[e.x1][e.y1]["shop"])
    elseif selection == "Modify Chest" then
-      submenu_inventory('chest_modify', game_containers[coords]["chest"])
+      submenu_inventory('chest_modify', game_containers[e.x1][e.y1]["chest"])
    end
 end
 
@@ -91,20 +91,20 @@ function submenu_interact()
    local options = DungeonOpt:new{
       root_message   = "How do you want to interact?",
       option_message = "&$input2= $input1",
-      code           = "interact_do('$input1', $input3)",
+      code           = "interact_do('$input1', $input3, $input4)",
    }
    local interactions = {}
-   local coords = e.x1 * 1000 + e.y1
-   if game_containers[coords] ~= nil then
-      if game_containers[coords]["shop"] ~= nil then
-         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png", coords})
-      elseif game_containers[coords]["chest"] ~= nil then
-         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png", coords})
-         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png", coords})
-      elseif game_containers[coords]["pack"] ~= nil then
-         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png", coords})
-      elseif game_containers[coords]["gold"] ~= nil then
-         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png", coords})
+   check_x_coord(e.x1)
+   if game_containers[e.x1][e.y1] ~= nil then
+      if game_containers[e.x1][e.y1]["shop"] ~= nil then
+         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png", e.x1, e.y1})
+      elseif game_containers[e.x1][e.y1]["chest"] ~= nil then
+         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png", e.x1, e.y1})
+         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png", e.x1, e.y1})
+      elseif game_containers[e.x1][e.y1]["pack"] ~= nil then
+         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png", e.x1, e.y1})
+      elseif game_containers[e.x1][e.y1]["gold"] ~= nil then
+         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png", e.x1, e.y1})
       end
    end
    options:fire(interactions)
@@ -118,16 +118,15 @@ function submenu_modify_container()
       code           = "modify_container_do('$input1')",
    }
    local interactions = {}
-   local coords = e.x1 * 1000 + e.y1
-
-   if game_containers[coords] ~= nil then
-      if game_containers[coords]["shop"] ~= nil then
+   check_x_coord(e.x1)
+   if game_containers[e.x1][e.y1] ~= nil then
+      if game_containers[e.x1][e.y1]["shop"] ~= nil then
          table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
-      elseif game_containers[coords]["chest"] ~= nil then
+      elseif game_containers[e.x1][e.y1]["chest"] ~= nil then
          table.insert(interactions, 1, {"Modify Chest", "items/chest-plain-closed.png"})
-      elseif game_containers[coords]["pack"] ~= nil then
+      elseif game_containers[e.x1][e.y1]["pack"] ~= nil then
          table.insert(interactions, 1, {"Modify Drop", "items/leather-pack.png"})
-      elseif game_containers[coords]["gold"] ~= nil then
+      elseif game_containers[e.x1][e.y1]["gold"] ~= nil then
          table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
       end
    end
@@ -140,17 +139,13 @@ function place_object_choose(choice)
    local function simple_place(type, image, inventory)
       clear_game_object()
       w_items.place_image(e.x1, e.y1, image)
-
-      local coords = e.x1 * 1000 + e.y1
-
-      game_containers[coords] = {}
-      game_containers[coords][type] = {}
-
+      check_x_coord(e.x1)
+      game_containers[e.x1][e.y1] = {}
+      game_containers[e.x1][e.y1][type] = {}
       if inventory == true then
          for i, v in ipairs(item_table) do
             item_name = v["name"]
-
-            game_containers[coords][type][item_name] = 0
+            game_containers[e.x1][e.y1][type][item_name] = 0
          end
       end
    end

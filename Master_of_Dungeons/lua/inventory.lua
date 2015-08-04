@@ -65,17 +65,17 @@ end
 
 function add_container_item(name, quantity, container_add, start_only)
    local e = wesnoth.current.event_context
-   local coords = e.x1 * 1000 + e.y1
+   check_x_coord(e.x1)
    local container = ""
    if container_add == "chest_modify" then
       container = "chest"
    elseif container_add == "shop_modify" then
       container = "shop"
    end
-   if game_containers[coords][container][name] == nil then
-      game_containers[coords][container][name] = quantity
+   if game_containers[e.x1][e.y1][container][name] == nil then
+      game_containers[e.x1][e.y1][container][name] = quantity
    elseif start_only == false then
-      game_containers[coords][container][name] = game_containers[coords][container][name] + quantity
+      game_containers[e.x1][e.y1][container][name] = game_containers[e.x1][e.y1][container][name] + quantity
    end
 end
 

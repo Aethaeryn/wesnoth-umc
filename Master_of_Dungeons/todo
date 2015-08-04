@@ -109,8 +109,6 @@ When this list is complete/empty and extensive testing and bugfixing has been do
 
  (5) Issues (3%)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
-       * MAJOR BUG: Handle Add to Chest when you have no inventory.
-       * MAJOR BUG: Fix changing summoner role when cancelling.
        * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
        * BUG: Shops can be placed on impassable and unwalkable territory. This shouldn't happen.
        * BUG: Fix icon size for Summon <foo> and Summon Summoner.
