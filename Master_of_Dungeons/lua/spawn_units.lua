@@ -5,16 +5,6 @@ spawn_units = {}
 -- These are impassable terrains, used to blacklist summoning there.
 spawn_units.bad_terrain = "X*, Q*, *^Xm, Mv"
 
--- Turns a simple table of units or options into one that includes the
--- type.
-local function add_type(units, type)
-   local new_table = {}
-   for i, v in ipairs(units) do
-      table.insert(new_table, {v, type})
-   end
-   return new_table
-end
-
 -- This goes over all the possible summoners and chooses one with the
 -- highest HP in the area.
 local function find_summoner(x, y, summoners)
@@ -68,54 +58,56 @@ end
 
 -- Message menu that lets the Master spawn a summoner of a given
 -- summoner type.
-function spawn_units.menu_boss(type)
-   local options = DungeonOpt:new{
-      root_message   = "Select a unit to summon.",
-      option_message = "&$unit_image~RC(magenta>red)=$input1",
-      code           = "spawn_units.boss_spawner('$input1','$input2')"
-   }
-   options.image_string = PORTRAIT[type]
-   options:fire(add_type(summoners[type], type))
+function spawn_units.menu_boss(summoner_type)
+   local title = "Summon Summoner"
+   local description = "Select a unit to summon."
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local choice = menu(summoners[summoner_type], image, title, description, menu_unit_list)
+   if choice then
+      spawn_units.boss_spawner(choice, summoner_type)
+   end
 end
 
 -- Message menu that lets the summoners spawn a regular unit of a
 -- given summoner type and level.
-function spawn_units.menu_reg(level, type)
-   local options = DungeonOpt:new {
-      root_message   = "Select a unit to summon.",
-      option_message = "&$unit_image~RC(magenta>red)=$input1 - $unit_cost HP",
-      code           = "spawn_units.reg_spawner('$input1', '$input2', $unit_cost)"
-   }
-   options.image_string = PORTRAIT[type]
-   options:fire(add_type(regular[type][level], type))
+function spawn_units.menu_reg(level, summoner_type)
+   local title = string.format("Summon %s", summoner_type)
+   local description = "Select a unit to summon."
+   local image = PORTRAIT[summoner_type]
+   local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list)
+   -- todo: add back in the lookup for each unit cost here.
+   if choice then
+      spawn_units.reg_spawner(choice, summoner_type, 10)
+   end
 end
 
 -- Message menu that lets the summoners choose a level to select a
 -- unit to summon.
-function spawn_units.menu_reg_levels(type)
-   local options = DungeonOpt:new {
-      root_message   = "Select a unit level.",
-      option_message = "$input1",
-      code           = "spawn_units.menu_reg('$input1', '$input2')"
-   }
+function spawn_units.menu_reg_levels(summoner_type)
+   local title = string.format("Summon %s", summoner_type)
+   local description = "Select a unit level."
+   local image = PORTRAIT[summoner_type]
    local levels = {}
-   for key, value in pairs(regular[type]) do
+   for key, value in pairs(regular[summoner_type]) do
       table.insert(levels, key)
    end
    table.sort(levels)
-   options:fire(add_type(levels, type))
+   local choice = menu(levels, image, title, description, menu_simple_list)
+   if choice then
+      spawn_units.menu_reg(choice, summoner_type)
+   end
 end
 
 -- Message menu that lets the Master select a summer type so they can
 -- select a summoner.
 function spawn_units.menu_boss_type()
-   local options = DungeonOpt:new{
-      root_message   = "Select a summoner type.",
-      image_string   = "portraits/undead/transparent/lich.png",
-      option_message = "$input1",
-      code           = "spawn_units.menu_boss('$input1')"
-   }
-   options:short_fire(SUMMON_ROLES)
+   local title = "Summon Summoner"
+   local description = "Select a summoner type."
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local choice = menu(SUMMON_ROLES, image, title, description, menu_simple_list)
+   if choice then
+      spawn_units.menu_boss(choice)
+   end
 end
 
 -- Right click menu that lets the Master summon a summoner on

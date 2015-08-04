@@ -207,7 +207,6 @@ function settings()
    terrain_editor()
    object_placement()
    menu_item_settings()
-   mp_safe_gui2()
 end
 >>
 #enddef
