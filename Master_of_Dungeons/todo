@@ -152,7 +152,6 @@ When this list is complete/empty and extensive testing and bugfixing has been do
       * Certain units (e.g. wolves) can't equip things.
       * Certain units (e.g. walking corpses) can have equipment, but can't manage it when alive.
     * Have game options allow other methods of summoning than just HP deduction.
-    * Fix dynamic_difficulty() and optionally use it to scale the HP and damage of units spawned by player 1.
     * Resurrection.
       * When units die they are saved in a resurrection table.
       * The host can resurrect a unit. (rematches of old bosses?)
