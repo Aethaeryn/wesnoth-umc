@@ -21,9 +21,10 @@ local dialog = {
         T.column { T.button { id = "ok", label = "OK" } },
         T.column { T.button { id = "cancel", label = "Close" }}}}}}}}}}}}}}
 
-function test_gui2(units, image, description)
+function menu(units, image, description)
    local function safe_dialog()
       local choice = 0
+
       local function preshow()
          local function select()
             wesnoth.set_dialog_value(image, "the_image")
@@ -38,9 +39,11 @@ function test_gui2(units, image, description)
          wesnoth.set_dialog_value(1, "the_list")
          select()
       end
+
       local function postshow()
          choice = wesnoth.get_dialog_value "the_list"
       end
+
       local button = wesnoth.show_dialog(dialog, preshow, postshow)
       -- OK
       if button == -1 then
@@ -50,19 +53,28 @@ function test_gui2(units, image, description)
          return { value = 0 }
       end
    end
-   -- Calls the above function in an MP-safe way.
-   return wesnoth.synchronize_choice(safe_dialog).value
+
+   local choice = wesnoth.synchronize_choice(safe_dialog).value
+   if choice > 0 then
+      return units[choice]
+   else
+      return false
+   end
 end
 
 function mp_safe_gui2()
+   local function temporary_debug_function(choice)
+      wesnoth.message(string.format("Selected %s", choice))
+   end
+
    local image = "data/core/images/portraits/undead/transparent/ancient-lich.png"
    local description = "Select a unit to summon."
-   local first_choice = test_gui2(summoners.Undead, image, description)
-   if first_choice > 0 then
-      wesnoth.message(string.format("Selected %s", summoners.Undead[first_choice]))
-      local second_choice = test_gui2(regular.Undead['Level 2'], image, description)
-      if second_choice > 0 then
-         wesnoth.message(string.format("Selected %s", regular.Undead['Level 2'][second_choice]))
+   local first_choice = menu(summoners.Undead, image, description)
+   if first_choice then
+      temporary_debug_function(first_choice)
+      local second_choice = menu(regular.Undead['Level 2'], image, description)
+      if second_choice then
+         temporary_debug_function(second_choice)
       end
    end
 end
