@@ -195,17 +195,5 @@ function menu_inventory()
    option_unit(option)
 end
 
-function menu_item_inventory()
-   local id = "005_Unit"
-   local description = "Unit Commands"
-   local image = "misc/key.png"
-   local filter = filter_unit()
-   local command = "menu_inventory()"
-   set_menu_item(id, description, image, filter, command)
-end
-
-function inventory()
-   menu_item_inventory()
-end
 >>
 #enddef

@@ -1,5 +1,8 @@
 #define MOD_LUA_CORE
 <<
+helper = wesnoth.require "lua/helper.lua"
+T = helper.set_wml_tag_metatable {}
+
 -- For host-only menu items; checks for side 1 or 6, the host sides.
 function filter_host(form)
    local host_side = 1
@@ -59,6 +62,18 @@ function filter_host(form)
       return filter
    end
 end
+
+place_item_filter = T["show_if"] {
+                   filter_host("short"),
+                   T["and"] {
+                      T["not"] {
+                         T["have_unit"] {
+                            x = "$x1",
+                            y = "$y1",
+                         }
+                      }
+                   }
+                }
 
 -- For menu items that affect certain units; check that a unit is present on that hex.
 function filter_unit()

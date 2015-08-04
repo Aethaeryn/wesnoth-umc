@@ -440,16 +440,5 @@ function menu_change_terrain()
    end
 end
 
-function menu_item_change_terrain()
-   local id = "050_Change_Terrain"
-   local description = "Change Terrain"
-   local image = "misc/vision-fog-shroud.png"
-   local filter = filter_host("editor")
-   set_menu_item(id, description, image, filter, "menu_change_terrain()")
-end
-
-function terrain_editor()
-   menu_item_change_terrain()
-end
 >>
 #enddef

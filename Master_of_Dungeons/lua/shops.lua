@@ -209,27 +209,5 @@ function menu_placement()
    end
 end
 
-function menu_item_placement()
-   local id = "070_Place_Objects"
-   local description = "Place Objects"
-   local image = "misc/dot-white.png"
-   local filter = T["show_if"] {
-                   filter_host("short"),
-                   T["and"] {
-                      T["not"] {
-                         T["have_unit"] {
-                            x = "$x1",
-                            y = "$y1",
-                         }
-                      }
-                   }
-                               }
-   local command = "menu_placement()"
-   set_menu_item(id, description, image, filter, command)
-end
-
-function object_placement()
-   menu_item_placement()
-end
 >>
 #enddef

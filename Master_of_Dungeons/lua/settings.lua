@@ -200,30 +200,13 @@ function set_menu_item(id, description, image, filter, command)
                    T["command"] { T["lua"] { code = command }}})
 end
 
-function menu_item_settings()
-   local id = "040_Settings"
-   local description = "Settings"
-   local image = "misc/ums.png"
-   local filter = filter_host("long")
-   set_menu_item(id, description, image, filter, "menu_settings()")
-end
-
-function set_menu_item(id, description, image, filter, command)
-   wesnoth.fire("set_menu_item", {
-                   id = id,
-                   description = description,
-                   image = image,
-                   filter,
-                   T["command"] { T["lua"] { code = command }}})
-end
-
 function settings()
-   inventory()
    spawn_units.spawn_units()
-   modify_unit()
-   terrain_editor()
-   object_placement()
-   menu_item_settings()
+   set_menu_item("MOD_005", "Unit Commands", "misc/key.png", filter_unit(), "menu_inventory()")
+   set_menu_item("MOD_020", "Change Unit", "misc/icon-amla-tough.png", filter_host("unit"), "menu_unit_change_stats()")
+   set_menu_item("MOD_050", "Change Terrain", "misc/vision-fog-shroud.png", filter_host("editor"), "menu_change_terrain()")
+   set_menu_item("MOD_040", "Settings", "misc/ums.png", filter_host("long"), "menu_settings()")
+   set_menu_item("MOD_070", "Place Objects", "misc/dot-white.png", place_item_filter, "menu_placement()")
 end
 >>
 #enddef
