@@ -187,11 +187,13 @@ function menu_inventory()
    local title = "Unit Commands"
    local description = "What do you want to do with this unit?"
    local image = "portraits/undead/transparent/ancient-lich.png" -- todo: definitely not appropriate here
-   local options = {"Interact", -- "icons/coins_copper.png"
-                    "Use Item", -- "icons/potion_red_small.png"
-                    "Upgrades", -- "attacks/woodensword.png"
-                    "Speak"}    -- "icons/letter_and_ale.png"
-   local option = menu(options, image, title, description, menu_simple_list) -- todo: not a simple list, need icons here.
+   local options = {
+      {"Interact", "icons/coins_copper.png"},
+      {"Use Item", "icons/potion_red_small.png"},
+      {"Upgrades", "attacks/woodensword.png"},
+      {"Speak", "icons/letter_and_ale.png"}
+   }
+   local option = menu(options, image, title, description, menu_picture_list, 1)
    option_unit(option)
 end
 

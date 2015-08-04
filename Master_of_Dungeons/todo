@@ -2,11 +2,17 @@ MASTER OF DUNGEONS TODO LIST (88% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 
   (1%)
-  - Finish GUI2 rewrite.
+  - Finish GUI2 rewrite:
+    - core.lua
+    - inventory.lua
+    - modify_unit.lua
+    - settings.lua
+    - shops.lua
+    - spawn_units.lua
+    - terrain_editor.lua
+    - upgrades.lua
   - Add back in the variable cost when summoning from a summoner.
-  - Rewrite large parts of the code now that the new GUI simplifies things.
   - Placing a gold pile is now broken.
-  - Add back in images for menu_inventory()
   - Add back in team colors for units if possible
   - Make the toggle <foo> in settings say what the current state is.
   - Handle text input.
@@ -14,6 +20,7 @@ When this list is complete/empty and extensive testing and bugfixing has been do
   - Make upgrades warn you when you cannot buy them instead of failing silently.
   - Replace non-debug uses of wesnoth.message()
   - Perhaps menu item toggling can be done through a mix of set_menu_item and clear_menu_item instead of settings() and variables.
+  - New picture(s) for the unit commands and interaction menus.
 
  (1) Inventory Containers (3%)
        * Templates:

@@ -87,11 +87,9 @@ end
 
 function submenu_interact()
    local e = wesnoth.current.event_context
-   local options = DungeonOpt:new{
-      root_message   = "How do you want to interact?",
-      option_message = "&$input2= $input1",
-      code           = "interact_do('$input1', $input3, $input4)",
-   }
+   local title = "Unit Commands"
+   local description = "How do you want to interact?"
+   local image = "portraits/undead/transparent/ancient-lich.png" -- todo: definitely not appropriate here
    local interactions = {}
    check_x_coord(e.x1)
    if game_containers[e.x1][e.y1] ~= nil then
@@ -106,7 +104,10 @@ function submenu_interact()
          table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png", e.x1, e.y1})
       end
    end
-   options:fire(interactions)
+   local option = menu(interactions, image, title, description, menu_picture_list, 1)
+   if option then
+      interact_do(option, e.x1, e.y1)
+   end
 end
 
 function submenu_modify_container()
