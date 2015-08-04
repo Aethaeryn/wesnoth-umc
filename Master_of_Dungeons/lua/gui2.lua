@@ -79,23 +79,5 @@ function menu_simple_list(list)
       wesnoth.set_dialog_value(item, "menu_list", i, "label")
    end
 end
-
-function mp_safe_gui2()
-   local function temporary_debug_function(choice)
-      wesnoth.message(string.format("Selected %s", choice))
-   end
-
-   local image = "data/core/images/portraits/undead/transparent/ancient-lich.png"
-   local title = "Summon Unit"
-   local description = "Select a unit to summon."
-   local first_choice = menu(summoners.Undead, image, title, description, menu_unit_list)
-   if first_choice then
-      temporary_debug_function(first_choice)
-      local second_choice = menu(regular.Undead['Level 2'], image, title, description, menu_unit_list)
-      if second_choice then
-         temporary_debug_function(second_choice)
-      end
-   end
-end
 >>
 #enddef
