@@ -56,34 +56,7 @@ function spawn_units.reg_spawner(unit_type, unit_role, unit_cost)
    end
 end
 
--- Message menu that lets the Master spawn a summoner of a given
--- summoner type.
-function spawn_units.menu_boss(summoner_type)
-   local title = "Summon Summoner"
-   local description = "Select a unit to summon."
-   local image = "portraits/undead/transparent/ancient-lich.png"
-   local choice = menu(summoners[summoner_type], image, title, description, menu_unit_list)
-   if choice then
-      spawn_units.boss_spawner(choice, summoner_type)
-   end
-end
-
--- Message menu that lets the summoners spawn a regular unit of a
--- given summoner type and level.
-function spawn_units.menu_reg(level, summoner_type)
-   local title = string.format("Summon %s", summoner_type)
-   local description = "Select a unit to summon."
-   local image = PORTRAIT[summoner_type]
-   local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list)
-   -- todo: add back in the lookup for each unit cost here.
-   if choice then
-      spawn_units.reg_spawner(choice, summoner_type, 10)
-   end
-end
-
--- Message menu that lets the summoners choose a level to select a
--- unit to summon.
-function spawn_units.menu_reg_levels(summoner_type)
+function spawn_units.menu_summon(summoner_type)
    local title = string.format("Summon %s", summoner_type)
    local description = "Select a unit level."
    local image = PORTRAIT[summoner_type]
@@ -92,21 +65,28 @@ function spawn_units.menu_reg_levels(summoner_type)
       table.insert(levels, key)
    end
    table.sort(levels)
-   local choice = menu(levels, image, title, description, menu_simple_list)
-   if choice then
-      spawn_units.menu_reg(choice, summoner_type)
+   local level = menu(levels, image, title, description, menu_simple_list)
+   if level then
+      description = "Select a unit to summon."
+      local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list)
+      -- todo: add back in the lookup for each unit cost here.
+      if choice then
+         spawn_units.reg_spawner(choice, summoner_type, 10)
+      end
    end
 end
 
--- Message menu that lets the Master select a summer type so they can
--- select a summoner.
-function spawn_units.menu_boss_type()
+function spawn_units.menu_summon_summoner()
    local title = "Summon Summoner"
    local description = "Select a summoner type."
    local image = "portraits/undead/transparent/ancient-lich.png"
-   local choice = menu(SUMMON_ROLES, image, title, description, menu_simple_list)
-   if choice then
-      spawn_units.menu_boss(choice)
+   local summoner_type = menu(SUMMON_ROLES, image, title, description, menu_simple_list)
+   if summoner_type then
+      description = "Select a unit to summon."
+      local summoner = menu(summoners[summoner_type], image, title, description, menu_unit_list)
+      if summoner then
+         spawn_units.boss_spawner(summoner, summoner_type)
+      end
    end
 end
 
@@ -135,7 +115,7 @@ function spawn_units.menu_item_summon_summoner()
                    },
                    T["command"] {
                       T["lua"] {
-                         code = "spawn_units.menu_boss_type()"
+                         code = "spawn_units.menu_summon_summoner()"
                       }
                    }
                 }
@@ -167,7 +147,7 @@ function spawn_units.menu_item_summon(unit_role)
                    },
                    T["command"] {
                       T["lua"] {
-                         code = "spawn_units.menu_reg_levels('"..unit_role.."')"
+                         code = "spawn_units.menu_summon('"..unit_role.."')"
                       }
                    }
                 }
