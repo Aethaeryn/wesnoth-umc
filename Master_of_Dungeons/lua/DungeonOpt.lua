@@ -5,18 +5,13 @@
 DungeonOpt = {
    -- Root [message] tags with reasonable defaults.
    speaker_string = "narrator",
-   root_message   = "Please select an option: ",
+   root_message   = "Please select an option:",
    image_string   = "wesnoth-icon.png",
 
    -- Tags in each individual [option]. Use $input1, $input2, etc., to make them replaceable by arguments.
    -- code id Lua code to be run when the option is selected.
    option_message = "",
    code           = "",
-
-   -- These variables are only used in the function menu, and so only need to be customized if you're doing a menu.
-   menu_id        = "000_Blank",
-   menu_desc      = "Blank Menu Item",
-   menu_image     = "misc/dot-white.png",
 
    -- Proper syntax: object:show{ {"item"}, {"item"}, {"etc."} }
    -- Both tables can have as many arguments as you want.
@@ -96,40 +91,6 @@ DungeonOpt = {
    short_fire = function(self, inputs)
                    wesnoth.fire(self:short_show(inputs))
                 end,
-
-   -- This is a more complicated shortcut, for menu items.
-   -- The last argument, effect, is optional and is used if the menu runs something in addition to a message.
-   -- The actual command to be run is determined in the menu_command() function below.
-   menu = function(self, inputs, filter, effect)
-             wesnoth.fire("set_menu_item", {
-                             id          = self.menu_id,
-                             description = self.menu_desc,
-                             image       = self.menu_image,
-                             filter,
-                             T["command"] {
-                                self:menu_command(inputs, effect)
-                             }
-                          }
-                       )
-          end,
-
-   -- This function is used in the menu function to determine the command to be run.
-   -- If there is no effect, only the menu is shown. If there is an effect, it is run before the menu.
-   menu_command = function(self, inputs, effect)
-                     if effect == nil then
-                        return {
-                           self:show(inputs)
-                        }
-
-                     else
-                        return
-                        T["lua"] {
-                           code = effect
-                        }, {
-                           self:show(inputs)
-                        }
-                     end
-                  end,
 
    -- Turns this table (DungeonOpt) into a class to allow for the creation of objects.
    new = function(self, o)
