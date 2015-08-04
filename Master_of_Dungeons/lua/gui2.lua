@@ -3,7 +3,27 @@
 helper = wesnoth.require "lua/helper.lua"
 T = helper.set_wml_tag_metatable {}
 
-local function generate_dialog()
+local function generate_dialog(not_empty)
+   local menu_list = {}
+   if not_empty then
+      menu_list = T.column { horizontal_grow = true, T.listbox { id = "menu_list",
+        T.list_definition { T.row { T.column { horizontal_grow = true,
+          T.toggle_panel { T.grid { T.row {
+            T.column { horizontal_alignment = "left", T.image { id = "icon" } },
+            T.column { horizontal_alignment = "left", T.label { id = "label" } },
+      }}}}}}}}
+   else
+      menu_list = T.column { T.label { id = "menu_list_empty" } }
+   end
+   local buttons = {}
+   if not_empty then
+      buttons = T.row {
+        T.column { T.button { id = "ok", label = "OK" } },
+        T.column { T.button { id = "cancel", label = "Close" }}}
+   else
+      buttons = T.row {
+        T.column { T.button { id = "cancel", label = "Close" }}}
+   end
    return  {
   T.tooltip { id = "tooltip_large" },
   T.helptip { id = "tooltip_large" },
@@ -13,15 +33,8 @@ local function generate_dialog()
      T.row { T.column { T.grid { T.row {
     T.column { T.image { id = "menu_image" } },
     T.column { T.grid {
-      T.row { T.column { horizontal_grow = true, T.listbox { id = "menu_list",
-        T.list_definition { T.row { T.column { horizontal_grow = true,
-          T.toggle_panel { T.grid { T.row {
-            T.column { horizontal_alignment = "left", T.image { id = "icon" } },
-            T.column { horizontal_alignment = "left", T.label { id = "label" } },
-          }}}}}}}}},
-      T.row { T.column { T.grid { T.row {
-        T.column { T.button { id = "ok", label = "OK" } },
-        T.column { T.button { id = "cancel", label = "Close" }}}}}}}}}}}}}}
+      T.row { menu_list },
+      T.row { T.column { T.grid { buttons }}}}}}}}}}}
 end
 
 -- This is a menu that is suitable for most of MOD. It takes in a
@@ -29,7 +42,12 @@ end
 -- description that show at the top, and a function that specifies how
 -- the list needs to be built.
 function menu(list, image, title, description, build_list, sublist_index)
-   local dialog = generate_dialog()
+   local dialog = {}
+   local not_empty = true
+   if list[1] == nil then
+      not_empty = false
+   end
+   dialog = generate_dialog(not_empty)
 
    local function safe_dialog()
       local choice = 0
@@ -41,20 +59,23 @@ function menu(list, image, title, description, build_list, sublist_index)
 
          wesnoth.set_dialog_value(title, "menu_title")
          wesnoth.set_dialog_value(description, "menu_description")
-         wesnoth.set_dialog_callback(select, "menu_list")
-         -- Either an empty list or a table of another kind.
-         if list[1] ~= nil then
+         if not_empty then
+            wesnoth.set_dialog_callback(select, "menu_list")
             build_list(list)
             wesnoth.set_dialog_value(1, "menu_list")
-         -- A quick way to handle an empty list.
+            select()
          else
-            wesnoth.set_dialog_value("Empty", "menu_list", 1, "label")
+            wesnoth.set_dialog_value(image, "menu_image")
+            wesnoth.set_dialog_value("Empty", "menu_list_empty")
          end
-         select()
       end
 
       local function postshow()
-         choice = wesnoth.get_dialog_value("menu_list")
+         if not_empty then
+            choice = wesnoth.get_dialog_value("menu_list")
+         else
+            choice = 0
+         end
       end
 
       local button = wesnoth.show_dialog(dialog, preshow, postshow)
