@@ -87,11 +87,10 @@ end
 function menu_view_side(side_num)
    if side_num == "All" then
       local all_stats = {"gold", "village_gold", "base_income", "objectives"}
-
-      options_list_short("Which variable of all sides do you want to change?",
-                         "menu_change_var_all('$input1')",
-                         all_stats)
-
+      variable = menu(all_stats, "portraits/undead/transparent/ancient-lich.png", "Settings", "Which variable of all sides do you want to change?", menu_simple_list)
+      if variable then
+         menu_change_var_all(variable)
+      end
    else
       local options = DungeonOpt:new{
          root_message   = "Which variable do you want to change?",
@@ -128,10 +127,10 @@ function menu_modify_side()
 
       return sides
    end
-
-   options_list_short("Which side do you want to modify?",
-                      "menu_view_side('$input1')",
-                      get_sides())
+   local side = menu(get_sides(), "portraits/undead/transparent/ancient-lich.png", "Settings", "Which side do you want to modify?", menu_simple_list)
+   if side then
+      menu_view_side(side)
+   end
 end
 
 function menu_new_scenario()

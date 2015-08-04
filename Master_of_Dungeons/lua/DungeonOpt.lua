@@ -18,16 +18,10 @@ DungeonOpt = {
    -- The outside table contains all options, the inside table contains the arguments for each individual option.
    -- inputs *must* be a table that contains tables.
    show = function(self, inputs)
-             -- This is the message stuff that comes before the options.
              local outputs = {
                 speaker = self.speaker_string,
                 message = self.root_message,
                 image   = self.image_string
-             }
-
-             -- This is actually the *last* item in every menu, after the options.
-             local cancel = T["option"] {
-                message = "Cancel"
              }
 
              -- This reads through the tables and adds them to outputs.
@@ -60,7 +54,9 @@ DungeonOpt = {
                 table.insert(outputs, output)
              end
 
-             -- Adding cancel.
+             local cancel = T["option"] {
+                message = "Cancel"
+             }
              table.insert(outputs, cancel)
 
              -- Returning the whole table, note that this replaces {"message", {}} with {object:show}.
@@ -68,29 +64,11 @@ DungeonOpt = {
              return "message", outputs
           end,
 
-   -- Proper syntax: object:short_show{"item", "item", "etc."}
-   -- This is a syntax shortcut. If you have a list of menu items with only one item per table,
-   -- then this turns a regular Lua table into the table-within-a-table format show recognizes.
-   short_show = function(self, inputs)
-                   local new_table = {}
-
-                   for i, v in ipairs(inputs) do
-                      table.insert(new_table, {v})
-                   end
-
-                   return self:show(new_table)
-                end,
-
    -- This is strictly a syntax shortcut.
    -- wesnoth.fire(object:show{ }) shortens to object:fire{ }
    fire = function(self, inputs)
              wesnoth.fire(self:show(inputs))
           end,
-
-   -- This functions just like fire, but uses short_show instead.
-   short_fire = function(self, inputs)
-                   wesnoth.fire(self:short_show(inputs))
-                end,
 
    -- Turns this table (DungeonOpt) into a class to allow for the creation of objects.
    new = function(self, o)

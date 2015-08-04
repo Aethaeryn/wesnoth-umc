@@ -146,17 +146,5 @@ function dynamic_difficulty(side_num)
    return recall_strength
 end
 
--- debugOut(dynamic_difficulty(2))
-
-function options_list_short(root_msg, run, options_table)
-   local options = DungeonOpt:new{
-      root_message   = root_msg,
-      option_message = '$input1',
-      code           = run,
-   }
-
-   options:short_fire(options_table)
-end
-
 >>
 #enddef

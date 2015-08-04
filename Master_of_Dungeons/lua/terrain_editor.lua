@@ -177,13 +177,15 @@ function option_terrain_choose(name)
    if name == "Repeat last terrain" then
       terrain_set(last_terrain)
    elseif name == "Change radius" then
-      options_list_short("What do you want to set the terrain radius as?",
-                         "terrain_radius = $input1",
-                         options_radius)
+      local new_radius = menu(options_radius, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "What do you want to set the terrain radius as?", menu_simple_list)
+      if new_radius then
+         terrain_radius = new_radius
+      end
    elseif name == "Set an overlay" then
-      options_list_short("Which terrain would you like to switch to?",
-                         "option_overlay_options('$input1')",
-                         options_overlay)
+      local overlay = menu(options_overlay, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_simple_list)
+      if overlay then
+         option_overlay_options(overlay)
+      end
    elseif name == "Water" then
       options:fire{
          {"Wog",    "Grey Deep Water"        },
@@ -417,7 +419,7 @@ function menu_change_terrain()
       last_terrain = "Ur"
    end
    change_terrain_generate()
-   local title = "Change Terrain"
+   local title = "Terrain Editor"
    local description = "Which terrain would you like to switch to?"
    local image = "portraits/undead/transparent/ancient-lich.png"
    local options = {"Repeat last terrain",
