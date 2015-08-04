@@ -207,7 +207,7 @@ function settings()
    terrain_editor()
    object_placement()
    menu_item_settings()
-   test_gui2(summoners.Undead)
+   mp_safe_gui2()
 end
 >>
 #enddef

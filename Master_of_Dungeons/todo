@@ -1,6 +1,8 @@
 MASTER OF DUNGEONS TODO LIST (86% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 
+  - Finish GUI2 rewrite.
+
  (1) Inventory Containers (3%)
        * Templates:
          * Have tiered templates for quick-stocking shops.
