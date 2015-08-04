@@ -62,20 +62,14 @@ function clear_game_object()
 end
 
 -- todo "Investigate Drop"
-function interact_do(selection)
-   local e = wesnoth.current.event_context
-   local coords = e.x1 * 1000 + e.y1
-
+function interact_do(selection, coords)
    if selection == "Visit Shop" then
       submenu_inventory('visit_shop', game_containers[coords]["shop"])
-
    elseif selection == "Collect Gold" then
       wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[coords]["gold"]
       clear_game_object()
-
    elseif selection == "Remove from Chest" then
       submenu_inventory('chest_remove', game_containers[coords]["chest"])
-
    elseif selection == "Add to Chest" then
       submenu_inventory('chest_add', false)
    end
@@ -97,21 +91,20 @@ function submenu_interact()
    local options = DungeonOpt:new{
       root_message   = "How do you want to interact?",
       option_message = "&$input2= $input1",
-      code           = "interact_do('$input1')",
+      code           = "interact_do('$input1', $input3)",
    }
    local interactions = {}
    local coords = e.x1 * 1000 + e.y1
-
    if game_containers[coords] ~= nil then
       if game_containers[coords]["shop"] ~= nil then
-         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
+         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png", coords})
       elseif game_containers[coords]["chest"] ~= nil then
-         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png"})
-         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png"})
+         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png", coords})
+         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png", coords})
       elseif game_containers[coords]["pack"] ~= nil then
-         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png"})
+         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png", coords})
       elseif game_containers[coords]["gold"] ~= nil then
-         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
+         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png", coords})
       end
    end
    options:fire(interactions)
