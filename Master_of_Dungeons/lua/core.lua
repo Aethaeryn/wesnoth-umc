@@ -86,10 +86,5 @@ function filter_unit()
    }
 end
 
--- Strictly a syntactical shortcut, and makes it easy to spot and remove from code.
-function debugOut(n)
-   wesnoth.message(tostring(n))
-end
-
 >>
 #enddef

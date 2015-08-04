@@ -5,7 +5,8 @@ When this list is complete/empty, bump to version 0.9
   - Eliminate all the functions that are no longer necessary because of the switch.
   - Finish GUI2 rewrite:
     - core.lua
-      - Filter code needs to be cleaned up.
+      - filter code needs to be cleaned up
+      - and once it is, that will probably eliminate the file
     - inventory.lua
       - clean up the flow of the code now that gui2 simplifies things
       - finish switching to gui2
@@ -22,7 +23,7 @@ When this list is complete/empty, bump to version 0.9
       - add back in the variable cost when summoning from a summoner
       - set_menu_items need work
     - terrain_editor.lua
-      - needs a lot of rewriting
+      - needs a lot of rewriting, possibly the whole thing.
     - upgrades.lua
        - switch to gui2
        - use a fancier interface, including using the side bar for descriptions
@@ -37,6 +38,7 @@ When this list is complete/empty, bump to version 0.9
   - New picture(s) for the unit commands and interaction menus and anywhere else where the ancient lich is inappropriate.
   - Most places probably can check for an empty list before calling menu() and show a better error there.
     - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
+  - If possible add a back button in addition to close.
 
  (1) Inventory Containers (2%)
        * Templates:
@@ -79,8 +81,14 @@ When this list is complete/empty, bump to version 0.9
          * Not all units can be interacted with (e.g. zombies).
        * This means those units (like zombies) can't use Unit Commands, either, but host can give them items and they can get items and equipment inherited if they were plagued.
          * This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
-       * Allow certain units to be bribed (and mark with certain icon?) if the host toggles them (or toggles it as an approx. 10% random outcome for some non-summoner summons). For 1.5x cost in gold, they will change to player's team and then lose the ability to be bribed. Undead, Elemental, animals, etc., cannot be bribed. Maybe all non-Undead/animals/etc. level 0s can be bribed as well.
+       * Allow certain units to be bribed (and mark with certain icon?) if the host toggles them.
+         * For 1.5x cost in gold, they will change to player's team and then lose the ability to be bribed.
          * It will really clash with the whole "loyal" trait all units have. Is there a way to disable unit upkeep universally?
+         * In addition to a unit-by-unit setting, there will be an option that will allow some lower-level units to spawn as bribable:
+           * 100% chance for spawned non-summoner level 0s
+           * 15% chance for spawned non-summoner level 1s
+           * 10% chance for spawned non-summoner level 2s
+           * Undead, Elemental, animals, etc., cannot be bribed unless manually set that way.
 
  (3) Inventory (1%)
      (a) Haste potion.
@@ -139,7 +147,6 @@ When this list is complete/empty, bump to version 0.9
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
          * In fact, it locks the unit into the old portrait even if it promotes.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
-       * BUG: Display dashes instead of underscores in the menu for Qatif_al_nar/Qatif-al-nar
        * FEATURE: When something spawns on a village they don't own they should lose all movement and take the village.
        * FEATURE: When people are peasants on one of the two Intro maps (i.e. they died or it's a new campaign), let them pick a new unit.
          * data/units.lua probably can be reused if summoners are added to the regular unit list, but then filtered out in the actual Summon Foo
@@ -174,6 +181,7 @@ When this list is complete/empty, bump to version 0.9
       * When equipping an item to a spot that already has something, the old equipment is automatically unequipped.
       * Certain units (e.g. wolves) can't equip things.
       * Certain units (e.g. walking corpses) can have equipment, but can't manage it when alive.
+    * Story-important, unsellable items.
     * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
       * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
       * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
@@ -181,13 +189,11 @@ When this list is complete/empty, bump to version 0.9
     * Reduce max HP on summoner by 1 per level of active summoned unit?
     * Do something with boats?
     * Is there a way to alter promotions? Lich -> Ancient Lich; Wolf -> Great Wolf -> Dire Wolf; Armageddon Drake; etc.
-    * Remove shroud for intermission ("Intro") mini-maps and for the battle arena?
     * Resurrection.
       * When units die they are saved in a resurrection table.
       * The host can resurrect a unit. (rematches of old bosses?)
       * A resurrection spell on a scroll should be able to resurrect a unit too.
     * Make sure everything (including items, secondary units, and possibly shop inventories) can transition between scenarios.
-    * Story-important, unsellable items.
     * More Shop Stuff:
       * Shop options toggleable by host:
         * Make a shop not able to buy items.
@@ -195,13 +201,18 @@ When this list is complete/empty, bump to version 0.9
         * Change shop price multiplier for buying to shop (for expensive shops)
       * Add more shop graphics for different flavor.
       * Maybe find a way to keep the shops labelled as long as they are shops like many RPGs do?
-    * Add a difficulty mode that restricts what the host can do so more people can play as a fair host?
+    * Add a difficulty mode that restricts what the host can do so more people can play as a fair host.
       * Including locking out the terrain editing and the stats editing, and limiting the Summon Summoners.
-    * Generalize the API so things like terrain changes can be restricted, have costs, be done by units, etc.?
+      * Also make terrain changes able to have costs, require being done by units or triggers, etc.
+      * Similarly, traps, chests, etc., could be manually placed and/or moved by units if this happens.
+      * If the NPCs/mob sides are restricted or AI, a lot of the options like unit levels to start at could be done by player vote.
     * Require download (as [modification]?), but make the Lua imported in a cleaner way and define some custom WML tags.
-      * Make sure that only things that need to be run every side_turn are run then.
+      * This will solve the problem of what to do for certain icons, e.g. for potion types, scrolls, and menu items.
+      * The current closed scroll icon could be used for unidentified scrolls if it's going to be like roguelikes and require identifying.
     * Let the AI be able handle things as NPCs/enemies, including summoning.
       * A very high probability to summon each turn if activated and HP > 50%
       * This gives the units for the AI-controled side to use in battle.
+    * Make sure that the translatable strings are marked as such.
     * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
     * Eventually make this the framework for RPGs in general, not just ones where the host controls sides 1 & 6.
+      * Not even just RPGs. A lot of the general code can be used for completely different game types, e.g. recruiting via villages.

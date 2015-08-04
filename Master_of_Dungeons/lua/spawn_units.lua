@@ -95,7 +95,7 @@ end
 function spawn_units.menu_item_summon_summoner()
    local id = "005_Summon_Summoner"
    local description = "Summon Summoner"
-   local image = "misc/new-battle.png"
+   local image = "terrain/symbols/terrain_group_custom2_30.png"
    local filter = T["show_if"] {
                       T["not"] {
                          T["have_location"] {
@@ -121,7 +121,7 @@ end
 function spawn_units.menu_item_summon(unit_role)
    local id = "001_Summon_"..unit_role
    local description = "Summon "..unit_role
-   local image = "misc/cross-white.png"
+   local image = "terrain/symbols/terrain_group_custom3_30.png"
    local filter = T["filter_location"] {
                       x = "$x1",
                       y = "$y1",
