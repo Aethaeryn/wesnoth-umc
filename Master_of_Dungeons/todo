@@ -1,8 +1,11 @@
-MASTER OF DUNGEONS TODO LIST (86% Progress)
+MASTER OF DUNGEONS TODO LIST (87% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 
   - Finish GUI2 rewrite.
   - Add back in the variable cost when summoning from a summoner.
+  - Rewrite large parts of the code now that the new GUI simplifies things.
+  - Placing a gold pile is now broken.
+  - Add back in images for menu_inventory()
 
  (1) Inventory Containers (3%)
        * Templates:
@@ -65,7 +68,7 @@ When this list is complete/empty and extensive testing and bugfixing has been do
          * Faerie fire (new ranged attack for one turn)
          * Fireball (new ranged attack for one turn)
 
- (4) Details (4%)
+ (4) Details (3%)
      * Make upgrades warn you when you cannot buy them instead of failing silently.
      * Raise the cap on intelligence upgrades so there can be more than one?
      * Add strength and dexterity upgrades.
@@ -134,8 +137,6 @@ When this list is complete/empty and extensive testing and bugfixing has been do
        * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
 
  (6) Future
-    * Rewrite large parts of the code to make more sense now that it's been years.
-      * If possible, move the stuff that doesn't require activation every side_turn to some other spot.
     * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
       * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
       * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).

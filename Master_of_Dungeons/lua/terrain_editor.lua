@@ -402,7 +402,9 @@ end
 -- the terrain_radius will never change.
 function change_terrain_generate()
    local e = wesnoth.current.event_context
-
+   if terrain_radius == nil then
+      terrain_radius = 0
+   end
    change_terrain = wesnoth.get_locations{
       x = e.x1,
       y = e.y1,
@@ -410,45 +412,43 @@ function change_terrain_generate()
    }
 end
 
-function menu_item_change_terrain()
-   local options = DungeonOpt:new{
-      menu_id        = "050_Change_Terrain",
-      menu_desc      = "Change Terrain",
-      menu_image     = "misc/vision-fog-shroud.png",
-
-      root_message   = "Which terrain would you like to switch to?",
-      option_message = "$input1",
-      code           = "option_terrain_choose('$input1')",
-   }
-
+function menu_change_terrain()
    if last_terrain == nil then
       last_terrain = "Ur"
    end
+   change_terrain_generate()
+   local title = "Change Terrain"
+   local description = "Which terrain would you like to switch to?"
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local options = {"Repeat last terrain",
+                    "Set an overlay",
+                    "Change radius",
+                    "Water",
+                    "Flat",
+                    "Desert",
+                    "Forest",
+                    "Frozen",
+                    "Rough",
+                    "Cave",
+                    "Obstacle",
+                    "Village",
+                    "Castle",
+                    "Special"}
+   local choice = menu(options, image, title, description, menu_simple_list)
+   if choice then
+      option_terrain_choose(choice)
+   end
+end
 
-   options:menu({
-                   {"Repeat last terrain"},
-                   {"Set an overlay"},
-                   {"Change radius"},
-                   {"Water"},
-                   {"Flat"},
-                   {"Desert"},
-                   {"Forest"},
-                   {"Frozen"},
-                   {"Rough"},
-                   {"Cave"},
-                   {"Obstacle"},
-                   {"Village"},
-                   {"Castle"},
-                   {"Special"}
-                },
-                filter_host("editor"),
-                "change_terrain_generate()"
-             )
+function menu_item_change_terrain()
+   local id = "050_Change_Terrain"
+   local description = "Change Terrain"
+   local image = "misc/vision-fog-shroud.png"
+   local filter = filter_host("editor")
+   set_menu_item(id, description, image, filter, "menu_change_terrain()")
 end
 
 function terrain_editor()
-   terrain_radius = 0
-
    menu_item_change_terrain()
 end
 >>

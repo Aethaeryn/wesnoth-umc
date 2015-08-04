@@ -93,7 +93,7 @@ end
 -- Right click menu that lets the Master summon a summoner on
 -- unoccupied, good terrain.
 function spawn_units.menu_item_summon_summoner()
-   local menu_id = "005_Summon_Summoner"
+   local id = "005_Summon_Summoner"
    local description = "Summon Summoner"
    local image = "misc/new-battle.png"
    local filter = T["show_if"] {
@@ -113,17 +113,16 @@ function spawn_units.menu_item_summon_summoner()
                       filter_host("summoner")
                    }
    local command = "spawn_units.menu_summon_summoner()"
-   set_menu_item(menu_id, description, image, filter, command)
+   set_menu_item(id, description, image, filter, command)
 end
 
 -- Right click menu that lets a summoner summon a regular unit on
 -- unoccupied, adjacent, good terrain.
 function spawn_units.menu_item_summon(unit_role)
-   wesnoth.fire("set_menu_item", {
-                   id          = "001_Summon_"..unit_role,
-                   description = "Summon "..unit_role,
-                   image       = "misc/cross-white.png",
-                   T["filter_location"] {
+   local id = "001_Summon_"..unit_role
+   local description = "Summon "..unit_role
+   local image = "misc/cross-white.png"
+   local filter = T["filter_location"] {
                       x = "$x1",
                       y = "$y1",
                       T["filter_adjacent_location"] {
@@ -138,14 +137,9 @@ function spawn_units.menu_item_summon(unit_role)
                             T["filter"] { }
                          }
                       }
-                   },
-                   T["command"] {
-                      T["lua"] {
-                         code = "spawn_units.menu_summon('"..unit_role.."')"
-                      }
                    }
-                }
-             )
+   local command = "spawn_units.menu_summon('"..unit_role.."')"
+   set_menu_item(id, description, image, filter, command)
 end
 
 -- I think this creates a [set_menu_item] for each summoner. Since

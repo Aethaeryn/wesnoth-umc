@@ -189,11 +189,11 @@ function menu_unit_change_stats()
 end
 
 function menu_item_unit_change_stats()
-   local menu_id = "021_Unit_Change_Stats"
-   local menu_desc = "Change Unit"
-   local menu_image = "misc/icon-amla-tough.png"
+   local id = "021_Unit_Change_Stats"
+   local description = "Change Unit"
+   local image = "misc/icon-amla-tough.png"
    local filter = filter_host("unit")
-   set_menu_item(menu_id, menu_desc, menu_image, filter, "menu_unit_change_stats()")
+   set_menu_item(id, description, image, filter, "menu_unit_change_stats()")
 end
 
 function option_unit_message()

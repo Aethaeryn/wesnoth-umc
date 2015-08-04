@@ -191,12 +191,30 @@ function menu_settings()
    end
 end
 
+function set_menu_item(id, description, image, filter, command)
+   wesnoth.fire("set_menu_item", {
+                   id = id,
+                   description = description,
+                   image = image,
+                   filter,
+                   T["command"] { T["lua"] { code = command }}})
+end
+
 function menu_item_settings()
-   local menu_id = "040_Settings"
-   local menu_desc = "Settings"
-   local menu_image = "misc/ums.png"
+   local id = "040_Settings"
+   local description = "Settings"
+   local image = "misc/ums.png"
    local filter = filter_host("long")
-   set_menu_item(menu_id, menu_desc, menu_image, filter, "menu_settings()")
+   set_menu_item(id, description, image, filter, "menu_settings()")
+end
+
+function set_menu_item(id, description, image, filter, command)
+   wesnoth.fire("set_menu_item", {
+                   id = id,
+                   description = description,
+                   image = image,
+                   filter,
+                   T["command"] { T["lua"] { code = command }}})
 end
 
 function settings()

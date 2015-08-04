@@ -198,25 +198,22 @@ function place_object_choose(choice)
    end
 end
 
+function menu_placement()
+   local title = "Place Objects"
+   local description = "What do you want to do with this unit?"
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local options = {"Place Shop", "Place Chest", "Place Pack", "Place Gold Pile", "Clear Hex"}
+   local option = menu(options, image, title, description, menu_simple_list)
+   if option then
+      place_object_choose(option)
+   end
+end
+
 function menu_item_placement()
-   local options = DungeonOpt:new{
-      menu_id        = "070_Place_Objects",
-      menu_desc      = "Place Objects",
-      menu_image     = "misc/dot-white.png",
-
-      root_message   = "What item do you want to place on the map?",
-      option_message = "$input1",
-      code           = "place_object_choose('$input1')",
-   }
-
-   options:menu({
-                   {"Place Shop"},
-                   {"Place Chest"},
-                   {"Place Pack"},
-                   {"Place Gold Pile"},
-                   {"Clear Hex"},
-                },
-                T["show_if"] {
+   local id = "070_Place_Objects"
+   local description = "Place Objects"
+   local image = "misc/dot-white.png"
+   local filter = T["show_if"] {
                    filter_host("short"),
                    T["and"] {
                       T["not"] {
@@ -226,8 +223,9 @@ function menu_item_placement()
                          }
                       }
                    }
-                }
-             )
+                               }
+   local command = "menu_placement()"
+   set_menu_item(id, description, image, filter, command)
 end
 
 function object_placement()

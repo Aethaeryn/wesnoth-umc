@@ -183,28 +183,25 @@ function option_unit(option)
    end
 end
 
+function menu_inventory()
+   local title = "Unit Commands"
+   local description = "What do you want to do with this unit?"
+   local image = "portraits/undead/transparent/ancient-lich.png" -- todo: definitely not appropriate here
+   local options = {"Interact", -- "icons/coins_copper.png"
+                    "Use Item", -- "icons/potion_red_small.png"
+                    "Upgrades", -- "attacks/woodensword.png"
+                    "Speak"}    -- "icons/letter_and_ale.png"
+   local option = menu(options, image, title, description, menu_simple_list) -- todo: not a simple list, need icons here.
+   option_unit(option)
+end
+
 function menu_item_inventory()
-   local options = DungeonOpt:new{
-      menu_id        = "005_Unit",
-      menu_desc      = "Unit Commands",
-      menu_image     = "misc/key.png",
-
-      root_message   = "What do you want to do with this unit?",
-      option_message = "&$input2= $input1",
-      code           = "option_unit('$input1')",
-   }
-
-   local menu_options = {
-      {"Interact", "icons/coins_copper.png"},
-      {"Use Item", "icons/potion_red_small.png"},
-      {"Upgrades", "attacks/woodensword.png"},
-      {"Speak", "icons/letter_and_ale.png"}
-   }
-
-   options:menu(
-      menu_options,
-      filter_unit()
-   )
+   local id = "005_Unit"
+   local description = "Unit Commands"
+   local image = "misc/key.png"
+   local filter = filter_unit()
+   local command = "menu_inventory()"
+   set_menu_item(id, description, image, filter, command)
 end
 
 function inventory()

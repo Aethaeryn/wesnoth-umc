@@ -143,14 +143,5 @@ function options_list_short(root_msg, run, options_table)
    options:short_fire(options_table)
 end
 
-function set_menu_item(id, description, image, filter, command)
-   wesnoth.fire("set_menu_item", {
-                   id = id,
-                   description = description,
-                   image = image,
-                   filter,
-                   T["command"] { T["lua"] { code = command }}})
-end
-
 >>
 #enddef
