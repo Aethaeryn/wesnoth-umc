@@ -177,27 +177,28 @@ function change_stats(variable)
    end
 end
 
+function menu_unit_change_stats()
+   local title = "Change Unit"
+   local description = "What stat do you want to modify?"
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local options = {"Side", "Inventory", "Transform", "Role", "Stats", "Save"}
+   local choice = menu(options, image, title, description, menu_simple_list)
+   if choice then
+      change_stats(choice)
+   end
+end
+
 function menu_item_unit_change_stats()
-   local options = DungeonOpt:new {
-      menu_id        = "021_Unit_Change_Stats",
-      menu_desc      = "Change Unit",
-      menu_image     = "misc/icon-amla-tough.png",
-
-      root_message   = "What stat do you want to modify?",
-      option_message = "$input1",
-      code           = "change_stats('$input1')",
-   }
-
-   options:menu({
-                   {"Side"},
-                   {"Inventory"},
-                   {"Transform"},
-                   {"Role"},
-                   {"Stats"},
-                   {"Save"}
-                },
-                filter_host("unit")
-             )
+   local menu_id = "021_Unit_Change_Stats"
+   local menu_desc = "Change Unit"
+   local menu_image = "misc/icon-amla-tough.png"
+   local filter = filter_host("unit")
+   wesnoth.fire("set_menu_item", {
+                   id          = menu_id,
+                   description = menu_desc,
+                   image       = menu_image,
+                   filter,
+                   T["command"] { T["lua"] { code = "menu_unit_change_stats()" }}})
 end
 
 function option_unit_message()

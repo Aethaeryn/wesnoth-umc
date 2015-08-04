@@ -153,7 +153,7 @@ function menu_new_scenario()
                 }
 end
 
-function feature_toggle(variable)
+local function feature_toggle(variable)
    local check_variable = wesnoth.get_variable(variable)
 
    if check_variable == true then
@@ -163,41 +163,45 @@ function feature_toggle(variable)
    end
 end
 
-function option_settings_choose(option)
-   if option == "side" then
-      menu_modify_side()
-   elseif option == "scenario" then
-      menu_new_scenario()
-   elseif option == "summoner" then
-      feature_toggle('MoD_summon_summoner')
-   elseif option == "unit" then
-      feature_toggle('MoD_unit_editor')
-   elseif option == "terrain" then
-      feature_toggle('MoD_terrain_editor')
-   elseif option == "container" then
-      submenu_modify_container()
+function menu_settings()
+   local title = "Settings"
+   local description = "What action do you want to do?"
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local options = {"Modify Container",
+                    "Modify Side",
+                    "New Scenario",
+                    "Toggle Summon Summoners",
+                    "Toggle Unit Editor",
+                    "Toggle Terrain Editor"}
+   local option = menu(options, image, title, description, menu_simple_list)
+   if option then
+      if option == "Modify Side" then
+         menu_modify_side()
+      elseif option == "New Scenario" then
+         menu_new_scenario()
+      elseif option == "Toggle Summon Summoners" then
+         feature_toggle("MoD_summon_summoner")
+      elseif option == "Toggle Unit Editor" then
+         feature_toggle("MoD_unit_editor")
+      elseif option == "Toggle Terrain Editor" then
+         feature_toggle("MoD_terrain_editor")
+      elseif option == "Modify Container" then
+         submenu_modify_container()
+      end
    end
 end
 
 function menu_item_settings()
-   local options = DungeonOpt:new{
-      menu_id        = "040_Settings",
-      menu_desc      = "Settings",
-      menu_image     = "misc/ums.png",
-
-      root_message   = "What action do you want to do?",
-      option_message = "$input2",
-      code           = "option_settings_choose('$input1')",
-   }
-
-   local opt_list = {{"container", "Modify Container"},
-                     {"side", "Modify Side"},
-                     {"scenario", "New Scenario"},
-                     {"summoner", "Toggle Summon Summoners"},
-                     {"unit", "Toggle Unit Editor"},
-                     {"terrain", "Toggle Terrain Editor"}}
-
-   options:menu(opt_list, filter_host("long"))
+   local menu_id = "040_Settings"
+   local menu_desc = "Settings"
+   local menu_image = "misc/ums.png"
+   local filter = filter_host("long")
+   wesnoth.fire("set_menu_item", {
+                   id          = menu_id,
+                   description = menu_desc,
+                   image       = menu_image,
+                   filter,
+                   T["command"] { T["lua"] { code = "menu_settings()" }}})
 end
 
 function settings()
