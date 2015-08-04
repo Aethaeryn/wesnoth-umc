@@ -149,7 +149,7 @@ function set_menu_item(id, description, image, filter, command)
                    description = description,
                    image = image,
                    filter,
-                   T["command"] { T["lua"] { code = "menu_settings()" }}})
+                   T["command"] { T["lua"] { code = command }}})
 end
 
 >>
