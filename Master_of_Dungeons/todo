@@ -1,28 +1,44 @@
 MASTER OF DUNGEONS TODO LIST (88% Progress)
-When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
+When this list is complete/empty, bump to version 0.9
 
-  (1%)
+  (3%)
+  - Eliminate all the functions that are no longer necessary because of the switch.
   - Finish GUI2 rewrite:
     - core.lua
+      - Filter code needs to be cleaned up.
     - inventory.lua
+      - clean up the flow of the code now that gui2 simplifies things
+      - finish switching to gui2
+      - use a fancier interface, including using the side bar for descriptions
     - modify_unit.lua
+      - move the text_input stuff over
     - settings.lua
+      - new scenario
+      - the whole modify variable thing
     - shops.lua
+      - placing a gold pile has an error
+      - needs a lot of work and possibly a merger with inventory.lua
     - spawn_units.lua
+      - add back in the variable cost when summoning from a summoner
+      - set_menu_items need work
     - terrain_editor.lua
+      - needs a lot of rewriting
     - upgrades.lua
-  - Add back in the variable cost when summoning from a summoner.
-  - Placing a gold pile is now broken.
-  - Add back in team colors for units if possible
-  - Make the toggle <foo> in settings say what the current state is.
-  - Handle text input.
-  - Rework the filter code.
-  - Make upgrades warn you when you cannot buy them instead of failing silently.
-  - Replace non-debug uses of wesnoth.message()
+       - switch to gui2
+       - use a fancier interface, including using the side bar for descriptions
+    - gui2.lua
+      - add back in team colors for units if possible
+      - make the toggle <foo> in settings say what the current state is
+        - and make it a checkbox if possible
+      - handle text input
+        - possibly more than one on the same screen
+  - Replace non-debug uses of wesnoth.message() with a local gui2 warning
   - Perhaps menu item toggling can be done through a mix of set_menu_item and clear_menu_item instead of settings() and variables.
-  - New picture(s) for the unit commands and interaction menus.
+  - New picture(s) for the unit commands and interaction menus and anywhere else where the ancient lich is inappropriate.
+  - Most places probably can check for an empty list before calling menu() and show a better error there.
+    - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
 
- (1) Inventory Containers (3%)
+ (1) Inventory Containers (2%)
        * Templates:
          * Have tiered templates for quick-stocking shops.
          * Have tiered templates for quick-stocking chests.

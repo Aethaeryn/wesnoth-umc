@@ -66,7 +66,7 @@ function menu(list, image, title, description, build_list, sublist_index)
             select()
          else
             wesnoth.set_dialog_value(image, "menu_image")
-            wesnoth.set_dialog_value("Empty", "menu_list_empty")
+            wesnoth.set_dialog_value("None", "menu_list_empty")
          end
       end
 

@@ -112,11 +112,9 @@ end
 
 function submenu_modify_container()
    local e = wesnoth.current.event_context
-   local options = DungeonOpt:new{
-      root_message   = "Which container do you want to modify?",
-      option_message = "&$input2= $input1",
-      code           = "modify_container_do('$input1')",
-   }
+   local title = "Settings"
+   local description = "Which container do you want to modify?"
+   local image = "portraits/undead/transparent/ancient-lich.png"
    local interactions = {}
    check_x_coord(e.x1)
    if game_containers[e.x1][e.y1] ~= nil then
@@ -130,7 +128,8 @@ function submenu_modify_container()
          table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
       end
    end
-   options:fire(interactions)
+   local option = menu(interactions, image, title, description, menu_picture_list, 1)
+   modify_container_do(option)
 end
 
 function place_object_choose(choice)
@@ -203,8 +202,14 @@ function menu_placement()
    local title = "Place Objects"
    local description = "What do you want to do with this unit?"
    local image = "portraits/undead/transparent/ancient-lich.png"
-   local options = {"Place Shop", "Place Chest", "Place Pack", "Place Gold Pile", "Clear Hex"}
-   local option = menu(options, image, title, description, menu_simple_list)
+   local options = {
+      {"Place Shop", "scenery/tent-shop-weapons.png"},
+      {"Place Chest", "items/chest-plain-closed.png"},
+      {"Place Pack", "items/leather-pack.png"},
+      {"Place Gold Pile", "items/gold-coins-large.png"},
+      {"Clear Hex", "terrain/grass/green-symbol.png"}
+   }
+   local option = menu(options, image, title, description, menu_picture_list, 1)
    if option then
       place_object_choose(option)
    end
