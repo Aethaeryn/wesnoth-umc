@@ -95,6 +95,8 @@ end
 function change_stats(variable)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
+   local title = "Change Unit"
+   local image = "portraits/undead/transparent/ancient-lich.png"
 
    local function transform()
       wesnoth.fire("message", {
@@ -134,12 +136,7 @@ function change_stats(variable)
          return roles
       end
 
-      options_list_short("Select a new role for the unit.",
-                         "wesnoth.set_variable('change_role', '$input1')",
-                         get_roles())
-
-      local chosen_role = wesnoth.get_variable('change_role')
-
+      local chosen_role = menu(get_roles(), image, title, "Select a new (summoning) role for this unit.", menu_simple_list)
       unit.role = chosen_role
 
       if chosen_role ~= "None" and unit.canrecruit ~= true then
@@ -151,19 +148,20 @@ function change_stats(variable)
    end
 
    local function side()
-      options_list_short("Select a target side.",
-                         "change_side($input1)",
-                         SIDES)
+      local side = menu(SIDES, image, title, "Select a target side.", menu_simple_list)
+      if side then
+         change_side(side)
+      end
    end
 
    local function stats()
       local stats = {"Hitpoints", "Max Hitpoints", "Moves",
                      "Experience", "Max Experience", "Gender",
                      "Leader"}
-
-      options_list_short("What stat do you want to change?",
-                         "change_unit_stat('$input1')",
-                         stats)
+      local stat = menu(stats, image, title, "Which stat do you want to change?", menu_simple_list)
+      if stat then
+         change_unit_stat(stat)
+      end
    end
 
    if variable == "Transform"     then transform()
@@ -171,9 +169,6 @@ function change_stats(variable)
    elseif variable == "Inventory" then submenu_inventory('unit_add', false)
    elseif variable == "Side"      then side()
    elseif variable == "Stats"     then stats()
-   elseif variable == "Save"      then
-      -- fixme: finish
-      wesnoth.wml_actions.set_global_variable{namespace="MoD"}
    end
 end
 
@@ -181,7 +176,7 @@ function menu_unit_change_stats()
    local title = "Change Unit"
    local description = "What stat do you want to modify?"
    local image = "portraits/undead/transparent/ancient-lich.png"
-   local options = {"Side", "Inventory", "Transform", "Role", "Stats", "Save"}
+   local options = {"Side", "Inventory", "Transform", "Role", "Stats"}
    local choice = menu(options, image, title, description, menu_simple_list)
    if choice then
       change_stats(choice)

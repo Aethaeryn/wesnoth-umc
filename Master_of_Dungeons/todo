@@ -1,4 +1,4 @@
-MASTER OF DUNGEONS TODO LIST (87% Progress)
+MASTER OF DUNGEONS TODO LIST (88% Progress)
 When this list is complete/empty and extensive testing and bugfixing has been done, bump to version 1.0
 
   - Finish GUI2 rewrite.
@@ -6,6 +6,12 @@ When this list is complete/empty and extensive testing and bugfixing has been do
   - Rewrite large parts of the code now that the new GUI simplifies things.
   - Placing a gold pile is now broken.
   - Add back in images for menu_inventory()
+  - Add back in team colors for units if possible
+  - Make the toggle <foo> in settings say what the current state is.
+  - Handle text input.
+  - Rework the filter code.
+  - Make upgrades warn you when you cannot buy them instead of failing silently.
+  - Replace non-debug uses of wesnoth.message()
 
  (1) Inventory Containers (3%)
        * Templates:
@@ -68,8 +74,7 @@ When this list is complete/empty and extensive testing and bugfixing has been do
          * Faerie fire (new ranged attack for one turn)
          * Fireball (new ranged attack for one turn)
 
- (4) Details (3%)
-     * Make upgrades warn you when you cannot buy them instead of failing silently.
+ (4) Details (2%)
      * Raise the cap on intelligence upgrades so there can be more than one?
      * Add strength and dexterity upgrades.
        * They probably need to be implemented differently, with [object]
@@ -88,13 +93,6 @@ When this list is complete/empty and extensive testing and bugfixing has been do
        * doors (instead of manually removing walls)
        * keys/locks for doors/chests/etc.
        * triggers (perhaps runes?) for various things (including doors)
-     * DungeonOpt
-       * Write a method for handling text_input
-         * Add a cancel option to text stuff (speaking, transforming unit, etc.).
-       * Rewrite to handle the extra filters and other things that prevent all files from using DungeonOpt.
-       * Add helper functions for more option/menu functions than just options_list_short()
-       * Make the toggle <foo> in settings say what the current state is.
-       * Rewrite to be a function instead of an object?
     * Summoners.
        * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
          * Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
@@ -113,7 +111,7 @@ When this list is complete/empty and extensive testing and bugfixing has been do
      * Let Sylphs and/or Shydes disguise themselves as regular Elvish Ladies.
        * They would stay as summoners but lose the icon, being the only stealth summoners in the game.
 
- (5) Issues (3%)
+ (5) Issues (2%)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
        * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
        * BUG: Shops can be placed on impassable and unwalkable territory. This shouldn't happen.
@@ -123,7 +121,6 @@ When this list is complete/empty and extensive testing and bugfixing has been do
          * In fact, it locks the unit into the old portrait even if it promotes.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
        * BUG: Display dashes instead of underscores in the menu for Qatif_al_nar/Qatif-al-nar
-       * FEATURE: Replace non-debug uses of wesnoth.message() with a player-specific message box instead.
        * FEATURE: When something spawns on a village they don't own they should lose all movement and take the village.
        * FEATURE: When people are peasants on one of the two Intro maps (i.e. they died or it's a new campaign), let them pick a new unit.
          * data/units.lua probably can be reused if summoners are added to the regular unit list, but then filtered out in the actual Summon Foo
@@ -161,7 +158,7 @@ When this list is complete/empty and extensive testing and bugfixing has been do
       * The host can resurrect a unit. (rematches of old bosses?)
       * A resurrection spell on a scroll should be able to resurrect a unit too.
     * Make sure units can optionally gain healthy/regenerates if turned into a summoner.
-    * Allow import of units saved in persistant variables. (Across scenarios? Is this Change Unit > Save?)
+    * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
     * Allow the saving of items (in chests/shops too?), etc., across scenarios in a campaign.
     * Story-important, unsellable items.
     * More Shop Stuff:
