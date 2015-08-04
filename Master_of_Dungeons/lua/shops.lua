@@ -53,11 +53,10 @@ function shop_buy(name)
    end
 end
 
-function clear_game_object()
-   local e = wesnoth.current.event_context
-   w_items.remove(e.x1, e.y1)
-   if game_containers[e.x1] ~= nil then
-      game_containers[e.x1][e.y1] = nil
+function clear_game_object(x, y)
+   w_items.remove(x, y)
+   if game_containers[x] ~= nil then
+      game_containers[x][y] = nil
    end
 end
 
@@ -68,7 +67,7 @@ function interact_do(selection, x, y)
       submenu_inventory('visit_shop', game_containers[x][y]["shop"])
    elseif selection == "Collect Gold" then
       wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[x][y]["gold"]
-      clear_game_object()
+      clear_game_object(x, y)
    elseif selection == "Remove from Chest" then
       submenu_inventory('chest_remove', game_containers[x][y]["chest"])
    elseif selection == "Add to Chest" then
@@ -137,7 +136,7 @@ function place_object_choose(choice)
    local e = wesnoth.current.event_context
 
    local function simple_place(type, image, inventory)
-      clear_game_object()
+      clear_game_object(e.x1, e.y1)
       w_items.place_image(e.x1, e.y1, image)
       check_x_coord(e.x1)
       game_containers[e.x1][e.y1] = {}
@@ -195,7 +194,7 @@ function place_object_choose(choice)
       gold()
 
    elseif choice == "Clear Hex" then
-      clear_game_object()
+      clear_game_object(e.x1, e.y1)
    end
 end
 
