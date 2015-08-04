@@ -196,12 +196,7 @@ function menu_item_settings()
    local menu_desc = "Settings"
    local menu_image = "misc/ums.png"
    local filter = filter_host("long")
-   wesnoth.fire("set_menu_item", {
-                   id          = menu_id,
-                   description = menu_desc,
-                   image       = menu_image,
-                   filter,
-                   T["command"] { T["lua"] { code = "menu_settings()" }}})
+   set_menu_item(menu_id, menu_desc, menu_image, filter, "menu_settings()")
 end
 
 function settings()

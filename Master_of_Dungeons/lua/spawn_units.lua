@@ -93,11 +93,10 @@ end
 -- Right click menu that lets the Master summon a summoner on
 -- unoccupied, good terrain.
 function spawn_units.menu_item_summon_summoner()
-   wesnoth.fire("set_menu_item", {
-                   id          = "005_Summon_Summoner",
-                   description = "Summon Summoner",
-                   image       = "misc/new-battle.png",
-                   T["show_if"] {
+   local menu_id = "005_Summon_Summoner"
+   local description = "Summon Summoner"
+   local image = "misc/new-battle.png"
+   local filter = T["show_if"] {
                       T["not"] {
                          T["have_location"] {
                             x = "$x1",
@@ -112,14 +111,9 @@ function spawn_units.menu_item_summon_summoner()
                          }
                       },
                       filter_host("summoner")
-                   },
-                   T["command"] {
-                      T["lua"] {
-                         code = "spawn_units.menu_summon_summoner()"
-                      }
                    }
-                }
-             )
+   local command = "spawn_units.menu_summon_summoner()"
+   set_menu_item(menu_id, description, image, filter, command)
 end
 
 -- Right click menu that lets a summoner summon a regular unit on
