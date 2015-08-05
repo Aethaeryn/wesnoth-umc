@@ -1,7 +1,9 @@
 #define MOD_LUA_CORE
 <<
-helper = wesnoth.require "lua/helper.lua"
-T = helper.set_wml_tag_metatable {}
+
+aeth_mod_filter = {}
+
+aeth_mod_filter.bad_summon_terrain = "X*, Q*, *^Xm, Mv"
 
 -- For host-only menu items; checks for side 1 or 6, the host sides.
 function filter_host(form)
@@ -63,17 +65,14 @@ function filter_host(form)
    end
 end
 
-place_item_filter = T["show_if"] {
-                   filter_host("short"),
-                   T["and"] {
-                      T["not"] {
-                         T["have_unit"] {
-                            x = "$x1",
-                            y = "$y1",
-                         }
-                      }
-                   }
-                }
+function filter_item()
+   return T["show_if"] {
+      filter_host("short"),
+      T["not"] {
+         T["have_unit"] {
+            x = "$x1",
+            y = "$y1"}}}
+end
 
 -- For menu items that affect certain units; check that a unit is present on that hex.
 function filter_unit()

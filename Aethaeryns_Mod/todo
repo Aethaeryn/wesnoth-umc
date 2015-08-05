@@ -34,7 +34,8 @@ When this list is complete/empty, bump to version 0.9
       - review/combine change_unit_stat, change_stats, and menu_unit_change_stats
     - core.lua and spawn_units.lua and settings.lua
       - filter code needs to be cleaned up
-      - and once it is, that will probably eliminate core.lua
+      - moving the WML tables to a table is probably better than using a complex function
+      - probably eliminate core.lua, perhaps renaming it to filter.lua or something
     - settings.lua
       - new scenario
       - the whole modify variable thing

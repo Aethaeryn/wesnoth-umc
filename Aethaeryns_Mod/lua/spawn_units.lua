@@ -2,9 +2,6 @@
 <<
 spawn_units = {}
 
--- These are impassable terrains, used to blacklist summoning there.
-spawn_units.bad_terrain = "X*, Q*, *^Xm, Mv"
-
 -- This goes over all the possible summoners and chooses one with the
 -- highest HP in the area.
 local function find_summoner(x, y, summoners)
@@ -101,7 +98,7 @@ function spawn_units.menu_item_summon_summoner()
                          T["have_location"] {
                             x = "$x1",
                             y = "$y1",
-                            terrain = spawn_units.bad_terrain
+                            terrain = aeth_mod_filter.bad_summon_terrain
                          },
                          T["or"] {
                             T["have_unit"] {
@@ -131,7 +128,7 @@ function spawn_units.menu_item_summon(unit_role)
                             role = unit_role
                          }
                       }, T["not"] {
-                         terrain = spawn_units.bad_terrain,
+                         terrain = aeth_mod_filter.bad_summon_terrain,
                          -- this is prevents spawning over another unit
                          T["or"] {
                             T["filter"] { }
