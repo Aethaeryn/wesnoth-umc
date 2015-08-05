@@ -201,7 +201,7 @@ end
 
 function settings()
    spawn_units.spawn_units()
-   set_menu_item("MOD_005", "Unit Commands", "misc/key.png", filter_unit(), "menu_inventory()")
+   set_menu_item("MOD_010", "Unit Commands", "misc/key.png", filter_unit(), "menu_inventory()")
    set_menu_item("MOD_020", "Change Unit", "misc/icon-amla-tough.png", filter_host("unit"), "menu_unit_change_stats()")
    set_menu_item("MOD_050", "Change Terrain", "misc/vision-fog-shroud.png", filter_host("editor"), "menu_change_terrain()")
    set_menu_item("MOD_040", "Settings", "misc/ums.png", filter_host("long"), "menu_settings()")
