@@ -30,6 +30,32 @@ function use_potion(potion, size)
    end
 end
 
+function option_unit_message()
+   wesnoth.fire("message", {
+                   speaker  = "unit",
+                   caption  = "Unit Message",
+                   message  = "What will you say?",
+                   show_for = side_number,
+                   T["text_input"] {
+                      variable  = "aeth_custom_message",
+                      label     = "Type Here:",
+                      max_chars = 50
+                   }
+                }
+             )
+
+   local message = wesnoth.get_variable('aeth_custom_message')
+
+   if message ~= "" then
+      wesnoth.fire("message", {
+                      side    = side_number,
+                      speaker = "unit",
+                      message = "$aeth_custom_message"
+                   }
+                )
+   end
+end
+
 function item_use(name)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)

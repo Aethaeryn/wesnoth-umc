@@ -4,6 +4,9 @@ When this list is complete/empty, bump to version 0.9
   (3%)
   - Eliminate all the functions that are no longer necessary because of the switch.
   - Finish GUI2 rewrite:
+    - modify_unit.lua
+      - move the text_input stuff over to the new gui
+      - review/combine change_unit_stat, change_stats, and menu_unit_change_stats
     - core.lua
       - filter code needs to be cleaned up
       - and once it is, that will probably eliminate the file
@@ -11,8 +14,6 @@ When this list is complete/empty, bump to version 0.9
       - clean up the flow of the code now that gui2 simplifies things
       - finish switching to gui2
       - use a fancier interface, including using the side bar for descriptions
-    - modify_unit.lua
-      - move the text_input stuff over
     - settings.lua
       - new scenario
       - the whole modify variable thing

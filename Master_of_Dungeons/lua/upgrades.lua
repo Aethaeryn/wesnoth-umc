@@ -16,13 +16,13 @@ function event_post_advance()
    -- were set.
    else
       if unit.variables["upgradeSpeed"] ~= nil then
-         change_unit_max_moves(e.x1, e.y1, unit_data.max_moves + unit.variables["upgradeSpeed"])
+         change_unit.max_moves(e.x1, e.y1, unit_data.max_moves + unit.variables["upgradeSpeed"])
       end
       if unit.variables["upgradeResilience"] ~= nil then
-         change_unit_max_hitpoints(e.x1, e.y1, unit_data.max_hitpoints + (unit.variables["upgradeResilience"] * 4))
+         change_unit.max_hitpoints(e.x1, e.y1, unit_data.max_hitpoints + (unit.variables["upgradeResilience"] * 4))
       end
       if unit.variables["upgradeIntelligence"] ~= nil then
-         change_unit_max_experience(e.x1, e.y1, unit_data.max_experience * .8)
+         change_unit.max_experience(e.x1, e.y1, unit_data.max_experience * .8)
       end
    end
 end
@@ -51,10 +51,10 @@ function upgrade_unit(choice, cost, current, cap)
    local unit_data = unit.__cfg
    -- -- For debugging/testing, uncomment this and comment the test that
    -- -- you have enough to pay for upgrades.
-   -- if unit.variables["advancement"] == nil then
-   --    unit.variables["advancement"] = 0
-   -- end
-   if unit.variables["advancement"] ~= nil and unit.variables["advancement"] >= cost
+   if unit.variables["advancement"] == nil then
+      unit.variables["advancement"] = 0
+   end
+   if unit.variables["advancement"] ~= nil -- and unit.variables["advancement"] >= cost
    and (cap == false or current < cap) then
       unit.variables["advancement"] = unit.variables["advancement"] - cost
       if unit.variables["upgrade"..choice] == nil then
@@ -63,15 +63,15 @@ function upgrade_unit(choice, cost, current, cap)
          unit.variables["upgrade"..choice] = unit.variables["upgrade"..choice] + 1
       end
       if choice == "Speed" then
-         change_unit_max_moves(e.x1, e.y1, unit_data.max_moves + 1)
+         change_unit.max_moves(e.x1, e.y1, unit_data.max_moves + 1)
       elseif choice == "Resilience" then
-         change_unit_max_hitpoints(e.x1, e.y1, unit_data.max_hitpoints + 4)
+         change_unit.max_hitpoints(e.x1, e.y1, unit_data.max_hitpoints + 4)
       elseif choice == "Strength" then
          debugOut("Strength is not yet implemented.")
       elseif choice == "Dexterity" then
          debugOut("Dexterity is not yet implemented.")
       elseif choice == "Intelligence" then
-         change_unit_max_experience(e.x1, e.y1, unit_data.max_experience * .8)
+         change_unit.max_experience(e.x1, e.y1, unit_data.max_experience * .8)
       end
    else
       wesnoth.message("Error", "You cannot get that upgrade right now.")

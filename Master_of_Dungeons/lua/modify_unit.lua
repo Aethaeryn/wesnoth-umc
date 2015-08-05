@@ -1,12 +1,19 @@
 #define MOD_LUA_MODIFY_UNIT
 <<
-function change_side(new_side)
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
+change_unit = {}
+
+function change_unit.side(x, y, new_side)
+   local unit = wesnoth.get_unit(x, y)
    unit.side = new_side
 end
 
-function change_unit_max_hitpoints(x, y, change)
+function change_unit.hitpoints(x, y, change)
+   local unit = wesnoth.get_unit(x, y).__cfg
+   unit.hitpoints = change
+   wesnoth.put_unit(x, y, unit)
+end
+
+function change_unit.max_hitpoints(x, y, change)
    local unit = wesnoth.get_unit(x, y).__cfg
    -- Full health units stay at full health. Units with more health
    -- than the new max have to lose health.
@@ -18,7 +25,7 @@ function change_unit_max_hitpoints(x, y, change)
    wesnoth.put_unit(x, y, unit)
 end
 
-function change_unit_max_moves(x, y, change)
+function change_unit.max_moves(x, y, change)
    local unit = wesnoth.get_unit(x, y).__cfg
    if unit.moves == unit.max_moves then
       unit.moves = change
@@ -27,18 +34,49 @@ function change_unit_max_moves(x, y, change)
    wesnoth.put_unit(x, y, unit)
 end
 
-function change_unit_max_experience(x, y, change)
+function change_unit.experience(x, y, change)
+   local unit = wesnoth.get_unit(x, y).__cfg
+   unit.experience = change
+   wesnoth.put_unit(x, y, unit)
+end
+
+function change_unit.max_experience(x, y, change)
    local unit = wesnoth.get_unit(x, y).__cfg
    unit.max_experience = change
    wesnoth.put_unit(x, y, unit)
 end
 
+function change_unit.gender(x, y)
+   local unit = wesnoth.get_unit(x, y).__cfg
+   if unit.gender == "male" then
+      unit.gender = "female"
+   elseif unit.gender == "female" then
+      unit.gender = "male"
+   end
+   wesnoth.put_unit(x, y, unit)
+end
+
+function change_unit.leader(x, y)
+   local unit = wesnoth.get_unit(x, y).__cfg
+   if unit.canrecruit == true then
+      unit.canrecruit = false
+   else
+      unit.canrecruit = true
+   end
+   wesnoth.put_unit(x, y, unit)
+   if unit.role ~= "None" and unit.role ~= "" then
+      if unit.canrecruit == true then
+         wesnoth.wml_actions.remove_unit_overlay{x = x, y = y, image = "misc/hero-icon.png"}
+      else
+         wesnoth.wml_actions.unit_overlay{x = x, y = y, image = "misc/hero-icon.png"}
+      end
+   end
+end
+
 function change_unit_stat(stat)
    local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
-   local unit_data = unit.__cfg
-
-   if stat ~= "Gender" and stat ~= "Leader" then
+   stat = string.gsub(string.lower(stat), " ", "_")
+   if stat ~= "gender" and stat ~= "leader" then
       wesnoth.fire("message", {
                       speaker  = "narrator",
                       message  = "What should the new value of "..stat.." be?",
@@ -52,44 +90,8 @@ function change_unit_stat(stat)
                    }
                 )
    end
-
    local change = wesnoth.get_variable("new_stat_change")
-
-   if stat == "Hitpoints" then
-      unit_data.hitpoints = change
-   elseif stat == "Max Hitpoints" then
-      change_unit_max_hitpoints(e.x1, e.y1, change)
-   elseif stat == "Moves" then
-      change_unit_max_moves(e.x1, e.y1, change)
-   elseif stat == "Experience" then
-      unit_data.experience = change
-   elseif stat == "Max Experience" then
-      change_unit_max_experience(e.x1, e.y1, change)
-   elseif stat == "Gender" then
-      if unit_data.gender == "male" then
-         unit_data.gender = "female"
-      elseif unit_data.gender == "female" then
-         unit_data.gender = "male"
-      end
-   elseif stat == "Leader" then
-      if unit_data.canrecruit == true then
-         unit_data.canrecruit = false
-      else
-         unit_data.canrecruit = true
-      end
-   end
-   if not (stat == "Max Hitpoints" or stat == "Moves" or stat == "Max Experience") then
-      wesnoth.put_unit(e.x1, e.y1, unit_data)
-   end
-
-   -- Makes sure that the summoner crown shows on non-leader summoners.
-   if unit_data.role ~= "None" and unit_data.role ~= "" then
-      if unit_data.canrecruit == true then
-         wesnoth.wml_actions.remove_unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
-      else
-         wesnoth.wml_actions.unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
-      end
-   end
+   change_unit[stat](e.x1, e.y1, change)
 end
 
 function change_stats(variable)
@@ -150,12 +152,12 @@ function change_stats(variable)
    local function side()
       local side = menu(SIDES, image, title, "Select a target side.", menu_simple_list)
       if side then
-         change_side(side)
+         change_unit.side(e.x1, e.y1, side)
       end
    end
 
    local function stats()
-      local stats = {"Hitpoints", "Max Hitpoints", "Moves",
+      local stats = {"Hitpoints", "Max Hitpoints", "Max Moves",
                      "Experience", "Max Experience", "Gender",
                      "Leader"}
       local stat = menu(stats, image, title, "Which stat do you want to change?", menu_simple_list)
@@ -180,32 +182,6 @@ function menu_unit_change_stats()
    local choice = menu(options, image, title, description, menu_simple_list)
    if choice then
       change_stats(choice)
-   end
-end
-
-function option_unit_message()
-   wesnoth.fire("message", {
-                   speaker  = "unit",
-                   caption  = "Unit Message",
-                   message  = "What will you say?",
-                   show_for = side_number,
-                   T["text_input"] {
-                      variable  = "aeth_custom_message",
-                      label     = "Type Here:",
-                      max_chars = 50
-                   }
-                }
-             )
-
-   local message = wesnoth.get_variable('aeth_custom_message')
-
-   if message ~= "" then
-      wesnoth.fire("message", {
-                      side    = side_number,
-                      speaker = "unit",
-                      message = "$aeth_custom_message"
-                   }
-                )
    end
 end
 
