@@ -1,4 +1,4 @@
-AETHAERYN'S MAPS         VERSION 0.5.2+svn
+AETHAERYN'S MAPS         VERSION 0.5.2+git
 2p Twin Rivers           (version 0.5)
 3p Fortress Defense      (version 0.7)
 4p Chambers              (version 0.5)
@@ -8,10 +8,10 @@ AETHAERYN'S MAPS         VERSION 0.5.2+svn
 5p Dwarven Fortress      (version 0.2)
 6p Random Rumble         (version 0.3)
 
-VERSION 0.5.2+svn
+VERSION 0.5.2+git
  - Master of Dungeons moved to its own add-on, rewritten in Lua
  - Gladiator Arena removed
-   - the summoner code became Master of Dungeons before the rewrite
+   - the summoner code became Aethaeryn's MoD before the rewrite
    - the old, imbalanced map becames the battle map in MoD
  - Hide and Seek removed
    - it was a nightmare to balance, but it's now an RPG map in MoD
