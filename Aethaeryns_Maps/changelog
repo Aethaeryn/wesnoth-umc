@@ -1,0 +1,214 @@
+AETHAERYN'S MAPS         VERSION 0.5.2+svn
+2p Twin Rivers           (version 0.5)
+3p Fortress Defense      (version 0.7)
+4p Chambers              (version 0.5)
+4p Fortress Assault      (version 1.1)
+4p Four Bases            (version 0.4)
+5p Aethaeryn's Empires   (version 0.2)
+5p Dwarven Fortress      (version 0.2)
+6p Random Rumble         (version 0.3)
+
+VERSION 0.5.2+svn
+ - Master of Dungeons moved to its own add-on, rewritten in Lua
+ - Gladiator Arena removed
+   - the summoner code became Master of Dungeons before the rewrite
+   - the old, imbalanced map becames the battle map in MoD
+ - Hide and Seek removed
+   - it was a nightmare to balance, but it's now an RPG map in MoD
+
+VERSION 0.5.2 for Wesnoth 1.8.1 (10 May 2010)
+ - Master of Dungeons updated to 0.3
+    - bugfix: Summon Nature works again
+    - added orcish summon type so that most mainline generic badguys are now available
+    - the master's units can now speak cutomized dialog messages to add to the plot
+    - cleaned up the right-click options
+ - Four Bases updated to 0.4
+    - removing the bottlenecks at the "bases"; apparently even 3-wide is too thin
+    - reducing the gold cost for the terrain so that people will actually change them
+
+VERSION 0.5.1 for Wesnoth 1.8.1 (02 May 2010)
+ - Dwarven fortress updated to 0.2
+    - added more traps
+    - removed some villages to cut down on unit count
+    - opened up bottlenecks that could make the game unwinnable for attackers
+    - reduced the starting gold for the attackers
+    - gave the defender starting units in their base to work traps and catch bats
+    - gave the attackers two loyal young ogres each to rebalance the battle
+ - Master of Dungeons created; updated to version 0.2
+
+VERSION 0.5 for Wesnoth 1.8 (09 November 2009)
+ - updating for Wesnoth 1.8 stable branch
+ - Chambers updated to 0.5
+    - slight tweaks to the asthetics of the middle of the map
+    - using forest hills in the middle chamber to make it slightly more balanced
+    - using swamp villages in the middle to increase usefulness of water units
+ - Gladiator Arena updated to 0.5
+    - redid the asthetics of the exterior to be a lava underworld
+    - both players are now forced to be Undead
+    - coded a special recruiting method for the Necromancers
+ - Dwarven Fortress created
+ - Aethaeryn's Empires created; updated to version 0.2
+
+VERSION 0.4 for Wesnoth 1.6.4 (20 July 2009)
+ - updating for Wesnoth 1.6 stable branch
+ - Fortress Defense updated to 0.7
+    - code cleaned up with wmllint
+ - Fortress Assault updated to 1.1
+    - added new-for-1.6 terrains to make map look better
+    - added forest-hills in a few spots
+ - Four Bases updated to 0.3
+    - opened up battlefield significantly by replacing impassable mountains with water/swamp
+      to prevent stalemate-ish games and to enable water units more
+ - Random Rumble updated to 0.3
+    - expanded the size of the map to greatly change the feel of the game
+    - redid masks as well
+ - Hide and Seek created
+ - Twin Rivers found and added to mappack; numbered as version 0.5
+
+VERSION 0.3 for Wesnoth 1.4.1 and 1.5 (26 April 2008)
+ - releasing on the 1.5 development branch
+ - Fortress Defense updated to 0.6
+    - fix exploit for hiding at 16,23 mountain with leader can be attacked only by 1 enemy
+    - fixed bug where not using map settings could cause a flying p1 leader to attack
+ - Four Bases updated to 0.2
+    - added more terrain that is changeable by shop to increase importance
+    - added documentation for the terrain shop
+
+VERSION 0.2.4 for Wesnoth 1.3.18 (24 Feb 2008)
+ - Four Bases created
+ - Fortress Defense updated to 0.5
+    - spawns are now more clear and the elf "ambush" is now warned
+    - there is now end text for when you win
+
+VERSION 0.2.3 for Wesnoth 1.3.16 (12 Feb 2008)
+ - Random Rumble updated to 0.2
+    - fixed major issue where the map border didn't change
+    - snow mask added
+    - tropical mask added
+    - removed unused masks
+ - Fortres Defense updated to 0.4
+    - ogre and troll spawns merged
+    - new merman spawn where ogre spawn used to be
+    - added three units in the last spawn that reinforce the top
+
+VERSION 0.2.2 for Wesnoth 1.3.15 (9 Feb 2008)
+ - Fortress Defense updated to 0.3
+    - fixed critical bug where you didn't win at turn 55 if you didn't use map settings
+    - expanded castles on both sides to 2 recruiting hexes
+    - water village south of bridge turned into hut village
+    - enemies (except bosses) now have random traits instead of strong,resilient
+    - back area slightly tweaked
+
+VERSION 0.2.1 for Wesnoth 1.3.15 (9 Feb 2008)
+ - Fortress Defense updated to 0.2
+    - made the dragon a spawn instead of the leader so it has traits and can't recruit
+    - reduced xp modifier to 80% to 70% (was typo)
+    - redid the back area so retreat is now doable
+    - clues are now given for the UD and elf ambushes via dialog
+    - gave p1 a fake leader so they could still take villages
+ - Fortress Assault updated to 1.0
+    - fixed bug so that no message was displayed on defender's victory
+    - Fortress Assault is now "complete" (for the moment at least)
+
+VERSION 0.2 for Wesnoth 1.3.15 (1 Feb 2008)
+ - Random Rumble created
+ - Fortress Defense created
+
+VERSION 0.1.4 for Wesnoth 1.3.14 (17 Jan 2008)
+ - Chambers updated to 0.4
+    - two villages added to center as incentive for more action there
+    - terrain tweaked a little to fix known issues
+    - half the chambers changed to savannah/jungle for variety
+    - dirt changed to two types of roads
+
+VERSION 0.1.3 for Wesnoth 1.3.14 (16 Jan 2008)
+ - Gladiator Arena updated to 0.4
+    - impassable mountain in center reduced to one hex to open map up a bit
+    - back cave area opened up more on each side
+    - mountains shifted to prevent p1 from advantage in mountain-holding
+    - "seats" added on side of arena for better look
+    - cave mushrooms replaced with dirt mushroom on south half
+
+VERSION 0.1.2 for Wesnoth 1.3.14 (15 Jan 2008)
+ - rerelease to work in 1.3.14
+ - Fortress Assault updated to 0.9
+    - windmills no longer can be villages, so windmill villages to regular villages
+    - windmills added elsewhere to keep the feel of the map (and the new logo of the mappack)
+    - borders tweaked since they can now be mountains/forests
+
+VERSION 0.1.1 for Wesnoth 1.3.14 (15 Jan 2008)
+ - Fortress Assault updated to 0.8
+    - attacker's side of the map updated to space out castles more
+    - p2 attacker given an extra village to compensate for no side village
+ - mappack uploaded on new 1.4 add-ons server
+
+VERSION 0.1 for Wesnoth 1.3.13 (12 Jan 2008)
+ - Fortress Assault updated to 0.7
+    - keep added to center of map
+    - gold mine edited to look more like a mine
+    - grass by the southeast desert changed to savannah
+    - village by p4's keep changed to savannah village
+ - mappack uploaded on add-ons server
+
+VERSION 0.0.6 for Wesnoth 1.3.13 (7 Jan 2008)
+ - WML added to all of the maps to prepare for release
+ - Fortress Assault updated to 0.6
+    - p1 now starts owning half the villages to mobilize defenses quicker
+    - map expanded to the left so p3 attacker has more space and options
+    - village by p3's keep moved one hex to the left
+    - village added to expanded left area, similar to village below tunnel
+    - gold mine cave added left of the fortress cave, gives 50g every 10 turns
+    - labels added for the gold mine and each gate
+
+VERSION 0.0.5 for Wesnoth 1.3.12 (21 Dec 2007)
+ - Fortress Assault updated to 0.5
+    - castle hex added south of bridge so attackers can defend from defender attacking
+    - stream added to the east end of the map so p4 can mobilize water units quicker
+    - default gold for p1 reduced from 250 to 200
+ - Gladiator Arena updated to 0.3
+    - two ford paths added so that water units can be mobilized
+    - side entrance to back area added off of the side water area
+
+VERSION 0.0.4 for Wesnoth 1.3.12 (21 Dec 2007)
+ - Fortress Assault updated to 0.4
+    - map expanded to the right and tunnel added
+    - small castle for defender added where tunnel and fortress meet
+    - one village moved outside cave to discourage bottleneck turtling
+    - two villages added in tunnel and one village to mountain pass in front of tunnel
+    - encampment castle hex on left side of map changed to ruined castle
+ - Chambers updated to 0.3
+    - Chambers converted to 1.3.12-compatable map format (borders added)
+ - Gladiator Arena updated to 0.2
+    - middle chasm changed to impassable mountains to prevent drake advantage
+
+VERSION 0.0.3 for Wesnoth 1.3.12 (20 Dec 2007)
+ - Fortress Assault updated to 0.3
+    - beach added to far left of map
+    - coast above moat made more defendable with hills/forests/mountains
+    - ruined castle above bridge reordered for easier defending
+
+VERSION 0.0.2 for Wesnoth 1.3.12 (18 Dec 2007)
+ - Fortress Assault updated to 0.2
+    - water entrance to fortress added on the left
+    - water path from attacker encampments to moat added
+    - side path to the left accross the moat added
+    - oasis added outside main gate to allow for more healing for attackers/defenders outside
+    - attackers each get 3 villages now instead of 2
+    - windmill villages and farmland patches added to left and center like the right
+    - outside path changed from dirt to road
+
+VERSION 0.0.1 for Wesnoth 1.3.12 (17 Dec 2007)
+ - Fortress Assault updated to 0.1
+    - defender castle size reduced
+    - moat changed to look more natural and land inside moat but outside cave reduced
+    - castle hexes on both sides of bridge removed
+    - dirt path added from attackers to fortress entrance
+    - terrain on attacker's side greatly changed to be more balanced
+
+PRE-0.0.1
+ - Fortress Assault created for Wesnoth 1.3.12 (16 Dec 2007)
+ - Gladiator Arena created for Wesnoth 1.3.10 (18 Nov 2007)
+ - Chambers updated to 0.2 (7 Nov 2007)
+    - center area changed to mushroom grove from snow
+    - spacing added at bottom for outside void
+ - Chambers created created for Wesnoth 1.3.9 (6 Nov 2007)
