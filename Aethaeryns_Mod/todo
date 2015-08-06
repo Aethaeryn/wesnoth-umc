@@ -1,15 +1,10 @@
-AETHAERYN'S MOD TODO LIST (88% Progress)
+AETHAERYN'S MOD TODO LIST (89% Progress)
 When this list is complete/empty, bump to version 0.9
 
-  (3%)
+  (2%)
   - Eliminate all the functions that are no longer necessary because of the switch.
-    - i.e. every function that was only separate because using [message] required calling [lua] each time
     - this means reviewing: settings.lua, inventory.lua, terrain_editor.lua, upgrades.lua
-    - inventory.lua needs a lot of work
-      - place_object_choose is a mess
-      - submenu_inventory is a mess
-      - lots of non-menu functions need to look more like the ones in modify_unit.lua
-    - upgrades.lua also needs a lot of work
+    - lots of non-menu functions need to look more like the ones in modify_unit.lua
   - Still uses DungeonOpt:
     - inventory.lua
       - extremely complicated, mostly name, item, price, message, quantity and quite a few contexts
@@ -36,7 +31,8 @@ When this list is complete/empty, bump to version 0.9
       - filter code needs to be cleaned up
       - moving the WML tables to a table is probably better than using a complex function
     - settings.lua
-      - the whole modify variable thing
+      - some settings could be done more than one in a window, or with a slider, checkboxes, etc., instead of with text input
+      - especially changing side variables
     - spawn_units.lua
       - add back in the variable cost when summoning from a summoner
       - make sure the cost shows up in the menu
@@ -50,18 +46,10 @@ When this list is complete/empty, bump to version 0.9
         - possibly more than one on the same screen
     - upgrades.lua
       - don't forget to turn off the debug free upgrades again before MP playtesting it
-  - Need to code in code for investigate drop in inventory.lua
-  - Use a fancy interface for inventory, upgrades, and possibly units.
-  - New picture(s) for the unit commands and interaction menus and anywhere else where the ancient lich is inappropriate.
-    - That is, for commands that can be run by other players.
-    - Currenly anything that can eventually be called by Unit Commands.
-    - Eventually would include a separate menu item for Interaction, too.
-  - Most places probably can check for an empty list before calling menu() and show a better error there.
-    - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
-  - There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something
-  - Many settings could probably be done more than one in a window, with a slider, checkboxes, etc., instead of with text input.
+  - Use a fancy user interface for inventory, upgrades, and possibly units.
 
  (1) Inventory Containers (2%)
+       * Investigate drop (pack container)
        * Templates:
          * Have tiered templates for quick-stocking shops.
          * Have tiered templates for quick-stocking chests.
@@ -186,6 +174,7 @@ When this list is complete/empty, bump to version 0.9
          * Have the new interface change subsections (victory, loss, etc.) so that formatting can be preserved.
        * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
        * FEATURE: If possible add a back button in addition to close for the complicated menus.
+       * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
        * CODE: Possibly move all the menus into their own file.
        * CODE: Possibly move fire functions into their own file.
        * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
@@ -193,7 +182,10 @@ When this list is complete/empty, bump to version 0.9
        * CODE: Move mod_menu so it isn't created every side turn so that the status persists.
          * The rest of the data probably can move to the beginning too.
          * The toggle should set/clear menu items properly when status changes, so settings() only needs to run at start too.
-       * CODE: Find a replacement for get_roles() in modify_unit.lua
+       * CODE: Find a replacement for get_roles() in modify_unit.lua and get_sides_with_all() in settings.lua
+       * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
+         * Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
+       * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
 
  (6) Future
     * Magic [temporary via scrolls]

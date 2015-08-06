@@ -37,7 +37,7 @@ function clear_game_object(x, y)
    end
 end
 
-local function simple_place(x, y, type, image, inventory)
+function simple_place(x, y, type, image, inventory)
    clear_game_object(x,y)
    w_items.place_image(x, y, image)
    check_x_coord(x)
@@ -51,7 +51,7 @@ local function simple_place(x, y, type, image, inventory)
    end
 end
 
-local function place_gold(x, y)
+function place_gold(x, y)
    wesnoth.fire("message", {
                    speaker  = "narrator",
                    message  = "How much gold do you want to place in your pile",
@@ -198,66 +198,39 @@ function shop_buy(name)
    end
 end
 
-function submenu_interact()
-   local e = wesnoth.current.event_context
-   local title = "Unit Commands"
-   local description = "How do you want to interact?"
-   local image = "portraits/undead/transparent/ancient-lich.png" -- todo: definitely not appropriate here
+function find_interactions(x, y)
    local interactions = {}
-   check_x_coord(e.x1)
-   if game_containers[e.x1][e.y1] ~= nil then
-      if game_containers[e.x1][e.y1]["shop"] ~= nil then
-         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png", e.x1, e.y1})
-      elseif game_containers[e.x1][e.y1]["chest"] ~= nil then
-         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png", e.x1, e.y1})
-         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png", e.x1, e.y1})
-      elseif game_containers[e.x1][e.y1]["pack"] ~= nil then
-         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png", e.x1, e.y1})
-      elseif game_containers[e.x1][e.y1]["gold"] ~= nil then
-         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png", e.x1, e.y1})
+   check_x_coord(x)
+   if game_containers[x][y] ~= nil then
+      if game_containers[x][y]["shop"] ~= nil then
+         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png", x, y})
+      elseif game_containers[x][y]["chest"] ~= nil then
+         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png", x, y})
+         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png", x, y})
+      elseif game_containers[x][y]["pack"] ~= nil then
+         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png", x, y})
+      elseif game_containers[x][y]["gold"] ~= nil then
+         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png", x, y})
       end
    end
-   local option = menu(interactions, image, title, description, menu_picture_list, 1)
-   if option then
-      check_x_coord(e.x1)
-      if option == "Visit Shop" then
-         submenu_inventory('visit_shop', game_containers[e.x1][e.y1]["shop"])
-      elseif option == "Collect Gold" then
-         wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[e.x1][e.y1]["gold"]
-         clear_game_object(e.x1, e.y1)
-      elseif option == "Remove from Chest" then
-         submenu_inventory('chest_remove', game_containers[e.x1][e.y1]["chest"])
-      elseif option == "Add to Chest" then
-         submenu_inventory('chest_add', false)
-      end
-   end
+   return interactions
 end
 
-function menu_placement()
-   local title = "Place Objects"
-   local description = "What do you want to do with this unit?"
-   local image = "portraits/undead/transparent/ancient-lich.png"
-   local options = {
-      {"Place Shop", "scenery/tent-shop-weapons.png"},
-      {"Place Chest", "items/chest-plain-closed.png"},
-      {"Place Pack", "items/leather-pack.png"},
-      {"Place Gold Pile", "items/gold-coins-large.png"},
-      {"Clear Hex", "terrain/grass/green-symbol.png"}}
-   local option = menu(options, image, title, description, menu_picture_list, 1)
-   if option then
-      local e = wesnoth.current.event_context
-      if option == "Place Shop" then
-         simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
-      elseif option == "Place Chest" then
-         simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
-      elseif option == "Place Pack" then
-         simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
-      elseif option == "Place Gold Pile" then
-         place_gold(e.x1, e.y1)
-      elseif option == "Clear Hex" then
-         clear_game_object(e.x1, e.y1)
+function find_interactions_to_modify(x, y)
+   local interactions = {}
+   check_x_coord(x)
+   if game_containers[x][y] ~= nil then
+      if game_containers[x][y]["shop"] ~= nil then
+         table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
+      elseif game_containers[x][y]["chest"] ~= nil then
+         table.insert(interactions, 1, {"Modify Chest", "items/chest-plain-closed.png"})
+      elseif game_containers[x][y]["pack"] ~= nil then
+         table.insert(interactions, 1, {"Modify Drop", "items/leather-pack.png"})
+      elseif game_containers[x][y]["gold"] ~= nil then
+         table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
       end
    end
+   return interactions
 end
 
 function submenu_inventory(context, container)
@@ -333,8 +306,7 @@ function menu_inventory()
       {"Interact", "icons/coins_copper.png"},
       {"Use Item", "icons/potion_red_small.png"},
       {"Upgrades", "attacks/woodensword.png"},
-      {"Speak", "icons/letter_and_ale.png"}
-   }
+      {"Speak", "icons/letter_and_ale.png"}}
    local option = menu(options, image, title, description, menu_picture_list, 1)
    if option == "Use Item" then
       submenu_inventory('unit_use')
@@ -343,7 +315,21 @@ function menu_inventory()
    elseif option == "Speak" then
       fire.custom_message()
    elseif option == "Interact" then
-      submenu_interact()
+      local e = wesnoth.current.event_context
+      local description = "How do you want to interact?"
+      local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
+      if option then
+         if option == "Visit Shop" then
+            submenu_inventory('visit_shop', game_containers[e.x1][e.y1]["shop"])
+         elseif option == "Collect Gold" then
+            wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[e.x1][e.y1]["gold"]
+            clear_game_object(e.x1, e.y1)
+         elseif option == "Remove from Chest" then
+            submenu_inventory('chest_remove', game_containers[e.x1][e.y1]["chest"])
+         elseif option == "Add to Chest" then
+            submenu_inventory('chest_add', false)
+         end
+      end
    end
 end
 

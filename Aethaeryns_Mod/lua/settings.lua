@@ -31,31 +31,29 @@ function fire.custom_message()
    end
 end
 
-function submenu_modify_container()
-   local e = wesnoth.current.event_context
-   local title = "Settings"
-   local description = "Which container do you want to modify?"
+function menu_placement()
+   local title = "Place Objects"
+   local description = "What do you want to do with this unit?"
    local image = "portraits/undead/transparent/ancient-lich.png"
-   local interactions = {}
-   check_x_coord(e.x1)
-   if game_containers[e.x1][e.y1] ~= nil then
-      if game_containers[e.x1][e.y1]["shop"] ~= nil then
-         table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
-      elseif game_containers[e.x1][e.y1]["chest"] ~= nil then
-         table.insert(interactions, 1, {"Modify Chest", "items/chest-plain-closed.png"})
-      elseif game_containers[e.x1][e.y1]["pack"] ~= nil then
-         table.insert(interactions, 1, {"Modify Drop", "items/leather-pack.png"})
-      elseif game_containers[e.x1][e.y1]["gold"] ~= nil then
-         table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
-      end
-   end
-   local option = menu(interactions, image, title, description, menu_picture_list, 1)
+   local options = {
+      {"Place Shop", "scenery/tent-shop-weapons.png"},
+      {"Place Chest", "items/chest-plain-closed.png"},
+      {"Place Pack", "items/leather-pack.png"},
+      {"Place Gold Pile", "items/gold-coins-large.png"},
+      {"Clear Hex", "terrain/grass/green-symbol.png"}}
+   local option = menu(options, image, title, description, menu_picture_list, 1)
    if option then
-      check_x_coord(e.x1)
-      if option == "Modify Shop" then
-         submenu_inventory('shop_modify', game_containers[e.x1][e.y1]["shop"])
-      elseif option == "Modify Chest" then
-         submenu_inventory('chest_modify', game_containers[e.x1][e.y1]["chest"])
+      local e = wesnoth.current.event_context
+      if option == "Place Shop" then
+         simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
+      elseif option == "Place Chest" then
+         simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
+      elseif option == "Place Pack" then
+         simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
+      elseif option == "Place Gold Pile" then
+         place_gold(e.x1, e.y1)
+      elseif option == "Clear Hex" then
+         clear_game_object(e.x1, e.y1)
       end
    end
 end
@@ -165,39 +163,12 @@ function menu_view_side(side_num)
    end
 end
 
-function menu_modify_side()
-   local function get_sides()
-      local sides = {"All"}
-
-      for i, v in ipairs(SIDES) do
-         sides[i + 1] = SIDES[i]
-      end
-
-      return sides
+local function get_sides_with_all()
+   local sides = {"All"}
+   for i, v in ipairs(SIDES) do
+      sides[i + 1] = SIDES[i]
    end
-   local side = menu(get_sides(), "portraits/undead/transparent/ancient-lich.png", "Settings", "Which side do you want to modify?", menu_simple_list)
-   if side then
-      menu_view_side(side)
-   end
-end
-
-function menu_new_scenario()
-   local options = DungeonOpt:new {
-      root_message   = "Which scenario do you want to start?",
-      option_message = "$input2",
-      code           = "fire.end_scenario('$input1')",
-   }
-
-   options:fire{
-                   {"intro", "Introduction"},
-                   {"intro2", "Introduction (Underground)"},
-                   {"battle", "Battle"},
-                   {"cavern", "Cavern"},
-                   {"classic", "Classic"},
-                   {"hide_and_seek", "Hide and Seek"},
-                   {"open_dungeon", "Open Dungeon"},
-                   {"woods", "Woods"},
-                }
+   return sides
 end
 
 mod_menu = {
@@ -268,11 +239,35 @@ function menu_settings()
    local option = menu(options, image, title, description, menu_simple_list)
    if option then
       if option == "Modify Container" then
-         submenu_modify_container()
+         local e = wesnoth.current.event_context
+         local description = "Which container do you want to modify?"
+         local interaction = menu(find_interactions_to_modify(e.x1, e.y1), image, title, description, menu_picture_list, 1)
+         if interaction then
+            if interaction == "Modify Shop" then
+               submenu_inventory('shop_modify', game_containers[e.x1][e.y1]["shop"])
+            elseif interaction == "Modify Chest" then
+               submenu_inventory('chest_modify', game_containers[e.x1][e.y1]["chest"])
+            end
+         end
       elseif option == "Modify Side" then
-         menu_modify_side()
+         local side = menu(get_sides_with_all(), "portraits/undead/transparent/ancient-lich.png", "Settings", "Which side do you want to modify?", menu_simple_list)
+         if side then
+            menu_view_side(side)
+         end
       elseif option == "New Scenario" then
-         menu_new_scenario()
+         local options = DungeonOpt:new {
+            root_message   = "Which scenario do you want to start?",
+            option_message = "$input2",
+            code           = "fire.end_scenario('$input1')"}
+         options:fire{
+            {"intro", "Introduction"},
+            {"intro2", "Introduction (Underground)"},
+            {"battle", "Battle"},
+            {"cavern", "Cavern"},
+            {"classic", "Classic"},
+            {"hide_and_seek", "Hide and Seek"},
+            {"open_dungeon", "Open Dungeon"},
+            {"woods", "Woods"}}
       elseif option == "Toggle Summon Summoners" then
          feature_toggle("summon_summoner")
       elseif option == "Toggle Unit Editor" then
