@@ -73,42 +73,6 @@ function change_unit.leader(x, y)
    end
 end
 
-function change_unit_stat(stat)
-   local e = wesnoth.current.event_context
-   stat = string.gsub(string.lower(stat), " ", "_")
-   if stat ~= "gender" and stat ~= "leader" then
-      local title = "Change Unit"
-      local description = string.format("What should the new value of %s be?", stat)
-      local image = "portraits/undead/transparent/ancient-lich.png"
-      local label = "New Value:"
-      local new_value
-      new_value = menu_text_input(image, title, description, label)
-      if new_value then
-         change_unit[stat](e.x1, e.y1, new_value)
-      end
-   else
-      change_unit[stat](e.x1, e.y1)
-   end
-end
-
-local function transform(unit)
-   local title = "Change Unit"
-   local description = "What unit do you want it to transform to?"
-   local image = "portraits/undead/transparent/ancient-lich.png"
-   local label = "Unit Type:"
-   local new_unit = menu_text_input(image, title, description, label)
-
-   -- checks to make sure the unit type is valid before the change
-   if new_unit then
-      for unit_type, i in pairs(wesnoth.unit_types) do
-         if unit_type == new_unit then
-            wesnoth.transform_unit(unit, new_unit)
-            unit.hitpoints = unit.max_hitpoints
-         end
-      end
-   end
-end
-
 local function get_roles()
    local roles = {}
    for i, v in ipairs(SUMMON_ROLES) do
@@ -128,7 +92,18 @@ function menu_unit_change_stats()
    local choice = menu(options, image, title, description, menu_simple_list)
    if choice then
       if choice == "Transform" then
-         transform(unit)
+         local description = "What unit do you want it to transform to?"
+         local label = "Unit Type:"
+         local new_unit = menu_text_input(image, title, description, label)
+         if new_unit then
+            -- only transforms if a valid unit was input
+            for unit_type, i in pairs(wesnoth.unit_types) do
+               if unit_type == new_unit then
+                  wesnoth.transform_unit(unit, new_unit)
+                  unit.hitpoints = unit.max_hitpoints
+               end
+            end
+         end
       elseif choice == "Role" then
          local chosen_role = menu(get_roles(), image, title, "Select a new (summoning) role for this unit.", menu_simple_list)
          unit.role = chosen_role
@@ -150,7 +125,18 @@ function menu_unit_change_stats()
                         "Leader"}
          local stat = menu(stats, image, title, "Which stat do you want to change?", menu_simple_list)
          if stat then
-            change_unit_stat(stat)
+            stat = string.gsub(string.lower(stat), " ", "_")
+            if stat ~= "gender" and stat ~= "leader" then
+               local description = string.format("What should the new value of %s be?", stat)
+               local label = "New Value:"
+               local new_value
+               new_value = menu_text_input(image, title, description, label)
+               if new_value then
+                  change_unit[stat](e.x1, e.y1, new_value)
+               end
+            else
+               change_unit[stat](e.x1, e.y1)
+            end
          end
       end
    end
