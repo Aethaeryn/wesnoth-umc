@@ -200,6 +200,12 @@ function set_menu_item(id, description, image, filter, command)
 end
 
 function settings()
+   local foo = menu_text_input("portraits/undead/transparent/ancient-lich.png", "Testing", "Type Something")
+   if foo then
+      wesnoth.message(foo)
+   else
+      wesnoth.message("false")
+   end
    spawn_units.spawn_units()
    set_menu_item("MOD_010", "Unit Commands", "misc/key.png", filter_unit(), "menu_inventory()")
    set_menu_item("MOD_020", "Change Unit", "misc/icon-amla-tough.png", filter_host("unit"), "menu_unit_change_stats()")

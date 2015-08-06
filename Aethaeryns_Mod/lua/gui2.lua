@@ -3,17 +3,21 @@
 helper = wesnoth.require "lua/helper.lua"
 T = helper.set_wml_tag_metatable {}
 
-local function generate_dialog(not_empty)
-   local menu_list = {}
+local function generate_dialog(not_empty, menu_type)
+   local menu_core = {}
    if not_empty then
-      menu_list = T.column { horizontal_grow = true, T.listbox { id = "menu_list",
+      if menu_type == "list" then
+         menu_core = T.column { horizontal_grow = true, T.listbox { id = "menu_list",
         T.list_definition { T.row { T.column { horizontal_grow = true,
           T.toggle_panel { T.grid { T.row {
             T.column { horizontal_alignment = "left", T.image { id = "icon" } },
             T.column { horizontal_alignment = "left", T.label { id = "label" } },
       }}}}}}}}
+      elseif menu_type == "text_input" then
+         menu_core = T.column { T.text_box { id = "menu_text_box" } }
+      end
    else
-      menu_list = T.column { T.label { id = "menu_list_empty" } }
+      menu_core = T.column { T.label { id = "menu_list_empty" } }
    end
    local buttons = {}
    if not_empty then
@@ -33,7 +37,7 @@ local function generate_dialog(not_empty)
      T.row { T.column { T.grid { T.row {
     T.column { T.image { id = "menu_image" } },
     T.column { T.grid {
-      T.row { menu_list },
+      T.row { menu_core },
       T.row { T.column { T.grid { buttons }}}}}}}}}}}
 end
 
@@ -47,7 +51,7 @@ function menu(list, image, title, description, build_list, sublist_index)
    if list[1] == nil then
       not_empty = false
    end
-   dialog = generate_dialog(not_empty)
+   dialog = generate_dialog(not_empty, "list")
 
    local function safe_dialog()
       local choice = 0
@@ -74,7 +78,7 @@ function menu(list, image, title, description, build_list, sublist_index)
          if not_empty then
             choice = wesnoth.get_dialog_value("menu_list")
          else
-            choice = 0
+            choice = false
          end
       end
 
@@ -84,12 +88,12 @@ function menu(list, image, title, description, build_list, sublist_index)
          return { value = choice }
       -- Close
       else
-         return { value = 0 }
+         return { value = false }
       end
    end
 
    local safe_choice = wesnoth.synchronize_choice(safe_dialog).value
-   if safe_choice > 0 then
+   if safe_choice then
       if sublist_index ~= nil then
          return list[safe_choice][sublist_index]
       else
@@ -98,6 +102,38 @@ function menu(list, image, title, description, build_list, sublist_index)
    else
       return false
    end
+end
+
+function menu_text_input(image, title, description)
+   local dialog = {}
+   dialog = generate_dialog(true, "text_input")
+
+   local function safe_dialog()
+      local choice = ""
+
+      local function preshow()
+         wesnoth.set_dialog_value(title, "menu_title")
+         wesnoth.set_dialog_value(description, "menu_description")
+         wesnoth.set_dialog_value("Foobar", "menu_text_box")
+         wesnoth.set_dialog_value(image, "menu_image")
+      end
+
+      local function postshow()
+         choice = wesnoth.get_dialog_value("menu_text_box")
+      end
+
+      local button = wesnoth.show_dialog(dialog, preshow, postshow)
+      -- OK
+      if button == -1 then
+         return { value = choice }
+      -- Close
+      else
+         return { value = false }
+      end
+   end
+
+   local safe_choice = wesnoth.synchronize_choice(safe_dialog).value
+   return safe_choice
 end
 
 -- todo: Add optional cost.

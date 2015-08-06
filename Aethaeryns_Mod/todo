@@ -6,7 +6,10 @@ When this list is complete/empty, bump to version 0.9
     - i.e. every function that was only separate because using [message] required calling [lua] each time
     - this means reviewing every Lua file
     - shops.lua and inventory.lua need a lot of work here, perhaps a merge
-    - as does upgrades.lua
+      - place_object_choose is a mess
+      - submenu_inventory is a mess
+      - lots of non-menu functions in both files need to look more like the ones in modify_unit.lua
+    - upgrades.lua also needs a lot of work
   - Still uses its own call/filter to set_menu_item
     - spawn_units.lua
   - Still uses DungeonOpt:
@@ -36,13 +39,15 @@ When this list is complete/empty, bump to version 0.9
       - a lot of the gold pile code seems to be broken
   - Finish GUI2 rewrite:
     - modify_unit.lua
-      - review/combine change_unit_stat, change_stats, and menu_unit_change_stats
+      - change_unit_stat
+      - transform
+      - get_roles
+      - menu_unit_change_stats
     - core.lua and spawn_units.lua and settings.lua
       - filter code needs to be cleaned up
       - moving the WML tables to a table is probably better than using a complex function
       - probably eliminate core.lua, perhaps renaming it to filter.lua or something
     - settings.lua
-      - new scenario
       - the whole modify variable thing
     - spawn_units.lua
       - add back in the variable cost when summoning from a summoner
