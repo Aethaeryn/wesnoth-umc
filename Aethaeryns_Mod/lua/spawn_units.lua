@@ -110,7 +110,7 @@ function spawn_units.menu_item_summon_summoner()
                       filter_host("summoner")
                    }
    local command = "spawn_units.menu_summon_summoner()"
-   set_menu_item(id, description, image, filter, command)
+   fire.set_menu_item(id, description, image, filter, command)
 end
 
 -- Right click menu that lets a summoner summon a regular unit on
@@ -136,7 +136,7 @@ function spawn_units.menu_item_summon(unit_role)
                       }
                    }
    local command = "spawn_units.menu_summon('"..unit_role.."')"
-   set_menu_item(id, description, image, filter, command)
+   fire.set_menu_item(id, description, image, filter, command)
 end
 
 -- I think this creates a [set_menu_item] for each summoner. Since

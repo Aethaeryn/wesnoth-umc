@@ -1,15 +1,34 @@
 #define MOD_SETTINGS
 <<
-function end_scenario(new_scenario)
-   local scenario = 'aeth_mod_'..new_scenario
+fire = {}
 
+function fire.end_scenario(new_scenario)
+   local scenario = string.format('aeth_mod_%s', new_scenario)
    wesnoth.fire("endlevel", {
                    result = "victory",
                    next_scenario = scenario,
                    bonus = false,
                    carryover_add = false,
-                   carryover_percentage = 100,
-                })
+                   carryover_percentage = 100 })
+end
+
+function fire.custom_message()
+   wesnoth.fire("message", {
+                   speaker  = "unit",
+                   caption  = "Unit Message",
+                   message  = "What will you say?",
+                   show_for = side_number,
+                   T["text_input"] {
+                      variable  = "aeth_custom_message",
+                      label     = "Type Here:",
+                      max_chars = 50 }})
+   local message = wesnoth.get_variable('aeth_custom_message')
+   if message ~= "" then
+      wesnoth.fire("message", {
+                      side    = side_number,
+                      speaker = "unit",
+                      message = "$aeth_custom_message" })
+   end
 end
 
 function menu_change_var(side_num, variable, old_value)
@@ -137,7 +156,7 @@ function menu_new_scenario()
    local options = DungeonOpt:new {
       root_message   = "Which scenario do you want to start?",
       option_message = "$input2",
-      code           = "end_scenario('$input1')",
+      code           = "fire.end_scenario('$input1')",
    }
 
    options:fire{
@@ -190,7 +209,7 @@ function menu_settings()
    end
 end
 
-function set_menu_item(id, description, image, filter, command)
+function fire.set_menu_item(id, description, image, filter, command)
    wesnoth.fire("set_menu_item", {
                    id = id,
                    description = description,
@@ -201,11 +220,11 @@ end
 
 function settings()
    spawn_units.spawn_units()
-   set_menu_item("MOD_010", "Unit Commands", "misc/key.png", filter_unit(), "menu_inventory()")
-   set_menu_item("MOD_020", "Change Unit", "misc/icon-amla-tough.png", filter_host("unit"), "menu_unit_change_stats()")
-   set_menu_item("MOD_050", "Change Terrain", "misc/vision-fog-shroud.png", filter_host("editor"), "menu_change_terrain()")
-   set_menu_item("MOD_040", "Settings", "misc/ums.png", filter_host("long"), "menu_settings()")
-   set_menu_item("MOD_070", "Place Objects", "misc/dot-white.png", filter_item(), "menu_placement()")
+   fire.set_menu_item("MOD_010", "Unit Commands", "misc/key.png", filter_unit(), "menu_inventory()")
+   fire.set_menu_item("MOD_020", "Change Unit", "misc/icon-amla-tough.png", filter_host("unit"), "menu_unit_change_stats()")
+   fire.set_menu_item("MOD_050", "Change Terrain", "misc/vision-fog-shroud.png", filter_host("editor"), "menu_change_terrain()")
+   fire.set_menu_item("MOD_040", "Settings", "misc/ums.png", filter_host("long"), "menu_settings()")
+   fire.set_menu_item("MOD_070", "Place Objects", "misc/dot-white.png", filter_item(), "menu_placement()")
 end
 >>
 #enddef
