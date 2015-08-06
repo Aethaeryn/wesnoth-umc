@@ -4,7 +4,7 @@ When this list is complete/empty, bump to version 0.9
   (3%)
   - Eliminate all the functions that are no longer necessary because of the switch.
     - i.e. every function that was only separate because using [message] required calling [lua] each time
-    - this means reviewing: settings.lua, inventory.lua, shops.lua, terrain_editor.lua, upgrades.lua
+    - this means reviewing: settings.lua, inventory.lua, terrain_editor.lua, upgrades.lua
     - inventory.lua needs a lot of work
       - place_object_choose is a mess
       - submenu_inventory is a mess
@@ -32,8 +32,6 @@ When this list is complete/empty, bump to version 0.9
     - upgrades.lua when you can't afford upgrade
     - spawn_units.lua when you don't have enough HP to summon the unit
   - Finish GUI2 rewrite:
-    - modify_unit.lua
-      - get_roles
     - filter.lua and settings.lua
       - filter code needs to be cleaned up
       - moving the WML tables to a table is probably better than using a complex function
@@ -195,6 +193,7 @@ When this list is complete/empty, bump to version 0.9
        * CODE: Move mod_menu so it isn't created every side turn so that the status persists.
          * The rest of the data probably can move to the beginning too.
          * The toggle should set/clear menu items properly when status changes, so settings() only needs to run at start too.
+       * CODE: Find a replacement for get_roles() in modify_unit.lua
 
  (6) Future
     * Magic [temporary via scrolls]
