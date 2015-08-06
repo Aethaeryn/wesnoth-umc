@@ -94,94 +94,72 @@ function change_unit_stat(stat)
    change_unit[stat](e.x1, e.y1, change)
 end
 
-function change_stats(variable)
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
-   local title = "Change Unit"
-   local image = "portraits/undead/transparent/ancient-lich.png"
+local function transform(unit)
+   wesnoth.fire("message", {
+                   speaker  = "narrator",
+                   message  = "What unit do you want it to transform to?",
+                   image    = "wesnoth-icon.png",
+                   show_for = side_number,
+                   T["text_input"] {
+                      variable  = "transform_unit_to",
+                      label     = "Unit:",
+                      max_chars = 50 }})
 
-   local function transform()
-      wesnoth.fire("message", {
-                      speaker  = "narrator",
-                      message  = "What unit do you want it to transform to?",
-                      image    = "wesnoth-icon.png",
-                      show_for = side_number,
-                      T["text_input"] {
-                         variable  = "transform_unit_to",
-                         label     = "Unit:",
-                         max_chars = 50
-                      }
-                   }
-                )
+   local new_unit = wesnoth.get_variable("transform_unit_to")
 
-      local new_unit = wesnoth.get_variable("transform_unit_to")
-
-      -- checks to make sure the unit type is valid
-      for unit_type, i in pairs(wesnoth.unit_types) do
-         if unit_type == new_unit then
-            wesnoth.transform_unit(unit, new_unit)
-            unit.hitpoints = unit.max_hitpoints
-         end
+   -- checks to make sure the unit type is valid
+   for unit_type, i in pairs(wesnoth.unit_types) do
+      if unit_type == new_unit then
+         wesnoth.transform_unit(unit, new_unit)
+         unit.hitpoints = unit.max_hitpoints
       end
-   end
-
-   local function role()
-      local function get_roles()
-         local roles = {}
-
-         for i, v in ipairs(SUMMON_ROLES) do
-            roles[i] = SUMMON_ROLES[i]
-         end
-
-         table.insert(roles, "None")
-
-         return roles
-      end
-
-      local chosen_role = menu(get_roles(), image, title, "Select a new (summoning) role for this unit.", menu_simple_list)
-      unit.role = chosen_role
-
-      if chosen_role ~= "None" and unit.canrecruit ~= true then
-         wesnoth.wml_actions.unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
-
-      elseif chosen_role == "None" then
-         wesnoth.wml_actions.remove_unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
-      end
-   end
-
-   local function side()
-      local side = menu(SIDES, image, title, "Select a target side.", menu_simple_list)
-      if side then
-         change_unit.side(e.x1, e.y1, side)
-      end
-   end
-
-   local function stats()
-      local stats = {"Hitpoints", "Max Hitpoints", "Max Moves",
-                     "Experience", "Max Experience", "Gender",
-                     "Leader"}
-      local stat = menu(stats, image, title, "Which stat do you want to change?", menu_simple_list)
-      if stat then
-         change_unit_stat(stat)
-      end
-   end
-
-   if variable == "Transform"     then transform()
-   elseif variable == "Role"      then role()
-   elseif variable == "Inventory" then submenu_inventory('unit_add', false)
-   elseif variable == "Side"      then side()
-   elseif variable == "Stats"     then stats()
    end
 end
 
+local function get_roles()
+   local roles = {}
+   for i, v in ipairs(SUMMON_ROLES) do
+      roles[i] = SUMMON_ROLES[i]
+   end
+   table.insert(roles, "None")
+   return roles
+end
+
 function menu_unit_change_stats()
+   local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
    local title = "Change Unit"
    local description = "What stat do you want to modify?"
    local image = "portraits/undead/transparent/ancient-lich.png"
    local options = {"Side", "Inventory", "Transform", "Role", "Stats"}
    local choice = menu(options, image, title, description, menu_simple_list)
    if choice then
-      change_stats(choice)
+      if choice == "Transform" then
+         transform(unit)
+      elseif choice == "Role" then
+         local chosen_role = menu(get_roles(), image, title, "Select a new (summoning) role for this unit.", menu_simple_list)
+         unit.role = chosen_role
+         if chosen_role ~= "None" and unit.canrecruit ~= true then
+            wesnoth.wml_actions.unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
+         elseif chosen_role == "None" then
+            wesnoth.wml_actions.remove_unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
+         end
+      elseif choice == "Inventory" then
+         submenu_inventory('unit_add', false)
+      elseif choice == "Side" then
+         local side = menu(SIDES, image, title, "Select a target side.", menu_simple_list)
+         if side then
+            change_unit.side(e.x1, e.y1, side)
+         end
+      elseif choice == "Stats" then
+         local stats = {"Hitpoints", "Max Hitpoints", "Max Moves",
+                        "Experience", "Max Experience", "Gender",
+                        "Leader"}
+         local stat = menu(stats, image, title, "Which stat do you want to change?", menu_simple_list)
+         if stat then
+            change_unit_stat(stat)
+         end
+      end
    end
 end
 
