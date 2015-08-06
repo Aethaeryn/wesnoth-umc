@@ -87,28 +87,5 @@ function spawn_units.menu_summon_summoner()
    end
 end
 
--- Right click menu that lets a summoner summon a regular unit on
--- unoccupied, adjacent, good terrain.
-function spawn_units.menu_item_summon(unit_role)
-   local menu_item = {
-      id = "MOD_001_"..unit_role,
-      text = "Summon "..unit_role,
-      image = "terrain/symbols/terrain_group_custom3_30.png",
-      filter = T["filter_location"] {
-         x = "$x1",
-         y = "$y1",
-         T["filter_adjacent_location"] {
-            T["filter"] {
-               side = side_number,
-               role = unit_role }},
-         T["not"] {
-            terrain = aeth_mod_filter.bad_summon_terrain,
-            -- this is prevents spawning over another unit
-            T["or"] {
-               T["filter"] { }}}},
-      command = "spawn_units.menu_summon('"..unit_role.."')" }
-   return menu_item
-end
-
 >>
 #enddef

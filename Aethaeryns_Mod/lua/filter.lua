@@ -58,10 +58,25 @@ function filter_summon_summoner()
                   y = "$y1" }}}}
 end
 
+function filter_summon(role)
+   return T["filter_location"] {
+      x = "$x1",
+      y = "$y1",
+      T["filter_adjacent_location"] {
+         T["filter"] {
+            side = "$side_number",
+            role = role }},
+      T["not"] {
+         terrain = aeth_mod_filter.bad_summon_terrain,
+         -- this is prevents spawning over another unit
+         T["or"] {
+            T["filter"] { }}}}
+end
+
 function filter_unit()
    return T["show_if"] {
       T["have_unit"] {
-         side = side_number,
+         side = "$side_number",
          x = "$x1",
          y = "$y1" }}
 end

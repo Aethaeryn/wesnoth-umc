@@ -269,6 +269,16 @@ function fire.clear_menu_item(id)
    wesnoth.fire("clear_menu_item", { id = id })
 end
 
+local function menu_item_summon(unit_role)
+   local menu_item = {
+      id = "MOD_001_"..unit_role,
+      text = "Summon "..unit_role,
+      image = "terrain/symbols/terrain_group_custom3_30.png",
+      filter = filter_summon(unit_role),
+      command = "spawn_units.menu_summon('"..unit_role.."')" }
+   return menu_item
+end
+
 function settings()
    -- Generates the toggleable, general menu items.
    for key, menu_item in pairs(mod_menu) do
@@ -278,7 +288,7 @@ function settings()
    end
    -- Generates the menu items for each summoner type.
    for summoner_type, v in pairs(summoners) do
-      fire.set_menu_item(spawn_units.menu_item_summon(summoner_type))
+      fire.set_menu_item(menu_item_summon(summoner_type))
    end
 end
 >>
