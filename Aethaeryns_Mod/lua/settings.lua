@@ -27,7 +27,7 @@ function menu_placement()
    end
 end
 
-function menu_change_var(side_num, variable, old_value)
+function submenu_change_var(side_num, variable, old_value)
    if variable ~= "objectives" then
       wesnoth.fire("message", {
                       speaker  = "narrator",
@@ -62,7 +62,7 @@ function menu_change_var(side_num, variable, old_value)
    end
 end
 
-function menu_change_var_all(variable)
+function submenu_change_var_all(variable)
    if variable ~= "objectives" then
       wesnoth.fire("message", {
                       speaker  = "narrator",
@@ -99,18 +99,18 @@ function menu_change_var_all(variable)
    end
 end
 
-function menu_view_side(side_num)
+function submenu_view_side(side_num)
    if side_num == "All" then
       local all_stats = {"gold", "village_gold", "base_income", "objectives"}
       variable = menu(all_stats, "portraits/undead/transparent/ancient-lich.png", "Settings", "Which variable of all sides do you want to change?", menu_simple_list)
       if variable then
-         menu_change_var_all(variable)
+         submenu_change_var_all(variable)
       end
    else
       local options = DungeonOpt:new{
          root_message   = "Which variable do you want to change?",
          option_message = "side$input2.$input1 = $input3",
-         code           = "menu_change_var('$input2', '$input1', side.$input1)"
+         code           = "submenu_change_var('$input2', '$input1', side.$input1)"
       }
 
       side_num = tonumber(side_num)
@@ -177,7 +177,7 @@ function menu_settings()
       elseif option == "Modify Side" then
          local side = menu(get_sides_with_all(), "portraits/undead/transparent/ancient-lich.png", "Settings", "Which side do you want to modify?", menu_simple_list)
          if side then
-            menu_view_side(side)
+            submenu_view_side(side)
          end
       elseif option == "New Scenario" then
          local options = DungeonOpt:new {

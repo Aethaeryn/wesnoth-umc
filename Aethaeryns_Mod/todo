@@ -4,6 +4,8 @@ When this list is complete/empty, bump to version 0.9
   (2%)
   - Eliminate all the functions that are no longer necessary because of the switch.
     - this means reviewing: settings.lua, inventory.lua, terrain_editor.lua, upgrades.lua
+    - includes everything that is submenu_foo
+    - also terrain_editor.lua, which is a mess
     - lots of non-menu functions need to look more like the ones in modify_unit.lua
   - Still uses DungeonOpt:
     - inventory.lua

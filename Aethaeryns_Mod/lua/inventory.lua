@@ -311,7 +311,7 @@ function menu_inventory()
    if option == "Use Item" then
       submenu_inventory('unit_use')
    elseif option == "Upgrades" then
-      menu_upgrade_unit()
+      submenu_upgrade_unit()
    elseif option == "Speak" then
       fire.custom_message()
    elseif option == "Interact" then

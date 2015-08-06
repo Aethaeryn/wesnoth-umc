@@ -78,7 +78,7 @@ function upgrade_unit(choice, cost, current, cap)
    end
 end
 
-function menu_upgrade_unit()
+function submenu_upgrade_unit()
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local points = unit.variables["advancement"]
