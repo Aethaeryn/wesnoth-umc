@@ -87,71 +87,28 @@ function spawn_units.menu_summon_summoner()
    end
 end
 
--- Right click menu that lets the Master summon a summoner on
--- unoccupied, good terrain.
-function spawn_units.menu_item_summon_summoner()
-   local menu_item = {}
-   menu_item.id = "MOD_005"
-   menu_item.text = "Summon Summoner"
-   menu_item.image = "terrain/symbols/terrain_group_custom2_30.png"
-   menu_item.filter = T["show_if"] {
-                      T["not"] {
-                         T["have_location"] {
-                            x = "$x1",
-                            y = "$y1",
-                            terrain = aeth_mod_filter.bad_summon_terrain
-                         },
-                         T["or"] {
-                            T["have_unit"] {
-                               x = "$x1",
-                               y = "$y1"
-                            }
-                         }
-                      },
-                      filter_host("long")
-                   }
-   menu_item.command = "spawn_units.menu_summon_summoner()"
-   fire.set_menu_item(menu_item)
-end
-
 -- Right click menu that lets a summoner summon a regular unit on
 -- unoccupied, adjacent, good terrain.
 function spawn_units.menu_item_summon(unit_role)
-   local menu_item = {}
-   menu_item.id = "001_Summon_"..unit_role
-   menu_item.text = "Summon "..unit_role
-   menu_item.image = "terrain/symbols/terrain_group_custom3_30.png"
-   menu_item.filter = T["filter_location"] {
-                      x = "$x1",
-                      y = "$y1",
-                      T["filter_adjacent_location"] {
-                         T["filter"] {
-                            side = side_number,
-                            role = unit_role
-                         }
-                      }, T["not"] {
-                         terrain = aeth_mod_filter.bad_summon_terrain,
-                         -- this is prevents spawning over another unit
-                         T["or"] {
-                            T["filter"] { }
-                         }
-                      }
-                   }
-   menu_item.command = "spawn_units.menu_summon('"..unit_role.."')"
-   fire.set_menu_item(menu_item)
+   local menu_item = {
+      id = "MOD_001_"..unit_role,
+      text = "Summon "..unit_role,
+      image = "terrain/symbols/terrain_group_custom3_30.png",
+      filter = T["filter_location"] {
+         x = "$x1",
+         y = "$y1",
+         T["filter_adjacent_location"] {
+            T["filter"] {
+               side = side_number,
+               role = unit_role }},
+         T["not"] {
+            terrain = aeth_mod_filter.bad_summon_terrain,
+            -- this is prevents spawning over another unit
+            T["or"] {
+               T["filter"] { }}}},
+      command = "spawn_units.menu_summon('"..unit_role.."')" }
+   return menu_item
 end
 
--- I think this creates a [set_menu_item] for each summoner. Since
--- this fires on side-turn, maybe it can be optimized by only doing
--- this for summoners that are on the same side, but then it would
--- need to handle summoners who change teams to the active team during
--- the turn. I think this might be the only thing here that actually
--- needs to run on side_turn.
-function spawn_units.spawn_units()
-   spawn_units.menu_item_summon_summoner()
-   for k, v in pairs(summoners) do
-      spawn_units.menu_item_summon(k)
-   end
-end
 >>
 #enddef

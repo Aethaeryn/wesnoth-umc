@@ -171,16 +171,57 @@ function menu_new_scenario()
                 }
 end
 
-mod_menu = { terrain = { status = true, id = "MOD_050" },
-             summoner = { status = true, id = "MOD_005" },
-             unit = { status = true, id = "MOD_020" }}
+mod_menu = {
+   summon_summoner = {
+      id = "MOD_005",
+      text = "Summon Summoner",
+      image = "terrain/symbols/terrain_group_custom2_30.png",
+      filter = filter_summon_summoner(),
+      command = "spawn_units.menu_summon_summoner()",
+      status = true },
+   unit_commands = {
+      id = "MOD_010",
+      text = "Unit Commands",
+      image = "misc/key.png",
+      filter = filter_unit(),
+      command = "menu_inventory()",
+      status = true },
+   unit_editor = {
+      id = "MOD_020",
+      text = "Change Unit",
+      image = "misc/icon-amla-tough.png",
+      filter = filter_host("unit"),
+      command = "menu_unit_change_stats()",
+      status = true },
+   terrain_editor = {
+      id = "MOD_050",
+      text = "Change Terrain",
+      image = "misc/vision-fog-shroud.png",
+      filter = filter_host("long"),
+      command = "menu_change_terrain()",
+      status = true },
+   settings = {
+      id = "MOD_040",
+      text = "Settings",
+      image = "misc/ums.png",
+      filter = filter_host("long"),
+      command = "menu_settings()",
+      status = true },
+   place_object = {
+      id = "MOD_070",
+      text = "Place Object",
+      image = "misc/dot-white.png",
+      filter = filter_item(),
+      command = "menu_placement()",
+      status = true }}
 
 local function feature_toggle(menu_item)
-   if mod_menu[menu_item][status] then
-      mod_menu[menu_item][status] = false
-      fire.clear_menu_item(mod_menu[menu_item][id])
+   if mod_menu[menu_item].status then
+      mod_menu[menu_item].status = false
+      fire.clear_menu_item(mod_menu[menu_item].id)
    else
-      mod_menu[menu_item][status] = true
+      mod_menu[menu_item].status = true
+      fire.set_menu_item(mod_menu[menu_item])
    end
 end
 
@@ -193,21 +234,24 @@ function menu_settings()
                     "New Scenario",
                     "Toggle Summon Summoners",
                     "Toggle Unit Editor",
-                    "Toggle Terrain Editor"}
+                    "Toggle Terrain Editor",
+                    "Toggle Place Object"}
    local option = menu(options, image, title, description, menu_simple_list)
    if option then
-      if option == "Modify Side" then
+      if option == "Modify Container" then
+         submenu_modify_container()
+      elseif option == "Modify Side" then
          menu_modify_side()
       elseif option == "New Scenario" then
          menu_new_scenario()
       elseif option == "Toggle Summon Summoners" then
-         feature_toggle("MoD_summon_summoner")
+         feature_toggle("summon_summoner")
       elseif option == "Toggle Unit Editor" then
-         feature_toggle("MoD_unit_editor")
+         feature_toggle("unit_editor")
       elseif option == "Toggle Terrain Editor" then
-         feature_toggle("MoD_terrain_editor")
-      elseif option == "Modify Container" then
-         submenu_modify_container()
+         feature_toggle("terrain_editor")
+      elseif option == "Toggle Place Object" then
+         feature_toggle("place_object")
       end
    end
 end
@@ -226,12 +270,16 @@ function fire.clear_menu_item(id)
 end
 
 function settings()
-   spawn_units.spawn_units()
-   fire.set_menu_item{id = "MOD_010", text = "Unit Commands", image = "misc/key.png", filter = filter_unit(), command = "menu_inventory()"}
-   fire.set_menu_item{id = "MOD_020", text = "Change Unit", image = "misc/icon-amla-tough.png", filter = filter_host("unit"), command = "menu_unit_change_stats()"}
-   fire.set_menu_item{id = "MOD_050", text = "Change Terrain", image = "misc/vision-fog-shroud.png", filter = filter_host("long"), command = "menu_change_terrain()"}
-   fire.set_menu_item{id = "MOD_040", text = "Settings", image = "misc/ums.png", filter = filter_host("long"), command = "menu_settings()"}
-   fire.set_menu_item{id = "MOD_070", text = "Place Objects", image = "misc/dot-white.png", filter = filter_item(), command = "menu_placement()"}
+   -- Generates the toggleable, general menu items.
+   for key, menu_item in pairs(mod_menu) do
+      if menu_item.status then
+         fire.set_menu_item(menu_item)
+      end
+   end
+   -- Generates the menu items for each summoner type.
+   for summoner_type, v in pairs(summoners) do
+      fire.set_menu_item(spawn_units.menu_item_summon(summoner_type))
+   end
 end
 >>
 #enddef

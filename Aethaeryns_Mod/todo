@@ -2,8 +2,10 @@ AETHAERYN'S MOD TODO LIST (88% Progress)
 When this list is complete/empty, bump to version 0.9
 
   (3%)
-  - Move menu items to table so they can be toggled on/off.
-    - and have the toggle on set_menu_item for it
+  - Fix the filter for change unit (only shows up for hosts right now)
+  - Move mod_menu so it isn't created every side turn so that the status persists.
+    - The rest of the data probably can move to the beginning too.
+    - The toggle should set/clear menu items properly when status changes, so settings() only needs to run at start too.
   - Eliminate all the functions that are no longer necessary because of the switch.
     - i.e. every function that was only separate because using [message] required calling [lua] each time
     - this means reviewing every Lua file
@@ -55,7 +57,6 @@ When this list is complete/empty, bump to version 0.9
   - Need to code in code for investigate drop in shops.lua
   - Use a fancy interface for inventory, upgrades, and possibly units.
   - Replace non-debug uses of wesnoth.message() with a local gui2 warning
-  - Perhaps menu item toggling can be done through a mix of set_menu_item and clear_menu_item instead of settings() and variables.
   - New picture(s) for the unit commands and interaction menus and anywhere else where the ancient lich is inappropriate.
     - That is, for commands that can be run by other players.
     - Currenly anything that can eventually be called by Unit Commands.
@@ -174,6 +175,7 @@ When this list is complete/empty, bump to version 0.9
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
          * In fact, it locks the unit into the old portrait even if it promotes.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
+       * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
        * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
        * FEATURE: When something spawns on a village they don't own they should lose all movement and take the village.
        * FEATURE: When people are peasants on one of the two Intro maps (i.e. they died or it's a new campaign), let them pick a new unit.
