@@ -1,4 +1,4 @@
-#define MOD_LUA_CORE
+#define MOD_LUA_FILTER
 <<
 helper = wesnoth.require "lua/helper.lua"
 T = helper.set_wml_tag_metatable {}

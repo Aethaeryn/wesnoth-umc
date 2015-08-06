@@ -38,10 +38,9 @@ When this list is complete/empty, bump to version 0.9
   - Finish GUI2 rewrite:
     - modify_unit.lua
       - get_roles
-    - core.lua and spawn_units.lua and settings.lua
+    - filter.lua and spawn_units.lua and settings.lua
       - filter code needs to be cleaned up
       - moving the WML tables to a table is probably better than using a complex function
-      - probably eliminate core.lua, perhaps renaming it to filter.lua or something
     - settings.lua
       - the whole modify variable thing
     - spawn_units.lua
