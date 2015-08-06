@@ -73,6 +73,27 @@ function change_unit.leader(x, y)
    end
 end
 
+function change_unit.transform(x, y, new_unit)
+   local unit = wesnoth.get_unit(x, y)
+   -- Only transforms if a valid unit was input.
+   for unit_type, i in pairs(wesnoth.unit_types) do
+      if unit_type == new_unit then
+         wesnoth.transform_unit(unit, new_unit)
+         unit.hitpoints = unit.max_hitpoints
+      end
+   end
+end
+
+function change_unit.role(x, y, new_role)
+   local unit = wesnoth.get_unit(x, y)
+   unit.role = new_role
+   if new_role ~= "None" and unit.canrecruit ~= true then
+      wesnoth.wml_actions.unit_overlay{x = x, y = y, image = "misc/hero-icon.png"}
+   elseif new_role == "None" then
+      wesnoth.wml_actions.remove_unit_overlay{x = x, y = y, image = "misc/hero-icon.png"}
+   end
+end
+
 local function get_roles()
    local roles = {}
    for i, v in ipairs(SUMMON_ROLES) do
@@ -84,7 +105,6 @@ end
 
 function menu_unit_change_stats()
    local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
    local title = "Change Unit"
    local description = "What stat do you want to modify?"
    local image = "portraits/undead/transparent/ancient-lich.png"
@@ -96,21 +116,12 @@ function menu_unit_change_stats()
          local label = "Unit Type:"
          local new_unit = menu_text_input(image, title, description, label)
          if new_unit then
-            -- only transforms if a valid unit was input
-            for unit_type, i in pairs(wesnoth.unit_types) do
-               if unit_type == new_unit then
-                  wesnoth.transform_unit(unit, new_unit)
-                  unit.hitpoints = unit.max_hitpoints
-               end
-            end
+            change_unit.transform(e.x1, e.y1, new_unit)
          end
       elseif choice == "Role" then
-         local chosen_role = menu(get_roles(), image, title, "Select a new (summoning) role for this unit.", menu_simple_list)
-         unit.role = chosen_role
-         if chosen_role ~= "None" and unit.canrecruit ~= true then
-            wesnoth.wml_actions.unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
-         elseif chosen_role == "None" then
-            wesnoth.wml_actions.remove_unit_overlay{x = e.x1, y = e.y1, image = "misc/hero-icon.png"}
+         local role = menu(get_roles(), image, title, "Select a new (summoning) role for this unit.", menu_simple_list)
+         if role then
+            change_unit.role(e.x1, e.y1, role)
          end
       elseif choice == "Inventory" then
          submenu_inventory('unit_add', false)
