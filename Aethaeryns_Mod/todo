@@ -60,8 +60,10 @@ When this list is complete/empty, bump to version 0.9
     - Eventually would include a separate menu item for Interaction, too.
   - Most places probably can check for an empty list before calling menu() and show a better error there.
     - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
+  - There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something
   - Many settings could probably be done more than one in a window, with a slider, checkboxes, etc., instead of with text input.
   - If possible add a back button in addition to close for the complicated menus.
+  - Spin off fire into its own file.
 
  (1) Inventory Containers (2%)
        * Templates:
@@ -213,6 +215,7 @@ When this list is complete/empty, bump to version 0.9
     * Reduce max HP on summoner by 1 per level of active summoned unit?
     * Do something with boats?
     * Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
+    * Is there now a better way to handle side_number without the side_number global variable?
     * Is there a way to alter promotions? Lich -> Ancient Lich; Wolf -> Great Wolf -> Dire Wolf; Armageddon Drake; etc.
     * Resurrection.
       * When units die they are saved in a resurrection table.

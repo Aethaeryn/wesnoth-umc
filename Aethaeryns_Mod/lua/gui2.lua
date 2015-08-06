@@ -8,39 +8,37 @@ local function generate_dialog(not_empty, menu_type)
    if not_empty then
       if menu_type == "list" then
          menu_core = T.column { horizontal_grow = true, T.listbox { id = "menu_list",
-        T.list_definition { T.row { T.column { horizontal_grow = true,
-          T.toggle_panel { T.grid { T.row {
-            T.column { horizontal_alignment = "left", T.image { id = "icon" } },
-            T.column { horizontal_alignment = "left", T.label { id = "label" } },
-      }}}}}}}}
+             T.list_definition { T.row { T.column { horizontal_grow = true,
+                 T.toggle_panel { T.grid { T.row {
+                                              T.column { horizontal_alignment = "left", T.image { id = "icon" }},
+                                              T.column { horizontal_alignment = "left", T.label { id = "label" }}}}}}}}}}
       elseif menu_type == "text_input" then
          menu_core = T.column { T.grid {
-                                   T.row { T.column { T.label { id = "menu_text_box_label" } } },
-                                   T.row { T.column { T.text_box { definition = "default", id = "menu_text_box" } } } } }
+                                   T.row { T.column { T.label { id = "menu_text_box_label" }}},
+                                   T.row { T.column { T.text_box { definition = "default", id = "menu_text_box" }}}}}
       end
    else
-      menu_core = T.column { T.label { id = "menu_list_empty" } }
+      menu_core = T.column { T.label { id = "menu_list_empty" }}
    end
    local buttons = {}
    if not_empty then
       buttons = T.row {
-        T.column { T.button { id = "ok", label = "OK" } },
-        T.column { T.button { id = "cancel", label = "Close" }}}
+         T.column { T.button { id = "ok", label = "OK" }},
+         T.column { T.button { id = "cancel", label = "Close" }}}
    else
       buttons = T.row {
-        T.column { T.button { id = "cancel", label = "Close" }}}
+         T.column { T.button { id = "cancel", label = "Close" }}}
    end
-   return  {
-  T.tooltip { id = "tooltip_large" },
-  T.helptip { id = "tooltip_large" },
-  T.grid {
-     T.row { T.column { T.label { id = "menu_title" } } },
-     T.row { T.column { T.label { id = "menu_description" } } },
-     T.row { T.column { T.grid { T.row {
-    T.column { T.image { id = "menu_image" } },
-    T.column { T.grid {
-      T.row { menu_core },
-      T.row { T.column { T.grid { buttons }}}}}}}}}}}
+   return {
+      T.tooltip { id = "tooltip_large" },
+      T.helptip { id = "tooltip_large" },
+      T.grid {
+         T.row { T.column { T.label { id = "menu_title" }}},
+         T.row { T.column { T.label { id = "menu_description" }}},
+         T.row { T.column { T.grid { T.row { T.column { T.image { id = "menu_image" }},
+                                             T.column { T.grid {
+                                                           T.row { menu_core },
+                                                           T.row { T.column { T.grid { buttons }}}}}}}}}}}
 end
 
 -- This is a menu that is suitable for most of MOD. It takes in a
