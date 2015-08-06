@@ -124,69 +124,44 @@ function submenu_modify_container()
    end
 end
 
-function place_object_choose(choice)
-   local e = wesnoth.current.event_context
-
-   local function simple_place(type, image, inventory)
-      clear_game_object(e.x1, e.y1)
-      w_items.place_image(e.x1, e.y1, image)
-      check_x_coord(e.x1)
-      game_containers[e.x1][e.y1] = {}
-      game_containers[e.x1][e.y1][type] = {}
-      if inventory == true then
-         for i, v in ipairs(item_table) do
-            item_name = v["name"]
-            game_containers[e.x1][e.y1][type][item_name] = 0
-         end
+local function simple_place(x, y, type, image, inventory)
+   clear_game_object(x,y)
+   w_items.place_image(x, y, image)
+   check_x_coord(x)
+   game_containers[x][y] = {}
+   game_containers[x][y][type] = {}
+   if inventory == true then
+      for i, v in ipairs(item_table) do
+         item_name = v["name"]
+         game_containers[x][y][type][item_name] = 0
       end
    end
+end
 
-   local function gold()
-      wesnoth.fire("message", {
-                      speaker  = "narrator",
-                      message  = "How much gold do you want to place in your pile",
-                      image    = "wesnoth-icon.png",
-                      show_for = side_number,
-                      T["text_input"] {
-                         variable  = "place_object_gold",
-                         label     = "New value:",
-                         max_chars = 10
-                      }
-                   }
-                )
+local function place_gold(x, y)
+   wesnoth.fire("message", {
+                   speaker  = "narrator",
+                   message  = "How much gold do you want to place in your pile",
+                   image    = "wesnoth-icon.png",
+                   show_for = side_number,
+                   T["text_input"] {
+                      variable  = "place_object_gold",
+                      label     = "New value:",
+                      max_chars = 10 }})
 
-      local gold = wesnoth.get_variable("place_object_gold")
+   local gold = wesnoth.get_variable("place_object_gold")
 
-      if type(gold) == "number" and gold > 0 then
-         local gold_image = "items/gold-coins-medium.png"
-
-         if gold < 20 then
-            gold_image = "items/gold-coins-small.png"
-
-         elseif gold >= 50 then
-            gold_image = "items/gold-coins-large.png"
-         end
-
-         simple_place("gold", gold_image, false)
-
-         game_containers[e.x1 * 1000 + e.y1]["gold"] = gold
+   if type(gold) == "number" and gold > 0 then
+      local gold_image = "items/gold-coins-medium.png"
+      if gold < 20 then
+         gold_image = "items/gold-coins-small.png"
+      elseif gold >= 50 then
+         gold_image = "items/gold-coins-large.png"
       end
-   end
 
-   if choice == "Place Shop" then
-      simple_place("shop", "scenery/tent-shop-weapons.png", true)
-
-   elseif choice == "Place Chest" then
-      simple_place("chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
-
-   elseif choice == "Place Pack" then
-      simple_place("pack", "items/leather-pack.png", true)
-
-   elseif choice == "Place Gold Pile" then
-      gold()
-
-   elseif choice == "Clear Hex" then
-      clear_game_object(e.x1, e.y1)
+      simple_place(x, y, "gold", gold_image, false)
+      check_x_coord(x)
+      game_containers[x][y]["gold"] = gold
    end
 end
 
@@ -199,11 +174,21 @@ function menu_placement()
       {"Place Chest", "items/chest-plain-closed.png"},
       {"Place Pack", "items/leather-pack.png"},
       {"Place Gold Pile", "items/gold-coins-large.png"},
-      {"Clear Hex", "terrain/grass/green-symbol.png"}
-   }
+      {"Clear Hex", "terrain/grass/green-symbol.png"}}
    local option = menu(options, image, title, description, menu_picture_list, 1)
    if option then
-      place_object_choose(option)
+      local e = wesnoth.current.event_context
+      if option == "Place Shop" then
+         simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
+      elseif option == "Place Chest" then
+         simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
+      elseif option == "Place Pack" then
+         simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
+      elseif option == "Place Gold Pile" then
+         place_gold(e.x1, e.y1)
+      elseif option == "Clear Hex" then
+         clear_game_object(e.x1, e.y1)
+      end
    end
 end
 

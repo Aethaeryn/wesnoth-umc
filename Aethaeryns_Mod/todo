@@ -2,9 +2,6 @@ AETHAERYN'S MOD TODO LIST (88% Progress)
 When this list is complete/empty, bump to version 0.9
 
   (3%)
-  - Move mod_menu so it isn't created every side turn so that the status persists.
-    - The rest of the data probably can move to the beginning too.
-    - The toggle should set/clear menu items properly when status changes, so settings() only needs to run at start too.
   - Eliminate all the functions that are no longer necessary because of the switch.
     - i.e. every function that was only separate because using [message] required calling [lua] each time
     - this means reviewing: settings.lua, inventory.lua, shops.lua, terrain_editor.lua, upgrades.lua
@@ -29,8 +26,7 @@ When this list is complete/empty, bump to version 0.9
     - settings.lua
       - text input for side variable changing (twice)
     - shops.lua
-      - text input for gold placement (rewrite gold placement)
-      - a lot of the gold pile code seems to be broken
+      - text input for gold placement
   - Still uses wesnoth.message for error messages:
     - shops.lua when you can't afford item
     - upgrades.lua when you can't afford upgrade
@@ -194,6 +190,11 @@ When this list is complete/empty, bump to version 0.9
        * FEATURE: If possible add a back button in addition to close for the complicated menus.
        * CODE: Possibly move all the menus into their own file.
        * CODE: Possibly move fire functions into their own file.
+       * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
+       * CODE: Is there now a better way to handle side_number without the side_number global variable?
+       * CODE: Move mod_menu so it isn't created every side turn so that the status persists.
+         * The rest of the data probably can move to the beginning too.
+         * The toggle should set/clear menu items properly when status changes, so settings() only needs to run at start too.
 
  (6) Future
     * Magic [temporary via scrolls]
@@ -220,8 +221,6 @@ When this list is complete/empty, bump to version 0.9
       * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
     * Reduce max HP on summoner by 1 per level of active summoned unit?
     * Do something with boats?
-    * Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
-    * Is there now a better way to handle side_number without the side_number global variable?
     * Is there a way to alter promotions? Lich -> Ancient Lich; Wolf -> Great Wolf -> Dire Wolf; Armageddon Drake; etc.
     * Resurrection.
       * When units die they are saved in a resurrection table.
