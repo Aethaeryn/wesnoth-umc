@@ -77,41 +77,34 @@ function change_unit_stat(stat)
    local e = wesnoth.current.event_context
    stat = string.gsub(string.lower(stat), " ", "_")
    if stat ~= "gender" and stat ~= "leader" then
-      wesnoth.fire("message", {
-                      speaker  = "narrator",
-                      message  = "What should the new value of "..stat.." be?",
-                      image    = "wesnoth-icon.png",
-                      show_for = side_number,
-                      T["text_input"] {
-                         variable  = "new_stat_change",
-                         label     = "Unit:",
-                         max_chars = 50
-                      }
-                   }
-                )
+      local title = "Change Unit"
+      local description = string.format("What should the new value of %s be?", stat)
+      local image = "portraits/undead/transparent/ancient-lich.png"
+      local label = "New Value:"
+      local new_value
+      new_value = menu_text_input(image, title, description, label)
+      if new_value then
+         change_unit[stat](e.x1, e.y1, new_value)
+      end
+   else
+      change_unit[stat](e.x1, e.y1)
    end
-   local change = wesnoth.get_variable("new_stat_change")
-   change_unit[stat](e.x1, e.y1, change)
 end
 
 local function transform(unit)
-   wesnoth.fire("message", {
-                   speaker  = "narrator",
-                   message  = "What unit do you want it to transform to?",
-                   image    = "wesnoth-icon.png",
-                   show_for = side_number,
-                   T["text_input"] {
-                      variable  = "transform_unit_to",
-                      label     = "Unit:",
-                      max_chars = 50 }})
+   local title = "Change Unit"
+   local description = "What unit do you want it to transform to?"
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local label = "Unit Type:"
+   local new_unit = menu_text_input(image, title, description, label)
 
-   local new_unit = wesnoth.get_variable("transform_unit_to")
-
-   -- checks to make sure the unit type is valid
-   for unit_type, i in pairs(wesnoth.unit_types) do
-      if unit_type == new_unit then
-         wesnoth.transform_unit(unit, new_unit)
-         unit.hitpoints = unit.max_hitpoints
+   -- checks to make sure the unit type is valid before the change
+   if new_unit then
+      for unit_type, i in pairs(wesnoth.unit_types) do
+         if unit_type == new_unit then
+            wesnoth.transform_unit(unit, new_unit)
+            unit.hitpoints = unit.max_hitpoints
+         end
       end
    end
 end

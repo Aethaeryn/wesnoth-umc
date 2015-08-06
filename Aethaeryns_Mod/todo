@@ -26,12 +26,6 @@ When this list is complete/empty, bump to version 0.9
       - menu for upgrades (name, image, cost, current, cap, message)
       - don't forget to turn off the debug free upgrades again before MP playtesting it
   - Still uses wesnoth.fire to call [message]:
-    - inventory.lua
-      - text input for item quantity
-      - text input unit speaking (perhaps keep this)
-    - modify_unit.lua
-      - text input for transform
-      - text input for stat changing
     - settings.lua
       - text input for side variable changing (twice)
     - shops.lua
@@ -69,7 +63,7 @@ When this list is complete/empty, bump to version 0.9
     - Eventually would include a separate menu item for Interaction, too.
   - Most places probably can check for an empty list before calling menu() and show a better error there.
     - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
-  - Many settings could probably be done more than one in a window, with a slider, checkboxes, etc.
+  - Many settings could probably be done more than one in a window, with a slider, checkboxes, etc., instead of with text input.
   - If possible add a back button in addition to close for the complicated menus.
 
  (1) Inventory Containers (2%)

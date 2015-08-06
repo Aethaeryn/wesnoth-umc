@@ -14,7 +14,9 @@ local function generate_dialog(not_empty, menu_type)
             T.column { horizontal_alignment = "left", T.label { id = "label" } },
       }}}}}}}}
       elseif menu_type == "text_input" then
-         menu_core = T.column { T.text_box { id = "menu_text_box" } }
+         menu_core = T.column { T.grid {
+                                   T.row { T.column { T.label { id = "menu_text_box_label" } } },
+                                   T.row { T.column { T.text_box { definition = "default", id = "menu_text_box" } } } } }
       end
    else
       menu_core = T.column { T.label { id = "menu_list_empty" } }
@@ -104,9 +106,15 @@ function menu(list, image, title, description, build_list, sublist_index)
    end
 end
 
-function menu_text_input(image, title, description)
+-- Fixme: I cannot find a way to give a text box the default focus
+-- like some core game text box. It might not be possible right now
+-- via wesnoth/src/scripting/lua_gui2.cpp
+function menu_text_input(image, title, description, label, default_text)
    local dialog = {}
    dialog = generate_dialog(true, "text_input")
+   if default_text == nil then
+      default_text = ""
+   end
 
    local function safe_dialog()
       local choice = ""
@@ -114,7 +122,8 @@ function menu_text_input(image, title, description)
       local function preshow()
          wesnoth.set_dialog_value(title, "menu_title")
          wesnoth.set_dialog_value(description, "menu_description")
-         wesnoth.set_dialog_value("Foobar", "menu_text_box")
+         wesnoth.set_dialog_value(default_text, "menu_text_box")
+         wesnoth.set_dialog_value(label, "menu_text_box_label")
          wesnoth.set_dialog_value(image, "menu_image")
       end
 

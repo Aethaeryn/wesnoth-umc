@@ -106,26 +106,20 @@ function add_container_item(name, quantity, container_add, start_only)
 end
 
 function submenu_inventory_quantity(item, container)
-   wesnoth.fire("message", {
-                   speaker  = "narrator",
-                   message  = "How much of "..item.." do you want to give?",
-                   image    = "wesnoth-icon.png",
-                   show_for = side_number,
-                   T["text_input"] {
-                      variable  = "place_"..item,
-                      label     = "Quantity:",
-                      max_chars = 50
-                   }
-                }
-             )
-   local item_count = wesnoth.get_variable("place_"..item)
-   if item_count < 0 then
-      item_count = 0
-   end
-   if container == "unit_inventory_modify" then
-      add_unit_item(item, item_count, false)
-   else
-      add_container_item(item, item_count, container, false)
+   local title = "Change Inventory"
+   local description = string.format("How much of %s do you want to give?", item)
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local label = "Item Quantity:"
+   local count = menu_text_input(image, title, description, label)
+   if count then
+      if count < 0 then
+         count = 0
+      end
+      if container == "unit_inventory_modify" then
+         add_unit_item(item, count, false)
+      else
+         add_container_item(item, count, container, false)
+      end
    end
 end
 
