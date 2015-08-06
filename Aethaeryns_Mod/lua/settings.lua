@@ -31,6 +31,35 @@ function fire.custom_message()
    end
 end
 
+function submenu_modify_container()
+   local e = wesnoth.current.event_context
+   local title = "Settings"
+   local description = "Which container do you want to modify?"
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local interactions = {}
+   check_x_coord(e.x1)
+   if game_containers[e.x1][e.y1] ~= nil then
+      if game_containers[e.x1][e.y1]["shop"] ~= nil then
+         table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
+      elseif game_containers[e.x1][e.y1]["chest"] ~= nil then
+         table.insert(interactions, 1, {"Modify Chest", "items/chest-plain-closed.png"})
+      elseif game_containers[e.x1][e.y1]["pack"] ~= nil then
+         table.insert(interactions, 1, {"Modify Drop", "items/leather-pack.png"})
+      elseif game_containers[e.x1][e.y1]["gold"] ~= nil then
+         table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
+      end
+   end
+   local option = menu(interactions, image, title, description, menu_picture_list, 1)
+   if option then
+      check_x_coord(e.x1)
+      if option == "Modify Shop" then
+         submenu_inventory('shop_modify', game_containers[e.x1][e.y1]["shop"])
+      elseif option == "Modify Chest" then
+         submenu_inventory('chest_modify', game_containers[e.x1][e.y1]["chest"])
+      end
+   end
+end
+
 function menu_change_var(side_num, variable, old_value)
    if variable ~= "objectives" then
       wesnoth.fire("message", {

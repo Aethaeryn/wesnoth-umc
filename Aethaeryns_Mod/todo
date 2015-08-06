@@ -5,10 +5,10 @@ When this list is complete/empty, bump to version 0.9
   - Eliminate all the functions that are no longer necessary because of the switch.
     - i.e. every function that was only separate because using [message] required calling [lua] each time
     - this means reviewing: settings.lua, inventory.lua, shops.lua, terrain_editor.lua, upgrades.lua
-    - shops.lua and inventory.lua need a lot of work here, perhaps a merge
+    - inventory.lua needs a lot of work
       - place_object_choose is a mess
       - submenu_inventory is a mess
-      - lots of non-menu functions in both files need to look more like the ones in modify_unit.lua
+      - lots of non-menu functions need to look more like the ones in modify_unit.lua
     - upgrades.lua also needs a lot of work
   - Still uses DungeonOpt:
     - inventory.lua
@@ -25,10 +25,10 @@ When this list is complete/empty, bump to version 0.9
   - Still uses wesnoth.fire to call [message]:
     - settings.lua
       - text input for side variable changing (twice)
-    - shops.lua
+    - inventory.lua
       - text input for gold placement
   - Still uses wesnoth.message for error messages:
-    - shops.lua when you can't afford item
+    - inventory.lua when you can't afford item
     - upgrades.lua when you can't afford upgrade
     - spawn_units.lua when you don't have enough HP to summon the unit
   - Finish GUI2 rewrite:
@@ -52,7 +52,7 @@ When this list is complete/empty, bump to version 0.9
         - possibly more than one on the same screen
     - upgrades.lua
       - don't forget to turn off the debug free upgrades again before MP playtesting it
-  - Need to code in code for investigate drop in shops.lua
+  - Need to code in code for investigate drop in inventory.lua
   - Use a fancy interface for inventory, upgrades, and possibly units.
   - New picture(s) for the unit commands and interaction menus and anywhere else where the ancient lich is inappropriate.
     - That is, for commands that can be run by other players.
