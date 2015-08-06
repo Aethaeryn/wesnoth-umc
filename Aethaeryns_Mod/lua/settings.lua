@@ -171,13 +171,16 @@ function menu_new_scenario()
                 }
 end
 
-local function feature_toggle(variable)
-   local check_variable = wesnoth.get_variable(variable)
+mod_menu = { terrain = { status = true, id = "MOD_050" },
+             summoner = { status = true, id = "MOD_005" },
+             unit = { status = true, id = "MOD_020" }}
 
-   if check_variable == true then
-      wesnoth.set_variable(variable, false)
+local function feature_toggle(menu_item)
+   if mod_menu[menu_item][status] then
+      mod_menu[menu_item][status] = false
+      fire.clear_menu_item(mod_menu[menu_item][id])
    else
-      wesnoth.set_variable(variable, true)
+      mod_menu[menu_item][status] = true
    end
 end
 
@@ -209,22 +212,26 @@ function menu_settings()
    end
 end
 
-function fire.set_menu_item(id, description, image, filter, command)
+function fire.set_menu_item(menu_item_table)
    wesnoth.fire("set_menu_item", {
-                   id = id,
-                   description = description,
-                   image = image,
-                   filter,
-                   T["command"] { T["lua"] { code = command }}})
+                   id = menu_item_table.id,
+                   description = menu_item_table.text,
+                   image = menu_item_table.image,
+                   menu_item_table.filter,
+                   T["command"] { T["lua"] { code = menu_item_table.command }}})
+end
+
+function fire.clear_menu_item(id)
+   wesnoth.fire("clear_menu_item", { id = id })
 end
 
 function settings()
    spawn_units.spawn_units()
-   fire.set_menu_item("MOD_010", "Unit Commands", "misc/key.png", filter_unit(), "menu_inventory()")
-   fire.set_menu_item("MOD_020", "Change Unit", "misc/icon-amla-tough.png", filter_host("unit"), "menu_unit_change_stats()")
-   fire.set_menu_item("MOD_050", "Change Terrain", "misc/vision-fog-shroud.png", filter_host("editor"), "menu_change_terrain()")
-   fire.set_menu_item("MOD_040", "Settings", "misc/ums.png", filter_host("long"), "menu_settings()")
-   fire.set_menu_item("MOD_070", "Place Objects", "misc/dot-white.png", filter_item(), "menu_placement()")
+   fire.set_menu_item{id = "MOD_010", text = "Unit Commands", image = "misc/key.png", filter = filter_unit(), command = "menu_inventory()"}
+   fire.set_menu_item{id = "MOD_020", text = "Change Unit", image = "misc/icon-amla-tough.png", filter = filter_host("unit"), command = "menu_unit_change_stats()"}
+   fire.set_menu_item{id = "MOD_050", text = "Change Terrain", image = "misc/vision-fog-shroud.png", filter = filter_host("long"), command = "menu_change_terrain()"}
+   fire.set_menu_item{id = "MOD_040", text = "Settings", image = "misc/ums.png", filter = filter_host("long"), command = "menu_settings()"}
+   fire.set_menu_item{id = "MOD_070", text = "Place Objects", image = "misc/dot-white.png", filter = filter_item(), command = "menu_placement()"}
 end
 >>
 #enddef

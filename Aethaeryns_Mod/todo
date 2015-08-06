@@ -2,6 +2,8 @@ AETHAERYN'S MOD TODO LIST (88% Progress)
 When this list is complete/empty, bump to version 0.9
 
   (3%)
+  - Move menu items to table so they can be toggled on/off.
+    - and have the toggle on set_menu_item for it
   - Eliminate all the functions that are no longer necessary because of the switch.
     - i.e. every function that was only separate because using [message] required calling [lua] each time
     - this means reviewing every Lua file

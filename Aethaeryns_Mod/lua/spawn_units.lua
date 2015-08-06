@@ -90,10 +90,11 @@ end
 -- Right click menu that lets the Master summon a summoner on
 -- unoccupied, good terrain.
 function spawn_units.menu_item_summon_summoner()
-   local id = "005_Summon_Summoner"
-   local description = "Summon Summoner"
-   local image = "terrain/symbols/terrain_group_custom2_30.png"
-   local filter = T["show_if"] {
+   local menu_item = {}
+   menu_item.id = "MOD_005"
+   menu_item.text = "Summon Summoner"
+   menu_item.image = "terrain/symbols/terrain_group_custom2_30.png"
+   menu_item.filter = T["show_if"] {
                       T["not"] {
                          T["have_location"] {
                             x = "$x1",
@@ -107,19 +108,20 @@ function spawn_units.menu_item_summon_summoner()
                             }
                          }
                       },
-                      filter_host("summoner")
+                      filter_host("long")
                    }
-   local command = "spawn_units.menu_summon_summoner()"
-   fire.set_menu_item(id, description, image, filter, command)
+   menu_item.command = "spawn_units.menu_summon_summoner()"
+   fire.set_menu_item(menu_item)
 end
 
 -- Right click menu that lets a summoner summon a regular unit on
 -- unoccupied, adjacent, good terrain.
 function spawn_units.menu_item_summon(unit_role)
-   local id = "001_Summon_"..unit_role
-   local description = "Summon "..unit_role
-   local image = "terrain/symbols/terrain_group_custom3_30.png"
-   local filter = T["filter_location"] {
+   local menu_item = {}
+   menu_item.id = "001_Summon_"..unit_role
+   menu_item.text = "Summon "..unit_role
+   menu_item.image = "terrain/symbols/terrain_group_custom3_30.png"
+   menu_item.filter = T["filter_location"] {
                       x = "$x1",
                       y = "$y1",
                       T["filter_adjacent_location"] {
@@ -135,8 +137,8 @@ function spawn_units.menu_item_summon(unit_role)
                          }
                       }
                    }
-   local command = "spawn_units.menu_summon('"..unit_role.."')"
-   fire.set_menu_item(id, description, image, filter, command)
+   menu_item.command = "spawn_units.menu_summon('"..unit_role.."')"
+   fire.set_menu_item(menu_item)
 end
 
 -- I think this creates a [set_menu_item] for each summoner. Since
