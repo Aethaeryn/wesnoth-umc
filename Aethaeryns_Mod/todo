@@ -5,6 +5,8 @@ When this list is complete/empty, bump to version 0.9
   - Eliminate all the functions that are no longer necessary because of the switch.
     - i.e. every function that was only separate because using [message] required calling [lua] each time
     - this means reviewing every Lua file
+    - shops.lua and inventory.lua need a lot of work here, perhaps a merge
+    - as does upgrades.lua
   - Still uses its own call/filter to set_menu_item
     - spawn_units.lua
   - Still uses DungeonOpt:
@@ -13,11 +15,13 @@ When this list is complete/empty, bump to version 0.9
     - settings.lua
       - new scenario (scenario names different from name on menu)
       - side variable changing (why wasn't this trivial?)
+        - because it should have its own UI and needs to show the current values
     - terrain_editor.lua
       - terrains
       - overlays
     - upgrades.lua
       - menu for upgrades (name, image, cost, current, cap, message)
+      - don't forget to turn off the debug free upgrades again before MP playtesting it
   - Still uses wesnoth.fire to call [message]:
     - inventory.lua
       - text input for item quantity
@@ -29,6 +33,7 @@ When this list is complete/empty, bump to version 0.9
       - text input for side variable changing (twice)
     - shops.lua
       - text input for gold placement (rewrite gold placement)
+      - a lot of the gold pile code seems to be broken
   - Finish GUI2 rewrite:
     - modify_unit.lua
       - review/combine change_unit_stat, change_stats, and menu_unit_change_stats
@@ -49,7 +54,7 @@ When this list is complete/empty, bump to version 0.9
         - and make it a checkbox if possible
       - handle text input
         - possibly more than one on the same screen
-  - Possibly merge shops.lua with inventory.lua (both need lots of work, too)
+  - Need to code in code for investigate drop in shops.lua
   - Use a fancy interface for inventory, upgrades, and possibly units.
   - Replace non-debug uses of wesnoth.message() with a local gui2 warning
   - Perhaps menu item toggling can be done through a mix of set_menu_item and clear_menu_item instead of settings() and variables.
@@ -60,7 +65,7 @@ When this list is complete/empty, bump to version 0.9
   - Most places probably can check for an empty list before calling menu() and show a better error there.
     - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
   - Many settings could probably be done more than one in a window, with a slider, checkboxes, etc.
-  - If possible add a back button in addition to close.
+  - If possible add a back button in addition to close for the complicated menus.
 
  (1) Inventory Containers (2%)
        * Templates:

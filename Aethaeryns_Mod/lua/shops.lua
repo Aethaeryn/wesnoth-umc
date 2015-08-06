@@ -60,31 +60,6 @@ function clear_game_object(x, y)
    end
 end
 
--- todo "Investigate Drop"
-function interact_do(selection, x, y)
-   check_x_coord(x)
-   if selection == "Visit Shop" then
-      submenu_inventory('visit_shop', game_containers[x][y]["shop"])
-   elseif selection == "Collect Gold" then
-      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[x][y]["gold"]
-      clear_game_object(x, y)
-   elseif selection == "Remove from Chest" then
-      submenu_inventory('chest_remove', game_containers[x][y]["chest"])
-   elseif selection == "Add to Chest" then
-      submenu_inventory('chest_add', false)
-   end
-end
-
-function modify_container_do(selection)
-   local e = wesnoth.current.event_context
-   check_x_coord(e.x1)
-   if selection == "Modify Shop" then
-      submenu_inventory('shop_modify', game_containers[e.x1][e.y1]["shop"])
-   elseif selection == "Modify Chest" then
-      submenu_inventory('chest_modify', game_containers[e.x1][e.y1]["chest"])
-   end
-end
-
 function submenu_interact()
    local e = wesnoth.current.event_context
    local title = "Unit Commands"
@@ -106,7 +81,17 @@ function submenu_interact()
    end
    local option = menu(interactions, image, title, description, menu_picture_list, 1)
    if option then
-      interact_do(option, e.x1, e.y1)
+      check_x_coord(e.x1)
+      if option == "Visit Shop" then
+         submenu_inventory('visit_shop', game_containers[e.x1][e.y1]["shop"])
+      elseif option == "Collect Gold" then
+         wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[e.x1][e.y1]["gold"]
+         clear_game_object(e.x1, e.y1)
+      elseif option == "Remove from Chest" then
+         submenu_inventory('chest_remove', game_containers[e.x1][e.y1]["chest"])
+      elseif option == "Add to Chest" then
+         submenu_inventory('chest_add', false)
+      end
    end
 end
 
@@ -129,7 +114,14 @@ function submenu_modify_container()
       end
    end
    local option = menu(interactions, image, title, description, menu_picture_list, 1)
-   modify_container_do(option)
+   if option then
+      check_x_coord(e.x1)
+      if option == "Modify Shop" then
+         submenu_inventory('shop_modify', game_containers[e.x1][e.y1]["shop"])
+      elseif option == "Modify Chest" then
+         submenu_inventory('chest_modify', game_containers[e.x1][e.y1]["chest"])
+      end
+   end
 end
 
 function place_object_choose(choice)

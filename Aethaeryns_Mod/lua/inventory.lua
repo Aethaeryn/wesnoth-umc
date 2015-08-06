@@ -194,21 +194,6 @@ function submenu_inventory(context, container)
    options:fire(options_table)
 end
 
-function option_unit(option)
-   if option == "Use Item" then
-      submenu_inventory('unit_use')
-
-   elseif option == "Upgrades" then
-      menu_upgrade_unit()
-
-   elseif option == "Speak" then
-      option_unit_message()
-
-   elseif option == "Interact" then
-      submenu_interact()
-   end
-end
-
 function menu_inventory()
    local title = "Unit Commands"
    local description = "What do you want to do with this unit?"
@@ -220,7 +205,15 @@ function menu_inventory()
       {"Speak", "icons/letter_and_ale.png"}
    }
    local option = menu(options, image, title, description, menu_picture_list, 1)
-   option_unit(option)
+   if option == "Use Item" then
+      submenu_inventory('unit_use')
+   elseif option == "Upgrades" then
+      menu_upgrade_unit()
+   elseif option == "Speak" then
+      option_unit_message()
+   elseif option == "Interact" then
+      submenu_interact()
+   end
 end
 
 >>
