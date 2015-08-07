@@ -89,12 +89,12 @@ function mod_menu.unit_commands()
       local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
       if option then
          if option == "Visit Shop" then
-            submenu_inventory('visit_shop', game_containers[e.x1][e.y1]["shop"])
+            submenu_inventory('visit_shop', containers[e.x1][e.y1]["shop"])
          elseif option == "Collect Gold" then
-            wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[e.x1][e.y1]["gold"]
+            wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + containers[e.x1][e.y1]["gold"]
             clear_game_object(e.x1, e.y1)
          elseif option == "Remove from Chest" then
-            submenu_inventory('chest_remove', game_containers[e.x1][e.y1]["chest"])
+            submenu_inventory('chest_remove', containers[e.x1][e.y1]["chest"])
          elseif option == "Add to Chest" then
             submenu_inventory('chest_add')
          end
@@ -229,9 +229,9 @@ function mod_menu.settings()
          local interaction = menu(find_interactions_to_modify(e.x1, e.y1), image, title, description, menu_picture_list, 1)
          if interaction then
             if interaction == "Modify Shop" then
-               submenu_inventory('shop_modify', game_containers[e.x1][e.y1]["shop"])
+               submenu_inventory('shop_modify', containers[e.x1][e.y1]["shop"])
             elseif interaction == "Modify Chest" then
-               submenu_inventory('chest_modify', game_containers[e.x1][e.y1]["chest"])
+               submenu_inventory('chest_modify', containers[e.x1][e.y1]["chest"])
             end
          end
       elseif option == "Modify Side" then

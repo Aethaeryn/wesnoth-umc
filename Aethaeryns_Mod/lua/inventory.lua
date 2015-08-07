@@ -1,12 +1,12 @@
 #define MOD_LUA_INVENTORY
 <<
-if game_containers == nil then
-   game_containers = {}
+if containers == nil then
+   containers = {}
 end
 
 function check_x_coord(x)
-   if game_containers[x] == nil then
-      game_containers[x] = {}
+   if containers[x] == nil then
+      containers[x] = {}
    end
 end
 
@@ -14,7 +14,7 @@ function chest_add(name)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    check_x_coord(e.x1)
-   game_containers[e.x1][e.y1]["chest"][name] = game_containers[e.x1][e.y1]["chest"][name] + 1
+   containers[e.x1][e.y1]["chest"][name] = containers[e.x1][e.y1]["chest"][name] + 1
    unit.variables[name] = unit.variables[name] - 1
 end
 
@@ -22,7 +22,7 @@ function chest_remove(name)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    check_x_coord(e.x1)
-   game_containers[e.x1][e.y1]["chest"][name] = game_containers[e.x1][e.y1]["chest"][name] - 1
+   containers[e.x1][e.y1]["chest"][name] = containers[e.x1][e.y1]["chest"][name] - 1
    if unit.variables[name] == nil then
       unit.variables[name] = 1
    else
@@ -32,8 +32,8 @@ end
 
 function clear_game_object(x, y)
    w_items.remove(x, y)
-   if game_containers[x] ~= nil then
-      game_containers[x][y] = nil
+   if containers[x] ~= nil then
+      containers[x][y] = nil
    end
 end
 
@@ -41,12 +41,12 @@ function simple_place(x, y, type, image, inventory)
    clear_game_object(x,y)
    w_items.place_image(x, y, image)
    check_x_coord(x)
-   game_containers[x][y] = {}
-   game_containers[x][y][type] = {}
+   containers[x][y] = {}
+   containers[x][y][type] = {}
    if inventory == true then
       for i, v in ipairs(item_table) do
          item_name = v["name"]
-         game_containers[x][y][type][item_name] = 0
+         containers[x][y][type][item_name] = 0
       end
    end
 end
@@ -61,7 +61,7 @@ function place_gold(x, y, gold)
 
    simple_place(x, y, "gold", gold_image, false)
    check_x_coord(x)
-   game_containers[x][y]["gold"] = gold
+   containers[x][y]["gold"] = gold
 end
 
 function item_use(name)
@@ -77,17 +77,17 @@ function item_use(name)
    end
 end
 
-function add_unit_item(name, quantity, start_only)
+function add_unit_item(name, quantity)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    if unit.variables[name] == nil then
       unit.variables[name] = quantity
-   elseif start_only == false then
+   else
       unit.variables[name] = unit.variables[name] + quantity
    end
 end
 
-function add_container_item(name, quantity, container_add, start_only)
+function add_container_item(name, quantity, container_add)
    local e = wesnoth.current.event_context
    check_x_coord(e.x1)
    local container = ""
@@ -96,10 +96,10 @@ function add_container_item(name, quantity, container_add, start_only)
    elseif container_add == "shop_modify" then
       container = "shop"
    end
-   if game_containers[e.x1][e.y1][container][name] == nil then
-      game_containers[e.x1][e.y1][container][name] = quantity
-   elseif start_only == false then
-      game_containers[e.x1][e.y1][container][name] = game_containers[e.x1][e.y1][container][name] + quantity
+   if containers[e.x1][e.y1][container][name] == nil then
+      containers[e.x1][e.y1][container][name] = quantity
+   else then
+      containers[e.x1][e.y1][container][name] = containers[e.x1][e.y1][container][name] + quantity
    end
 end
 
@@ -114,9 +114,9 @@ function submenu_inventory_quantity(item, container)
          count = 0
       end
       if container == "unit_add" then
-         add_unit_item(item, count, false)
+         add_unit_item(item, count)
       else
-         add_container_item(item, count, container, false)
+         add_container_item(item, count, container)
       end
    end
 end
@@ -133,7 +133,7 @@ function shop_buy(name)
    end
    if wesnoth.sides[side_number]["gold"] >= price then
       wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] - price
-      game_containers[e.x1][e.y1]["shop"][name] = game_containers[e.x1][e.y1]["shop"][name] - 1
+      containers[e.x1][e.y1]["shop"][name] = containers[e.x1][e.y1]["shop"][name] - 1
       if unit.variables[name] == nil then
          unit.variables[name] = 1
       else
@@ -147,15 +147,15 @@ end
 function find_interactions(x, y)
    local interactions = {}
    check_x_coord(x)
-   if game_containers[x][y] ~= nil then
-      if game_containers[x][y]["shop"] ~= nil then
+   if containers[x][y] ~= nil then
+      if containers[x][y]["shop"] ~= nil then
          table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
-      elseif game_containers[x][y]["chest"] ~= nil then
+      elseif containers[x][y]["chest"] ~= nil then
          table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png"})
          table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png"})
-      elseif game_containers[x][y]["pack"] ~= nil then
+      elseif containers[x][y]["pack"] ~= nil then
          table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png"})
-      elseif game_containers[x][y]["gold"] ~= nil then
+      elseif containers[x][y]["gold"] ~= nil then
          table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
       end
    end
@@ -165,14 +165,14 @@ end
 function find_interactions_to_modify(x, y)
    local interactions = {}
    check_x_coord(x)
-   if game_containers[x][y] ~= nil then
-      if game_containers[x][y]["shop"] ~= nil then
+   if containers[x][y] ~= nil then
+      if containers[x][y]["shop"] ~= nil then
          table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
-      elseif game_containers[x][y]["chest"] ~= nil then
+      elseif containers[x][y]["chest"] ~= nil then
          table.insert(interactions, 1, {"Modify Chest", "items/chest-plain-closed.png"})
-      elseif game_containers[x][y]["pack"] ~= nil then
+      elseif containers[x][y]["pack"] ~= nil then
          table.insert(interactions, 1, {"Modify Drop", "items/leather-pack.png"})
-      elseif game_containers[x][y]["gold"] ~= nil then
+      elseif containers[x][y]["gold"] ~= nil then
          table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
       end
    end
