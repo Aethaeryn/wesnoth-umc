@@ -244,26 +244,15 @@ function mod_menu.settings()
                stat = menu(stats, image, title, description, menu_simple_list)
                if stat then
                   if stat ~= "objectives" then
-                     wesnoth.fire("message", {
-                                     speaker  = "narrator",
-                                     message  = "Choose a new value for "..stat,
-                                     image    = "wesnoth-icon.png",
-                                     show_for = side_number,
-                                     T["text_input"] {
-                                        stat  = "change_"..stat,
-                                        label     = "New value:",
-                                        max_chars = 50 }})
-                     for i, side in ipairs(wesnoth.sides) do
-                        debugOut(side.gold)
-                        if stat == "team_name" then
-                           side.team_name = wesnoth.get_variable("change_team_name")
-                           side.user_team_name = side.team_name
-                        elseif stat == "gold" then
-                           side.gold = wesnoth.get_variable("change_gold")
-                        elseif stat == "village_gold" then
-                           side.village_gold = wesnoth.get_variable("change_village_gold")
-                        elseif stat == "base_income" then
-                           side.base_income = wesnoth.get_variable("change_base_income")
+                     local title = string.format("Choose a new value for %s", stat)
+                     local label = "New value:"
+                     local new_value = menu_text_input(image, title, description, label)
+                     if new_value then
+                        for i, side in ipairs(wesnoth.sides) do
+                           side[stat] = new_value
+                           if stat == "team_name" then
+                              side.user_team_name = side.team_name
+                           end
                         end
                      end
                   end
@@ -276,24 +265,14 @@ function mod_menu.settings()
                stat = menu(stats, image, title, description, menu_simple_list)
                if stat then
                   if stat ~= "objectives" then
-                     wesnoth.fire("message", {
-                                     speaker  = "narrator",
-                                     message  = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat]),
-                                     image    = "wesnoth-icon.png",
-                                     show_for = side_number,
-                                     T["text_input"] {
-                                        variable  = string.format("change_%s", stat),
-                                        label     = "New value:",
-                                        max_chars = 50 }})
-                     if stat == "team_name" then
-                        wesnoth.sides[side].team_name = wesnoth.get_variable("change_team_name")
-                        wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
-                     elseif stat == "gold" then
-                        wesnoth.sides[side].gold = wesnoth.get_variable("change_gold")
-                     elseif stat == "village_gold" then
-                        wesnoth.sides[side].village_gold = wesnoth.get_variable("change_village_gold")
-                     elseif stat == "base_income" then
-                        wesnoth.sides[side].base_income = wesnoth.get_variable("change_base_income")
+                     local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])
+                     local label = "New value:"
+                     local new_value = menu_text_input(image, title, description, label)
+                     if new_value then
+                        wesnoth.sides[side][stat] = new_value
+                        if stat == "team_name" then
+                           wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
+                        end
                      end
                   end
                end
