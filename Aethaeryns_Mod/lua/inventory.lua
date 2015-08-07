@@ -202,6 +202,7 @@ function submenu_inventory(context, container)
    local e = wesnoth.current.event_context
    local unit = false
    if container == nil then unit = wesnoth.get_unit(e.x1, e.y1) end
+   local title = "Unit Commands"
    local description
    local opt
    local run
@@ -237,6 +238,7 @@ function submenu_inventory(context, container)
       option_message = opt,
       code           = run }
    options:fire(options_list)
+   selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
 end
 >>
 #enddef

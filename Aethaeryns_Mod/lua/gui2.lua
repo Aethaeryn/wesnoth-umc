@@ -86,6 +86,10 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
                   wesnoth.set_dialog_value("Information about the selected stat:  \n", "menu_sidebar_intro")
                   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
                   wesnoth.set_dialog_value(string.format("%s : %s", list[i][1], list[i][2]), "menu_sidebar_text")
+               elseif sidebar == "item_stats" then
+                  wesnoth.set_dialog_value("Information about the selected item:  \n", "menu_sidebar_intro")
+                  wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+                  wesnoth.set_dialog_value(string.format("%s : %s", "<big>Hello</big>", "World"), "menu_sidebar_text")
                end
             else
                wesnoth.set_dialog_value(image, "menu_image")
