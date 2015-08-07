@@ -1,20 +1,22 @@
 #define MOD_LUA_TERRAIN_EDITOR
 <<
-options_overlay = {"Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
+-- If/then is currently needed so variables persist past side turns.
+if terrain == nil then
+   terrain = {}
+   terrain.last_terrain = "Ur"
+   terrain.radius = 0
+   terrain.possible_radius = {0, 1, 2}
+end
 
-options_radius = {0, 1, 2}
-
-function terrain_set(terrain_symbol)
-   -- Creates a global variable that is remembered for terrain_repeat()
-   last_terrain = terrain_symbol
-
-   for i, terrain in ipairs(change_terrain) do
+function terrain.set_terrain(terrain_symbol)
+   terrain.last_terrain = terrain_symbol
+   for i, terrain in ipairs(terrain.change_hexes) do
       wesnoth.set_terrain(terrain[1], terrain[2], terrain_symbol)
    end
 end
 
-function overlay_set(terrain_symbol)
-   for i, terrain in ipairs(change_terrain) do
+function terrain.set_overlay(terrain_symbol)
+   for i, terrain in ipairs(terrain.change_hexes) do
       local terrain_type = wesnoth.get_terrain(terrain[1], terrain[2])
       if string.find(terrain_type, "%^") == nil then
          local terrain_symbol = terrain_type..terrain_symbol
@@ -27,11 +29,11 @@ function overlay_set(terrain_symbol)
    end
 end
 
-function option_overlay_options(name)
+function submenu_overlay_options(name)
    local options = DungeonOpt:new{
       root_message   = "Which overlay would you like to place?",
       option_message = "$input2",
-      code           = "overlay_set('$input1')"
+      code           = "terrain.set_overlay('$input1')"
    }
 
    if name == "Water" then
@@ -168,23 +170,24 @@ function option_overlay_options(name)
    end
 end
 
-function option_terrain_choose(name)
+function submenu_terrain_choose(name)
    local options = DungeonOpt:new{
       root_message   = "Which terrain would you like to switch to?",
       option_message = "$input2",
-      code           = "terrain_set('$input1')"
+      code           = "terrain.set_terrain('$input1')"
    }
    if name == "Repeat last terrain" then
-      terrain_set(last_terrain)
+      terrain.set_terrain(terrain.last_terrain)
    elseif name == "Change radius" then
-      local new_radius = menu(options_radius, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "What do you want to set the terrain radius as?", menu_simple_list)
+      local new_radius = menu(terrain.possible_radius, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "What do you want to set the terrain radius as?", menu_simple_list)
       if new_radius then
-         terrain_radius = new_radius
+         terrain.radius = new_radius
       end
    elseif name == "Set an overlay" then
+      local options_overlay = {"Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
       local overlay = menu(options_overlay, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_simple_list)
       if overlay then
-         option_overlay_options(overlay)
+         submenu_overlay_options(overlay)
       end
    elseif name == "Water" then
       options:fire{
@@ -400,25 +403,9 @@ function option_terrain_choose(name)
    end
 end
 
--- A separate function is necessary because if it is kept in the code string of menu_item_change_terrain,
--- the terrain_radius will never change.
-function change_terrain_generate()
-   local e = wesnoth.current.event_context
-   if terrain_radius == nil then
-      terrain_radius = 0
-   end
-   change_terrain = wesnoth.get_locations{
-      x = e.x1,
-      y = e.y1,
-      radius = terrain_radius
-   }
-end
-
 function menu_change_terrain()
-   if last_terrain == nil then
-      last_terrain = "Ur"
-   end
-   change_terrain_generate()
+   local e = wesnoth.current.event_context
+   terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
    local title = "Terrain Editor"
    local description = "Which terrain would you like to switch to?"
    local image = "portraits/undead/transparent/ancient-lich.png"
@@ -438,7 +425,7 @@ function menu_change_terrain()
                     "Special"}
    local choice = menu(options, image, title, description, menu_simple_list)
    if choice then
-      option_terrain_choose(choice)
+      submenu_terrain_choose(choice)
    end
 end
 
