@@ -180,19 +180,27 @@ function menu_settings()
             submenu_view_side(side)
          end
       elseif option == "New Scenario" then
-         local options = DungeonOpt:new {
-            root_message   = "Which scenario do you want to start?",
-            option_message = "$input2",
-            code           = "fire.end_scenario('$input1')"}
-         options:fire{
-            {"intro", "Introduction"},
-            {"intro2", "Introduction (Underground)"},
-            {"battle", "Battle"},
-            {"cavern", "Cavern"},
-            {"classic", "Classic"},
-            {"hide_and_seek", "Hide and Seek"},
-            {"open_dungeon", "Open Dungeon"},
-            {"woods", "Woods"}}
+         local description = "Which scenario do you want to start?"
+         local scenarios = {"Introduction",
+                            "Introduction (Underground)",
+                            "Battle",
+                            "Cavern",
+                            "Classic",
+                            "Hide and Seek",
+                            "Open Dungeon",
+                            "Woods"}
+         local scenario_ids = {"Introduction" = "intro",
+                               "Introduction (Underground)" = "intro2"
+                               "Battle" = "battle",
+                               "Cavern" = "cavern",
+                               "Classic" = "classic",
+                               "Hide and Seek" = "hide_and_seek",
+                               "Open Dungeon" = "open_dungeon",
+                               "Woods" = "woods"}
+         local scenario = menu(scenarios, image, title, description, menu_simple_list)
+         if scenario then
+            fire.end_scenario(scenario_ids[scenario])
+         end
       elseif option == "Toggle Summon Summoners" then
          feature_toggle("summon_summoner")
       elseif option == "Toggle Unit Editor" then

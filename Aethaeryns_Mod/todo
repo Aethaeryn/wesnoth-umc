@@ -6,24 +6,21 @@ When this list is complete/empty, bump to version 0.9
     - spawn_units.lua needs to show HP costs in the menu
     - upgrades.lua needs to turn off the free upgrades before MP playtesting it
   - Eliminate all the functions that are no longer necessary because of the switch.
-    - this means reviewing: settings.lua, inventory.lua, upgrades.lua
+    - this means reviewing: settings.lua, inventory.lua, upgrades.lua, terrain_editor.lua
     - includes everything that is submenu_foo
     - lots of non-menu functions need to look more like the ones in modify_unit.lua
-  - Still uses DungeonOpt:
+  - Remove DungeonOpt:
     - inventory.lua in submenu_inventory; extremely complicated, mostly name, item, price, message, quantity and quite a few contexts
-    - settings.lua
-      - new scenario (scenario names different from name on menu)
-      - side variable changing (why wasn't this trivial?)
-        - because it should have its own UI and needs to show the current values
+    - settings.lua in side variable changing, which needs to show the current values
     - terrain_editor.lua in terrains and overlays
     - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)
-  - Still uses wesnoth.fire to call [message]:
+  - Remove wesnoth.fire to call [message]:
     - settings.lua when using text input to change side variables (two different times)
     - inventory.lua when using text input for gold placement
-  - Still uses wesnoth.message for error messages:
-    - inventory.lua when you can't afford item
-    - upgrades.lua when you can't afford upgrade
-    - spawn_units.lua when you don't have enough HP to summon the unit
+  - Remove wesnoth.message for error messages:
+    - (switch from DungeonOpt first) inventory.lua when you can't afford item
+    - (switch from DungeonOpt first) upgrades.lua when you can't afford upgrade
+    - (easy) spawn_units.lua when you don't have enough HP to summon the unit
   - Finish GUI2 rewrite:
     - filter.lua code needs to be cleaned up; use a Lua table or tables instead of function where possible
     - terrain_editor.lua needs a lot of rewriting, possibly the whole thing
@@ -36,8 +33,13 @@ When this list is complete/empty, bump to version 0.9
         - and make it a checkbox if possible
       - handle text input
         - possibly more than one on the same screen
-  - Write a new user interface for inventory and upgrades
+  - Need new GUI2s for:
+    - inventory and upgrades
+    - changing side variables
+    - errors
+    - terrain editing
   - Possibly write a new user interface for units, like the recruitment GUI.
+  - Gold placement probably could use a slider, too, so invalid values are avoided
 
  (1) Inventory Containers (2%)
        * Investigate drop (pack container)
