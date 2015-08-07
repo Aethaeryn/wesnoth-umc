@@ -143,11 +143,38 @@ function menu_text_input(image, title, description, label, default_text)
    return safe_choice
 end
 
+function gui2_error(text)
+   local dialog = {}
+   dialog = generate_dialog(false, "error")
+   local function safe_dialog()
+      local choice = ""
+
+      local function preshow()
+         wesnoth.set_dialog_value("Error!", "menu_title")
+         wesnoth.set_dialog_value(text, "menu_description")
+      end
+
+      wesnoth.show_dialog(dialog, preshow)
+      return { value = false }
+   end
+
+   local safe_choice = wesnoth.synchronize_choice(safe_dialog).value
+   return safe_choice
+end
+
 -- todo: Add optional cost.
 function menu_unit_list(units)
    for i, unit in ipairs(units) do
       local unit_data = wesnoth.unit_types[unit].__cfg
       wesnoth.set_dialog_value(unit_data.name, "menu_list", i, "label")
+      wesnoth.set_dialog_value(unit_data.image, "menu_list", i, "icon")
+   end
+end
+
+function menu_unit_list_with_cost(units)
+   for i, unit in ipairs(units) do
+      local unit_data = wesnoth.unit_types[unit].__cfg
+      wesnoth.set_dialog_value(string.format("%s - %d HP", unit_data.name, unit_data.cost), "menu_list", i, "label")
       wesnoth.set_dialog_value(unit_data.image, "menu_list", i, "icon")
    end
 end

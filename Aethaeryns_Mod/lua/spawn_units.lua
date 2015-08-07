@@ -67,11 +67,11 @@ function spawn_units.menu_summon(summoner_type)
    local level = menu(levels, image, title, description, menu_simple_list)
    if level then
       description = "Select a unit to summon."
-      local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list)
+      local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list_with_cost)
       if choice then
          local spawn_success = spawn_units.reg_spawner(choice, summoner_type)
          if not spawn_success then
-            wesnoth.message("Error", "Insufficient hitpoints on the attempted summoner.")
+            gui2_error("Insufficient hitpoints on the attempted summoner.")
          end
       end
    end

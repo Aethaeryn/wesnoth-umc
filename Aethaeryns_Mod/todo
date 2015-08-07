@@ -2,16 +2,13 @@ AETHAERYN'S MOD TODO LIST (89% Progress)
 When this list is complete/empty, bump to version 0.9
 
   (2%)
-  - Currently broken:
-    - spawn_units.lua needs to show HP costs in the menu
-    - upgrades.lua needs to turn off the free upgrades before MP playtesting it
   - Eliminate all the functions that are no longer necessary because of the switch.
     - this means reviewing: settings.lua, inventory.lua, upgrades.lua, terrain_editor.lua
     - includes everything that is submenu_foo
     - lots of non-menu functions need to look more like the ones in modify_unit.lua
   - Remove DungeonOpt:
     - inventory.lua in submenu_inventory; extremely complicated, mostly name, item, price, message, quantity and quite a few contexts
-    - settings.lua in side variable changing, which needs to show the current values
+    - settings.lua in side variable changing, which needs to show the current values (see "Finish GUI2 rewrite" below)
     - terrain_editor.lua in terrains and overlays
     - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)
   - Remove wesnoth.fire to call [message]:
@@ -20,26 +17,25 @@ When this list is complete/empty, bump to version 0.9
   - Remove wesnoth.message for error messages:
     - (switch from DungeonOpt first) inventory.lua when you can't afford item
     - (switch from DungeonOpt first) upgrades.lua when you can't afford upgrade
-    - (easy) spawn_units.lua when you don't have enough HP to summon the unit
   - Finish GUI2 rewrite:
     - filter.lua code needs to be cleaned up; use a Lua table or tables instead of function where possible
     - terrain_editor.lua needs a lot of rewriting, possibly the whole thing
     - settings.lua
       - some settings could be done more than one in a window, with a slider, checkboxes, etc., instead of with text input
       - especially changing side variables
-    - gui2.lua
-      - add back in team colors for units if possible
-      - make the toggle <foo> in settings say what the current state is
-        - and make it a checkbox if possible
-      - handle text input
-        - possibly more than one on the same screen
   - Need new GUI2s for:
     - inventory and upgrades
-    - changing side variables
-    - errors
+    - changing side variables (multiple options)
     - terrain editing
+    - checkboxes (multiple options)
   - Possibly write a new user interface for units, like the recruitment GUI.
-  - Gold placement probably could use a slider, too, so invalid values are avoided
+    - add back in team colors for units if possible
+  - Gold placement probably could use a slider so invalid and really huge values are avoided
+  - Same for adding inventory to a unit or container.
+  - Make the toggles have their own submenu in settings.
+    - make them use checkboxes
+    - make them say what the current state is based on check/uncheck
+    - extend gui2 so it can handle more than one return value
 
  (1) Inventory Containers (2%)
      * Investigate drop (pack container)
@@ -182,6 +178,7 @@ When this list is complete/empty, bump to version 0.9
        * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
          * Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
        * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
+       * CODE: Fix spacing on GUI2 GUIs, especially the error message and the areas with more than one button.
 
  (6) Future
     * Magic [temporary via scrolls]
