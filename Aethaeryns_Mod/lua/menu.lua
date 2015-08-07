@@ -42,7 +42,7 @@ function mod_menu.summon(summoner_type)
    local level = menu(levels, image, title, description, menu_simple_list)
    if level then
       description = "Select a unit to summon."
-      local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list_with_cost, nil, true)
+      local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list_with_cost, nil, "unit")
       if choice then
          local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type)
          if not spawn_success then
@@ -60,7 +60,7 @@ function mod_menu.summon_summoner()
    local summoner_type = menu(SUMMON_ROLES, image, title, description, menu_simple_list)
    if summoner_type then
       description = "Select a unit to summon."
-      local summoner = menu(summoners[summoner_type], image, title, description, menu_unit_list, nil, true)
+      local summoner = menu(summoners[summoner_type], image, title, description, menu_unit_list, nil, "unit")
       if summoner then
          spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type)
       end
@@ -259,10 +259,11 @@ function mod_menu.settings()
                end
             else
                local description = "Which variable do you want to change?"
+               local side_stats = {}
                for i, stat in ipairs(stats) do
-                  debugOut(wesnoth.sides[side][stat])
+                  side_stats[i] = { stat, wesnoth.sides[side][stat] }
                end
-               stat = menu(stats, image, title, description, menu_simple_list)
+               stat = menu(side_stats, image, title, description, menu_almost_simple_list, 1, "team_stats")
                if stat then
                   if stat ~= "objectives" then
                      local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])

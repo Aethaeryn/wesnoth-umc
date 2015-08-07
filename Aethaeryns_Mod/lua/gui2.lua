@@ -30,7 +30,7 @@ local function generate_dialog(not_empty, menu_type, has_sidebar)
          T.column { T.button { id = "cancel", label = "Close" }}}
    end
    left_column = {}
-   if has_sidebar ~= nil and has_sidebar then
+   if has_sidebar ~= nil then
       left_column = T.column { T.grid {
                                   T.row { T.column { T.image { id = "menu_image" }}},
                                   T.row { T.column { horizontal_grow = true,
@@ -56,31 +56,37 @@ end
 -- list, an image that shows on the left for decoration, a title and
 -- description that show at the top, and a function that specifies how
 -- the list needs to be built.
-function menu(list, image, title, description, build_list, sublist_index, is_unit)
+function menu(list, image, title, description, build_list, sublist_index, sidebar)
    local dialog = {}
    local not_empty = true
    if list[1] == nil then
       not_empty = false
    end
-   dialog = generate_dialog(not_empty, "list", is_unit)
+   dialog = generate_dialog(not_empty, "list", sidebar)
 
    local function safe_dialog()
       local choice = 0
 
       local function preshow()
          local function select()
-            if is_unit ~= nil and is_unit then
+            if sidebar ~= nil then
                local i = wesnoth.get_dialog_value("menu_list")
-               local unit_data = wesnoth.unit_types[list[i]].__cfg
-               wesnoth.set_dialog_value(unit_data.image, "menu_image")
-               wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-               wesnoth.set_dialog_value(string.format("<span size='small'>%s\n%s\nHP: %d\nMP: %d</span>",
-                                                      unit_data.name,
-                                                      unit_data.alignment,
-                                                      unit_data.hitpoints,
-                                                      unit_data.movement),
-                                        "menu_sidebar_text")
-               wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
+               if sidebar == "unit" then
+                  local unit_data = wesnoth.unit_types[list[i]].__cfg
+                  wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
+                  wesnoth.set_dialog_value(unit_data.image, "menu_image")
+                  wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+                  wesnoth.set_dialog_value(string.format("<span size='small'>%s\n%s\nHP: %d\nMP: %d</span>",
+                                                         unit_data.name,
+                                                         unit_data.alignment,
+                                                         unit_data.hitpoints,
+                                                         unit_data.movement),
+                                           "menu_sidebar_text")
+               elseif sidebar == "team_stats" then
+                  wesnoth.set_dialog_value("Information about the selected stat:  \n", "menu_sidebar_intro")
+                  wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+                  wesnoth.set_dialog_value(string.format("%s : %s", list[i][1], list[i][2]), "menu_sidebar_text")
+               end
             else
                wesnoth.set_dialog_value(image, "menu_image")
             end
@@ -213,6 +219,12 @@ end
 function menu_simple_list(list)
    for i, item in ipairs(list) do
       wesnoth.set_dialog_value(item, "menu_list", i, "label")
+   end
+end
+
+function menu_almost_simple_list(list)
+   for i, sublist in ipairs(list) do
+      wesnoth.set_dialog_value(sublist[1], "menu_list", i, "label")
    end
 end
 >>
