@@ -207,38 +207,46 @@ function submenu_inventory(context, container)
    local opt
    local run
    local options_list = {}
-   if context == "unit_use" or context == "chest_add" or context == "chest_remove" or context == "visit_shop" then
-      opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\nQuantity: $input5\n$input4"
+   if unit then
       if context == "unit_use" then
          description = "Which item do you want to use?"
-         run = "item_use('$input1')"
-      elseif context == "chest_add" then
+         options_list = show_current_inventory(unit.variables)
+         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
+         if selection then
+            item_use(selection)
+         end
+      end
+   else
+      if context == "chest_add" then
          description = "What item do you want to put in the chest?"
-         run = "chest_add('$input1')"
+         options_list = show_current_inventory(container)
+         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
+         if selection then
+            chest_add(selection)
+         end
       elseif context == "chest_remove" then
          description = "What item do you want to remove from the chest?"
-         run = "chest_remove('$input1')"
+         options_list = show_current_inventory(container)
+         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
+         if selection then
+            chest_remove(selection)
+         end
       elseif context == "visit_shop" then
          description = "What item do you want to purchase from the shop?"
-         run = "shop_buy('$input1')"
-      end
-      if unit then
-         options_list = show_current_inventory(unit.variables)
-      else
          options_list = show_current_inventory(container)
+         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
+         if selection then
+            shop_buy(selection)
+         end
+      elseif context == "chest_modify" or context == "shop_modify" or context == "unit_add" then
+         description = "Which item do you want to add?"
+         options_list = show_all_inventory()
+         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
+         if selection then
+            run = submenu_inventory_quantity(selection, context)
+         end
       end
-   elseif context == "chest_modify" or context == "shop_modify" or context == "unit_add" then
-      description = "Which item do you want to add?"
-      run = "submenu_inventory_quantity('$input1', '"..context.."')"
-      opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\n$input4"
-      options_list = show_all_inventory()
    end
-   local options = DungeonOpt:new{
-      root_message   = description,
-      option_message = opt,
-      code           = run }
-   options:fire(options_list)
-   selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
 end
 >>
 #enddef

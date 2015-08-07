@@ -1,20 +1,18 @@
-AETHAERYN'S MOD TODO LIST (89% Progress)
+AETHAERYN'S MOD TODO LIST (90% Progress)
 When this list is complete/empty, bump to version 0.9
 
-  (2%)
+  (1%)
   - remove all submenu_ functions (inventory.lua, upgrades.lua, terrain_editor.lua)
   - inventory.lua and upgrades.lua need to put the non-menu functions in tables
   - Remove DungeonOpt:
-    - inventory.lua in submenu_inventory; extremely complicated, mostly name, item, price, message, quantity and quite a few contexts
     - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)
     - terrain_editor.lua in terrains and overlays
     - delete DungeonOpt.lua when this is finished
   - Need new GUI2s for:
-    - inventory and upgrades
     - terrain editing
   - Slider instead of text input:
-    - Gold placement.
-    - Inventory.
+    - Gold quantity.
+    - Inventory quantity.
 
  (1) Inventory Containers (2%)
      * Investigate drop (pack container)
