@@ -402,32 +402,5 @@ function submenu_terrain_choose(name)
       }
    end
 end
-
-function menu_change_terrain()
-   local e = wesnoth.current.event_context
-   terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
-   local title = "Terrain Editor"
-   local description = "Which terrain would you like to switch to?"
-   local image = "portraits/undead/transparent/ancient-lich.png"
-   local options = {"Repeat last terrain",
-                    "Set an overlay",
-                    "Change radius",
-                    "Water",
-                    "Flat",
-                    "Desert",
-                    "Forest",
-                    "Frozen",
-                    "Rough",
-                    "Cave",
-                    "Obstacle",
-                    "Village",
-                    "Castle",
-                    "Special"}
-   local choice = menu(options, image, title, description, menu_simple_list)
-   if choice then
-      submenu_terrain_choose(choice)
-   end
-end
-
 >>
 #enddef

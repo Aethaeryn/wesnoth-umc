@@ -278,41 +278,5 @@ function submenu_inventory(context, container)
       code           = run }
    options:fire(options_list)
 end
-
-function menu_inventory()
-   local title = "Unit Commands"
-   local description = "What do you want to do with this unit?"
-   local image = "portraits/undead/transparent/ancient-lich.png" -- todo: definitely not appropriate here
-   local options = {
-      {"Interact", "icons/coins_copper.png"},
-      {"Use Item", "icons/potion_red_small.png"},
-      {"Upgrades", "attacks/woodensword.png"},
-      {"Speak", "icons/letter_and_ale.png"}}
-   local option = menu(options, image, title, description, menu_picture_list, 1)
-   if option == "Use Item" then
-      submenu_inventory('unit_use')
-   elseif option == "Upgrades" then
-      submenu_upgrade_unit()
-   elseif option == "Speak" then
-      fire.custom_message()
-   elseif option == "Interact" then
-      local e = wesnoth.current.event_context
-      local description = "How do you want to interact?"
-      local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
-      if option then
-         if option == "Visit Shop" then
-            submenu_inventory('visit_shop', game_containers[e.x1][e.y1]["shop"])
-         elseif option == "Collect Gold" then
-            wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + game_containers[e.x1][e.y1]["gold"]
-            clear_game_object(e.x1, e.y1)
-         elseif option == "Remove from Chest" then
-            submenu_inventory('chest_remove', game_containers[e.x1][e.y1]["chest"])
-         elseif option == "Add to Chest" then
-            submenu_inventory('chest_add')
-         end
-      end
-   end
-end
-
 >>
 #enddef

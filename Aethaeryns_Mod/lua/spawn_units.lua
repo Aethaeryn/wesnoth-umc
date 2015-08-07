@@ -52,44 +52,5 @@ function spawn_units.reg_spawner(x, y, unit_type, unit_role)
       return false
    end
 end
-
-function spawn_units.menu_summon(summoner_type)
-   local e = wesnoth.current.event_context
-   local title = string.format("Summon %s", summoner_type)
-   local description = "Select a unit level."
-   local image = PORTRAIT[summoner_type]
-   local levels = {}
-   for key, value in pairs(regular[summoner_type]) do
-      table.insert(levels, key)
-   end
-   table.sort(levels)
-   local level = menu(levels, image, title, description, menu_simple_list)
-   if level then
-      description = "Select a unit to summon."
-      local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list_with_cost)
-      if choice then
-         local spawn_success = spawn_units.reg_spawner(e.x1, e.y1, choice, summoner_type)
-         if not spawn_success then
-            gui2_error("Insufficient hitpoints on the attempted summoner.")
-         end
-      end
-   end
-end
-
-function spawn_units.menu_summon_summoner()
-   local e = wesnoth.current.event_context
-   local title = "Summon Summoner"
-   local description = "Select a summoner type."
-   local image = "portraits/undead/transparent/ancient-lich.png"
-   local summoner_type = menu(SUMMON_ROLES, image, title, description, menu_simple_list)
-   if summoner_type then
-      description = "Select a unit to summon."
-      local summoner = menu(summoners[summoner_type], image, title, description, menu_unit_list)
-      if summoner then
-         spawn_units.boss_spawner(e.x1, e.y1, summoner, summoner_type)
-      end
-   end
-end
-
 >>
 #enddef

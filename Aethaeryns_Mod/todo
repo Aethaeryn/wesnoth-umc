@@ -3,20 +3,20 @@ When this list is complete/empty, bump to version 0.9
 
   (2%)
   - Eliminate all the functions that are no longer necessary because of the switch.
-    - this means reviewing: settings.lua, inventory.lua, upgrades.lua, terrain_editor.lua
+    - this means reviewing: menu.lua, inventory.lua, upgrades.lua, terrain_editor.lua
     - includes everything that is submenu_foo
     - lots of non-menu functions need to look more like the ones in modify_unit.lua
   - Remove DungeonOpt:
     - inventory.lua in submenu_inventory; extremely complicated, mostly name, item, price, message, quantity and quite a few contexts
     - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)
-    - settings.lua in side variable changing, which needs to show the current values (see "Finish GUI2 rewrite" below)
+    - menu.lua in side variable changing, which needs to show the current values (see "Finish GUI2 rewrite" below)
     - terrain_editor.lua in terrains and overlays
   - Remove wesnoth.fire to call [message]:
-    - settings.lua when using text input to change side variables (two different times)
+    - menu.lua when using text input to change side variables (two different times)
   - Finish GUI2 rewrite:
     - filter.lua code needs to be cleaned up; use a Lua table or tables instead of function where possible
     - terrain_editor.lua needs a lot of rewriting, possibly the whole thing
-    - settings.lua
+    - menu.lua
       - some settings could be done more than one in a window, with a slider, checkboxes, etc., instead of with text input
       - especially changing side variables
   - Need new GUI2s for:
@@ -169,7 +169,7 @@ When this list is complete/empty, bump to version 0.9
        * CODE: Move mod_menu so it isn't created every side turn so that the status persists.
          * The rest of the data probably can move to the beginning too.
          * The toggle should set/clear menu items properly when status changes, so settings() only needs to run at start too.
-       * CODE: Find a replacement for get_roles() in modify_unit.lua and get_sides_with_all() in settings.lua
+       * CODE: Find a replacement for get_roles() and get_sides_with_all()
        * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
          * Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
        * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
