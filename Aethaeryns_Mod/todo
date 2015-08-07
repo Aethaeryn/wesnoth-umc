@@ -5,7 +5,7 @@ When this list is complete/empty, bump to version 0.9
   - menu.lua needs to show the current variables in changing variables
     - for change all it could show them all too, possibly
   - Eliminate all the functions that are no longer necessary because of the switch.
-    - this means reviewing: menu.lua, inventory.lua, upgrades.lua, terrain_editor.lua
+    - this means reviewing: inventory.lua, upgrades.lua, terrain_editor.lua
     - includes everything that is submenu_foo
     - lots of non-menu functions need to look more like the ones in unit.lua
   - Remove DungeonOpt:

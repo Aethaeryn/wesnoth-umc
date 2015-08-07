@@ -210,60 +210,6 @@ function mod_menu.place_object()
    end
 end
 
-function submenu_change_side_variable(side_num, variable, old_value)
-   local side = wesnoth.sides[side_num]
-   if variable ~= "objectives" then
-      wesnoth.fire("message", {
-                      speaker  = "narrator",
-                      message  = string.format("The old value of %s is: %s ", variable, old_value),
-                      image    = "wesnoth-icon.png",
-                      show_for = side_number,
-                      T["text_input"] {
-                         variable  = string.format("change_%s", variable),
-                         label     = "New value:",
-                         max_chars = 50 }})
-      if variable == "team_name" then
-         side.team_name = wesnoth.get_variable("change_team_name")
-         side.user_team_name = side.team_name
-      elseif variable == "gold" then
-         side.gold = wesnoth.get_variable("change_gold")
-      elseif variable == "village_gold" then
-         side.village_gold = wesnoth.get_variable("change_village_gold")
-      elseif variable == "base_income" then
-         side.base_income = wesnoth.get_variable("change_base_income")
-      end
-   end
-end
-
-function submenu_change_side_variable_for_all(variable)
-   if variable ~= "objectives" then
-      wesnoth.fire("message", {
-                      speaker  = "narrator",
-                      message  = "Choose a new value for "..variable,
-                      image    = "wesnoth-icon.png",
-                      show_for = side_number,
-                      T["text_input"] {
-                         variable  = "change_"..variable,
-                         label     = "New value:",
-                         max_chars = 50 }})
-      for i, side in ipairs(wesnoth.sides) do
-         if variable == "team_name" then
-            side.team_name = wesnoth.get_variable("change_team_name")
-            side.user_team_name = side.team_name
-         elseif variable == "gold" then
-            side.gold = wesnoth.get_variable("change_gold")
-         elseif variable == "village_gold" then
-            side.village_gold = wesnoth.get_variable("change_village_gold")
-         elseif variable == "base_income" then
-            side.base_income = wesnoth.get_variable("change_base_income")
-         end
-      end
-   end
-end
-
-function submenu_view_side(side)
-end
-
 function mod_menu.settings()
    local e = wesnoth.current.event_context
    local title = "Settings"
@@ -297,7 +243,30 @@ function mod_menu.settings()
             if side == "All" then
                stat = menu(stats, image, title, description, menu_simple_list)
                if stat then
-                  submenu_change_side_variable_for_all(stat)
+                  if stat ~= "objectives" then
+                     wesnoth.fire("message", {
+                                     speaker  = "narrator",
+                                     message  = "Choose a new value for "..stat,
+                                     image    = "wesnoth-icon.png",
+                                     show_for = side_number,
+                                     T["text_input"] {
+                                        stat  = "change_"..stat,
+                                        label     = "New value:",
+                                        max_chars = 50 }})
+                     for i, side in ipairs(wesnoth.sides) do
+                        debugOut(side.gold)
+                        if stat == "team_name" then
+                           side.team_name = wesnoth.get_variable("change_team_name")
+                           side.user_team_name = side.team_name
+                        elseif stat == "gold" then
+                           side.gold = wesnoth.get_variable("change_gold")
+                        elseif stat == "village_gold" then
+                           side.village_gold = wesnoth.get_variable("change_village_gold")
+                        elseif stat == "base_income" then
+                           side.base_income = wesnoth.get_variable("change_base_income")
+                        end
+                     end
+                  end
                end
             else
                local description = "Which variable do you want to change?"
@@ -306,7 +275,27 @@ function mod_menu.settings()
                end
                stat = menu(stats, image, title, description, menu_simple_list)
                if stat then
-                  submenu_change_side_variable(side, stat, wesnoth.sides[side][stat])
+                  if stat ~= "objectives" then
+                     wesnoth.fire("message", {
+                                     speaker  = "narrator",
+                                     message  = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat]),
+                                     image    = "wesnoth-icon.png",
+                                     show_for = side_number,
+                                     T["text_input"] {
+                                        variable  = string.format("change_%s", stat),
+                                        label     = "New value:",
+                                        max_chars = 50 }})
+                     if stat == "team_name" then
+                        wesnoth.sides[side].team_name = wesnoth.get_variable("change_team_name")
+                        wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
+                     elseif stat == "gold" then
+                        wesnoth.sides[side].gold = wesnoth.get_variable("change_gold")
+                     elseif stat == "village_gold" then
+                        wesnoth.sides[side].village_gold = wesnoth.get_variable("change_village_gold")
+                     elseif stat == "base_income" then
+                        wesnoth.sides[side].base_income = wesnoth.get_variable("change_base_income")
+                     end
+                  end
                end
             end
          end
