@@ -5,7 +5,7 @@ When this list is complete/empty, bump to version 0.9
   - Eliminate all the functions that are no longer necessary because of the switch.
     - this means reviewing: menu.lua, inventory.lua, upgrades.lua, terrain_editor.lua
     - includes everything that is submenu_foo
-    - lots of non-menu functions need to look more like the ones in modify_unit.lua
+    - lots of non-menu functions need to look more like the ones in unit.lua
   - Remove DungeonOpt:
     - inventory.lua in submenu_inventory; extremely complicated, mostly name, item, price, message, quantity and quite a few contexts
     - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)

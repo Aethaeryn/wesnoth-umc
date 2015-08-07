@@ -44,7 +44,7 @@ function mod_menu.summon(summoner_type)
       description = "Select a unit to summon."
       local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list_with_cost)
       if choice then
-         local spawn_success = spawn_units.reg_spawner(e.x1, e.y1, choice, summoner_type)
+         local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type)
          if not spawn_success then
             gui2_error("Insufficient hitpoints on the attempted summoner.")
          end
@@ -62,7 +62,7 @@ function mod_menu.summon_summoner()
       description = "Select a unit to summon."
       local summoner = menu(summoners[summoner_type], image, title, description, menu_unit_list)
       if summoner then
-         spawn_units.boss_spawner(e.x1, e.y1, summoner, summoner_type)
+         spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type)
       end
    end
 end
