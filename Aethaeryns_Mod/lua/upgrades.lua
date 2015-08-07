@@ -74,7 +74,7 @@ function upgrade_unit(choice, cost, current, cap)
          change_unit.max_experience(e.x1, e.y1, unit_data.max_experience * .8)
       end
    else
-      wesnoth.message("Error", "You cannot get that upgrade right now.")
+      gui2_error("You cannot get that upgrade right now.")
    end
 end
 

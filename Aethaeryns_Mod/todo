@@ -8,15 +8,11 @@ When this list is complete/empty, bump to version 0.9
     - lots of non-menu functions need to look more like the ones in modify_unit.lua
   - Remove DungeonOpt:
     - inventory.lua in submenu_inventory; extremely complicated, mostly name, item, price, message, quantity and quite a few contexts
+    - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)
     - settings.lua in side variable changing, which needs to show the current values (see "Finish GUI2 rewrite" below)
     - terrain_editor.lua in terrains and overlays
-    - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)
   - Remove wesnoth.fire to call [message]:
     - settings.lua when using text input to change side variables (two different times)
-    - inventory.lua when using text input for gold placement
-  - Remove wesnoth.message for error messages:
-    - (switch from DungeonOpt first) inventory.lua when you can't afford item
-    - (switch from DungeonOpt first) upgrades.lua when you can't afford upgrade
   - Finish GUI2 rewrite:
     - filter.lua code needs to be cleaned up; use a Lua table or tables instead of function where possible
     - terrain_editor.lua needs a lot of rewriting, possibly the whole thing

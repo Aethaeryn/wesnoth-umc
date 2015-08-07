@@ -1,7 +1,7 @@
 #define MOD_SETTINGS
 <<
 function menu_placement()
-   local title = "Place Objects"
+   local title = "Place Object"
    local description = "What do you want to do with this unit?"
    local image = "portraits/undead/transparent/ancient-lich.png"
    local options = {
@@ -20,7 +20,12 @@ function menu_placement()
       elseif option == "Place Pack" then
          simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
       elseif option == "Place Gold Pile" then
-         place_gold(e.x1, e.y1)
+         local description = "How much gold do you want to place in the pile?"
+         local label = "Gold:"
+         local gold = menu_text_input(image, title, description, label)
+         if gold and type(gold) == "number" and gold > 0 then
+            place_gold(e.x1, e.y1, gold)
+         end
       elseif option == "Clear Hex" then
          clear_game_object(e.x1, e.y1)
       end

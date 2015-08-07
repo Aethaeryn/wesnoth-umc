@@ -51,31 +51,17 @@ function simple_place(x, y, type, image, inventory)
    end
 end
 
-function place_gold(x, y)
-   wesnoth.fire("message", {
-                   speaker  = "narrator",
-                   message  = "How much gold do you want to place in your pile",
-                   image    = "wesnoth-icon.png",
-                   show_for = side_number,
-                   T["text_input"] {
-                      variable  = "place_object_gold",
-                      label     = "New value:",
-                      max_chars = 10 }})
-
-   local gold = wesnoth.get_variable("place_object_gold")
-
-   if type(gold) == "number" and gold > 0 then
-      local gold_image = "items/gold-coins-medium.png"
-      if gold < 20 then
-         gold_image = "items/gold-coins-small.png"
-      elseif gold >= 50 then
-         gold_image = "items/gold-coins-large.png"
-      end
-
-      simple_place(x, y, "gold", gold_image, false)
-      check_x_coord(x)
-      game_containers[x][y]["gold"] = gold
+function place_gold(x, y, gold)
+   local gold_image = "items/gold-coins-medium.png"
+   if gold < 20 then
+      gold_image = "items/gold-coins-small.png"
+   elseif gold >= 50 then
+      gold_image = "items/gold-coins-large.png"
    end
+
+   simple_place(x, y, "gold", gold_image, false)
+   check_x_coord(x)
+   game_containers[x][y]["gold"] = gold
 end
 
 function use_coins()
@@ -194,7 +180,7 @@ function shop_buy(name)
          unit.variables[name] = unit.variables[name] + 1
       end
    else
-      wesnoth.message("Error", "You can't afford that!")
+      gui2_error("You can't afford that!")
    end
 end
 
@@ -203,14 +189,14 @@ function find_interactions(x, y)
    check_x_coord(x)
    if game_containers[x][y] ~= nil then
       if game_containers[x][y]["shop"] ~= nil then
-         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png", x, y})
+         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
       elseif game_containers[x][y]["chest"] ~= nil then
-         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png", x, y})
-         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png", x, y})
+         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png"})
+         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png"})
       elseif game_containers[x][y]["pack"] ~= nil then
-         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png", x, y})
+         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png"})
       elseif game_containers[x][y]["gold"] ~= nil then
-         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png", x, y})
+         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
       end
    end
    return interactions
