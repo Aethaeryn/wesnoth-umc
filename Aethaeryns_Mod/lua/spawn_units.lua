@@ -42,14 +42,16 @@ function spawn_units.boss_spawner(unit_type, unit_role)
    wesnoth.add_modification(unit, "object", boss_ability)
 end
 
-function spawn_units.reg_spawner(unit_type, unit_role, unit_cost)
+function spawn_units.reg_spawner(unit_type, unit_role)
    local e = wesnoth.current.event_context
+   local unit_cost = wesnoth.unit_types[unit_type].__cfg.cost
    local summoner = find_summoner(e.x1, e.y1, wesnoth.get_units {side = side_number, role = unit_role})
    if summoner.hitpoints > unit_cost then
       summoner.hitpoints = summoner.hitpoints - unit_cost
       spawn_unit(e.x1, e.y1, unit_type, side_number, false, false, wesnoth.get_variable("unit_traits_reg"))
+      return true
    else
-      wesnoth.message("Error", "Insufficient hitpoints on the attempted summoner.")
+      return false
    end
 end
 
@@ -66,9 +68,11 @@ function spawn_units.menu_summon(summoner_type)
    if level then
       description = "Select a unit to summon."
       local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list)
-      -- todo: add back in the lookup for each unit cost here.
       if choice then
-         spawn_units.reg_spawner(choice, summoner_type, 10)
+         local spawn_success = spawn_units.reg_spawner(choice, summoner_type)
+         if not spawn_success then
+            wesnoth.message("Error", "Insufficient hitpoints on the attempted summoner.")
+         end
       end
    end
 end
