@@ -210,7 +210,7 @@ function mod_menu.place_object()
    end
 end
 
-function submenu_change_var(side_num, variable, old_value)
+function submenu_change_side_variable(side_num, variable, old_value)
    if variable ~= "objectives" then
       wesnoth.fire("message", {
                       speaker  = "narrator",
@@ -220,32 +220,21 @@ function submenu_change_var(side_num, variable, old_value)
                       T["text_input"] {
                          variable  = "change_"..variable,
                          label     = "New value:",
-                         max_chars = 50
-                      }
-                   }
-                )
+                         max_chars = 50 }})
       if variable == "team_name" then
          side.team_name = wesnoth.get_variable("change_team_name")
          side.user_team_name = side.team_name
-
       elseif variable == "gold" then
          side.gold = wesnoth.get_variable("change_gold")
-
       elseif variable == "village_gold" then
          side.village_gold = wesnoth.get_variable("change_village_gold")
-
       elseif variable == "base_income" then
          side.base_income = wesnoth.get_variable("change_base_income")
-
-         -- The less elegant code is used as a fall-back if the variable is not recognized.
-      else
-         set_new_variable = loadstring("side."..variable.." = wesnoth.get_variable('change_"..variable.."')")
-         set_new_variable()
       end
    end
 end
 
-function submenu_change_var_all(variable)
+function submenu_change_side_variable_for_all(variable)
    if variable ~= "objectives" then
       wesnoth.fire("message", {
                       speaker  = "narrator",
@@ -255,28 +244,17 @@ function submenu_change_var_all(variable)
                       T["text_input"] {
                          variable  = "change_"..variable,
                          label     = "New value:",
-                         max_chars = 50
-                      }
-                   }
-                )
+                         max_chars = 50 }})
       for i, side in ipairs(wesnoth.sides) do
          if variable == "team_name" then
             side.team_name = wesnoth.get_variable("change_team_name")
             side.user_team_name = side.team_name
-
          elseif variable == "gold" then
             side.gold = wesnoth.get_variable("change_gold")
-
          elseif variable == "village_gold" then
             side.village_gold = wesnoth.get_variable("change_village_gold")
-
          elseif variable == "base_income" then
             side.base_income = wesnoth.get_variable("change_base_income")
-
-            -- The less elegant code is used as a fall-back if the variable is not recognized.
-         else
-            set_new_variable = loadstring("side."..variable.." = wesnoth.get_variable('change_"..variable.."')")
-            set_new_variable()
          end
       end
    end
@@ -287,24 +265,20 @@ function submenu_view_side(side_num)
       local all_stats = {"gold", "village_gold", "base_income", "objectives"}
       variable = menu(all_stats, "portraits/undead/transparent/ancient-lich.png", "Settings", "Which variable of all sides do you want to change?", menu_simple_list)
       if variable then
-         submenu_change_var_all(variable)
+         submenu_change_side_variable_for_all(variable)
       end
    else
-      local options = DungeonOpt:new{
+      local options = DungeonOpt:new {
          root_message   = "Which variable do you want to change?",
          option_message = "side$input2.$input1 = $input3",
-         code           = "submenu_change_var('$input2', '$input1', side.$input1)"
-      }
-
+         code           = "submenu_change_side_variable('$input2', '$input1', side.$input1)" }
       side_num = tonumber(side_num)
       side     = wesnoth.sides[side_num]
-
       local var_gold         = loadstring("return side.gold")()
       local var_village_gold = loadstring("return side.village_gold")()
       local var_base_income  = loadstring("return side.base_income")()
       local var_team_name    = loadstring("return side.team_name")()
       local var_objectives   = loadstring("return tostring(side.objectives)")()
-
       options:fire{
          {"gold",         side_num, var_gold},
          {"village_gold", side_num, var_village_gold},

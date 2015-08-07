@@ -1,8 +1,9 @@
-AETHAERYN'S MOD          VERSION 0.9.0+git
-VERSION 0.8.0+git for Wesnoth 1.12.4
+AETHAERYN'S MOD          VERSION 0.9.0+dev
+VERSION 0.9.0+dev for Wesnoth 1.12.4
  - Master of Dungeons moved to its own add-on as Aethaeryn's MOD.
- - Almost a complete rewrite.
+ - Almost a complete rewrite in Lua.
  - It is now its own campaign with many predrawn maps, inventory, and unit types.
+ - GUI2 is used instead of [message] for most of the user interface.
 
 VERSION 0.3 for Wesnoth 1.8.1 (10 May 2010)
  - Included in Aethaeryn's Maps 0.5.2
