@@ -211,14 +211,15 @@ function mod_menu.place_object()
 end
 
 function submenu_change_side_variable(side_num, variable, old_value)
+   local side = wesnoth.sides[side_num]
    if variable ~= "objectives" then
       wesnoth.fire("message", {
                       speaker  = "narrator",
-                      message  = "The old value of "..variable.." is: "..old_value,
+                      message  = string.format("The old value of %s is: %s ", variable, old_value),
                       image    = "wesnoth-icon.png",
                       show_for = side_number,
                       T["text_input"] {
-                         variable  = "change_"..variable,
+                         variable  = string.format("change_%s", variable),
                          label     = "New value:",
                          max_chars = 50 }})
       if variable == "team_name" then
@@ -260,33 +261,7 @@ function submenu_change_side_variable_for_all(variable)
    end
 end
 
-function submenu_view_side(side_num)
-   if side_num == "All" then
-      local all_stats = {"gold", "village_gold", "base_income", "objectives"}
-      variable = menu(all_stats, "portraits/undead/transparent/ancient-lich.png", "Settings", "Which variable of all sides do you want to change?", menu_simple_list)
-      if variable then
-         submenu_change_side_variable_for_all(variable)
-      end
-   else
-      local options = DungeonOpt:new {
-         root_message   = "Which variable do you want to change?",
-         option_message = "side$input2.$input1 = $input3",
-         code           = "submenu_change_side_variable('$input2', '$input1', side.$input1)" }
-      side_num = tonumber(side_num)
-      side     = wesnoth.sides[side_num]
-      local var_gold         = loadstring("return side.gold")()
-      local var_village_gold = loadstring("return side.village_gold")()
-      local var_base_income  = loadstring("return side.base_income")()
-      local var_team_name    = loadstring("return side.team_name")()
-      local var_objectives   = loadstring("return tostring(side.objectives)")()
-      options:fire{
-         {"gold",         side_num, var_gold},
-         {"village_gold", side_num, var_village_gold},
-         {"base_income",  side_num, var_base_income},
-         {"team_name",    side_num, var_team_name},
-         {"objectives",   side_num, var_objectives}
-      }
-   end
+function submenu_view_side(side)
 end
 
 function mod_menu.settings()
@@ -314,9 +289,26 @@ function mod_menu.settings()
             end
          end
       elseif option == "Modify Side" then
-         local side = menu(get_sides_with_all(), "portraits/undead/transparent/ancient-lich.png", "Settings", "Which side do you want to modify?", menu_simple_list)
+         local description = "Which side do you want to modify?"
+         local side = menu(get_sides_with_all(), image, title, description, menu_simple_list)
          if side then
-            submenu_view_side(side)
+            local description = "Which variable of all sides do you want to change?"
+            local stats = {"gold", "village_gold", "base_income", "team_name", "objectives"}
+            if side == "All" then
+               stat = menu(stats, image, title, description, menu_simple_list)
+               if stat then
+                  submenu_change_side_variable_for_all(stat)
+               end
+            else
+               local description = "Which variable do you want to change?"
+               for i, stat in ipairs(stats) do
+                  debugOut(wesnoth.sides[side][stat])
+               end
+               stat = menu(stats, image, title, description, menu_simple_list)
+               if stat then
+                  submenu_change_side_variable(side, stat, wesnoth.sides[side][stat])
+               end
+            end
          end
       elseif option == "New Scenario" then
          local description = "Which scenario do you want to start?"
