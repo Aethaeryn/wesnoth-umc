@@ -5,7 +5,6 @@ When this list is complete/empty, bump to version 0.9
   - remove all submenu_ functions (inventory.lua, upgrades.lua, terrain_editor.lua)
   - inventory.lua and upgrades.lua need to put the non-menu functions in tables
   - Remove DungeonOpt:
-    - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)
     - terrain_editor.lua in terrains and overlays
     - delete DungeonOpt.lua when this is finished
   - Need new GUI2s for:

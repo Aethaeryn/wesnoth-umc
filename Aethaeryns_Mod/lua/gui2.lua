@@ -104,6 +104,26 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
                                                             list[i][4]),
                                               "menu_sidebar_text")
                   end
+               elseif sidebar == "upgrade_stats" then
+                  wesnoth.set_dialog_value("Information about the selected upgrade:  \n", "menu_sidebar_intro")
+                  wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+                  wesnoth.set_dialog_value(list[i][2], "menu_image")
+                  if list[i][5] then
+                     wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d of %d\nPrice: %d\n%s</small>",
+                                                            list[i][1],
+                                                            list[i][4],
+                                                            list[i][5],
+                                                            list[i][3],
+                                                            list[i][6]),
+                                              "menu_sidebar_text")
+                  else
+                     wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d\nPrice: %d\n%s</small>",
+                                                            list[i][1],
+                                                            list[i][4],
+                                                            list[i][3],
+                                                            list[i][6]),
+                                              "menu_sidebar_text")
+                  end
                end
             else
                wesnoth.set_dialog_value(image, "menu_image")

@@ -49,8 +49,6 @@ function upgrade_unit(choice, cost, current, cap)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local unit_data = unit.__cfg
-   -- -- For debugging/testing, uncomment this and comment the test that
-   -- -- you have enough to pay for upgrades.
    -- if unit.variables["advancement"] == nil then
    --    unit.variables["advancement"] = 0
    -- end
@@ -83,32 +81,29 @@ function submenu_upgrade_unit()
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local points = unit.variables["advancement"]
    local options_table = {}
+   local upgrade_info = {}
    if points == nil then
       points = 0
    end
    for i, upgrade in ipairs(upgrade_table) do
       local cap_info = ""
-      local current_advancement = unit.variables["upgrade"..upgrade.name]
-      if current_advancement == nil then
-         current_advancement = 0
-      end
-      if upgrade.cap then
-         cap_info = " of "..upgrade.cap
+      if unit.variables["upgrade"..upgrade.name] == nil then
+         unit.variables["upgrade"..upgrade.name] = 0
       end
       table.insert(options_table, {upgrade.name,
                                    upgrade.image,
                                    upgrade.cost,
-                                   current_advancement,
-                                   cap_info,
-                                   upgrade.msg,
-                                   upgrade.cap})
+                                   unit.variables["upgrade"..upgrade.name],
+                                   upgrade.cap,
+                                   upgrade.msg})
+      upgrade_info[upgrade.name] = { cost = upgrade.cost, cap = upgrade.cap }
    end
-   local options = DungeonOpt:new{
-      root_message = "What do you want to upgrade? You have "..points.." points(s).",
-      option_message = "&$input2=<b>$input1</b>\nCost: $input3 points\nCurrent: $input4$input5\n$input6",
-      code = "upgrade_unit('$input1', $input3, $input4, $input7)",
-   }
-   options:fire(options_table)
+   local title = "Unit Commands"
+   local description = "What do you want to upgrade? You have "..points.." points(s)."
+   local upgrade = menu(options_table, "", title, description, menu_picture_list, 1, "upgrade_stats")
+   if upgrade then
+      upgrade_unit(upgrade, upgrade_info[upgrade].cost, unit.variables["upgrade"..upgrade], upgrade_info[upgrade].cap)
+   end
 end
 
 >>
