@@ -64,33 +64,6 @@ function place_gold(x, y, gold)
    game_containers[x][y]["gold"] = gold
 end
 
-function use_potion(potion, size)
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
-
-   if potion == "Healing" then
-      local hp_effect = 14
-
-      if size == "Small" then
-         if unit.status.poisoned then
-            unit.status.poisoned = false
-            hp_effect = 0
-         else
-            hp_effect = 6
-         end
-      elseif unit.status.poisoned then
-         unit.status.poisoned = false
-         hp_effect = 6
-      end
-
-      if unit.hitpoints + hp_effect >= unit.max_hitpoints then
-         unit.hitpoints = unit.max_hitpoints
-      else
-         unit.hitpoints = unit.hitpoints + hp_effect
-      end
-   end
-end
-
 function item_use(name)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
@@ -98,9 +71,9 @@ function item_use(name)
    if name == "Coins" then
       wesnoth.sides[side_number].gold = wesnoth.sides[side_number].gold + 10
    elseif name == "Small Healing Potion" then
-      use_potion("Healing", "Small")
+      change_unit.heal(e.x1, e.y1, 6)
    elseif name == "Healing Potion" then
-      use_potion("Healing", "Normal")
+      change_unit.heal(e.x1, e.y1, 14)
    end
 end
 

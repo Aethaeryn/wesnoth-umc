@@ -26,6 +26,21 @@ function change_unit.max_hitpoints(x, y, change)
    wesnoth.put_unit(x, y, unit)
 end
 
+function change_unit.heal(x, y, change)
+   local unit = wesnoth.get_unit(x, y)
+   if unit.status.poisoned then
+      unit.status.poisoned = false
+      change = change - 8
+   end
+   if change > 0 then
+      if unit.hitpoints + change >= unit.max_hitpoints then
+         unit.hitpoints = unit.max_hitpoints
+      else
+         unit.hitpoints = unit.hitpoints + change
+      end
+   end
+end
+
 function change_unit.max_moves(x, y, change)
    local unit = wesnoth.get_unit(x, y).__cfg
    if unit.moves == unit.max_moves then
