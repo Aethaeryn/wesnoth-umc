@@ -42,34 +42,37 @@ When this list is complete/empty, bump to version 0.9
   - Gold placement probably could use a slider, too, so invalid values are avoided
 
  (1) Inventory Containers (2%)
-       * Investigate drop (pack container)
-       * Templates:
-         * Have tiered templates for quick-stocking shops.
-         * Have tiered templates for quick-stocking chests.
-         * Have tiered templates for quick-stocking units (MOBs, player heroes, etc.)
-       * Let units sell items to shop (math.floor(0.8 * cost))
-       * When a container has its last item removed:
-         * A pack is removed from the map automatically if it is emptied by a player.
-         * An empty chest switches to an open chest image.
-         * A shop stays, but perhaps gives some indication that it's empty.
-       * When players add to an empty chest, an open chest image switches to a closed chest image.
-       * Players should be able to add to and take from containers more than one item at a time.
-       * When a unit with inventory dies, its inventory is automatically dropped into a newly created leather pack container.
-         * If it dies on a hex with an existing pack, the items are added to the pack's items.
-         * If it dies on a hex with a gold pile, the gold pile is replaced by a pack and the gold is added to the pack.
-           * This will require something other than gold coins, which only exist in increments of 10.
-         * If it dies on a hex with a shop, the inventory is added to the shop! Be careful!
-         * If it dies on a hex with a chest, the inventory is added to the chest, even if it is locked. Be careful!
-         * If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
-       * Players need to be able to remove items from packs (but not add to them).
-       * The host needs more power with inventory (player and container):
-         * Add item amount (implemented).
-         * View inventory.
-         * Change total quantity.
-         * Remove item amount.
-         * Remove all of a certain type.
-         * The interface should be identical for containers, except with templates for containers.
-         * In fact, units could have templates too once drops are implemented.
+     * Investigate drop (pack container)
+     * Players should be able to:
+       * Sell items to shop (math.floor(0.8 * cost))
+       * Add and remove (and buy and sell) from containers more than one item at a time.
+       * Remove only part of the gold from a gold pile.
+       * Remove items from packs but not add to them.
+     * Templates:
+       * Have tiered templates for quick-stocking shops.
+       * Have tiered templates for quick-stocking chests.
+       * Have tiered templates for quick-stocking units (MOBs, player heroes, etc.)
+       * Add menu to show templates when placing shops/chests/packs with the default being the "Empty" template.
+     * When a container has its last item removed:
+       * A pack is removed from the map automatically.
+       * An empty chest switches to an open chest image.
+       * A shop stays, but if shop labels can work, "Shop" changes to "Shop (Empty)".
+     * When players add to an empty chest, an open chest image switches to a closed chest image.
+     * When a unit with inventory dies, its inventory is automatically dropped into a newly created leather pack container.
+       * If it dies on a hex with an existing pack, the items are added to the pack's items.
+       * If it dies on a hex with a gold pile, the gold pile is replaced by a pack and the gold is added to the pack.
+         * This will require something other than gold coins, which only exist in increments of 10.
+         * Maybe allow both gold piles and packs on the same hex, distinguishing with Interact.
+       * If it dies on a hex with a shop, the inventory is added to the shop! Be careful!
+       * If it dies on a hex with a chest, the inventory is added to the chest, even if it is locked. Be careful!
+       * If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
+     * The host should be able to (for units and containers):
+       * Add item amount.
+       * View inventory.
+       * Change total quantity.
+       * Remove item amount.
+       * Remove all of a certain type.
+       * Add all items in template to unit inventory or container inventory.
 
  (2) Interaction (2%)
        * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
