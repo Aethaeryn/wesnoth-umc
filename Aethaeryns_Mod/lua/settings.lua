@@ -189,14 +189,15 @@ function menu_settings()
                             "Hide and Seek",
                             "Open Dungeon",
                             "Woods"}
-         local scenario_ids = {"Introduction" = "intro",
-                               "Introduction (Underground)" = "intro2"
-                               "Battle" = "battle",
-                               "Cavern" = "cavern",
-                               "Classic" = "classic",
-                               "Hide and Seek" = "hide_and_seek",
-                               "Open Dungeon" = "open_dungeon",
-                               "Woods" = "woods"}
+         local scenario_ids = {
+            ["Introduction"] = "intro",
+            ["Introduction (Underground)"] = "intro2",
+            ["Battle"] = "battle",
+            ["Cavern"] = "cavern",
+            ["Classic"] = "classic",
+            ["Hide and Seek"] = "hide_and_seek",
+            ["Open Dungeon"] = "open_dungeon",
+            ["Woods"] = "woods"}
          local scenario = menu(scenarios, image, title, description, menu_simple_list)
          if scenario then
             fire.end_scenario(scenario_ids[scenario])
