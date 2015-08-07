@@ -80,7 +80,6 @@ When this list is complete/empty, bump to version 0.9
          * This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
        * Allow certain units to be bribed (and mark with certain icon?) if the host toggles them.
          * For 1.5x cost in gold, they will change to player's team and then lose the ability to be bribed.
-         * It will really clash with the whole "loyal" trait all units have. Is there a way to disable unit upkeep universally?
          * In addition to a unit-by-unit setting, there will be an option that will allow some lower-level units to spawn as bribable:
            * 100% chance for spawned non-summoner level 0s
            * 15% chance for spawned non-summoner level 1s
@@ -150,8 +149,6 @@ When this list is complete/empty, bump to version 0.9
        * FEATURE: When people are peasants on one of the two Intro maps (i.e. they died or it's a new campaign), let them pick a new unit.
          * data/units.lua probably can be reused if summoners are added to the regular unit list, but then filtered out in the actual Summon Foo
          * This menu can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
-           * Just make sure they're loyal.
-           * Or find a way to get rid of unit upkeep altogether instead of making everything loyal.
            * And also make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
            * And eventually they can be tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
            * And of course this opens the door to quests, preset dialog when interacting, etc.

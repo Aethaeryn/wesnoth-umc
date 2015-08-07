@@ -19,10 +19,10 @@ end
 
 -- This spawns a unit with unit_role (summoner type) and icon (image
 -- overlay) as optional arguments.
-local function spawn_unit(x, y, unit_type, side_number, icon, unit_role, traits)
+local function spawn_unit(x, y, unit_type, side_number, icon, unit_role)
    local unit_stats = {type = unit_type,
                        side = side_number,
-                       {"modifications", traits}}
+                       upkeep = 0}
    if icon then
       unit_stats.overlays = icon
    end
@@ -34,7 +34,7 @@ end
 
 function spawn_units.boss_spawner(unit_type, unit_role)
    local e = wesnoth.current.event_context
-   spawn_unit(e.x1, e.y1, unit_type, side_number, "misc/hero-icon.png", unit_role, wesnoth.get_variable("unit_traits_boss"))
+   spawn_unit(e.x1, e.y1, unit_type, side_number, "misc/hero-icon.png", unit_role)
    local regenerates = wesnoth.get_variable("regenerates")
    local boss_ability = { T["effect"] {
                              apply_to = "new_ability", {"abilities", regenerates}}}
@@ -48,7 +48,7 @@ function spawn_units.reg_spawner(unit_type, unit_role)
    local summoner = find_summoner(e.x1, e.y1, wesnoth.get_units {side = side_number, role = unit_role})
    if summoner.hitpoints > unit_cost then
       summoner.hitpoints = summoner.hitpoints - unit_cost
-      spawn_unit(e.x1, e.y1, unit_type, side_number, false, false, wesnoth.get_variable("unit_traits_reg"))
+      spawn_unit(e.x1, e.y1, unit_type, side_number, false, false)
       return true
    else
       return false
