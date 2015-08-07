@@ -318,8 +318,8 @@ local function menu_item_summon(unit_role)
       id = "MOD_001_"..unit_role,
       text = "Summon "..unit_role,
       image = "terrain/symbols/terrain_group_custom3_30.png",
-      filter = filter_summon(unit_role),
-      command = "mod_menu.summon('"..unit_role.."')" }
+      filter = aeth_mod_filter.summon(unit_role),
+      command = string.format("mod_menu.summon('%s')", unit_role) }
    return menu_item
 end
 

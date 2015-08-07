@@ -5,7 +5,6 @@ When this list is complete/empty, bump to version 0.9
   - menu.lua needs to show the current variables when changing side variables
   - remove all submenu_ functions (inventory.lua, upgrades.lua, terrain_editor.lua)
   - inventory.lua and upgrades.lua need to put the non-menu functions in tables
-  - filter.lua code needs to be cleaned up; use a Lua table or tables instead of function where possible
   - Remove DungeonOpt:
     - inventory.lua in submenu_inventory; extremely complicated, mostly name, item, price, message, quantity and quite a few contexts
     - upgrades.lua in the submenu for upgrades (name, image, cost, current, cap, message)
@@ -147,7 +146,6 @@ When this list is complete/empty, bump to version 0.9
  (5) Issues (2%)
        * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
        * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
-       * BUG: Shops can be placed on impassable and unwalkable territory. This shouldn't happen.
        * BUG: Fix icon size for Summon <foo> and Summon Summoner.
        * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
