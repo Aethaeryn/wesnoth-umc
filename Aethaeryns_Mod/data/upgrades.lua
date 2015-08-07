@@ -12,35 +12,35 @@ upgrade_table = {
        image  = "icons/boots_elven.png",
        msg    = "+1 maximum MP",
        cost   = 3,
-       cap    = 2
+       cap    = 2,
     },
     {
        name   = "Resilience",
        image  = "attacks/fire-blast.png",
        msg    = "+4 maximum HP",
        cost   = 1,
-       cap    = false
+       cap    = false,
     },
     {
        name   = "Intelligence",
        image  = "attacks/faerie-fire.png",
        msg    = "-20%% XP to promotion or AMLA",
        cost   = 2,
-       cap    = 1
+       cap    = 1,
     },
     -- {
     --    name   = "Strength",
     --    image  = "attacks/fist-human.png",
     --    msg    = "+1 melee damage",
     --    cost   = 2,
-    --    cap    = false
+    --    cap    = false,
     -- },
     -- {
     --    name   = "Dexterity",
     --    image  = "attacks/bow-elven-magic.png",
     --    msg    = "+1 range damage",
     --    cost   = 2,
-    --    cap    = false
+    --    cap    = false,
     -- },
 }
 

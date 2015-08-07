@@ -64,13 +64,10 @@ function place_gold(x, y, gold)
    game_containers[x][y]["gold"] = gold
 end
 
-function use_coins()
-   this_side.gold = this_side.gold + 10
-end
-
 function use_potion(potion, size)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
+
    if potion == "Healing" then
       local hp_effect = 14
 
@@ -97,29 +94,19 @@ end
 function item_use(name)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
-
    unit.variables[name] = unit.variables[name] - 1
-
-   local effect
-
-   this_side = wesnoth.sides[side_number]
-
-   for i, item in ipairs(item_table) do
-      if item.name == name then
-         effect = item.effect
-      end
-   end
-
-   if effect ~= "" then
-      local run = loadstring(effect)
-      run()
+   if name == "Coins" then
+      wesnoth.sides[side_number].gold = wesnoth.sides[side_number].gold + 10
+   elseif name == "Small Healing Potion" then
+      use_potion("Healing", "Small")
+   elseif name == "Healing Potion" then
+      use_potion("Healing", "Normal")
    end
 end
 
 function add_unit_item(name, quantity, start_only)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
-
    if unit.variables[name] == nil then
       unit.variables[name] = quantity
    elseif start_only == false then
@@ -224,7 +211,7 @@ local function show_current_inventory(item_holder)
    for i, item in ipairs(item_table) do
       quantity = item_holder[item.name]
       if quantity ~= nil and quantity > 0 then
-         table.insert(options, {item.name, item.image, item.price, quantity, item.msg})
+         table.insert(options, {item.name, item.image, item.price, item.msg, quantity})
       end
    end
    return options
@@ -242,38 +229,38 @@ function submenu_inventory(context, container)
    local e = wesnoth.current.event_context
    local unit = false
    if container == nil then unit = wesnoth.get_unit(e.x1, e.y1) end
-   local msg
+   local description
    local opt
    local run
    local options_list = {}
    if context == "unit_use" or context == "chest_add" or context == "chest_remove" or context == "visit_shop" then
+      opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\nQuantity: $input5\n$input4"
       if context == "unit_use" then
-         msg = "Which item do you want to use?"
+         description = "Which item do you want to use?"
          run = "item_use('$input1')"
       elseif context == "chest_add" then
-         msg = "What item do you want to put in the chest?"
+         description = "What item do you want to put in the chest?"
          run = "chest_add('$input1')"
       elseif context == "chest_remove" then
-         msg = "What item do you want to remove from the chest?"
+         description = "What item do you want to remove from the chest?"
          run = "chest_remove('$input1')"
       elseif context == "visit_shop" then
-         msg = "What item do you want to purchase from the shop?"
+         description = "What item do you want to purchase from the shop?"
          run = "shop_buy('$input1')"
       end
-      opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\nQuantity: $input4\n$input5"
       if unit then
          options_list = show_current_inventory(unit.variables)
       else
          options_list = show_current_inventory(container)
       end
    elseif context == "chest_modify" or context == "shop_modify" or context == "unit_add" then
-      msg = "Which item do you want to add?"
+      description = "Which item do you want to add?"
       run = "submenu_inventory_quantity('$input1', '"..context.."')"
       opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\n$input4"
       options_list = show_all_inventory()
    end
    local options = DungeonOpt:new{
-      root_message   = msg,
+      root_message   = description,
       option_message = opt,
       code           = run }
    options:fire(options_list)
