@@ -17,7 +17,7 @@ function fire.custom_message()
                    speaker  = "unit",
                    caption  = "Unit Message",
                    message  = "What will you say?",
-                   show_for = side_number,
+                   show_for = "$side_number",
                    T["text_input"] {
                       variable  = "aeth_custom_message",
                       label     = "Type Here:",
@@ -25,7 +25,7 @@ function fire.custom_message()
    local message = wesnoth.get_variable('aeth_custom_message')
    if message ~= "" then
       wesnoth.fire("message", {
-                      side    = side_number,
+                      side    = "$side_number",
                       speaker = "unit",
                       message = "$aeth_custom_message" })
    end
