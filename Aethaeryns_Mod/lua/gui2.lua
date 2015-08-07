@@ -3,7 +3,7 @@
 helper = wesnoth.require "lua/helper.lua"
 T = helper.set_wml_tag_metatable {}
 
-local function generate_dialog(not_empty, menu_type)
+local function generate_dialog(not_empty, menu_type, has_sidebar)
    local menu_core = {}
    if not_empty then
       if menu_type == "list" then
@@ -29,13 +29,24 @@ local function generate_dialog(not_empty, menu_type)
       buttons = T.row {
          T.column { T.button { id = "cancel", label = "Close" }}}
    end
+   left_column = {}
+   if has_sidebar ~= nil and has_sidebar then
+      left_column = T.column { T.grid {
+                                  T.row { T.column { T.image { id = "menu_image" }}},
+                                  T.row { T.column { horizontal_grow = true,
+                                                     T.label { id = "menu_sidebar_intro" }}},
+                                  T.row { T.column { horizontal_grow = true,
+                                                     T.label { id = "menu_sidebar_text"}}}}}
+   else
+      left_column = T.column { T.image { id = "menu_image" }}
+   end
    return {
       T.tooltip { id = "tooltip_large" },
       T.helptip { id = "tooltip_large" },
       T.grid {
          T.row { T.column { T.label { id = "menu_title" }}},
          T.row { T.column { T.label { id = "menu_description" }}},
-         T.row { T.column { T.grid { T.row { T.column { T.image { id = "menu_image" }},
+         T.row { T.column { T.grid { T.row { left_column,
                                              T.column { T.grid {
                                                            T.row { menu_core },
                                                            T.row { T.column { T.grid { buttons }}}}}}}}}}}
@@ -45,28 +56,43 @@ end
 -- list, an image that shows on the left for decoration, a title and
 -- description that show at the top, and a function that specifies how
 -- the list needs to be built.
-function menu(list, image, title, description, build_list, sublist_index)
+function menu(list, image, title, description, build_list, sublist_index, is_unit)
    local dialog = {}
    local not_empty = true
    if list[1] == nil then
       not_empty = false
    end
-   dialog = generate_dialog(not_empty, "list")
+   dialog = generate_dialog(not_empty, "list", is_unit)
 
    local function safe_dialog()
       local choice = 0
 
       local function preshow()
          local function select()
-            wesnoth.set_dialog_value(image, "menu_image")
+            if is_unit ~= nil and is_unit then
+               local i = wesnoth.get_dialog_value("menu_list")
+               local unit_data = wesnoth.unit_types[list[i]].__cfg
+               wesnoth.set_dialog_value(unit_data.image, "menu_image")
+               wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+               wesnoth.set_dialog_value(string.format("<span size='small'>%s\n%s\nHP: %d\nMP: %d</span>",
+                                                      unit_data.name,
+                                                      unit_data.alignment,
+                                                      unit_data.hitpoints,
+                                                      unit_data.movement),
+                                        "menu_sidebar_text")
+               wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
+            else
+               wesnoth.set_dialog_value(image, "menu_image")
+            end
          end
 
          wesnoth.set_dialog_value(title, "menu_title")
          wesnoth.set_dialog_value(description, "menu_description")
          if not_empty then
-            wesnoth.set_dialog_callback(select, "menu_list")
             build_list(list)
             wesnoth.set_dialog_value(1, "menu_list")
+            wesnoth.set_dialog_callback(select_actions, "menu_list")
+            wesnoth.set_dialog_callback(select, "menu_list")
             select()
          else
             wesnoth.set_dialog_value(image, "menu_image")

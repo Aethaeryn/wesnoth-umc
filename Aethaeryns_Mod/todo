@@ -13,8 +13,6 @@ When this list is complete/empty, bump to version 0.9
   - Need new GUI2s for:
     - inventory and upgrades
     - terrain editing
-    - possibly units, too
-      - so it can look like the recruitment GUI (i.e. show stats on the left side).
   - Slider instead of text input:
     - Gold placement.
     - Inventory.
