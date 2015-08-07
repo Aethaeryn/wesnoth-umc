@@ -131,7 +131,7 @@ function menu_text_input(image, title, description, label, default_text)
 
       local button = wesnoth.show_dialog(dialog, preshow, postshow)
       -- OK
-      if button == -1 then
+      if button == -1 and choice ~= "" then
          return { value = choice }
       -- Close
       else

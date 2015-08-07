@@ -98,7 +98,7 @@ function add_container_item(name, quantity, container_add)
    end
    if containers[e.x1][e.y1][container][name] == nil then
       containers[e.x1][e.y1][container][name] = quantity
-   else then
+   else
       containers[e.x1][e.y1][container][name] = containers[e.x1][e.y1][container][name] + quantity
    end
 end
