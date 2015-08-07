@@ -153,7 +153,7 @@ function submenu_inventory_quantity(item, container)
       if count < 0 then
          count = 0
       end
-      if container == "unit_inventory_modify" then
+      if container == "unit_add" then
          add_unit_item(item, count, false)
       else
          add_container_item(item, count, container, false)
@@ -219,30 +219,33 @@ function find_interactions_to_modify(x, y)
    return interactions
 end
 
+local function show_current_inventory(item_holder)
+   local options = {}
+   for i, item in ipairs(item_table) do
+      quantity = item_holder[item.name]
+      if quantity ~= nil and quantity > 0 then
+         table.insert(options, {item.name, item.image, item.price, quantity, item.msg})
+      end
+   end
+   return options
+end
+
+local function show_all_inventory()
+   local options = {}
+   for i, item in ipairs(item_table) do
+      table.insert(options, {item.name, item.image, item.price, item.msg})
+   end
+   return options
+end
+
 function submenu_inventory(context, container)
    local e = wesnoth.current.event_context
    local unit = false
-   if not container then unit = wesnoth.get_unit(e.x1, e.y1) end
+   if container == nil then unit = wesnoth.get_unit(e.x1, e.y1) end
    local msg
    local opt
    local run
-   local options_table = {}
-
-   local function option_find(item_holder)
-      for i, item in ipairs(item_table) do
-         quantity = item_holder[item.name]
-         if quantity ~= nil and quantity > 0 then
-            table.insert(options_table, {item.name, item.image, item.price, quantity, item.msg})
-         end
-      end
-   end
-
-   local function option_find_all()
-      for i, item in ipairs(item_table) do
-         table.insert(options_table, {item.name, item.image, item.price, item.msg})
-      end
-   end
-
+   local options_list = {}
    if context == "unit_use" or context == "chest_add" or context == "chest_remove" or context == "visit_shop" then
       if context == "unit_use" then
          msg = "Which item do you want to use?"
@@ -259,29 +262,21 @@ function submenu_inventory(context, container)
       end
       opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\nQuantity: $input4\n$input5"
       if unit then
-         option_find(unit.variables)
+         options_list = show_current_inventory(unit.variables)
       else
-         option_find(container)
+         options_list = show_current_inventory(container)
       end
-   elseif context == "chest_modify" or context == "shop_modify" then
+   elseif context == "chest_modify" or context == "shop_modify" or context == "unit_add" then
       msg = "Which item do you want to add?"
-      opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\n$input4"
       run = "submenu_inventory_quantity('$input1', '"..context.."')"
-      option_find_all()
-   elseif context == "unit_add" then
-      msg = "Which item do you want to add?"
       opt = "&$input2=<b>$input1</b>\nValue: $input3 gold\n$input4"
-      run = "submenu_inventory_quantity('$input1', 'unit_inventory_modify')"
-      option_find_all()
+      options_list = show_all_inventory()
    end
-
    local options = DungeonOpt:new{
       root_message   = msg,
       option_message = opt,
-      code           = run,
-   }
-
-   options:fire(options_table)
+      code           = run }
+   options:fire(options_list)
 end
 
 function menu_inventory()
@@ -313,7 +308,7 @@ function menu_inventory()
          elseif option == "Remove from Chest" then
             submenu_inventory('chest_remove', game_containers[e.x1][e.y1]["chest"])
          elseif option == "Add to Chest" then
-            submenu_inventory('chest_add', false)
+            submenu_inventory('chest_add')
          end
       end
    end

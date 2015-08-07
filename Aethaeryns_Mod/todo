@@ -25,13 +25,13 @@ When this list is complete/empty, bump to version 0.9
     - terrain editing
     - checkboxes (multiple options)
   - Possibly write a new user interface for units, like the recruitment GUI.
-    - add back in team colors for units if possible
   - Gold placement probably could use a slider so invalid and really huge values are avoided
   - Same for adding inventory to a unit or container.
   - Make the toggles have their own submenu in settings.
     - make them use checkboxes
     - make them say what the current state is based on check/uncheck
     - extend gui2 so it can handle more than one return value
+  - Maybe rename settings to menu and move all (except inventory and terrain editing?) menus there.
 
  (1) Inventory Containers (2%)
      * Investigate drop (pack container)
@@ -65,6 +65,7 @@ When this list is complete/empty, bump to version 0.9
        * Remove item amount.
        * Remove all of a certain type.
        * Add all items in template to unit inventory or container inventory.
+       * Modify gold amount and item pack inventory.
 
  (2) Interaction (2%)
        * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
@@ -144,6 +145,7 @@ When this list is complete/empty, bump to version 0.9
          * In fact, it locks the unit into the old portrait even if it promotes.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
        * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
+       * BUG: Add back in team colors for units if possible.
        * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
        * FEATURE: When something spawns on a village they don't own they should lose all movement and take the village.
        * FEATURE: When people are peasants on one of the two Intro maps (i.e. they died or it's a new campaign), let them pick a new unit.
@@ -198,7 +200,15 @@ When this list is complete/empty, bump to version 0.9
       * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
     * Reduce max HP on summoner by 1 per level of active summoned unit?
     * Do something with boats?
-    * Is there a way to alter promotions? Lich -> Ancient Lich; Wolf -> Great Wolf -> Dire Wolf; Armageddon Drake; etc.
+    * Is there a way to alter promotions?
+      * Ancient Lich; ENABLE_ANCIENT_LICH
+      * Great Wolf & Dire Wolf; ENABLE_WOLF_ADVANCEMENT
+      * Armageddon Drake; ENABLE_ARMAGEDDON_DRAKE
+      * Dwarvish Runesmith; ENABLE_DWARVISH_RUNESMITH
+      * Dwarvish Arcanister; ENABLE_DWARVISH_ARCANISTER
+      * Troll Shaman; ENABLE_TROLL_SHAMAN
+      * Death Knight; ENABLE_DEATH_KNIGHT
+      * in mainline, this is done in [campaign] extra_defines in SoF and LoW, only one each
     * Resurrection.
       * When units die they are saved in a resurrection table.
       * The host can resurrect a unit. (rematches of old bosses?)

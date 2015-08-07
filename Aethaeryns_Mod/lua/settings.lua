@@ -1,6 +1,7 @@
 #define MOD_SETTINGS
 <<
 function menu_placement()
+   local e = wesnoth.current.event_context
    local title = "Place Object"
    local description = "What do you want to do with this unit?"
    local image = "portraits/undead/transparent/ancient-lich.png"
@@ -12,7 +13,6 @@ function menu_placement()
       {"Clear Hex", "terrain/grass/green-symbol.png"}}
    local option = menu(options, image, title, description, menu_picture_list, 1)
    if option then
-      local e = wesnoth.current.event_context
       if option == "Place Shop" then
          simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
       elseif option == "Place Chest" then
@@ -156,6 +156,7 @@ local function feature_toggle(menu_item)
 end
 
 function menu_settings()
+   local e = wesnoth.current.event_context
    local title = "Settings"
    local description = "What action do you want to do?"
    local image = "portraits/undead/transparent/ancient-lich.png"
@@ -169,7 +170,6 @@ function menu_settings()
    local option = menu(options, image, title, description, menu_simple_list)
    if option then
       if option == "Modify Container" then
-         local e = wesnoth.current.event_context
          local description = "Which container do you want to modify?"
          local interaction = menu(find_interactions_to_modify(e.x1, e.y1), image, title, description, menu_picture_list, 1)
          if interaction then
