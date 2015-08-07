@@ -114,6 +114,10 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role)
    local unit_stats = {type = unit_type,
                        side = side_number,
                        upkeep = 0}
+   if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil then
+      fire.capture_village(x, y)
+      unit_stats.moves = 0
+   end
    if icon then
       unit_stats.overlays = icon
    end

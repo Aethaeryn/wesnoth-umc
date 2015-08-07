@@ -147,8 +147,6 @@ function gui2_error(text)
    local dialog = {}
    dialog = generate_dialog(false, "error")
    local function safe_dialog()
-      local choice = ""
-
       local function preshow()
          wesnoth.set_dialog_value("Error!", "menu_title")
          wesnoth.set_dialog_value(text, "menu_description")
