@@ -148,7 +148,6 @@ When this list is complete/empty, bump to version 0.9
          * In fact, it locks the unit into the old portrait even if it promotes.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
        * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
-       * BUG: Add back in team colors for units if possible.
        * BUG: Objectives don't show up right in the set menu.
        * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
          * AMLAing probably shouldn't increase max experience at all, anyway.

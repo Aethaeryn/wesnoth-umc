@@ -74,7 +74,10 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
                if sidebar == "unit" then
                   local unit_data = wesnoth.unit_types[list[i]].__cfg
                   wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
-                  wesnoth.set_dialog_value(unit_data.image, "menu_image")
+                  wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s",
+                                                         unit_data.image,
+                                                         wesnoth.sides[wesnoth.current.side].color),
+                                           "menu_image")
                   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
                   wesnoth.set_dialog_value(string.format("<span size='small'>%s\n%s\nHP: %d\nMP: %d</span>",
                                                          unit_data.name,
@@ -231,18 +234,20 @@ function gui2_error(text)
 end
 
 function menu_unit_list(units)
+   local team_color = wesnoth.sides[wesnoth.current.side].color
    for i, unit in ipairs(units) do
       local unit_data = wesnoth.unit_types[unit].__cfg
       wesnoth.set_dialog_value(unit_data.name, "menu_list", i, "label")
-      wesnoth.set_dialog_value(unit_data.image, "menu_list", i, "icon")
+      wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s)", unit_data.image, team_color), "menu_list", i, "icon")
    end
 end
 
 function menu_unit_list_with_cost(units)
+   local team_color = wesnoth.sides[wesnoth.current.side].color
    for i, unit in ipairs(units) do
       local unit_data = wesnoth.unit_types[unit].__cfg
       wesnoth.set_dialog_value(string.format("%s - %d HP", unit_data.name, unit_data.cost), "menu_list", i, "label")
-      wesnoth.set_dialog_value(unit_data.image, "menu_list", i, "icon")
+      wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s)", unit_data.image, team_color), "menu_list", i, "icon")
    end
 end
 
