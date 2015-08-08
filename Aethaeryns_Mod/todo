@@ -157,8 +157,6 @@ When this list is complete/empty, bump to version 0.9
        * FEATURE: If possible add a back button in addition to close for the complicated menus.
        * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
        * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
-       * CODE: Is there now a better way to handle side_number without the side_number global variable?
-       * CODE: Move most things so they aren't created every side turn; things like e.g. menu status need to persist.
        * CODE: Find a replacement for get_roles() and get_sides_with_all()
        * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
          * Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"

@@ -142,7 +142,7 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role)
    wesnoth.put_unit(x, y, unit_stats)
 end
 
-function spawn_unit.boss_spawner(x, y, unit_type, unit_role)
+function spawn_unit.boss_spawner(x, y, unit_type, unit_role, side_number)
    spawn_unit.spawn_unit(x, y, unit_type, side_number, "misc/hero-icon.png", unit_role)
    local regenerates = wesnoth.get_variable("regenerates")
    local boss_ability = { T["effect"] { apply_to = "new_ability", {"abilities", regenerates}}}
@@ -150,7 +150,7 @@ function spawn_unit.boss_spawner(x, y, unit_type, unit_role)
    wesnoth.add_modification(unit, "object", boss_ability)
 end
 
-function spawn_unit.reg_spawner(x, y, unit_type, unit_role)
+function spawn_unit.reg_spawner(x, y, unit_type, unit_role, side_number)
    local unit_cost = wesnoth.unit_types[unit_type].__cfg.cost
    local summoner = find_summoner(x, y, wesnoth.get_units {side = side_number, role = unit_role})
    if summoner.hitpoints > unit_cost then

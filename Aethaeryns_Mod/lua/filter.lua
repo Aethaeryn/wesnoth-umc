@@ -1,8 +1,5 @@
 #define MOD_LUA_FILTER
 <<
-helper = wesnoth.require "lua/helper.lua"
-T = helper.set_wml_tag_metatable {}
-
 aeth_mod_filter = {}
 aeth_mod_filter.bad_summon_terrain = "X*, Q*, *^Xm, Mv"
 aeth_mod_filter.host1 = T["variable"] { name = "side_number", equals = 1 }

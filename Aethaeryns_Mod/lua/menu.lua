@@ -32,7 +32,7 @@ local function submenu_inventory_quantity(item, container)
       if container == "unit" then
          add_unit_item(item, count)
       else
-         add_container_item(container, item, count)
+         add_container_item(item, count, container)
       end
    end
 end
@@ -62,7 +62,7 @@ function mod_menu.summon(summoner_type)
       local description = "Select a unit to summon."
       local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list_with_cost, nil, "unit")
       if choice then
-         local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type)
+         local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
          if not spawn_success then
             gui2_error("Insufficient hitpoints on the attempted summoner.")
          end
@@ -80,7 +80,7 @@ function mod_menu.summon_summoner()
       local description = "Select a unit to summon."
       local summoner = menu(summoners[summoner_type], image, title, description, menu_unit_list, nil, "unit")
       if summoner then
-         spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type)
+         spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
       end
    end
 end
@@ -116,10 +116,10 @@ function mod_menu.unit_commands()
             local inventory = show_current_inventory(containers[e.x1][e.y1]["shop"])
             local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
             if item then
-               shop_buy(item)
+               shop_buy(item, wesnoth.current.side)
             end
          elseif option == "Collect Gold" then
-            wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + containers[e.x1][e.y1]["gold"]
+            wesnoth.sides[wesnoth.current.side]["gold"] = wesnoth.sides[wesnoth.current.side]["gold"] + containers[e.x1][e.y1]["gold"]
             clear_game_object(e.x1, e.y1)
          elseif option == "Remove from Chest" then
             local description = "What item do you want to remove from the chest?"

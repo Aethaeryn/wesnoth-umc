@@ -95,7 +95,7 @@ function add_container_item(name, quantity, container)
    end
 end
 
-function shop_buy(name)
+function shop_buy(name, side_number)
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local price = 99999
