@@ -230,7 +230,6 @@ function gui2_error(text)
    return safe_choice
 end
 
--- todo: Add optional cost.
 function menu_unit_list(units)
    for i, unit in ipairs(units) do
       local unit_data = wesnoth.unit_types[unit].__cfg

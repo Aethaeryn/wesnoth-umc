@@ -198,52 +198,56 @@ local function show_all_inventory()
    return options
 end
 
+-- fixme: get rid of all or most of it
 function submenu_inventory(context, container)
    local e = wesnoth.current.event_context
    local unit = false
    if container == nil then unit = wesnoth.get_unit(e.x1, e.y1) end
    local title = "Unit Commands"
    local description
-   local opt
-   local run
-   local options_list = {}
+   local inventory = {}
    if unit then
+      -- only called once, in mod_menu.unit_commands
       if context == "unit_use" then
          description = "Which item do you want to use?"
-         options_list = show_current_inventory(unit.variables)
-         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
-         if selection then
-            item_use(selection)
+         inventory = show_current_inventory(unit.variables)
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            item_use(item)
          end
       end
    else
+      -- only called once, in mod_menu.unit_commands
       if context == "chest_add" then
          description = "What item do you want to put in the chest?"
-         options_list = show_current_inventory(container)
-         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
-         if selection then
-            chest_add(selection)
+         inventory = show_current_inventory(container)
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            chest_add(item)
          end
+      -- only called once, in mod_menu.unit_commands
       elseif context == "chest_remove" then
          description = "What item do you want to remove from the chest?"
-         options_list = show_current_inventory(container)
-         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
-         if selection then
-            chest_remove(selection)
+         inventory = show_current_inventory(container)
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            chest_remove(item)
          end
+      -- only called once, in mod_menu.unit_commands
       elseif context == "visit_shop" then
          description = "What item do you want to purchase from the shop?"
-         options_list = show_current_inventory(container)
-         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
-         if selection then
-            shop_buy(selection)
+         inventory = show_current_inventory(container)
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            shop_buy(item)
          end
+      -- might actually justify being its own function, without all this conditional stuff
       elseif context == "chest_modify" or context == "shop_modify" or context == "unit_add" then
          description = "Which item do you want to add?"
-         options_list = show_all_inventory()
-         local selection = menu(options_list, "", title, description, menu_picture_list, 1, "item_stats")
-         if selection then
-            run = submenu_inventory_quantity(selection, context)
+         inventory = show_all_inventory()
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            submenu_inventory_quantity(item, context)
          end
       end
    end

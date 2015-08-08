@@ -80,27 +80,31 @@ function submenu_upgrade_unit()
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local points = unit.variables["advancement"]
-   local options_table = {}
+   local point_word = "points"
+   local upgrades = {}
    local upgrade_info = {}
    if points == nil then
       points = 0
    end
+   if points == 1 then
+      point_word = "point"
+   end
    for i, upgrade in ipairs(upgrade_table) do
-      local cap_info = ""
-      if unit.variables["upgrade"..upgrade.name] == nil then
-         unit.variables["upgrade"..upgrade.name] = 0
+      local upgrade_count = 0
+      if unit.variables["upgrade"..upgrade.name] ~= nil then
+         upgrade_count = unit.variables["upgrade"..upgrade.name]
       end
-      table.insert(options_table, {upgrade.name,
-                                   upgrade.image,
-                                   upgrade.cost,
-                                   unit.variables["upgrade"..upgrade.name],
-                                   upgrade.cap,
-                                   upgrade.msg})
+      table.insert(upgrades, {upgrade.name,
+                              upgrade.image,
+                              upgrade.cost,
+                              upgrade_count,
+                              upgrade.cap,
+                              upgrade.msg})
       upgrade_info[upgrade.name] = { cost = upgrade.cost, cap = upgrade.cap }
    end
    local title = "Unit Commands"
-   local description = "What do you want to upgrade? You have "..points.." points(s)."
-   local upgrade = menu(options_table, "", title, description, menu_picture_list, 1, "upgrade_stats")
+   local description = string.format("What do you want to upgrade? You have %d %s available.", points, point_word)
+   local upgrade = menu(upgrades, "", title, description, menu_picture_list, 1, "upgrade_stats")
    if upgrade then
       upgrade_unit(upgrade, upgrade_info[upgrade].cost, unit.variables["upgrade"..upgrade], upgrade_info[upgrade].cap)
    end
