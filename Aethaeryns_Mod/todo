@@ -13,8 +13,8 @@ When this list is complete/empty, bump to version 0.9
  (1) Inventory Containers (2%)
   - Player container interactions:
     - remove from container (using slider)
-      - buy for shop
-        - shop (if labels work) adds "(Empty)" label if empty
+      - buy if shop
+        - shop adds "(Empty)" label if empty (that means it starts as "Shop (Empty)")
       - remove if pack or chest
         - pack disappears if empty
         - chest uses open image if empty
@@ -226,7 +226,6 @@ When this list is complete/empty, bump to version 0.9
         * Change shop price multiplier for selling to shop
         * Change shop price multiplier for buying to shop (for expensive shops)
       * Add more shop graphics for different flavor.
-      * Maybe find a way to keep the shops labelled as long as they are shops like many RPGs do?
     * Add a difficulty mode that restricts what the host can do so more people can play as a fair host.
       * Including locking out the terrain editing and the stats editing, and limiting the Summon Summoners.
       * Also make terrain changes able to have costs, require being done by units or triggers, etc.

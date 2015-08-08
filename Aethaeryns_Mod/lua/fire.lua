@@ -50,5 +50,12 @@ end
 function fire.clear_menu_item(id)
    wesnoth.fire("clear_menu_item", { id = id })
 end
+
+function fire.label(x, y, text)
+   wesnoth.fire("label", {
+                   x = x,
+                   y = y,
+                   text = text})
+end
 >>
 #enddef

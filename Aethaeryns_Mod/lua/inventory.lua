@@ -37,17 +37,20 @@ function clear_game_object(x, y)
    end
 end
 
-function simple_place(x, y, type, image, inventory)
+function simple_place(x, y, container_type, image, inventory)
    clear_game_object(x,y)
    w_items.place_image(x, y, image)
    check_x_coord(x)
    containers[x][y] = {}
-   containers[x][y][type] = {}
+   containers[x][y][container_type] = {}
    if inventory == true then
       for i, v in ipairs(item_table) do
          item_name = v["name"]
-         containers[x][y][type][item_name] = 0
+         containers[x][y][container_type][item_name] = 0
       end
+   end
+   if container_type == "shop" then
+      fire.label(x, y, "Shop")
    end
 end
 
