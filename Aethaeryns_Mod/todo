@@ -2,8 +2,9 @@ AETHAERYN'S MOD TODO LIST (90% Progress)
 When this list is complete/empty, bump to version 0.9
 
   (1%)
-  - remove all submenu_ functions (inventory.lua, upgrades.lua, terrain_editor.lua)
+  - remove all submenu_ functions (upgrades.lua, terrain_editor.lua)
   - inventory.lua and upgrades.lua need to put the non-menu functions in tables
+    - inventory.lua is a mess; better functions can be written
   - Remove DungeonOpt:
     - terrain_editor.lua in terrains and overlays
     - delete DungeonOpt.lua when this is finished

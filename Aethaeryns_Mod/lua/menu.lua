@@ -19,6 +19,24 @@ local function get_sides_with_all()
    return sides
 end
 
+local function submenu_inventory_quantity(item, container)
+   local title = "Change Inventory"
+   local description = string.format("How much of %s do you want to give?", item)
+   local image = "portraits/undead/transparent/ancient-lich.png"
+   local label = "Item Quantity:"
+   local count = menu_text_input(image, title, description, label)
+   if count then
+      if count < 0 then
+         count = 0
+      end
+      if container == "unit" then
+         add_unit_item(item, count)
+      else
+         add_container_item(container, item, count)
+      end
+   end
+end
+
 function mod_menu.toggle(menu_item)
    if mod_menu_items[menu_item].status then
       mod_menu_items[menu_item].status = false
@@ -41,7 +59,7 @@ function mod_menu.summon(summoner_type)
    table.sort(levels)
    local level = menu(levels, image, title, description, menu_simple_list)
    if level then
-      description = "Select a unit to summon."
+      local description = "Select a unit to summon."
       local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list_with_cost, nil, "unit")
       if choice then
          local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type)
@@ -59,7 +77,7 @@ function mod_menu.summon_summoner()
    local image = "portraits/undead/transparent/ancient-lich.png"
    local summoner_type = menu(SUMMON_ROLES, image, title, description, menu_simple_list)
    if summoner_type then
-      description = "Select a unit to summon."
+      local description = "Select a unit to summon."
       local summoner = menu(summoners[summoner_type], image, title, description, menu_unit_list, nil, "unit")
       if summoner then
          spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type)
@@ -79,7 +97,12 @@ function mod_menu.unit_commands()
       {"Speak", "icons/letter_and_ale.png"}}
    local option = menu(options, image, title, description, menu_picture_list, 1)
    if option == "Use Item" then
-      submenu_inventory('unit_use')
+      local description = "Which item do you want to use?"
+      local inventory = show_current_inventory(wesnoth.get_unit(e.x1, e.y1).variables)
+      local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+      if item then
+         item_use(item)
+      end
    elseif option == "Upgrades" then
       submenu_upgrade_unit()
    elseif option == "Speak" then
@@ -89,14 +112,29 @@ function mod_menu.unit_commands()
       local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
       if option then
          if option == "Visit Shop" then
-            submenu_inventory('visit_shop', containers[e.x1][e.y1]["shop"])
+            local description = "What item do you want to purchase from the shop?"
+            local inventory = show_current_inventory(containers[e.x1][e.y1]["shop"])
+            local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+            if item then
+               shop_buy(item)
+            end
          elseif option == "Collect Gold" then
             wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + containers[e.x1][e.y1]["gold"]
             clear_game_object(e.x1, e.y1)
          elseif option == "Remove from Chest" then
-            submenu_inventory('chest_remove', containers[e.x1][e.y1]["chest"])
+            local description = "What item do you want to remove from the chest?"
+            local inventory = show_current_inventory(containers[e.x1][e.y1]["chest"])
+            local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+            if item then
+               mod_inventory.chest_remove(e.x1, e.y1, item)
+            end
          elseif option == "Add to Chest" then
-            submenu_inventory('chest_add')
+            local description = "What item do you want to put in the chest?"
+            local inventory = show_current_inventory(wesnoth.get_unit(e.x1, e.y1).variables)
+            local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+            if item then
+               mod_inventory.chest_add(e.x1, e.y1, item)
+            end
          end
       end
    end
@@ -123,7 +161,12 @@ function mod_menu.unit_editor()
             change_unit.role(e.x1, e.y1, role)
          end
       elseif choice == "Inventory" then
-         submenu_inventory('unit_add', false)
+         local description = "Which item do you want to add?"
+         local inventory = show_all_inventory()
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            submenu_inventory_quantity(item, "unit")
+         end
       elseif choice == "Side" then
          local side = menu(SIDES, image, title, "Select a target side.", menu_simple_list)
          if side then
@@ -229,9 +272,19 @@ function mod_menu.settings()
          local interaction = menu(find_interactions_to_modify(e.x1, e.y1), image, title, description, menu_picture_list, 1)
          if interaction then
             if interaction == "Modify Shop" then
-               submenu_inventory('shop_modify', containers[e.x1][e.y1]["shop"])
+               local description = "Which item do you want to add?"
+               local inventory = show_all_inventory()
+               local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+               if item then
+                  submenu_inventory_quantity(item, containers[e.x1][e.y1]["shop"])
+               end
             elseif interaction == "Modify Chest" then
-               submenu_inventory('chest_modify', containers[e.x1][e.y1]["chest"])
+               local description = "Which item do you want to add?"
+               local inventory = show_all_inventory()
+               local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+               if item then
+                  submenu_inventory_quantity(item, containers[e.x1][e.y1]["chest"])
+               end
             end
          end
       elseif option == "Modify Side" then

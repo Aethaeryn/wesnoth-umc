@@ -4,25 +4,25 @@ if containers == nil then
    containers = {}
 end
 
-function check_x_coord(x)
+mod_inventory = {}
+
+local function check_x_coord(x)
    if containers[x] == nil then
       containers[x] = {}
    end
 end
 
-function chest_add(name)
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
-   check_x_coord(e.x1)
-   containers[e.x1][e.y1]["chest"][name] = containers[e.x1][e.y1]["chest"][name] + 1
+function mod_inventory.chest_add(x, y, name)
+   local unit = wesnoth.get_unit(x, y)
+   check_x_coord(x)
+   containers[x][y]["chest"][name] = containers[x][y]["chest"][name] + 1
    unit.variables[name] = unit.variables[name] - 1
 end
 
-function chest_remove(name)
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
-   check_x_coord(e.x1)
-   containers[e.x1][e.y1]["chest"][name] = containers[e.x1][e.y1]["chest"][name] - 1
+function mod_inventory.chest_remove(e, y, name)
+   local unit = wesnoth.get_unit(x, y)
+   check_x_coord(x)
+   containers[x][y]["chest"][name] = containers[x][y]["chest"][name] - 1
    if unit.variables[name] == nil then
       unit.variables[name] = 1
    else
@@ -87,37 +87,11 @@ function add_unit_item(name, quantity)
    end
 end
 
-function add_container_item(name, quantity, container_add)
-   local e = wesnoth.current.event_context
-   check_x_coord(e.x1)
-   local container = ""
-   if container_add == "chest_modify" then
-      container = "chest"
-   elseif container_add == "shop_modify" then
-      container = "shop"
-   end
-   if containers[e.x1][e.y1][container][name] == nil then
-      containers[e.x1][e.y1][container][name] = quantity
+function add_container_item(name, quantity, container)
+   if container[name] == nil then
+      container[name] = quantity
    else
-      containers[e.x1][e.y1][container][name] = containers[e.x1][e.y1][container][name] + quantity
-   end
-end
-
-function submenu_inventory_quantity(item, container)
-   local title = "Change Inventory"
-   local description = string.format("How much of %s do you want to give?", item)
-   local image = "portraits/undead/transparent/ancient-lich.png"
-   local label = "Item Quantity:"
-   local count = menu_text_input(image, title, description, label)
-   if count then
-      if count < 0 then
-         count = 0
-      end
-      if container == "unit_add" then
-         add_unit_item(item, count)
-      else
-         add_container_item(item, count, container)
-      end
+      container[name] = container[name] + quantity
    end
 end
 
@@ -179,7 +153,7 @@ function find_interactions_to_modify(x, y)
    return interactions
 end
 
-local function show_current_inventory(item_holder)
+function show_current_inventory(item_holder)
    local options = {}
    for i, item in ipairs(item_table) do
       quantity = item_holder[item.name]
@@ -190,67 +164,12 @@ local function show_current_inventory(item_holder)
    return options
 end
 
-local function show_all_inventory()
+function show_all_inventory()
    local options = {}
    for i, item in ipairs(item_table) do
       table.insert(options, {item.name, item.image, item.price, item.msg})
    end
    return options
-end
-
--- fixme: get rid of all or most of it
-function submenu_inventory(context, container)
-   local e = wesnoth.current.event_context
-   local unit = false
-   if container == nil then unit = wesnoth.get_unit(e.x1, e.y1) end
-   local title = "Unit Commands"
-   local description
-   local inventory = {}
-   if unit then
-      -- only called once, in mod_menu.unit_commands
-      if context == "unit_use" then
-         description = "Which item do you want to use?"
-         inventory = show_current_inventory(unit.variables)
-         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
-         if item then
-            item_use(item)
-         end
-      end
-   else
-      -- only called once, in mod_menu.unit_commands
-      if context == "chest_add" then
-         description = "What item do you want to put in the chest?"
-         inventory = show_current_inventory(container)
-         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
-         if item then
-            chest_add(item)
-         end
-      -- only called once, in mod_menu.unit_commands
-      elseif context == "chest_remove" then
-         description = "What item do you want to remove from the chest?"
-         inventory = show_current_inventory(container)
-         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
-         if item then
-            chest_remove(item)
-         end
-      -- only called once, in mod_menu.unit_commands
-      elseif context == "visit_shop" then
-         description = "What item do you want to purchase from the shop?"
-         inventory = show_current_inventory(container)
-         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
-         if item then
-            shop_buy(item)
-         end
-      -- might actually justify being its own function, without all this conditional stuff
-      elseif context == "chest_modify" or context == "shop_modify" or context == "unit_add" then
-         description = "Which item do you want to add?"
-         inventory = show_all_inventory()
-         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
-         if item then
-            submenu_inventory_quantity(item, context)
-         end
-      end
-   end
 end
 >>
 #enddef
