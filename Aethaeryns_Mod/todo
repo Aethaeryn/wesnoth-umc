@@ -4,6 +4,7 @@ When this list is complete/empty, bump to version 0.9
  (0) GUI2 menu rewrites (1%)
   - terrain_editor.lua
     - rewrite menus for terrains and overlays to use gui2
+    - move a lot of terrains into overlays only (villages, forests, etc.)
     - delete DungeonOpt.lua
   - Slider instead of text input:
     - Gold quantity.
@@ -90,93 +91,94 @@ When this list is complete/empty, bump to version 0.9
          * Perhaps un-marskman all marksman attacks for that duration too.
 
  (4) Details (2%)
-     * Extend the GUI2 wrapper so that it can handle more  than one return value.
-       * Some windows could do more than one action with sliders, checkboxes, etc., instead of with text input.
-         * especially changing side variables
-           * showing all the stats at once instead of only on select would be useful here too
-         * when setting objectives (three or more different text inputs at once)
-         * also changing unit stats
-       * Make the toggles have their own submenu in settings.
-         * make them use checkboxes
-         * make them say what the current state is based on check/uncheck
-     * Pick character dialog.
-       * If peasant on first turn of an intro map (e.g. new campaign or unit died), let sides 2-5 pick a new unit.
-         * Perhaps let the host fire this at other times to let players create a new character, e.g. when handing side 7 or 8 to observers or recycling a dead side 2-5 to observers.
-         * data/units.lua probably can be reused if summoners are added to the regular unit list, but then filtered out in the actual Summon Foo
-         * Have the host restrict what units are possible for peasants to use (level, type, etc.) or let a vote be held first on the level.
-       * This menu can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
-         * And also make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
-         * And eventually they can be tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
-         * And of course this opens the door to quests, preset interactions/messages, etc.
-         * Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
-       * This menu could also then replace the textbox in Transform.
-     * Upgrades
-       * Raise the cap on intelligence upgrades so there can be more than one?
-       * Add strength and dexterity upgrades.
-         * They probably need to be implemented differently, with [object]
-       * Damage increase should probably actually be roughly constant, i.e. more damage increase for units with fewer strikes
-         * e.g. +4 if 1 strike, +2 if 2 strikes, +1 otherwise
-       * There needs to be a visible indicator over the unit that the unit can be upgraded.
-     * Make the host modification/management of units more powerful.
-       * Make sure to handle negative numbers properly.
-         * Or use sliders and keep values within a reasonable range.
-       * Toggle the boss regenerate on/off, e.g. optionally for when turned to/from summoner.
-       * Make sure that everything that can be done in Lua to a unit is doable somehow.
-       * Allow modifying attacks and traits if possible.
-     * Add a way to control the recalling of units and recall lists.
-       * Prevent the traditional keep-and-gold recalling of units.
-       * Make sure that NPCs/enemies can be recalled, not just player summons.
-     * Implement non-container objects on maps:
-       * teleporters (very high priority for large maps!!!)
-       * traps (damage and/or status modifier on touching a hex)
-       * doors (instead of manually removing walls)
-       * keys/locks for doors/chests/etc.
-         * also doors/chests/etc. that can only open for certain sides or teams or units
-       * triggers (perhaps runes?) for various things (including doors)
-    * Summoners.
-       * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
-         * Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
-         * Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
-     * Terrains.
-       * Make sure new 1.10 and 1.12 terrains are in the game. All terrains, etc., in the game should be usable.
-       * Clean up overlay code.
-         * Possibly rewrite how overlays are added.
-         * Add repeat last overlay.
-         * Fix remove overlay.
-         * Fix some bridges and other broken overlays.
-       * Move a lot of terrains into overlays only (villages, forests, etc.)
-     * Check how inventory's effects interact if promoted while the effect is still on.
-     * Let Sylphs and/or Shydes disguise themselves as regular Elvish Ladies.
-       * They would stay as summoners but lose the icon, being the only stealth summoners in the game.
+  - Pick character dialog.
+    - If peasant on first turn of an intro map (e.g. new campaign or unit died), let sides 2-5 pick a new unit.
+    - Perhaps let the host fire this at other times to let players create a new character, e.g. when handing side 7 or 8 to observers or recycling a dead side 2-5 to observers.
+    - data/units.lua probably can be reused if summoners are added to the regular unit list, but then filtered out in the actual Summon Foo
+    - Have the host restrict what units are possible for peasants to use (level, type, etc.) or let a vote be held first on the level.
+    - A similar unit dialog can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
+      - Make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
+      - And eventually they can be tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
+        - And of course this opens the door to quests, preset interactions/messages, etc.
+        - Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
+    - This could also then replace the textbox in Transform.
+
+  - Upgrades
+    - Raise the cap on intelligence upgrades so there can be more than one?
+    - Add strength and dexterity upgrades.
+      - They probably need to be implemented differently, with [object]
+      - Damage increase should probably actually be roughly constant, i.e. more damage increase for units with fewer strikes
+        - e.g. +4 if 1 strike, +2 if 2 strikes, +1 otherwise
+        - how would this work if under a temporary strike-increasing effect, for units whose strikes change, or for units with more than one attack?
+    - There needs to be a visible indicator over the unit that the unit can be upgraded.
+
+  - Host unit modifying.
+    - Make sure to handle negative numbers properly.
+      - Or use sliders and keep values within a reasonable range, which will vary depending on the stat.
+    - Toggle the boss regenerate on/off, e.g. optionally for when turned to/from summoner.
+    - Make sure that everything that can be done in Lua to a unit is doable somehow.
+    - Allow modifying attacks and traits if possible.
+    - Add a unit teleport command.
+
+  - Non-container map objects.
+    - teleporters
+    - traps (damage and/or status modifier and/or other unit changes on touching a hex)
+    - doors (instead of manually removing walls)
+    - keys/locks for doors/chests/etc.
+      - also doors/chests/etc. that can only open for certain sides or teams or units
+        - or chests that provide different inventory lists for different units
+        - e.g. a chest that provides universal storage and can be accessed in more than one place
+    - triggers (perhaps runes?) for various things (including doors)
+
+  - Summoners.
+    - Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
+      - Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
+      - Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
+
+  - Check how inventory's effects interact if promoted while the effect is still on.
+
+  - Let Sylphs and/or Shydes disguise themselves as regular Elvish Ladies.
+    - They would stay as summoners but lose the icon, being the only stealth summoners in the game.
 
  (5) Issues (2%)
-       * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
-       * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
-       * BUG: Fix icon size for Summon <foo> and Summon Summoner.
-       * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
-       * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
-         - In fact, it locks the unit into the old portrait even if it promotes.
-       * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
-       * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
-       * BUG: Objectives don't show up right in the set menu.
-       * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
-       * FEATURE: AMLAing probably shouldn't increase max experience.
-       * FEATURE: Change objectives by subsections (victory, loss, etc.) in a new interface so that formatting can be preserved.
-       * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
-       * FEATURE: If possible add a back button in addition to close for the complicated menus.
-       * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
-       * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
-       * CODE: Find a replacement for get_roles() and get_sides_with_all()
-       * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
-         - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
-       * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
-       * CODE: Fix spacing on GUI2 GUIs, especially the error message and the areas with more than one button.
-       * CODE: remove all submenu_ functions in upgrades.lua and terrain_editor.lua
-       * CODE: inventory.lua and upgrades.lua need to put the non-menu functions in tables
-         - inventory.lua is a mess; better functions can be written
-         - upgrades.lua is a mess in the opposite direction; behavior could be moved into functions
+  * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
+  * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
+  * BUG: Fix icon size for Summon <foo> and Summon Summoner.
+  * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
+  * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
+    - In fact, it locks the unit into the old portrait even if it promotes.
+  * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
+  * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
+  * BUG: Objectives don't show up right in the set menu.
+
+  * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
+  * FEATURE: AMLAing probably shouldn't increase max experience.
+  * FEATURE: Change objectives by subsections (victory, loss, etc.) in a new interface so that formatting can be preserved.
+  * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
+  * FEATURE: If possible add a back button in addition to close for the complicated menus.
+  * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
+
+  * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
+  * CODE: Find a replacement for get_roles() and get_sides_with_all()
+  * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
+    - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
+  * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
+  * CODE: Fix spacing on GUI2 GUIs, especially the error message and the areas with more than one button.
+  * CODE: remove all submenu_ functions in upgrades.lua and terrain_editor.lua
+  * CODE: inventory.lua and upgrades.lua need to put the non-menu functions in tables
+    - inventory.lua is a mess; better functions can be written
+    - upgrades.lua is a mess in the opposite direction; behavior could be moved into functions
 
  (6) Future
+    * Extend the GUI2 wrapper so that it can handle more  than one return value.
+      * Some windows could do more than one action with sliders, checkboxes, etc., instead of with text input.
+        * especially changing side variables
+          * showing all the stats at once instead of only on select would be useful here too
+        * when setting objectives (three or more different text inputs at once)
+        * also changing unit stats
+      * Make the toggles have their own submenu in settings.
+        * make them use checkboxes
+        * make them say what the current state is based on check/uncheck
     * Magic [temporary via scrolls]
       * Gain wisdom (experience)
       * Radius healing (everything on one side within some radius for some amount of HP)
@@ -214,6 +216,9 @@ When this list is complete/empty, bump to version 0.9
       * When units die they are saved in a resurrection table.
       * The host can resurrect a unit. (rematches of old bosses?)
       * A resurrection spell on a scroll should be able to resurrect a unit too.
+    * Add a way to control the recalling of units and recall lists.
+      * Prevent the traditional keep-and-gold recalling of units.
+      * Make sure that NPCs/enemies can be recalled, not just player summons.
     * Make sure everything (including items, secondary units, and possibly shop inventories) can transition between scenarios.
     * More Shop Stuff:
       * Shop options toggleable by host:
