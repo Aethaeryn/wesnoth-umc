@@ -35,6 +35,7 @@ function clear_game_object(x, y)
    if containers[x] ~= nil then
       containers[x][y] = nil
    end
+   fire.label(x, y, "")
 end
 
 function simple_place(x, y, container_type, image, inventory)
