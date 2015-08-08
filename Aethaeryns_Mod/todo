@@ -2,14 +2,9 @@ AETHAERYN'S MOD TODO LIST (90% Progress)
 When this list is complete/empty, bump to version 0.9
 
   (1%)
-  - remove all submenu_ functions (upgrades.lua, terrain_editor.lua)
-  - inventory.lua and upgrades.lua need to put the non-menu functions in tables
-    - inventory.lua is a mess; better functions can be written
-  - Remove DungeonOpt:
-    - terrain_editor.lua in terrains and overlays
-    - delete DungeonOpt.lua when this is finished
-  - Need new GUI2s for:
-    - terrain editing
+  - terrain_editor.lua
+    - rewrite menus for terrains and overlays to use gui2
+    - delete DungeonOpt.lua
   - Slider instead of text input:
     - Gold quantity.
     - Inventory quantity.
@@ -19,7 +14,7 @@ When this list is complete/empty, bump to version 0.9
      * Players should be able to:
        * Sell items to shop (math.floor(0.8 * cost))
        * Add and remove (and buy and sell) from containers more than one item at a time.
-       * Remove only part of the gold from a gold pile.
+       * Remove only part of the gold from a gold pile. (slider that defaults to max)
        * Remove items from packs but not add to them.
      * Templates:
        * Have tiered templates for quick-stocking shops.
@@ -106,6 +101,7 @@ When this list is complete/empty, bump to version 0.9
          * They probably need to be implemented differently, with [object]
        * Damage increase should probably actually be roughly constant, i.e. more damage increase for units with fewer strikes
          * e.g. +4 if 1 strike, +2 if 2 strikes, +1 otherwise
+       * There needs to be a visible indicator over the unit that the unit can be upgraded.
      * Make the host modification/management of units more powerful.
        * Make sure to handle negative numbers properly.
          * Or use sliders and keep values within a reasonable range.
@@ -120,6 +116,7 @@ When this list is complete/empty, bump to version 0.9
        * traps (damage and/or status modifier on touching a hex)
        * doors (instead of manually removing walls)
        * keys/locks for doors/chests/etc.
+         * also doors/chests/etc. that can only open for certain sides or teams or units
        * triggers (perhaps runes?) for various things (including doors)
     * Summoners.
        * Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
@@ -134,8 +131,6 @@ When this list is complete/empty, bump to version 0.9
          * Fix some bridges and other broken overlays.
        * Move a lot of terrains into overlays only (villages, forests, etc.)
      * Check how inventory's effects interact if promoted while the effect is still on.
-     * Check if upgrades are preserved on promotions. (They are on AMLAs.)
-     * Don't have XP to next AMLA increase each AMLA?
      * Let Sylphs and/or Shydes disguise themselves as regular Elvish Ladies.
        * They would stay as summoners but lose the icon, being the only stealth summoners in the game.
 
@@ -145,12 +140,12 @@ When this list is complete/empty, bump to version 0.9
        * BUG: Fix icon size for Summon <foo> and Summon Summoner.
        * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
        * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
-         * In fact, it locks the unit into the old portrait even if it promotes.
+         - In fact, it locks the unit into the old portrait even if it promotes.
        * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
        * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
        * BUG: Objectives don't show up right in the set menu.
        * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
-         * AMLAing probably shouldn't increase max experience at all, anyway.
+       * FEATURE: AMLAing probably shouldn't increase max experience.
        * FEATURE: Change objectives by subsections (victory, loss, etc.) in a new interface so that formatting can be preserved.
        * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
        * FEATURE: If possible add a back button in addition to close for the complicated menus.
@@ -158,9 +153,13 @@ When this list is complete/empty, bump to version 0.9
        * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
        * CODE: Find a replacement for get_roles() and get_sides_with_all()
        * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
-         * Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
+         - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
        * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
        * CODE: Fix spacing on GUI2 GUIs, especially the error message and the areas with more than one button.
+       * CODE: remove all submenu_ functions in upgrades.lua and terrain_editor.lua
+       * CODE: inventory.lua and upgrades.lua need to put the non-menu functions in tables
+         - inventory.lua is a mess; better functions can be written
+         - upgrades.lua is a mess in the opposite direction; behavior could be moved into functions
 
  (6) Future
     * Magic [temporary via scrolls]
@@ -226,5 +225,7 @@ When this list is complete/empty, bump to version 0.9
       * This gives the units for the AI-controled side to use in battle.
     * Make sure that the translatable strings are marked as such.
     * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
+    * Make the time of day last longer (3 turns per phase?) so alignment matters more on the huge maps
+      * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
     * Eventually make this the framework for RPGs in general, not just ones where the host controls sides 1 & 6.
       * Not even just RPGs. A lot of the general code can be used for completely different game types, e.g. recruiting via villages.
