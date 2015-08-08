@@ -1,7 +1,7 @@
 AETHAERYN'S MOD TODO LIST (90% Progress)
 When this list is complete/empty, bump to version 0.9
 
-  (1%)
+ (0) GUI2 menu rewrites (1%)
   - terrain_editor.lua
     - rewrite menus for terrains and overlays to use gui2
     - delete DungeonOpt.lua
@@ -10,58 +10,73 @@ When this list is complete/empty, bump to version 0.9
     - Inventory quantity.
 
  (1) Inventory Containers (2%)
-     * Investigate drop (pack container)
-     * Players should be able to:
-       * Sell items to shop (math.floor(0.8 * cost))
-       * Add and remove (and buy and sell) from containers more than one item at a time.
-       * Remove only part of the gold from a gold pile. (slider that defaults to max)
-       * Remove items from packs but not add to them.
-     * Templates:
-       * Have tiered templates for quick-stocking shops.
-       * Have tiered templates for quick-stocking chests.
-       * Have tiered templates for quick-stocking units (MOBs, player heroes, etc.)
-       * Add menu to show templates when placing shops/chests/packs with the default being the "Empty" template.
-     * When a container has its last item removed:
-       * A pack is removed from the map automatically.
-       * An empty chest switches to an open chest image.
-       * A shop stays, but if shop labels can work, "Shop" changes to "Shop (Empty)".
-     * When players add to an empty chest, an open chest image switches to a closed chest image.
-     * When a unit with inventory dies, its inventory is automatically dropped into a newly created leather pack container.
-       * If it dies on a hex with an existing pack, the items are added to the pack's items.
-       * If it dies on a hex with a gold pile, the gold pile is replaced by a pack and the gold is added to the pack.
-         * This will require something other than gold coins, which only exist in increments of 10.
-         * Maybe allow both gold piles and packs on the same hex, distinguishing with Interact.
-       * If it dies on a hex with a shop, the inventory is added to the shop! Be careful!
-       * If it dies on a hex with a chest, the inventory is added to the chest, even if it is locked. Be careful!
-       * If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
-     * The host should be able to (for units and containers):
-       * Add item amount.
-       * View inventory.
-       * Change total quantity.
-       * Remove item amount.
-       * Remove all of a certain type.
-       * Add all items in template to unit inventory or container inventory.
-       * Modify gold amount and item pack inventory.
+  - Player container interactions:
+    - remove from container (using slider)
+      - buy for shop
+        - shop (if labels work) adds "(Empty)" label if empty
+      - remove if pack or chest
+        - pack disappears if empty
+        - chest uses open image if empty
+      - remove gold quantity if gold pile
+        - gold pile shrinks and disappears if empty
+    - add to container (using slider)
+      - sell items if shop at math.floor(0.8 * cost)
+        - if shop was empty, "(Empty)" label goes away
+      - simple add if chest
+        - if chest was open, image switches to closed
+
+  - Host container and unit interactions:
+    - view current inventory
+    - add items based on template
+    - add item (using slider)
+      - if container, image/label changes above also apply
+    - remove item (using slider)
+      - if container, image/label changes above also apply
+    - change amount for each item (using slider?)
+      - absolute numbers instead of relative numbers
+      - if container, image/label changes above also apply
+    - if gold, instead of "item" it is just gold quantity
+      - no template for gold
+
+  - Templates (tired, for quick-stocking):
+    - shops, chests, packs, units (not gold piles; units include mobs)
+    - when first placing, call a template dialog with the default selection as "Empty"
+      - except for gold piles, which will just be the slider
+
+  - Add code for investigate drop (pack) container.
+    - Make sure container code no longer assumes that there is only one container per hex.
+    - The drop is the only container that can coexist with another hex, but it won't be map-visible if it does.
+
+  - On a unit with inventory's death:
+    - If not standing on a hex with container, a pack icon appears and inventory is added to a drop container.
+    - If it dies on a hex with an existing pack, the items are added to the pack's items.
+    - If it dies on a hex with another non-pack container, the drop is there in Investigate but is not map-visible.
+    - If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
 
  (2) Interaction (2%)
-       * Make interaction (e.g. with shops) a menu item instead of part of Unit Commands so it's more discoverable.
-       * Add interaction with neighboring tiles for units and for shops. Chests/gold should require you to be on the hex.
-         * Hostile units on the shop hex should block shop use, though.
-       * When interaction is ambiguous (more than one unit who can interact), first pop up a window to let players choose which unit does the interaction.
-       * Let units give things to adjacent friendly unit.
-         * Inventory (all unequipped items)
-         * Gold (if leader)
-         * Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
-         * Not all units can be interacted with (e.g. zombies).
-       * This means those units (like zombies) can't use Unit Commands, either, but host can give them items and they can get items and equipment inherited if they were plagued.
-         * This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
-       * Allow certain units to be bribed (and mark with certain icon?) if the host toggles them.
-         * For 1.5x cost in gold, they will change to player's team and then lose the ability to be bribed.
-         * In addition to a unit-by-unit setting, there will be an option that will allow some lower-level units to spawn as bribable:
-           * 100% chance for spawned non-summoner level 0s
-           * 15% chance for spawned non-summoner level 1s
-           * 10% chance for spawned non-summoner level 2s
-           * Undead, Elemental, animals, etc., cannot be bribed unless manually set that way.
+  - Interact should become a menu item instead of a Unit Command.
+  - Interaction should apply to neighboring hexes for units and for containers.
+    - Hostile units on a container hex should block their use so mobs can guard shops, gold, chests, etc.
+  - If menu item is ambiguous more than one unit who can interact:
+    - first pop up a window to let players choose which unit does the interaction
+
+  - Let units give things to adjacent friendly unit.
+    - Inventory (all unequipped items)
+      - Gold (if leader)
+      - Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
+
+  - Not all units can be interacted with (e.g. zombies).
+    - Those units (like zombies) can't use Unit Commands, either, but host can give them items and they can get items and equipment inherited if they were plagued.
+    -  This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
+
+  - Bribing
+    - Allow certain units to be bribed through interactions (and mark with certain icon?) if the host toggles them.
+    - For 1.5x cost in gold, they will change to player's team and then lose the ability to be bribed.
+    - In addition to a unit-by-unit setting, there will be game setting that will allow some lower-level units to spawn as bribable:
+      - 100% chance for spawned non-summoner level 0s
+      - 15% chance for spawned non-summoner level 1s
+      - 10% chance for spawned non-summoner level 2s
+      - Undead, elementals, animals, monsters, etc., cannot be bribed unless manually set that way.
 
  (3) Inventory (1%)
      (a) Haste potion.
