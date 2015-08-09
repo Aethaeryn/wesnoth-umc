@@ -258,6 +258,12 @@ function menu_picture_list(list)
    end
 end
 
+function menu_terrain_list(list)
+   for i, terrain_code in ipairs(list) do
+      wesnoth.set_dialog_value(wesnoth.get_terrain_info(terrain_code).editor_name, "menu_list", i, "label")
+   end
+end
+
 function menu_simple_list(list)
    for i, item in ipairs(list) do
       wesnoth.set_dialog_value(item, "menu_list", i, "label")

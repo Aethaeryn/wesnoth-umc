@@ -6,132 +6,16 @@ terrain.last_overlay = "^Vh"
 terrain.radius = 0
 terrain.possible_radius = {0, 1, 2}
 
--- todo: just store the code and use wesnoth.get_terrain_info(code).editor_name
 terrain.terrain = {
-   Water = {
-      {"Wog",    "Grey Deep Water"        },
-      {"Wo",     "Medium Deep Water"      },
-      {"Wot",    "Tropical Deep Water"    },
-      {"Wwg",    "Gray Shallow Water"     },
-      {"Ww",     "Medium Shallow Water"   },
-      {"Wwt",    "Tropical Shallow Water" },
-      {"Wwf",    "Ford"                   },
-      {"Wwr",    "Coastal Reef"           },
-      {"Ss",     "Swamp"                  },
-      {"Sm",     "Muddy Quagmire"         },
-      {"Chw",    "Sunken Human Ruin"      },
-      {"Chs",    "Swamp Humain Ruin"      },
-      {"Khw",    "Sunken Human Keep"      },
-      {"Khs",    "Swamp Human Keep"       }},
-   Flat = {
-      {"Gg",     "Green Grass"            },
-      {"Gs",     "Semi-dry Grass"         },
-      {"Gd",     "Dry Grass"              },
-      {"Gll",    "Leaf Litter"            },
-      {"Rb",     "Dark Dirt"              },
-      {"Re",     "Regular Dirt"           },
-      {"Rd",     "Dry Dirt"               },
-      {"Rr",     "Regular Cobbles"        },
-      {"Rrc",    "Clean Grey Cobbles"     },
-      {"Rp",     "Overgrown Cobbles"      },
-      {"Iwr",    "Basic Wooden Floor"     }},
-   Desert = {
-      {"Rd",     "Dry Dirt"               },
-      {"Dd",     "Desert Sands"           },
-      {"Ds",     "Beach Sands"            },
-      {"Dd^Dc",  "Crater"                 },
-      {"Hd",     "Dunes"                  },
-      {"Md",     "Dry Mountains"          },
-      {"Md^Xm",  "Desert Impassables"     },
-      {"Cd",     "Desert Castle"          },
-      {"Kd",     "Desert Keep"            }},
-   Frozen = {
-      {"Ai",      "Ice"                            },
-      {"Aa",      "Snow"                           },
-      {"Ha",      "Snow Hills"                     },
-      {"Ms",      "Snowy Mountains"                },
-      {"Ms^Xm",   "Snowy Impassable Mountains"     },
-      {"Cea",     "Snowy Encampment"               },
-      {"Coa",     "Snowy Orcish Castle"            },
-      {"Cha",     "Snowy Human Castle"             },
-      {"Kea",     "Snowy Encampment Keep"          },
-      {"Koa",     "Snowy Orcish Keep"              },
-      {"Kha",     "Snowy Human Castle Keep"        }},
-   Rough = {
-      {"Hh",       "Regular Hills"                  },
-      {"Hhd",      "Dry Hills"                      },
-      {"Hd",       "Dunes"                          },
-      {"Ha",       "Snow Hills"                     },
-      {"Mm",       "Regulary Mountains"             },
-      {"Md",       "Dry Mountains"                  },
-      {"Ms",       "Snowy Mountains"                },
-      {"Uh",       "Rockbound Cave"                 },
-      {"Mv",       "Volcano"                        },
-      {"Mm^Xm",    "Regular Impassable Mountains"   },
-      {"Md^Xm",    "Desert Impassable Mountains"    },
-      {"Ms^Xm",    "Snowy Impassable Mountains"     }},
-   Cave = {
-      {"Uu",      "Cave Floor"                     },
-      {"Uue",     "Earthy Cave Floor"              },
-      {"Urb",     "Dark Flagstones"                },
-      {"Ur",      "Cave Path"                      },
-      {"Uh",      "Rockbound Cave"                 },
-      {"Qxu",     "Regular Chasm"                  },
-      {"Qxe",     "Earthy Chasm"                   },
-      {"Qxua",    "Ethereal Abyss"                 },
-      {"Ql",      "Lava Chasm"                     },
-      {"Qlf",     "Lava"                           },
-      {"Xu",      "Natural Cave Wall"              },
-      {"Xuc",     "Hewn Cave Wall"                 },
-      {"Xue",     "Natural Earthy Cave Wall"       },
-      {"Xuce",    "Reinforced Earthy Cave Wall"    },
-      {"Xos",     "Stone Wall"                     },
-      {"Xol",     "Lit Stone Wall"                 },
-      {"Cud",     "Dwarven Castle"                 },
-      {"Kud",     "Dwarven Castle Keep"            }},
-   Obstacle = {
-      {"Qxu",     "Regular Chasm"                  },
-      {"Qxe",     "Earthy Chasm"                   },
-      {"Qxua",    "Ethereal Abyss"                 },
-      {"Ql",      "Lava Chasm"                     },
-      {"Qlf",     "Lava"                           },
-      {"Mv",      "Volcano"                        },
-      {"Mm^Xm",   "Regular Impassable Mountains"   },
-      {"Md^Xm",   "Desert Impassable Mountains"    },
-      {"Ms^Xm",   "Snowy Impassable Mountains"     },
-      {"Xu",      "Natural Cave Wall"              },
-      {"Xuc",     "Hewn Cave Wall"                 },
-      {"Xue",     "Natural Earthy Cave Wall"       },
-      {"Xuce",    "Reinforced Earthy Cave Wall"    },
-      {"Xos",     "Stone Wall"                     },
-      {"Xol",     "Lit Stone Wall"                 }},
-   Castle = {
-      {"Ce",      "Encampment"                     },
-      {"Cea",     "Snowy Encampment"               },
-      {"Co",      "Orcish Castle"                  },
-      {"Coa",     "Snowy Orcish Castle"            },
-      {"Ch",      "Human Castle"                   },
-      {"Cha",     "Snowy Human Castle"             },
-      {"Cv",      "Elven Castle"                   },
-      {"Cud",     "Dwarven Castle"                 },
-      {"Chr",     "Ruined Human Castle"            },
-      {"Chw",     "Sunken Human Ruin"              },
-      {"Chs",     "Swamp Human Ruin"               },
-      {"Cd",      "Desert Castle"                  },
-      {"Ke",      "Encampment Keep"                },
-      {"Kea",     "Snowy Encampment Keep"          },
-      {"Ko",      "Orcish Keep"                    },
-      {"Koa",     "Snowy Orcish Keep"              },
-      {"Kh",      "Human Castle Keep"              },
-      {"Kha",     "Snowy Human Castle Keep"        },
-      {"Kv",      "Elven Castle Keep"              },
-      {"Kud",     "Dwarven Castle Keep"            },
-      {"Khr",     "Ruined Human Castle Keep"       },
-      {"Khw",     "Sunken Human Castle Keep"       },
-      {"Khs",     "Swamp Human Castle Keep"        },
-      {"Kd",      "Desert Keep"                    }},
-   Special = {
-      {"Xv",      "Void"                           }}}
+   Water = {"Wog", "Wo", "Wot", "Wwg", "Ww", "Wwt", "Wwf", "Wwr", "Ss", "Sm", "Chw", "Chs", "Khw", "Khs"},
+   Flat = {"Gg", "Gs", "Gd", "Gll", "Rb", "Re", "Rd", "Rr", "Rrc", "Rp", "Iwr"},
+   Desert = {"Rd", "Dd", "Ds", "Dd^Dc", "Hd", "Md", "Md^Xm", "Cd", "Kd"},
+   Frozen = {"Ai", "Aa", "Ha", "Ms", "Ms^Xm", "Cea", "Coa", "Cha", "Kea", "Koa", "Kha"},
+   Rough = {"Hh", "Hhd", "Hd", "Ha", "Mm", "Md", "Ms", "Uh", "Mv", "Mm^Xm", "Md^Xm", "Ms^Xm"},
+   Cave = {"Uu", "Uue", "Urb", "Ur", "Uh", "Qxu", "Qxe", "Qxua", "Ql", "Qlf", "Xu", "Xuc", "Xue", "Xuce", "Xos", "Xol", "Cud", "Kud"},
+   Obstacle = {"Qxu", "Qxe", "Qxua", "Ql", "Qlf", "Mv", "Mm^Xm", "Md^Xm", "Ms^Xm", "Xu", "Xuc", "Xue", "Xuce", "Xos", "Xol"},
+   Castle = {"Ce", "Cea", "Co", "Coa", "Ch", "Cha", "Cv", "Cud", "Chr", "Chw", "Chs", "Cd", "Ke", "Kea", "Ko", "Koa", "Kh", "Kha", "Kv", "Kud", "Khr", "Khw", "Khs", "Kd"},
+   Special = {"Xv"}}
 
 terrain.overlays = {
    Water = {
@@ -278,21 +162,6 @@ function terrain.remove_overlay()
    end
 end
 
-function submenu_overlay_options(name)
-   if name == "Repeat last overlay" then
-      terrain.set_overlay(terrain.last_overlay)
-   elseif name == "Remove overlay" then
-      terrain.remove_overlay()
-   else
-      local options = DungeonOpt:new {
-      root_message   = "Which overlay would you like to place?",
-      option_message = "$input2",
-      code           = "terrain.set_overlay('$input1')" }
-      local terrain_list = terrain.overlays[name]
-      options:fire(terrain_list)
-   end
-end
-
 function submenu_terrain_choose(name)
    if name == "Repeat last terrain" then
       terrain.set_terrain(terrain.last_terrain)
@@ -303,17 +172,26 @@ function submenu_terrain_choose(name)
       end
    elseif name == "Set an overlay" then
       local options_overlay = {"Repeat last overlay", "Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
-      local overlay = menu(options_overlay, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_simple_list)
-      if overlay then
-         submenu_overlay_options(overlay)
+      local overlay_name = menu(options_overlay, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_simple_list)
+      if overlay_name then
+         if overlay_name == "Repeat last overlay" then
+            terrain.set_overlay(terrain.last_overlay)
+         elseif overlay_name == "Remove overlay" then
+            terrain.remove_overlay()
+         else
+            local options = DungeonOpt:new {
+               root_message   = "Which overlay would you like to place?",
+               option_message = "$input2",
+               code           = "terrain.set_overlay('$input1')" }
+            local terrain_list = terrain.overlays[overlay_name]
+            options:fire(terrain_list)
+         end
       end
    else
-      local options = DungeonOpt:new {
-         root_message   = "Which terrain would you like to switch to?",
-         option_message = "$input2",
-         code           = "terrain.set_terrain('$input1')" }
-      local terrain_list = terrain.terrain[name]
-      options:fire(terrain_list)
+      local terrain_choice = menu(terrain.terrain[name], "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_terrain_list)
+      if terrain_choice then
+         terrain.set_terrain(terrain_choice)
+      end
    end
 end
 >>
