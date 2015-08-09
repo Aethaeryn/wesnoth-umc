@@ -1,6 +1,7 @@
 #define MOD_MENU
 <<
 mod_menu = {}
+mod_menu.lich_image = "portraits/undead/transparent/ancient-lich.png"
 
 local function get_roles()
    local roles = {}
@@ -22,9 +23,8 @@ end
 local function submenu_inventory_quantity(item, container)
    local title = "Change Inventory"
    local description = string.format("How much of %s do you want to give?", item)
-   local image = "portraits/undead/transparent/ancient-lich.png"
    local label = "Item Quantity:"
-   local count = menu_text_input(image, title, description, label)
+   local count = menu_text_input(mod_menu.lich_image, title, description, label)
    if count and count > 0 then
       mod_inventory.add(item, count, container)
    end
@@ -67,11 +67,10 @@ function mod_menu.summon_summoner()
    local e = wesnoth.current.event_context
    local title = "Summon Summoner"
    local description = "Select a summoner type."
-   local image = "portraits/undead/transparent/ancient-lich.png"
-   local summoner_type = menu(SUMMON_ROLES, image, title, description, menu_simple_list)
+   local summoner_type = menu(SUMMON_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
    if summoner_type then
       local description = "Select a unit to summon."
-      local summoner = menu(summoners[summoner_type], image, title, description, menu_unit_list, nil, "unit")
+      local summoner = menu(summoners[summoner_type], mod_menu.lich_image, title, description, menu_unit_list, nil, "unit")
       if summoner then
          spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
       end
@@ -82,7 +81,7 @@ function mod_menu.unit_commands()
    local e = wesnoth.current.event_context
    local title = "Unit Commands"
    local description = "What do you want to do with this unit?"
-   local image = "portraits/undead/transparent/ancient-lich.png" -- todo: definitely not appropriate here
+   local image = mod_menu.lich_image -- todo: definitely not appropriate here
    local options = {
       {"Interact", "icons/coins_copper.png"},
       {"Use Item", "icons/potion_red_small.png"},
@@ -137,31 +136,29 @@ function mod_menu.unit_editor()
    local e = wesnoth.current.event_context
    local title = "Change Unit"
    local description = "What stat do you want to modify?"
-   local image = "portraits/undead/transparent/ancient-lich.png"
    local options = {"Side", "Inventory", "Transform", "Role", "Stats"}
-   local choice = menu(options, image, title, description, menu_simple_list)
+   local choice = menu(options, mod_menu.lich_image, title, description, menu_simple_list)
    if choice then
       if choice == "Transform" then
          local description = "What unit do you want it to transform to?"
          local label = "Unit Type:"
-         local new_unit = menu_text_input(image, title, description, label)
+         local new_unit = menu_text_input(mod_menu.lich_image, title, description, label)
          if new_unit then
             change_unit.transform(e.x1, e.y1, new_unit)
          end
       elseif choice == "Role" then
-         local role = menu(get_roles(), image, title, "Select a new (summoning) role for this unit.", menu_simple_list)
+         local role = menu(get_roles(), mod_menu.lich_image, title, "Select a new (summoning) role for this unit.", menu_simple_list)
          if role then
             change_unit.role(e.x1, e.y1, role)
          end
       elseif choice == "Inventory" then
          local description = "Which item do you want to add?"
-         local inventory = show_all_inventory()
-         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         local item = menu(show_all_inventory(), "", title, description, menu_picture_list, 1, "item_stats")
          if item then
             submenu_inventory_quantity(item, wesnoth.get_unit(e.x1, e.y1).variables)
          end
       elseif choice == "Side" then
-         local side = menu(SIDES, image, title, "Select a target side.", menu_simple_list)
+         local side = menu(SIDES, mod_menu.lich_image, title, "Select a target side.", menu_simple_list)
          if side then
             change_unit.side(e.x1, e.y1, side)
          end
@@ -169,14 +166,14 @@ function mod_menu.unit_editor()
          local stats = {"Hitpoints", "Max Hitpoints", "Max Moves",
                         "Experience", "Max Experience", "Gender",
                         "Leader"}
-         local stat = menu(stats, image, title, "Which stat do you want to change?", menu_simple_list)
+         local stat = menu(stats, mod_menu.lich_image, title, "Which stat do you want to change?", menu_simple_list)
          if stat then
             stat = string.gsub(string.lower(stat), " ", "_")
             if stat ~= "gender" and stat ~= "leader" then
                local description = string.format("What should the new value of %s be?", stat)
                local label = "New Value:"
                local new_value
-               new_value = menu_text_input(image, title, description, label)
+               new_value = menu_text_input(mod_menu.lich_image, title, description, label)
                if new_value then
                   change_unit[stat](e.x1, e.y1, new_value)
                end
@@ -190,10 +187,9 @@ end
 
 function mod_menu.terrain_editor()
    local e = wesnoth.current.event_context
-   terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
+   terrain.change_hexes = wesnoth.get_locations {x = e.x1, y = e.y1, radius = terrain.radius}
    local title = "Terrain Editor"
    local description = "Which terrain would you like to switch to?"
-   local image = "portraits/undead/transparent/ancient-lich.png"
    local options = {
       "Repeat last terrain",
       "Set an overlay",
@@ -208,12 +204,12 @@ function mod_menu.terrain_editor()
       "Obstacle",
       "Castle",
       "Special"}
-   local name = menu(options, image, title, description, menu_simple_list)
+   local name = menu(options, mod_menu.lich_image, title, description, menu_simple_list)
    if name then
       if name == "Repeat last terrain" then
          terrain.set_terrain(terrain.last_terrain)
       elseif name == "Change radius" then
-         local new_radius = menu(terrain.possible_radius, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "What do you want to set the terrain radius as?", menu_simple_list)
+         local new_radius = menu(terrain.possible_radius, mod_menu.lich_image, title, "What do you want to set the terrain radius as?", menu_simple_list)
          if new_radius then
             terrain.radius = new_radius
          end
@@ -232,21 +228,21 @@ function mod_menu.terrain_editor()
             "Bridge",
             "Special",
             "Remove overlay"}
-         local overlay_name = menu(options_overlay, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_simple_list)
+         local overlay_name = menu(options_overlay, mod_menu.lich_image, title, "Which terrain would you like to switch to?", menu_simple_list)
          if overlay_name then
             if overlay_name == "Repeat last overlay" then
                terrain.set_overlay(terrain.last_overlay)
             elseif overlay_name == "Remove overlay" then
                terrain.remove_overlay()
             else
-               local terrain_choice = menu(terrain.overlays[overlay_name], "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain overlay would you like to place?", menu_terrain_list)
+               local terrain_choice = menu(terrain.overlays[overlay_name], mod_menu.lich_image, title, "Which terrain overlay would you like to place?", menu_terrain_list)
                if terrain_choice then
                   terrain.set_overlay(terrain_choice)
                end
             end
          end
       else
-         local terrain_choice = menu(terrain.terrain[name], "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to place?", menu_terrain_list)
+         local terrain_choice = menu(terrain.terrain[name], mod_menu.lich_image, title, "Which terrain would you like to place?", menu_terrain_list)
          if terrain_choice then
             terrain.set_terrain(terrain_choice)
          end
@@ -258,14 +254,13 @@ function mod_menu.place_object()
    local e = wesnoth.current.event_context
    local title = "Place Object"
    local description = "What do you want to do with this unit?"
-   local image = "portraits/undead/transparent/ancient-lich.png"
    local options = {
       {"Place Shop", "scenery/tent-shop-weapons.png"},
       {"Place Chest", "items/chest-plain-closed.png"},
       {"Place Pack", "items/leather-pack.png"},
       {"Place Gold Pile", "items/gold-coins-large.png"},
       {"Clear Hex", "terrain/grass/green-symbol.png"}}
-   local option = menu(options, image, title, description, menu_picture_list, 1)
+   local option = menu(options, mod_menu.lich_image, title, description, menu_picture_list, 1)
    if option then
       if option == "Place Shop" then
          simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
@@ -276,7 +271,7 @@ function mod_menu.place_object()
       elseif option == "Place Gold Pile" then
          local description = "How much gold do you want to place in the pile?"
          local label = "Gold:"
-         local gold = menu_text_input(image, title, description, label)
+         local gold = menu_text_input(mod_menu.lich_image, title, description, label)
          if gold and type(gold) == "number" and gold > 0 then
             place_gold(e.x1, e.y1, gold)
          end
@@ -290,7 +285,6 @@ function mod_menu.settings()
    local e = wesnoth.current.event_context
    local title = "Settings"
    local description = "What action do you want to do?"
-   local image = "portraits/undead/transparent/ancient-lich.png"
    local options = {"Modify Container",
                     "Modify Side",
                     "New Scenario",
@@ -298,23 +292,21 @@ function mod_menu.settings()
                     "Toggle Unit Editor",
                     "Toggle Terrain Editor",
                     "Toggle Place Object"}
-   local option = menu(options, image, title, description, menu_simple_list)
+   local option = menu(options, mod_menu.lich_image, title, description, menu_simple_list)
    if option then
       if option == "Modify Container" then
          local description = "Which container do you want to modify?"
-         local interaction = menu(find_interactions_to_modify(e.x1, e.y1), image, title, description, menu_picture_list, 1)
+         local interaction = menu(find_interactions_to_modify(e.x1, e.y1), mod_menu.lich_image, title, description, menu_picture_list, 1)
          if interaction then
             if interaction == "Modify Shop" then
                local description = "Which item do you want to add?"
-               local inventory = show_all_inventory()
-               local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+               local item = menu(show_all_inventory(), "", title, description, menu_picture_list, 1, "item_stats")
                if item then
                   submenu_inventory_quantity(item, containers[e.x1][e.y1]["shop"])
                end
             elseif interaction == "Modify Chest" then
                local description = "Which item do you want to add?"
-               local inventory = show_all_inventory()
-               local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+               local item = menu(show_all_inventory(), "", title, description, menu_picture_list, 1, "item_stats")
                if item then
                   submenu_inventory_quantity(item, containers[e.x1][e.y1]["chest"])
                end
@@ -322,17 +314,17 @@ function mod_menu.settings()
          end
       elseif option == "Modify Side" then
          local description = "Which side do you want to modify?"
-         local side = menu(get_sides_with_all(), image, title, description, menu_simple_list)
+         local side = menu(get_sides_with_all(), mod_menu.lich_image, title, description, menu_simple_list)
          if side then
-            local description = "Which variable of all sides do you want to change?"
+            local description = "Which variable do you want to change?"
             local stats = {"gold", "village_gold", "base_income", "team_name", "objectives"}
             if side == "All" then
-               stat = menu(stats, image, title, description, menu_simple_list)
+               stat = menu(stats, mod_menu.lich_image, title, description, menu_simple_list)
                if stat then
                   if stat ~= "objectives" then
                      local title = string.format("Choose a new value for %s", stat)
                      local label = "New value:"
-                     local new_value = menu_text_input(image, title, description, label)
+                     local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
                      if new_value then
                         for i, side in ipairs(wesnoth.sides) do
                            side[stat] = new_value
@@ -344,17 +336,16 @@ function mod_menu.settings()
                   end
                end
             else
-               local description = "Which variable do you want to change?"
                local side_stats = {}
                for i, stat in ipairs(stats) do
-                  side_stats[i] = { stat, wesnoth.sides[side][stat] }
+                  side_stats[i] = {stat, wesnoth.sides[side][stat]}
                end
-               stat = menu(side_stats, image, title, description, menu_almost_simple_list, 1, "team_stats")
+               stat = menu(side_stats, mod_menu.lich_image, title, description, menu_almost_simple_list, 1, "team_stats")
                if stat then
                   if stat ~= "objectives" then
                      local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])
                      local label = "New value:"
-                     local new_value = menu_text_input(image, title, description, label)
+                     local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
                      if new_value then
                         wesnoth.sides[side][stat] = new_value
                         if stat == "team_name" then
@@ -384,7 +375,7 @@ function mod_menu.settings()
             ["Hide and Seek"] = "hide_and_seek",
             ["Open Dungeon"] = "open_dungeon",
             ["Woods"] = "woods"}
-         local scenario = menu(scenarios, image, title, description, menu_simple_list)
+         local scenario = menu(scenarios, mod_menu.lich_image, title, description, menu_simple_list)
          if scenario then
             fire.end_scenario(scenario_ids[scenario])
          end
@@ -406,7 +397,7 @@ local function menu_item_summon(unit_role)
       text = "Summon "..unit_role,
       image = "terrain/symbols/terrain_group_custom3_30.png",
       filter = aeth_mod_filter.summon(unit_role),
-      command = string.format("mod_menu.summon('%s')", unit_role) }
+      command = string.format("mod_menu.summon('%s')", unit_role)}
    return menu_item
 end
 
