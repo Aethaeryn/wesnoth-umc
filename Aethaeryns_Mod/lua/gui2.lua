@@ -1,8 +1,5 @@
 #define MOD_GUI2
 <<
-helper = wesnoth.require "lua/helper.lua"
-T = helper.set_wml_tag_metatable {}
-
 local function generate_dialog(not_empty, menu_type, has_sidebar)
    local menu_core = {}
    if not_empty then

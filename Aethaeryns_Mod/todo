@@ -152,6 +152,11 @@ When this list is complete/empty, bump to version 0.9
 
  (5) Issues (2%)
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
+  * VERY MAJOR BUG: Container state is wiped on every load because the container table doesn't persist.
+    - See: NotSoEasyCoding on the wiki.
+  * VERY MAJOR BUG: The tables don't seem to even recreate themselves when loading, even the ones containing functions!
+    - Preload does *not* fix this!!! (Maybe because it uses WML macros)
+
   * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
   * BUG: Fix icon size for Summon <foo> and Summon Summoner.
   * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
