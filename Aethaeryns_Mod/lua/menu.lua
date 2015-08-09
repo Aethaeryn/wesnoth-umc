@@ -213,9 +213,36 @@ function mod_menu.terrain_editor()
                     "Obstacle",
                     "Castle",
                     "Special"}
-   local choice = menu(options, image, title, description, menu_simple_list)
-   if choice then
-      submenu_terrain_choose(choice)
+   local name = menu(options, image, title, description, menu_simple_list)
+   if name then
+      if name == "Repeat last terrain" then
+         terrain.set_terrain(terrain.last_terrain)
+      elseif name == "Change radius" then
+         local new_radius = menu(terrain.possible_radius, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "What do you want to set the terrain radius as?", menu_simple_list)
+         if new_radius then
+            terrain.radius = new_radius
+         end
+      elseif name == "Set an overlay" then
+         local options_overlay = {"Repeat last overlay", "Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
+         local overlay_name = menu(options_overlay, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_simple_list)
+         if overlay_name then
+            if overlay_name == "Repeat last overlay" then
+               terrain.set_overlay(terrain.last_overlay)
+            elseif overlay_name == "Remove overlay" then
+               terrain.remove_overlay()
+            else
+               local terrain_choice = menu(terrain.overlays[overlay_name], "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain overlay would you like to place?", menu_terrain_list)
+               if terrain_choice then
+                  terrain.set_overlay(terrain_choice)
+               end
+            end
+         end
+      else
+         local terrain_choice = menu(terrain.terrain[name], "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to place?", menu_terrain_list)
+         if terrain_choice then
+            terrain.set_terrain(terrain_choice)
+         end
+      end
    end
 end
 

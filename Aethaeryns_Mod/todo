@@ -1,11 +1,8 @@
 AETHAERYN'S MOD TODO LIST (90% Progress)
 When this list is complete/empty, bump to version 0.9
 
- (0) GUI2 menu rewrites (1%)
-  - terrain_editor.lua
-    - make sure all terrain in 1.12 is in the editor
-    - rewrite menus for terrains and overlays to use gui2
-    - delete DungeonOpt.lua
+ (0) (1%)
+  - make sure all non-problematic terrain from 1.12 is in the editor
 
  (1) Inventory Containers (2%)
   - Large parts of inventory.lua need rewriting so the code is more general for the changes below.
