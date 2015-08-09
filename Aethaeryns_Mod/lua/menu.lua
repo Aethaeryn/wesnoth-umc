@@ -25,15 +25,8 @@ local function submenu_inventory_quantity(item, container)
    local image = "portraits/undead/transparent/ancient-lich.png"
    local label = "Item Quantity:"
    local count = menu_text_input(image, title, description, label)
-   if count then
-      if count < 0 then
-         count = 0
-      end
-      if container == "unit" then
-         add_unit_item(item, count)
-      else
-         add_container_item(item, count, container)
-      end
+   if count and count > 0 then
+      mod_inventory.add(item, count, container)
    end
 end
 
@@ -101,7 +94,7 @@ function mod_menu.unit_commands()
       local inventory = show_current_inventory(wesnoth.get_unit(e.x1, e.y1).variables)
       local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
       if item then
-         item_use(item)
+         mod_inventory.use(e.x1, e.y1, item)
       end
    elseif option == "Upgrades" then
       submenu_upgrade_unit()
@@ -116,7 +109,7 @@ function mod_menu.unit_commands()
             local inventory = show_current_inventory(containers[e.x1][e.y1]["shop"])
             local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
             if item then
-               shop_buy(item, wesnoth.current.side)
+               shop_buy(e.x1, e.y1, item, wesnoth.current.side)
             end
          elseif option == "Collect Gold" then
             wesnoth.sides[wesnoth.current.side]["gold"] = wesnoth.sides[wesnoth.current.side]["gold"] + containers[e.x1][e.y1]["gold"]
@@ -165,7 +158,7 @@ function mod_menu.unit_editor()
          local inventory = show_all_inventory()
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
          if item then
-            submenu_inventory_quantity(item, "unit")
+            submenu_inventory_quantity(item, wesnoth.get_unit(e.x1, e.y1).variables)
          end
       elseif choice == "Side" then
          local side = menu(SIDES, image, title, "Select a target side.", menu_simple_list)

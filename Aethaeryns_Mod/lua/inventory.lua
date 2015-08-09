@@ -11,14 +11,12 @@ end
 
 function mod_inventory.chest_add(x, y, name)
    local unit = wesnoth.get_unit(x, y)
-   check_x_coord(x)
    containers[x][y]["chest"][name] = containers[x][y]["chest"][name] + 1
    unit.variables[name] = unit.variables[name] - 1
 end
 
 function mod_inventory.chest_remove(e, y, name)
    local unit = wesnoth.get_unit(x, y)
-   check_x_coord(x)
    containers[x][y]["chest"][name] = containers[x][y]["chest"][name] - 1
    if unit.variables[name] == nil then
       unit.variables[name] = 1
@@ -65,30 +63,19 @@ function place_gold(x, y, gold)
    containers[x][y]["gold"] = gold
 end
 
-function item_use(name)
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
+function mod_inventory.use(x, y, name)
+   local unit = wesnoth.get_unit(x, y)
    unit.variables[name] = unit.variables[name] - 1
    if name == "Coins" then
-      wesnoth.sides[side_number].gold = wesnoth.sides[side_number].gold + 10
+      wesnoth.sides[wesnoth.current.side].gold = wesnoth.sides[wesnoth.current.side].gold + 10
    elseif name == "Small Healing Potion" then
-      change_unit.heal(e.x1, e.y1, 6)
+      change_unit.heal(x, y, 6)
    elseif name == "Healing Potion" then
-      change_unit.heal(e.x1, e.y1, 14)
+      change_unit.heal(x, y, 14)
    end
 end
 
-function add_unit_item(name, quantity)
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
-   if unit.variables[name] == nil then
-      unit.variables[name] = quantity
-   else
-      unit.variables[name] = unit.variables[name] + quantity
-   end
-end
-
-function add_container_item(name, quantity, container)
+function mod_inventory.add(name, quantity, container)
    if container[name] == nil then
       container[name] = quantity
    else
@@ -96,11 +83,9 @@ function add_container_item(name, quantity, container)
    end
 end
 
-function shop_buy(name, side_number)
-   local e = wesnoth.current.event_context
-   local unit = wesnoth.get_unit(e.x1, e.y1)
+function shop_buy(x, y, name, side_number)
+   local unit = wesnoth.get_unit(x, y)
    local price = 99999
-   check_x_coord(e.x1)
    for i, item in ipairs(item_table) do
       if item.name == name then
          price = item.price
@@ -108,12 +93,8 @@ function shop_buy(name, side_number)
    end
    if wesnoth.sides[side_number]["gold"] >= price then
       wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] - price
-      containers[e.x1][e.y1]["shop"][name] = containers[e.x1][e.y1]["shop"][name] - 1
-      if unit.variables[name] == nil then
-         unit.variables[name] = 1
-      else
-         unit.variables[name] = unit.variables[name] + 1
-      end
+      mod_inventory.add(name, -1, containers[x][y]["shop"])
+      mod_inventory.add(name, 1, unit.variables)
    else
       gui2_error("You can't afford that!")
    end
