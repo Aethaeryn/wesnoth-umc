@@ -201,18 +201,20 @@ function mod_menu.terrain_editor()
    local title = "Terrain Editor"
    local description = "Which terrain would you like to switch to?"
    local image = "portraits/undead/transparent/ancient-lich.png"
-   local options = {"Repeat last terrain",
-                    "Set an overlay",
-                    "Change radius",
-                    "Water",
-                    "Flat",
-                    "Desert",
-                    "Frozen",
-                    "Rough",
-                    "Cave",
-                    "Obstacle",
-                    "Castle",
-                    "Special"}
+   local options = {
+      "Repeat last terrain",
+      "Set an overlay",
+      "Change radius",
+      "Water",
+      "Flat",
+      "Desert",
+      "Fall",
+      "Frozen",
+      "Rough",
+      "Cave",
+      "Obstacle",
+      "Castle",
+      "Special"}
    local name = menu(options, image, title, description, menu_simple_list)
    if name then
       if name == "Repeat last terrain" then
@@ -223,7 +225,20 @@ function mod_menu.terrain_editor()
             terrain.radius = new_radius
          end
       elseif name == "Set an overlay" then
-         local options_overlay = {"Repeat last overlay", "Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
+         local options_overlay = {
+            "Repeat last overlay",
+            "Water",
+            "Desert",
+            "Embellishments",
+            "Forest",
+            "Frozen",
+            "Rough",
+            "Cave",
+            "Obstacle",
+            "Village",
+            "Bridge",
+            "Special",
+            "Remove overlay"}
          local overlay_name = menu(options_overlay, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_simple_list)
          if overlay_name then
             if overlay_name == "Repeat last overlay" then
