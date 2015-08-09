@@ -3,36 +3,51 @@ When this list is complete/empty, bump to version 0.9
 
  (0) GUI2 menu rewrites (1%)
   - terrain_editor.lua
+    - make sure all terrain in 1.12 is in the editor
     - rewrite menus for terrains and overlays to use gui2
-    - move a lot of terrains into overlays only (villages, forests, etc.)
     - delete DungeonOpt.lua
-  - Slider instead of text input:
-    - Gold quantity.
-    - Inventory quantity.
 
  (1) Inventory Containers (2%)
+  - Large parts of inventory.lua need rewriting so the code is more general for the changes below.
+    - Make sure functions live in tables.
+    - Use a slider instead of text input for gold quantity and inventory quantity.
+
+  - Container changes on host or unit actions:
+    - shops:
+      - shops start as "Shop (Empty)" if no template is chosen or "Shop" otherwise
+      - empty shops change to "Shop" if items are added or sold
+      - stocked shops change to "Shop (Empty)" if entirely emptied
+    - chests:
+      - chests start with open icon if no template is chosen or as closed otherwise
+      - empty chests change to closed if items are added
+      - closed chests change to open if all items are removed
+    - gold:
+      - gold pile initial size is based on starting gold quantity
+      - gold pile size changes based on additions or removals
+      - if gold pile is empty it disappears
+    - pack:
+      - if pack is empty it disappears
+      - this means the host cannot place a pack unless a non-empty template is chosen
+
   - Player container interactions:
     - remove from container (using slider)
-      - buy if shop
-        - shop adds "(Empty)" label if empty (that means it starts as "Shop (Empty)")
+      - buy if shop (checks to see if you can afford it)
+        - if sliders are powerful enough, maybe it can disable the OK button if you can't afford it
+        - or just set the max of the slider to the max you can afford instead of the max of the shop's inventory
       - remove if pack or chest
-        - pack disappears if empty
-        - chest uses open image if empty
       - remove gold quantity if gold pile
-        - gold pile shrinks and disappears if empty
+        - defaults to 100% because that's probably going to be the most common (players are greedy)
+        - maybe eventually add a "share gold" game option to split gold piles evenly among players automatically
+          - only really works thematically if they stay next to each other, though
     - add to container (using slider)
       - sell items if shop at math.floor(0.8 * cost)
-        - if shop was empty, "(Empty)" label goes away
       - simple add if chest
-        - if chest was open, image switches to closed
 
   - Host container and unit interactions:
     - view current inventory
     - add items based on template
     - add item (using slider)
-      - if container, image/label changes above also apply
     - remove item (using slider)
-      - if container, image/label changes above also apply
     - change amount for each item (using slider?)
       - absolute numbers instead of relative numbers
       - if container, image/label changes above also apply
@@ -65,6 +80,7 @@ When this list is complete/empty, bump to version 0.9
     - Inventory (all unequipped items)
       - Gold (if leader)
       - Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
+        - This means that gold piles should always be in intervals of 10 and regular units will only pick up coins, not gold.
 
   - Not all units can be interacted with (e.g. zombies).
     - Those units (like zombies) can't use Unit Commands, either, but host can give them items and they can get items and equipment inherited if they were plagued.
@@ -165,9 +181,8 @@ When this list is complete/empty, bump to version 0.9
   * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
   * CODE: Fix spacing on GUI2 GUIs, especially the error message and the areas with more than one button.
   * CODE: remove all submenu_ functions in upgrades.lua and terrain_editor.lua
-  * CODE: inventory.lua and upgrades.lua need to put the non-menu functions in tables
-    - inventory.lua is a mess; better functions can be written
-    - upgrades.lua is a mess in the opposite direction; behavior could be moved into functions
+  * CODE: upgrades.lua need to put the non-menu functions in tables
+    - upgrades.lua is a mess; behavior could be moved into functions
 
  (6) Future
     * Extend the GUI2 wrapper so that it can handle more  than one return value.

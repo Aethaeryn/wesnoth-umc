@@ -207,12 +207,10 @@ function mod_menu.terrain_editor()
                     "Water",
                     "Flat",
                     "Desert",
-                    "Forest",
                     "Frozen",
                     "Rough",
                     "Cave",
                     "Obstacle",
-                    "Village",
                     "Castle",
                     "Special"}
    local choice = menu(options, image, title, description, menu_simple_list)

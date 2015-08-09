@@ -1,9 +1,6 @@
 #define MOD_LUA_INVENTORY
 <<
-if containers == nil then
-   containers = {}
-end
-
+containers = {}
 mod_inventory = {}
 
 local function check_x_coord(x)

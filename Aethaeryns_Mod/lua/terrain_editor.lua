@@ -1,12 +1,10 @@
 #define MOD_LUA_TERRAIN_EDITOR
 <<
--- If/then is currently needed so variables persist past side turns.
-if terrain == nil then
-   terrain = {}
-   terrain.last_terrain = "Ur"
-   terrain.radius = 0
-   terrain.possible_radius = {0, 1, 2}
-end
+terrain = {}
+terrain.last_terrain = "Ur"
+terrain.last_overlay = "^Vh"
+terrain.radius = 0
+terrain.possible_radius = {0, 1, 2}
 
 function terrain.set_terrain(terrain_symbol)
    terrain.last_terrain = terrain_symbol
@@ -16,15 +14,27 @@ function terrain.set_terrain(terrain_symbol)
 end
 
 function terrain.set_overlay(terrain_symbol)
-   for i, terrain in ipairs(terrain.change_hexes) do
-      local terrain_type = wesnoth.get_terrain(terrain[1], terrain[2])
-      if string.find(terrain_type, "%^") == nil then
+   terrain.last_overlay = terrain_symbol
+   for i, hex in ipairs(terrain.change_hexes) do
+      local terrain_type = wesnoth.get_terrain(hex[1], hex[2])
+      local split_char = string.find(terrain_type, "%^")
+      if split_char == nil then
          local terrain_symbol = terrain_type..terrain_symbol
-         wesnoth.set_terrain(terrain[1], terrain[2], terrain_symbol)
+         wesnoth.set_terrain(hex[1], hex[2], terrain_symbol)
       else
-         char = string.find(terrain_type, "%^")
-         local terrain_symbol = string.sub(terrain_type, 1, char - 1)..terrain_symbol
-         wesnoth.set_terrain(terrain[1], terrain[2], terrain_symbol)
+         local terrain_symbol = string.sub(terrain_type, 1, split_char - 1)..terrain_symbol
+         wesnoth.set_terrain(hex[1], hex[2], terrain_symbol)
+      end
+   end
+end
+
+function terrain.remove_overlay()
+   for i, hex in ipairs(terrain.change_hexes) do
+      local terrain_type = wesnoth.get_terrain(hex[1], hex[2])
+      local split_char = string.find(terrain_type, "%^")
+      if split_char ~= nil then
+         local terrain_symbol = string.sub(terrain_type, 1, split_char - 1)
+         wesnoth.set_terrain(hex[1], hex[2], terrain_symbol)
       end
    end
 end
@@ -35,9 +45,12 @@ function submenu_overlay_options(name)
       option_message = "$input2",
       code           = "terrain.set_overlay('$input1')"
    }
-
-   if name == "Water" then
-      options:fire{
+   if name == "Repeat last overlay" then
+      terrain.set_overlay(terrain.last_overlay)
+   elseif name == "Remove overlay" then
+      terrain.remove_overlay()
+   elseif name == "Water" then
+      local terrain_list = {
          {"^Vhs",   "Swamp Village"                  },
          {"^Vm",    "Shallow Merfolk Village"        },
          {"^Vm",    "Swamp Merfolk Village"          },
@@ -46,18 +59,18 @@ function submenu_overlay_options(name)
          {"^Bw\\",  "Wood Bridge \\"                 },
          {"^Bsb|",  "Basic Stone Bridge |"           },
          {"^Bsb/",  "Basic Stone Bridge /"           },
-         {"^Bsb\\", "Basic Stone Bridge \\"          }
-      }
+         {"^Bsb\\", "Basic Stone Bridge \\"          }}
+      options:fire(terrain_list)
    elseif name == "Desert" then
-      options:fire{
+      local terrain_list = {
          {"^Dr",    "Rubble"                         },
          {"^Edp",   "Desert Plants"                  },
          {"^Edpp",  "Desert Plants w/o Bones"        },
          {"^Vda",   "Adobe Village"                  },
-         {"^Vdt",   "Desert Tent Village"            }
-      }
+         {"^Vdt",   "Desert Tent Village"            }}
+      options:fire(terrain_list)
    elseif name == "Embellishments" then
-      options:fire{
+      local terrain_list = {
          {"^Efm",   "Mixed Flowers"                  },
          {"^Gvs",   "Farmland"                       },
          {"^Es",    "Stones"                         },
@@ -66,10 +79,10 @@ function submenu_overlay_options(name)
          {"^Edp",   "Desert Plants"                  },
          {"^Edpp",  "Desert Plants w/o Bones"        },
          {"^Wm",    "Windmill"                       },
-         {"^Eff",   "Fence"                          }
-      }
+         {"^Eff",   "Fence"                          }}
+      options:fire(terrain_list)
    elseif name == "Forest" then
-      options:fire{
+      local terrain_list = {
          {"^Do",    "Oasis"                          },
          {"^Fet",   "Great Tree"                     },
          {"^Ft",    "Tropical Forest"                },
@@ -83,10 +96,10 @@ function submenu_overlay_options(name)
          {"^Fmf",   "Fall Mixed Forest"              },
          {"^Fmw",   "Winter Mixed Forest"            },
          {"^Fma",   "Snowy Mixed Forest"             },
-         {"^Uf",    "Mushroom Grove"                 }
-      }
+         {"^Uf",    "Mushroom Grove"                 }}
+      options:fire(terrain_list)
    elseif name == "Frozen" then
-      options:fire{
+      local terrain_list = {
          {"^Fpa",   "Snowy Pine Forest"              },
          {"^Fda",   "Snowy Deciduous Forest"         },
          {"^Fma",   "Snowy Mixed Forest"             },
@@ -95,17 +108,17 @@ function submenu_overlay_options(name)
          {"^Vha",   "Snowy Cottage"                  },
          {"^Vhha",  "Snowy Hill Stone Village"       },
          {"^Vca",   "Snowy Hut"                      },
-         {"^Vla",   "Snowy Log Cabin"                },
-      }
+         {"^Vla",   "Snowy Log Cabin"                }}
+      options:fire(terrain_list)
    elseif name == "Rough" then
-      options:fire{
+      local terrain_list = {
          {"^Dr",    "Rubble"                         },
          {"^Vhh",   "Hill Stone Village"             },
          {"^Vhha",  "Snowy Hill Stone Village"       },
-         {"^Vhhr",  "Ruined Hill Stone Village"      }
-      }
+         {"^Vhhr",  "Ruined Hill Stone Village"      }}
+      options:fire(terrain_list)
    elseif name == "Cave" then
-      options:fire{
+      local terrain_list = {
          {"^Emf",   "Mushroom Farm"                  },
          {"^Uf",    "Mushroom Grove"                 },
          {"^Ufi",   "Lit Mushroom Grove"             },
@@ -116,10 +129,10 @@ function submenu_overlay_options(name)
          {"^Br\\",  "Mine Rail \\"                   },
          {"^Bs| ",  "Cave Chasm Bridge |"            },
          {"^Bs/",   "Cave Chasm Bridge /"            },
-         {"^Bs\\",  "Cave Chasm Bridge \\"           }
-      }
+         {"^Bs\\",  "Cave Chasm Bridge \\"           }}
+      options:fire(terrain_list)
    elseif name == "Village" then
-      options:fire{
+      local terrain_list = {
          {"^Vda",   "Adobe Village"                  },
          {"^Vdt",   "Desert Tent Village"            },
          {"^Vct",   "Tent Village"                   },
@@ -146,10 +159,10 @@ function submenu_overlay_options(name)
          {"^Vla",   "Snowy Log Cabin"                },
          {"^Vhs",   "Swamp Village"                  },
          {"^Vm",    "Shallow Merfolk Village"        },
-         {"^Vm",    "Swamp Merfolk Village"          }
-      }
+         {"^Vm",    "Swamp Merfolk Village"          }}
+      options:fire(terrain_list)
    elseif name == "Bridge" then
-      options:fire{
+      local terrain_list = {
          {"^Bw|",   "Wood Bridge |"                  },
          {"^Bw/",   "Wood Bridge /"                  },
          {"^Bw\\",  "Wood Bridge \\"                 },
@@ -158,15 +171,14 @@ function submenu_overlay_options(name)
          {"^Bsb\\", "Basic Stone Bridge \\"          },
          {"^Bs|",   "Cave Chasm Bridge |"            },
          {"^Bs/",   "Cave Chasm Bridge /"            },
-         {"^Bs\\",  "Cave Chasm Bridge \\"           }
-      }
+         {"^Bs\\",  "Cave Chasm Bridge \\"           }}
+      options:fire(terrain_list)
    elseif name == "Special" then
-      options:fire{
+      local terrain_list = {
          {"^Vov",   "Village Overlay"                },
          {"^Cov",   "Castle Overlay"                 },
-         {"^Kov",   "Keep Overlay"                   }
-      }
-   elseif name == "Remove overlay" then
+         {"^Kov",   "Keep Overlay"                   }}
+      options:fire(terrain_list)
    end
 end
 
@@ -184,13 +196,13 @@ function submenu_terrain_choose(name)
          terrain.radius = new_radius
       end
    elseif name == "Set an overlay" then
-      local options_overlay = {"Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
+      local options_overlay = {"Repeat last overlay", "Water", "Desert", "Embellishments", "Forest", "Frozen", "Rough", "Cave", "Village", "Bridge", "Special", "Remove overlay"}
       local overlay = menu(options_overlay, "portraits/undead/transparent/ancient-lich.png", "Terrain Editor", "Which terrain would you like to switch to?", menu_simple_list)
       if overlay then
          submenu_overlay_options(overlay)
       end
    elseif name == "Water" then
-      options:fire{
+      local terrain_list = {
          {"Wog",    "Grey Deep Water"        },
          {"Wo",     "Medium Deep Water"      },
          {"Wot",    "Tropical Deep Water"    },
@@ -201,16 +213,13 @@ function submenu_terrain_choose(name)
          {"Wwr",    "Coastal Reef"           },
          {"Ss",     "Swamp"                  },
          {"Sm",     "Muddy Quagmire"         },
-         {"Ss^Vhs", "Swamp Village"          },
-         {"Ww^Vm",  "Shallow Merfolk Village"},
-         {"Ss^Vm",  "Swamp Merfolk Village"  },
          {"Chw",    "Sunken Human Ruin"      },
          {"Chs",    "Swamp Humain Ruin"      },
          {"Khw",    "Sunken Human Keep"      },
-         {"Khs",    "Swamp Human Keep"       }
-      }
+         {"Khs",    "Swamp Human Keep"       }}
+      options:fire(terrain_list)
    elseif name == "Flat" then
-      options:fire{
+      local terrain_list = {
          {"Gg",     "Green Grass"            },
          {"Gs",     "Semi-dry Grass"         },
          {"Gd",     "Dry Grass"              },
@@ -221,65 +230,36 @@ function submenu_terrain_choose(name)
          {"Rr",     "Regular Cobbles"        },
          {"Rrc",    "Clean Grey Cobbles"     },
          {"Rp",     "Overgrown Cobbles"      },
-         {"Iwr",    "Basic Wooden Floor"     }
-      }
+         {"Iwr",    "Basic Wooden Floor"     }}
+      options:fire(terrain_list)
    elseif name == "Desert" then
-      options:fire{
+      local terrain_list = {
          {"Rd",     "Dry Dirt"               },
          {"Dd",     "Desert Sands"           },
          {"Ds",     "Beach Sands"            },
-         {"Dd^Do",  "Oasis"                  },
          {"Dd^Dc",  "Crater"                 },
          {"Hd",     "Dunes"                  },
          {"Md",     "Dry Mountains"          },
          {"Md^Xm",  "Desert Impassables"     },
-         {"Dd^Vda", "Adobe Village"          },
-         {"Dd^Vdt", "Desert Tent Village"    },
          {"Cd",     "Desert Castle"          },
-         {"Kd",     "Desert Keep"            }
-      }
-   elseif name == "Forest" then
-      options:fire{
-         {"Dd^Do",   "Oasis"                          },
-         {"Gg^Fet",  "Great Tree"                     },
-         {"Gs^Ft",   "Tropical Forest"                },
-         {"Gll^Fp",  "Pine Forest"                    },
-         {"Aa^Fpa",  "Snowy Pine Forest"              },
-         {"Gs^Fds",  "Summer Deciduous Forest"        },
-         {"Gd^Fdf",  "Fall Deciduous Forest"          },
-         {"Gs^Fdw",  "Winter Deciduous Forest"        },
-         {"Aa^Fda",  "Snowy Deciduous Forest"         },
-         {"Gs^Fms",  "Summer Mixed Forest"            },
-         {"Gll^Fmf", "Fall Mixed Forest"              },
-         {"Gd^Fmw",  "Winter Mixed Forest"            },
-         {"Aa^Fma",  "Snowy Mixed Forest"             },
-         {"Uu^Uf",   "Mushroom Grove"                 }
-      }
+         {"Kd",     "Desert Keep"            }}
+      options:fire(terrain_list)
    elseif name == "Frozen" then
-      options:fire{
+      local terrain_list = {
          {"Ai",      "Ice"                            },
          {"Aa",      "Snow"                           },
-         {"Aa^Fpa",  "Snowy Pine Forest"              },
-         {"Aa^Fda",  "Snowy Deciduous Forest"         },
-         {"Aa^Fma",  "Snowy Mixed Forest"             },
          {"Ha",      "Snow Hills"                     },
          {"Ms",      "Snowy Mountains"                },
          {"Ms^Xm",   "Snowy Impassable Mountains"     },
-         {"Aa^Voa",  "Snowy Orcish Village"           },
-         {"Aa^Vea",  "Snowy Elven Village"            },
-         {"Aa^Vha",  "Snowy Cottage"                  },
-         {"Ha^Vhha", "Snowy Hill Stone Village"       },
-         {"Aa^Vca",  "Snowy Hut"                      },
-         {"Aa^Vla",  "Snowy Log Cabin"                },
          {"Cea",     "Snowy Encampment"               },
          {"Coa",     "Snowy Orcish Castle"            },
          {"Cha",     "Snowy Human Castle"             },
          {"Kea",     "Snowy Encampment Keep"          },
          {"Koa",     "Snowy Orcish Keep"              },
-         {"Kha",     "Snowy Human Castle Keep"        }
-      }
+         {"Kha",     "Snowy Human Castle Keep"        }}
+      options:fire(terrain_list)
    elseif name == "Rough" then
-      options:fire{
+      local terrain_list = {
          {"Hh",       "Regular Hills"                  },
          {"Hhd",      "Dry Hills"                      },
          {"Hd",       "Dunes"                          },
@@ -291,19 +271,14 @@ function submenu_terrain_choose(name)
          {"Mv",       "Volcano"                        },
          {"Mm^Xm",    "Regular Impassable Mountains"   },
          {"Md^Xm",    "Desert Impassable Mountains"    },
-         {"Ms^Xm",    "Snowy Impassable Mountains"     },
-         {"Hh^Vhh",   "Hill Stone Village"             },
-         {"Ha^Vhha",  "Snowy Hill Stone Village"       },
-         {"Hhd^Vhhr", "Ruined Hill Stone Village"      }
-      }
+         {"Ms^Xm",    "Snowy Impassable Mountains"     }}
+      options:fire(terrain_list)
    elseif name == "Cave" then
-      options:fire{
+      local terrain_list = {
          {"Uu",      "Cave Floor"                     },
          {"Uue",     "Earthy Cave Floor"              },
          {"Urb",     "Dark Flagstones"                },
          {"Ur",      "Cave Path"                      },
-         {"Uu^Uf",   "Mushroom Grove"                 },
-         {"Uu^Ufi",  "Lit Mushroom Grove"             },
          {"Uh",      "Rockbound Cave"                 },
          {"Qxu",     "Regular Chasm"                  },
          {"Qxe",     "Earthy Chasm"                   },
@@ -316,13 +291,11 @@ function submenu_terrain_choose(name)
          {"Xuce",    "Reinforced Earthy Cave Wall"    },
          {"Xos",     "Stone Wall"                     },
          {"Xol",     "Lit Stone Wall"                 },
-         {"Uu^Vu",   "Cave Village"                   },
-         {"Uu^Vud",  "Dwarven Village"                },
          {"Cud",     "Dwarven Castle"                 },
-         {"Kud",     "Dwarven Castle Keep"            }
-      }
+         {"Kud",     "Dwarven Castle Keep"            }}
+      options:fire(terrain_list)
    elseif name == "Obstacle" then
-      options:fire{
+      local terrain_list = {
          {"Qxu",     "Regular Chasm"                  },
          {"Qxe",     "Earthy Chasm"                   },
          {"Qxua",    "Ethereal Abyss"                 },
@@ -337,40 +310,10 @@ function submenu_terrain_choose(name)
          {"Xue",     "Natural Earthy Cave Wall"       },
          {"Xuce",    "Reinforced Earthy Cave Wall"    },
          {"Xos",     "Stone Wall"                     },
-         {"Xol",     "Lit Stone Wall"                 }
-      }
-   elseif name == "Village" then
-      options:fire{
-         {"Dd^Vda",   "Adobe Village"                  },
-         {"Dd^Vdt",   "Desert Tent Village"            },
-         {"Re^Vct",   "Tent Village"                   },
-         {"Gd^Vo",    "Orcish Village"                 },
-         {"Aa^Voa",   "Snowy Orcish Village"           },
-         {"Aa^Vea",   "Snowy Elven Village"            },
-         {"Gg^Ve",    "Elven Village"                  },
-         {"Gs^Vh",    "Cottage"                        },
-         {"Aa^Vha",   "Snowy Cottage"                  },
-         {"Gd^Vhr",   "Ruined Cottage"                 },
-         {"Rr^Vhc",   "Human City"                     },
-         {"Rrc^Vhca", "Snowy Human City"               },
-         {"Rp^Vhcr",  "Ruined Human City"              },
-         {"Hh^Vhh",   "Hill Stone Village"             },
-         {"Ha^Vhh",   "Snowy Hill Stone Village"       },
-         {"Hhd^Vhhr", "Ruined Hill Stone Village"      },
-         {"Gs^Vht",   "Tropical Village"               },
-         {"Rr^Vd",    "Drake Village"                  },
-         {"Uu^Vu",    "Cave Village"                   },
-         {"Uu^Vud",   "Dwarven Village"                },
-         {"Gs^Vc",    "Hut"                            },
-         {"Aa^Vca",   "Snowy Hut"                      },
-         {"Gs^Vl",    "Log Cabin"                      },
-         {"Aa^Vla",   "Snowy Log Cabin"                },
-         {"Ss^Vhs",   "Swamp Village"                  },
-         {"Ww^Vm",    "Shallow Merfolk Village"        },
-         {"Ss^Vm",    "Swamp Merfolk Village"          }
-      }
+         {"Xol",     "Lit Stone Wall"                 }}
+      options:fire(terrain_list)
    elseif name == "Castle" then
-      options:fire{
+      local terrain_list = {
          {"Ce",      "Encampment"                     },
          {"Cea",     "Snowy Encampment"               },
          {"Co",      "Orcish Castle"                  },
@@ -394,12 +337,12 @@ function submenu_terrain_choose(name)
          {"Khr",     "Ruined Human Castle Keep"       },
          {"Khw",     "Sunken Human Castle Keep"       },
          {"Khs",     "Swamp Human Castle Keep"        },
-         {"Kd",      "Desert Keep"                    }
-      }
+         {"Kd",      "Desert Keep"                    }}
+      options:fire(terrain_list)
    elseif name == "Special" then
-      options:fire{
-         {"Xv",      "Void"                           }
-      }
+      local terrain_list = {
+         {"Xv",      "Void"                           }}
+      options:fire(terrain_list)
    end
 end
 >>
