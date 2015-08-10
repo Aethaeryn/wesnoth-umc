@@ -33,8 +33,8 @@ terrain.overlays = {
 
 function terrain.set_terrain(terrain_symbol)
    terrain.last_terrain = terrain_symbol
-   for i, terrain in ipairs(terrain.change_hexes) do
-      wesnoth.set_terrain(terrain[1], terrain[2], terrain_symbol)
+   for i, hex in ipairs(terrain.change_hexes) do
+      wesnoth.set_terrain(hex[1], hex[2], terrain_symbol)
    end
 end
 

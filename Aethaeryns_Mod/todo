@@ -78,7 +78,8 @@ When this list is complete/empty, bump to version 0.9
 
   - Not all units can be interacted with (e.g. zombies).
     - Those units (like zombies) can't use Unit Commands, either, but host can give them items and they can get items and equipment inherited if they were plagued.
-    -  This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
+    - This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
+    - Perhaps optionally disable these in character selection so that the players aren't stuck.
 
   - Bribing
     - Allow certain units to be bribed through interactions (and mark with certain icon?) if the host toggles them.
@@ -256,9 +257,9 @@ When this list is complete/empty, bump to version 0.9
       * This will solve the problem of what to do for certain icons, e.g. for potion types, scrolls, and menu items.
       * The current closed scroll icon could be used for unidentified scrolls if it's going to be like roguelikes and require identifying.
       * This means more units can be added.
-        * Common level 0 for horseman and cavalryman.
-        * Common level 0 for mage and dark adept.
-        * Common level 0 for fencer/thief (both skirmish) or fencer/sergeant (both nobility with swords)?
+        * Common level 0 for horseman and cavalryman. (lawful, scout)
+        * Common level 0 for mage and dark adept. (neutral, scholar)
+        * Common level 0 for fencer/thief (neutral) or fencer/sergeant (lawful, noble)?
         * Is there still that era that adds a lot of level 0s? Is the quality good enough?
     * Let the AI be able handle things as NPCs/enemies, including summoning.
       * A very high probability to summon each turn if activated and HP > 50%

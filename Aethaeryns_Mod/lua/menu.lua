@@ -104,6 +104,62 @@ function mod_menu.summon_summoner()
    end
 end
 
+function mod_menu.interact()
+   local e = wesnoth.current.event_context
+   local title = "Interactions"
+   local interaction_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = 1 }
+   local unit_list = {}
+   local current_side = wesnoth.current.side
+   for i, hex in ipairs(interaction_hexes) do
+      local unit = wesnoth.get_unit(hex[1], hex[2])
+      if unit ~= nil and unit.side == current_side then
+         table.insert(unit_list, unit)
+      end
+   end
+   -- todo: if there are two or more units that could be doing the
+   -- interaction, then ask which one should be doing the interaction
+   -- and otherwise just assume unit_list[1] has to do it.
+   if unit_list[2] ~= nil then
+      debugOut(string.format("%s (%d, %d)", unit_list[2].name, unit_list[2].x, unit_list[2].y))
+   end
+   local unit = unit_list[1]
+
+   -- todo: I think the e.x1, e.y1, etc. are for the interaction
+   -- target, not the unit doing the interaction, so all the
+   -- assumptions that the unit is on e.x1, e.y1 need to be changed,
+   -- both here and in the functions that are called.
+   local description = "How do you want to interact?"
+   local image = mod_menu.lich_image -- todo: definitely not appropriate here
+   local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
+   if option then
+      if option == "Visit Shop" then
+         local description = "What item do you want to purchase from the shop?"
+         local inventory = show_current_inventory(containers[e.x1][e.y1]["shop"])
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            shop_buy(e.x1, e.y1, item, wesnoth.current.side)
+         end
+      elseif option == "Collect Gold" then
+         wesnoth.sides[wesnoth.current.side]["gold"] = wesnoth.sides[wesnoth.current.side]["gold"] + containers[e.x1][e.y1]["gold"]
+         game_object.clear(e.x1, e.y1)
+      elseif option == "Remove from Chest" then
+         local description = "What item do you want to remove from the chest?"
+         local inventory = show_current_inventory(containers[e.x1][e.y1]["chest"])
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            mod_inventory.chest_remove(e.x1, e.y1, item)
+         end
+      elseif option == "Add to Chest" then
+         local description = "What item do you want to put in the chest?"
+         local inventory = show_current_inventory(wesnoth.get_unit(e.x1, e.y1).variables)
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            mod_inventory.chest_add(e.x1, e.y1, item)
+         end
+      end
+   end
+end
+
 function mod_menu.unit_commands()
    local e = wesnoth.current.event_context
    local title = "Unit Commands"
@@ -127,35 +183,7 @@ function mod_menu.unit_commands()
    elseif option == "Speak" then
       fire.custom_message()
    elseif option == "Interact" then
-      local description = "How do you want to interact?"
-      local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
-      if option then
-         if option == "Visit Shop" then
-            local description = "What item do you want to purchase from the shop?"
-            local inventory = show_current_inventory(containers[e.x1][e.y1]["shop"])
-            local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
-            if item then
-               shop_buy(e.x1, e.y1, item, wesnoth.current.side)
-            end
-         elseif option == "Collect Gold" then
-            wesnoth.sides[wesnoth.current.side]["gold"] = wesnoth.sides[wesnoth.current.side]["gold"] + containers[e.x1][e.y1]["gold"]
-            game_object.clear(e.x1, e.y1)
-         elseif option == "Remove from Chest" then
-            local description = "What item do you want to remove from the chest?"
-            local inventory = show_current_inventory(containers[e.x1][e.y1]["chest"])
-            local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
-            if item then
-               mod_inventory.chest_remove(e.x1, e.y1, item)
-            end
-         elseif option == "Add to Chest" then
-            local description = "What item do you want to put in the chest?"
-            local inventory = show_current_inventory(wesnoth.get_unit(e.x1, e.y1).variables)
-            local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
-            if item then
-               mod_inventory.chest_add(e.x1, e.y1, item)
-            end
-         end
-      end
+      mod_menu.interact()
    end
 end
 
@@ -214,7 +242,7 @@ end
 
 function mod_menu.terrain_editor()
    local e = wesnoth.current.event_context
-   terrain.change_hexes = wesnoth.get_locations {x = e.x1, y = e.y1, radius = terrain.radius}
+   terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
    local title = "Terrain Editor"
    local description = "Which terrain would you like to switch to?"
    local options = {
