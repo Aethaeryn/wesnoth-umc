@@ -30,6 +30,13 @@ function game_object.clear(x, y)
       containers[x][y] = nil
    end
    fire.label(x, y, "")
+   local mod_containers = helper.get_variable_array("mod_containers")
+   for i, coordinates in ipairs(mod_containers) do
+      if coordinates.x == x and coordinates.y == y then
+         wesnoth.fire("clear_variable", { name = string.format("mod_containers[%d]", i - 1) })
+         return
+      end
+   end
 end
 
 function game_object.simple_place(x, y, container_type, image, inventory)
@@ -38,7 +45,8 @@ function game_object.simple_place(x, y, container_type, image, inventory)
    check_x_coord(x)
    containers[x][y] = {}
    containers[x][y][container_type] = {}
-   helper.set_variable_array("mod_containers", { { x = x, y = y } })
+   local l = wesnoth.get_variable("mod_containers.length")
+   wesnoth.set_variable(string.format("mod_containers[%d]", l), { x = x, y = y })
    if inventory == true then
       for i, v in ipairs(item_table) do
          item_name = v["name"]

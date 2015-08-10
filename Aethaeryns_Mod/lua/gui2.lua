@@ -216,7 +216,7 @@ function menu_unit_name_and_location(units)
                                              unit.type,
                                              unit.x,
                                              unit.y), "menu_list", i, "label")
-      wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s)", unit.image, team_color), "menu_list", i, "icon")
+      wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s)", unit.__cfg.image, team_color), "menu_list", i, "icon")
    end
 end
 

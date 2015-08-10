@@ -1,12 +1,20 @@
-AETHAERYN'S MOD TODO LIST (91% Progress)
+AETHAERYN'S MOD TODO LIST (92% Progress)
 When this list is complete/empty, bump to version 0.9
 
  (1) Inventory Containers (2%)
   - Save and load container state so that it works for saves and loads.
+    - Even the array used to verify interactions doesn't seem to save.
+      - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
+
+  - Allow multiple containers on the same hex.
+    - Probably only show one icon.
+    - Make sure simple_place only adds it to the location list if it's not already there.
+    - Make sure clear only clears it if all containers are removed.
 
   - Large parts of inventory.lua need rewriting so the code is more general for the changes below.
     - Make sure functions live in tables.
     - Use a slider instead of text input for gold quantity and inventory quantity.
+    - Use inventory quantity on purchasing instead of assuming just one.
 
   - Container changes on host or unit actions:
     - shops:
@@ -65,9 +73,10 @@ When this list is complete/empty, bump to version 0.9
     - If it dies on a hex with another non-pack container, the drop is there in Investigate but is not map-visible.
     - If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
 
- (2) Interaction (2%)
+ (2) Interaction (1%)
   - If the unit at the chosen interaction location is not standing on a shop/chest/gold/drop then they shouldn't be part of the possible interacting units because a unit cannot interact with itself!
   - Hostile units on a container hex should block their use so mobs can guard shops, gold, chests, etc.
+  - If there is only one possible interaction, there is no need to bring up the prompt (make it like the unit disambiguation)
 
   - Let units give things to adjacent units.
     - Inventory (all unequipped items)
@@ -85,16 +94,18 @@ When this list is complete/empty, bump to version 0.9
       - Undead, elementals, animals, monsters, etc., cannot be bribed unless manually set that way.
     - Bribing will consume all movement and disable attacks and will only be allowed if you haven't attacked.
 
+
  (3) Inventory (1%)
-     (a) Haste potion.
-         * Extra melee strike, +2 total moves.
-         * Small = 2 turns, Medium = 4 turns.
-         * Multiple potions stack the turn duration, not the effect strength.
-     (b) Ale.
-         * "Confidence" ability: +5 max HP for 3 turns.
-         * 25% chance of also becoming drunk (berserk melee) for that duration
-         * More ale stacks the turn duration, not the effect strength, but the 25% chance of berserk melee is on applying each ale.
-         * Perhaps un-marskman all marksman attacks for that duration too.
+  - Multiples stack the turn duration, not the effect strength.
+  - Do the turn effects by repeatedly applying an [object] of duration
+    turn each turn until the counter goes to 0, adding to the counter
+    if more items are used? Or use abilities?
+  - And once you get the berserk, the berserk will stay until the
+    entire effect goes away.
+
+  - Haste: Extra melee strike, +2 total moves.
+  - Ale: "Confidence" ability: +5 max HP for 3 turns.
+    - 25% chance of also becoming drunk (berserk melee) for that duration each time used
 
  (4) Details (2%)
   - Pick character dialog.

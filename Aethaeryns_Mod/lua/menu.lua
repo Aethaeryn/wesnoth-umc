@@ -452,6 +452,7 @@ local function menu_item_summon(unit_role)
 end
 
 function set_all_menu_items()
+   helper.set_variable_array("mod_containers", {})
    -- Generates a quick yes/no table for summoners.
    for key, unit_list in pairs(summoners) do
       for i, unit in pairs(unit_list) do
