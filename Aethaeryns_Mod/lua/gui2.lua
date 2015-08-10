@@ -208,6 +208,18 @@ function menu_unit_list_with_cost(units)
    end
 end
 
+function menu_unit_name_and_location(units)
+   local team_color = wesnoth.sides[wesnoth.current.side].color
+   for i, unit in ipairs(units) do
+      wesnoth.set_dialog_value(string.format("%s (%s) (%d, %d)",
+                                             unit.name,
+                                             unit.type,
+                                             unit.x,
+                                             unit.y), "menu_list", i, "label")
+      wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s)", unit.image, team_color), "menu_list", i, "icon")
+   end
+end
+
 function menu_picture_list(list)
    for i, sublist in ipairs(list) do
       wesnoth.set_dialog_value(sublist[1], "menu_list", i, "label")

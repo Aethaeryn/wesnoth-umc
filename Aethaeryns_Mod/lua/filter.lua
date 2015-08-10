@@ -37,6 +37,12 @@ aeth_mod_filter.summon_summoner = T["show_if"] {
          T["have_unit"] {
             x = "$x1",
             y = "$y1" }}}}
+aeth_mod_filter.interact_unit = T["show_if"] {
+   T["have_unit"] {
+      x = "$x1",
+      y = "$y1",
+      T["filter_adjacent"] {
+         side = "$side_number" }}}
 
 function aeth_mod_filter.summon(role)
    return T["filter_location"] {

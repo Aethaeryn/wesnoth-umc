@@ -114,23 +114,19 @@ function mod_menu.interact()
    for i, hex in ipairs(interaction_hexes) do
       local unit = wesnoth.get_unit(hex[1], hex[2])
       if unit ~= nil and unit.side == current_side then
-         table.insert(unit_list, {unit.name, unit.type, {unit.x, unit.y}, unit})
+         table.insert(unit_list, unit)
       end
    end
-   local unit = unit_list[1][4]
-   -- todo: make this display [Unit Picture] Unit Name (Unit Type) (x, y)
+   local unit = unit_list[1]
    if unit_list[2] ~= nil then
       local description = "Which unit is doing the interaction?"
-      local selected_unit = menu(unit_list, image, title, description, menu_almost_simple_list, 4)
+      local selected_unit = menu(unit_list, image, title, description, menu_unit_name_and_location, nil)
       if selected_unit then
          unit = selected_unit
+      else
+         return
       end
    end
-
-   -- todo: I think the e.x1, e.y1, etc. are for the interaction
-   -- target, not the unit doing the interaction, so all the
-   -- assumptions that the unit is on e.x1, e.y1 need to be changed,
-   -- both here and in the functions that are called.
    local description = "How do you want to interact?"
    local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
    if option then
@@ -139,7 +135,7 @@ function mod_menu.interact()
          local inventory = show_current_inventory(containers[e.x1][e.y1]["shop"])
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
          if item then
-            shop_buy(e.x1, e.y1, item, wesnoth.current.side)
+            mod_inventory.shop_buy(unit, e.x1, e.y1, item, wesnoth.current.side)
          end
       elseif option == "Collect Gold" then
          wesnoth.sides[wesnoth.current.side]["gold"] = wesnoth.sides[wesnoth.current.side]["gold"] + containers[e.x1][e.y1]["gold"]
@@ -149,14 +145,14 @@ function mod_menu.interact()
          local inventory = show_current_inventory(containers[e.x1][e.y1]["chest"])
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
          if item then
-            mod_inventory.chest_remove(e.x1, e.y1, item)
+            mod_inventory.chest_remove(unit, e.x1, e.y1, item)
          end
       elseif option == "Add to Chest" then
          local description = "What item do you want to put in the chest?"
          local inventory = show_current_inventory(wesnoth.get_unit(e.x1, e.y1).variables)
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
          if item then
-            mod_inventory.chest_add(e.x1, e.y1, item)
+            mod_inventory.chest_add(unit, e.x1, e.y1, item)
          end
       end
    end
@@ -168,7 +164,6 @@ function mod_menu.unit_commands()
    local description = "What do you want to do with this unit?"
    local image = mod_menu.lich_image -- todo: definitely not appropriate here
    local options = {
-      {"Interact", "icons/coins_copper.png"},
       {"Use Item", "icons/potion_red_small.png"},
       {"Upgrades", "attacks/woodensword.png"},
       {"Speak", "icons/letter_and_ale.png"}}
@@ -184,8 +179,6 @@ function mod_menu.unit_commands()
       submenu_upgrade_unit()
    elseif option == "Speak" then
       fire.custom_message()
-   elseif option == "Interact" then
-      mod_menu.interact()
    end
 end
 

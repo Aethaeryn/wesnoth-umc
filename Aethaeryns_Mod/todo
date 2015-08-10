@@ -2,6 +2,8 @@ AETHAERYN'S MOD TODO LIST (91% Progress)
 When this list is complete/empty, bump to version 0.9
 
  (1) Inventory Containers (2%)
+  - Save and load container state so that it works for saves and loads.
+
   - Large parts of inventory.lua need rewriting so the code is more general for the changes below.
     - Make sure functions live in tables.
     - Use a slider instead of text input for gold quantity and inventory quantity.
@@ -64,22 +66,15 @@ When this list is complete/empty, bump to version 0.9
     - If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
 
  (2) Interaction (2%)
-  - Interact should become a menu item instead of a Unit Command.
-  - Interaction should apply to neighboring hexes for units and for containers.
+  - Interact should trigger when bordering or on a shop/chest/gold/drop, not just when bordering a unit.
+    - If the unit is not standing on a shop/chest/gold/drop then they shouldn't be part of the possible interacting units because a unit cannot interact with itself!
     - Hostile units on a container hex should block their use so mobs can guard shops, gold, chests, etc.
-  - If menu item is ambiguous more than one unit who can interact:
-    - first pop up a window to let players choose which unit does the interaction
 
   - Let units give things to adjacent friendly unit.
     - Inventory (all unequipped items)
       - Gold (if leader)
       - Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
         - This means that gold piles should always be in intervals of 10 and regular units will only pick up coins, not gold.
-
-  - Not all units can be interacted with (e.g. zombies).
-    - Those units (like zombies) can't use Unit Commands, either, but host can give them items and they can get items and equipment inherited if they were plagued.
-    - This means host probably needs to be able to equip units, if for flavor reasons zombies need to be equipped.
-    - Perhaps optionally disable these in character selection so that the players aren't stuck.
 
   - Bribing
     - Allow certain units to be bribed through interactions (and mark with certain icon?) if the host toggles them.
@@ -157,11 +152,8 @@ When this list is complete/empty, bump to version 0.9
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
     - e.g. some border hexes can change terrain and some just change (1,1)
     - and all the units spawned on borders spawn on (1,1) instead, potentially overwriting a unit on (1,1)
-  * VERY MAJOR BUG: Container state is wiped on every load because the container table doesn't persist.
-    - So containers do not show up as containers in Interact and they do not contain any inventory after a reload.
-    - Unit inventory is unaffected.
-    - The state of right click menus will also not be saved.
 
+  * BUG: The state of toggled right click menus is not saved.
   * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
   * BUG: Fix icon size for Summon <foo> and Summon Summoner.
   * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.

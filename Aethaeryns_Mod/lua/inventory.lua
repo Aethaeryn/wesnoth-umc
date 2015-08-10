@@ -10,14 +10,12 @@ local function check_x_coord(x)
    end
 end
 
-function mod_inventory.chest_add(x, y, name)
-   local unit = wesnoth.get_unit(x, y)
+function mod_inventory.chest_add(unit, x, y, name)
    containers[x][y]["chest"][name] = containers[x][y]["chest"][name] + 1
    unit.variables[name] = unit.variables[name] - 1
 end
 
-function mod_inventory.chest_remove(e, y, name)
-   local unit = wesnoth.get_unit(x, y)
+function mod_inventory.chest_remove(unit, x, y, name)
    containers[x][y]["chest"][name] = containers[x][y]["chest"][name] - 1
    if unit.variables[name] == nil then
       unit.variables[name] = 1
@@ -84,8 +82,7 @@ function mod_inventory.add(name, quantity, container)
    end
 end
 
-function shop_buy(x, y, name, side_number)
-   local unit = wesnoth.get_unit(x, y)
+function mod_inventory.shop_buy(unit, x, y, name, side_number)
    local price = 99999
    for i, item in ipairs(item_table) do
       if item.name == name then
