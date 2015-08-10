@@ -66,13 +66,12 @@ When this list is complete/empty, bump to version 0.9
     - If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
 
  (2) Interaction (2%)
-  - Interact should trigger when bordering or on a shop/chest/gold/drop, not just when bordering a unit.
-    - If the unit is not standing on a shop/chest/gold/drop then they shouldn't be part of the possible interacting units because a unit cannot interact with itself!
-    - Hostile units on a container hex should block their use so mobs can guard shops, gold, chests, etc.
+  - If the unit at the chosen interaction location is not standing on a shop/chest/gold/drop then they shouldn't be part of the possible interacting units because a unit cannot interact with itself!
+  - Hostile units on a container hex should block their use so mobs can guard shops, gold, chests, etc.
 
-  - Let units give things to adjacent friendly unit.
+  - Let units give things to adjacent units.
     - Inventory (all unequipped items)
-      - Gold (if leader)
+    - Gold (if leader)
       - Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
         - This means that gold piles should always be in intervals of 10 and regular units will only pick up coins, not gold.
 
@@ -84,6 +83,7 @@ When this list is complete/empty, bump to version 0.9
       - 15% chance for spawned non-summoner level 1s
       - 10% chance for spawned non-summoner level 2s
       - Undead, elementals, animals, monsters, etc., cannot be bribed unless manually set that way.
+    - Bribing will consume all movement and disable attacks and will only be allowed if you haven't attacked.
 
  (3) Inventory (1%)
      (a) Haste potion.

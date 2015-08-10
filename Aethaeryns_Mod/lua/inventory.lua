@@ -38,6 +38,7 @@ function game_object.simple_place(x, y, container_type, image, inventory)
    check_x_coord(x)
    containers[x][y] = {}
    containers[x][y][container_type] = {}
+   helper.set_variable_array("mod_containers", { { x = x, y = y } })
    if inventory == true then
       for i, v in ipairs(item_table) do
          item_name = v["name"]
