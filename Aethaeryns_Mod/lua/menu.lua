@@ -107,29 +107,31 @@ end
 function mod_menu.interact()
    local e = wesnoth.current.event_context
    local title = "Interactions"
+   local image = mod_menu.lich_image -- todo: definitely not appropriate here
    local interaction_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = 1 }
    local unit_list = {}
    local current_side = wesnoth.current.side
    for i, hex in ipairs(interaction_hexes) do
       local unit = wesnoth.get_unit(hex[1], hex[2])
       if unit ~= nil and unit.side == current_side then
-         table.insert(unit_list, unit)
+         table.insert(unit_list, {unit.name, unit.type, {unit.x, unit.y}, unit})
       end
    end
-   -- todo: if there are two or more units that could be doing the
-   -- interaction, then ask which one should be doing the interaction
-   -- and otherwise just assume unit_list[1] has to do it.
+   local unit = unit_list[1][4]
+   -- todo: make this display [Unit Picture] Unit Name (Unit Type) (x, y)
    if unit_list[2] ~= nil then
-      debugOut(string.format("%s (%d, %d)", unit_list[2].name, unit_list[2].x, unit_list[2].y))
+      local description = "Which unit is doing the interaction?"
+      local selected_unit = menu(unit_list, image, title, description, menu_almost_simple_list, 4)
+      if selected_unit then
+         unit = selected_unit
+      end
    end
-   local unit = unit_list[1]
 
    -- todo: I think the e.x1, e.y1, etc. are for the interaction
    -- target, not the unit doing the interaction, so all the
    -- assumptions that the unit is on e.x1, e.y1 need to be changed,
    -- both here and in the functions that are called.
    local description = "How do you want to interact?"
-   local image = mod_menu.lich_image -- todo: definitely not appropriate here
    local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
    if option then
       if option == "Visit Shop" then
