@@ -50,16 +50,17 @@ aeth_mod_filter.interact = T["show_if"] {
          side = "$side_number",
          x = "$x1",
          y = "$y1",
+         -- todo: I think when I replace x = 5, y = 5 with find_in everything will work
          T["filter_location"] { x = 5, y = 5 }}},
    T["or"] {
-      -- menu only shows up on unit adjacent to location
-      T["have_unit"] {
-         side = "$side_number",
+      -- menu only shows up adjacent to your unit
+      -- todo: I think when I add find_in everything will work
+      T["have_location"] {
          x = "$x1",
          y = "$y1",
-         T["filter_location"] {
-            T["filter_adjacent_location"] { x = 5, y = 5 }}}}}
-   -- find_in = "$mod_containers"
+         -- find_in = "$mod_containers"
+         T["filter_adjacent_location"] {
+            T["filter"] { side = "$side_number" }}}}}
 
 function aeth_mod_filter.summon(role)
    return T["filter_location"] {
