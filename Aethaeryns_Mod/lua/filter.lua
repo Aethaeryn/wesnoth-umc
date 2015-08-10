@@ -43,6 +43,9 @@ aeth_mod_filter.interact_unit = T["show_if"] {
       y = "$y1",
       T["filter_adjacent"] {
          side = "$side_number" }}}
+aeth_mod_filter.on_container = T["show_if"] { T["have_unit"] { side = "$side_number", x = "$x1", y = "$y1", T["filter_location"] { x = 5, y = 5 }}}
+aeth_mod_filter.near_container = T["show_if"] { T["have_unit"] { side = "$side_number", x = "$x1", y = "$y1", T["filter_location"] { T["filter_adjacent_location"] { x = 5, y = 5 }}}}
+   -- find_in = "$mod_containers"
 
 function aeth_mod_filter.summon(role)
    return T["filter_location"] {
