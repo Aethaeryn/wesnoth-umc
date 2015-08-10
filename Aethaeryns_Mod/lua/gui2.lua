@@ -1,5 +1,9 @@
 #define MOD_GUI2
 <<
+gui2 = {
+   with_list = {},
+   on_select = {}}
+
 local function generate_dialog(not_empty, menu_type, has_sidebar)
    local menu_core = {}
    if not_empty then
@@ -77,20 +81,8 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
          local function select()
             if sidebar ~= nil then
                local i = wesnoth.get_dialog_value("menu_list")
-               if sidebar == "unit" or sidebar == "summoner" then
-                  local unit_data = wesnoth.unit_types[list[i]].__cfg
-                  wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
-                  wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s",
-                                                         unit_data.image,
-                                                         wesnoth.sides[wesnoth.current.side].color),
-                                           "menu_image")
-                  wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-                  wesnoth.set_dialog_value(string.format("<span size='small'>%s\n%s\nHP: %d\nMP: %d</span>",
-                                                         unit_data.name,
-                                                         unit_data.alignment,
-                                                         unit_data.hitpoints,
-                                                         unit_data.movement),
-                                           "menu_sidebar_text")
+               if sidebar == "summoner" then sidebar = "unit" end
+               if sidebar == "unit" then gui2.on_select[sidebar](list, i)
                elseif sidebar == "team_stats" then
                   wesnoth.set_dialog_value("Information about the selected stat:  \n", "menu_sidebar_intro")
                   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
@@ -280,6 +272,22 @@ function menu_almost_simple_list(list)
    for i, sublist in ipairs(list) do
       wesnoth.set_dialog_value(sublist[1], "menu_list", i, "label")
    end
+end
+
+function gui2.on_select.unit(list, i)
+   local unit_data = wesnoth.unit_types[list[i]].__cfg
+   wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
+   wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s",
+                                          unit_data.image,
+                                          wesnoth.sides[wesnoth.current.side].color),
+                            "menu_image")
+   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+   wesnoth.set_dialog_value(string.format("<span size='small'>%s\n%s\nHP: %d\nMP: %d</span>",
+                                          unit_data.name,
+                                          unit_data.alignment,
+                                          unit_data.hitpoints,
+                                          unit_data.movement),
+                            "menu_sidebar_text")
 end
 >>
 #enddef

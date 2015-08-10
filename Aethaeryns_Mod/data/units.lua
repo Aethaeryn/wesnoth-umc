@@ -370,7 +370,7 @@ regular = {
 
    Dwarves = {
       ['Level 1'] = {
-         "Dwarvish Figher",
+         "Dwarvish Fighter",
          "Dwarvish Thunderer",
          "Dwarvish Scout",
          "Dwarvish Guardsman",
