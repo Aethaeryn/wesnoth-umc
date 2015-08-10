@@ -40,6 +40,33 @@ function mod_menu.toggle(menu_item)
    end
 end
 
+function mod_menu.select_leader()
+   local leader = wesnoth.get_units { side = wesnoth.current.side, canrecruit = true }[1]
+   if leader.type == "Peasant" then
+      local title = "Leader Selection"
+      local description = "Select a leader type."
+      local leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
+      if leader_category then
+         local levels = {}
+         for key, value in pairs(regular[leader_category]) do
+            if tonumber(string.sub(key, 7)) <= change_unit.max_level then
+               table.insert(levels, key)
+            end
+         end
+         table.sort(levels)
+         local description = "Select a level."
+         local level = menu(levels, mod_menu.lich_image, title, description, menu_simple_list)
+         if level then
+            local description = "Select a unit."
+            local choice = menu(regular[leader_category][level], mod_menu.lich_image, title, description, menu_unit_list, nil, "summoner")
+            if choice then
+               change_unit.transform(leader.x, leader.y, choice)
+            end
+         end
+      end
+   end
+end
+
 function mod_menu.summon(summoner_type)
    local e = wesnoth.current.event_context
    local title = string.format("Summon %s", summoner_type)
@@ -70,7 +97,7 @@ function mod_menu.summon_summoner()
    local summoner_type = menu(SUMMON_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
    if summoner_type then
       local description = "Select a unit to summon."
-      local summoner = menu(summoners[summoner_type], mod_menu.lich_image, title, description, menu_unit_list, nil, "unit")
+      local summoner = menu(summoners[summoner_type], mod_menu.lich_image, title, description, menu_unit_list, nil, "summoner")
       if summoner then
          spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
       end

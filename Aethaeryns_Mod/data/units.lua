@@ -5,6 +5,9 @@ SIDES = {1, 2, 3, 4, 5, 6, 7, 8}
 SUMMON_ROLES = {"Undead", "Nature", "Elves", "Fire", "Loyalists", "Outlaws",
                 "Orcs", "Dwarves", "Earth", "Swamp", "Water", "Khalifate"}
 
+LEADER_ROLES = {"Mages", "Undead", "Nature", "Elves", "Fire", "Loyalists", "Outlaws",
+                "Orcs", "Dwarves", "Earth", "Swamp", "Water", "Khalifate"}
+
 is_summoner = {}
 
 PORTRAIT = {
@@ -114,6 +117,31 @@ summoners = {
 }
 
 regular = {
+   Mages = {
+      ['Level 1'] = {
+         "Mage",
+         "Dark Adept",
+      },
+      ['Level 2'] = {
+         "Red Mage",
+         "White Mage",
+         "Dark Sorcerer",
+      },
+      ['Level 3'] = {
+         "Arch Mage",
+         "Silver Mage",
+         "Mage of Light",
+         "Necromancer",
+         "Lich",
+      },
+      ['Level 4'] = {
+         "Great Mage",
+         "Ancient Lich",
+      },
+      ['Level 5'] = {
+         "Elder Mage",
+      },
+   },
    Undead = {
       ['Level 0'] = {
          "Walking Corpse",
@@ -179,6 +207,7 @@ regular = {
 
    Elves = {
       ['Level 1'] = {
+         "Elvish Shaman",
          "Elvish Fighter",
          "Elvish Archer",
          "Elvish Scout",
@@ -187,16 +216,25 @@ regular = {
          "Elvish Rider",
          "Elvish Captain",
          "Elvish Hero",
+         "Elvish Druid",
+         "Elvish Sorceress",
          "Elvish Marksman",
          "Elvish Ranger",
+         "Elvish Lord",
       },
       ['Level 3'] = {
          "Elvish Outrider",
          "Elvish Champion",
          "Elvish Marshal",
+         "Elvish Enchantress",
+         "Elvish Shyde",
          "Elvish Sharpshooter",
          "Elvish Avenger",
+         "Elvish High Lord",
          "Elvish Lady",
+      },
+      ['Level 4'] = {
+         "Elvish Sylph",
       },
    },
 
@@ -244,6 +282,7 @@ regular = {
          "Cavalryman",
          "Heavy Infantryman",
          "Horseman",
+         "Sergeant",
       },
       ['Level 2'] = {
          "Javelineer",
@@ -255,6 +294,7 @@ regular = {
          "Shock Trooper",
          "Knight",
          "Lancer",
+         "Lieutenant",
       },
       ['Level 3'] = {
          "Royal Guard",
@@ -266,6 +306,10 @@ regular = {
          "Cavalier",
          "Grand Knight",
          "Paladin",
+         "General",
+      },
+      ['Level 4'] = {
+         "Grand Marshal",
       },
    },
 
@@ -278,16 +322,20 @@ regular = {
          "Thief",
          "Thug",
          "Footpad",
+         "Poacher",
       },
       ['Level 2'] = {
          "Bandit",
          "Rogue",
          "Outlaw",
+         "Trapper",
       },
       ['Level 3'] = {
          "Assassin",
          "Highwayman",
          "Fugitive",
+         "Huntsman",
+         "Ranger",
       },
    },
 
@@ -302,6 +350,7 @@ regular = {
          "Orcish Archer",
          "Orcish Assassin",
          "Wolf Rider",
+         "Orcish Leader",
       },
       ['Level 2'] = {
          "Orcish Crossbowman",
@@ -309,16 +358,19 @@ regular = {
          "Goblin Pillager",
          "Goblin Knight",
          "Orcish Slayer",
+         "Orcish Ruler",
       },
       ['Level 3'] = {
          "Direwolf Rider",
          "Orcish Slurbow",
          "Orcish Warlord",
+         "Orcish Sovereign",
       },
    },
 
    Dwarves = {
       ['Level 1'] = {
+         "Dwarvish Figher",
          "Dwarvish Thunderer",
          "Dwarvish Scout",
          "Dwarvish Guardsman",
@@ -326,6 +378,8 @@ regular = {
          "Gryphon Rider",
       },
       ['Level 2'] = {
+         "Dwarvish Steelclad",
+         "Dwarvish Runesmith",
          "Dwarvish Pathfinder",
          "Dwarvish Thunderguard",
          "Dwarvish Stalwart",
@@ -333,9 +387,14 @@ regular = {
          "Gryphon Master",
       },
       ['Level 3'] = {
+         "Dwarvish Lord",
+         "Dwarvish Runemaster",
          "Dwarvish Sentinel",
          "Dwarvish Explorer",
          "Dwarvish Dragonguard",
+      },
+      ['Level 4'] = {
+         "Dwarvish Arcanister",
       },
    },
 
@@ -351,6 +410,7 @@ regular = {
          "Troll",
          "Troll Rocklobber",
          "Troll Hero",
+         "Troll Shaman",
       },
       ['Level 3'] = {
          "Troll Warrior",
@@ -370,9 +430,12 @@ regular = {
          "Giant Mudcrawler",
          "Naga Fighter",
          "Saurian Skirmisher",
+         "Saurian Augur",
       },
       ['Level 2'] = {
          "Naga Warrior",
+         "Saurian Oracle",
+         "Saurian Soothsayer",
          "Saurian Ambusher",
       },
       ['Level 3'] = {
@@ -386,11 +449,14 @@ regular = {
          "Tentacle of the Deep",
          "Merman Fighter",
          "Merman Hunter",
+         "Mermaid Initiate",
       },
       ['Level 2'] = {
          "Merman Warrior",
          "Merman Netcaster",
          "Merman Spearman",
+         "Mermaid Enchantress",
+         "Mermaid Priestess",
          "Water Serpent",
          "Cuttle Fish",
       },
@@ -399,12 +465,15 @@ regular = {
          "Merman Triton",
          "Merman Entangler",
          "Merman Javelineer",
+         "Mermaid Siren",
+         "Mermaid Diviner",
          "Sea Serpent",
       },
    },
 
    Khalifate = {
       ['Level 1'] = {
+         "Arif",
          "Hakim",
          "Jundi",
          "Khaiyal",
@@ -412,6 +481,8 @@ regular = {
          "Rami",
       },
       ['Level 2'] = {
+         "Ghazi",
+         "Mudafi",
          "Tabib",
          "Monawish",
          "Muharib",
@@ -421,13 +492,18 @@ regular = {
          "Saree",
       },
       ['Level 3'] = {
+         "Shuja",
+         "Rasikh",
          "Mighwar",
          "Batal",
          "Mufariq",
          "Hadaf",
          "Tineen",
          "Jawal",
-      }
+      },
+      ['Level 4'] = {
+         "Khalid",
+      },
    }
 }
 >>

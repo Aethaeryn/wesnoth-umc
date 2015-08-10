@@ -102,10 +102,12 @@ When this list is complete/empty, bump to version 0.9
 
  (4) Details (2%)
   - Pick character dialog.
-    - If peasant on first turn of an intro map (e.g. new campaign or unit died), let sides 2-5 pick a new unit.
+    - Add the event that actually fires the pick character dialog.
+    - Make sure that movement changes properly if the target unit has more or less MP than 5.
+    - Players can cancel the leader selection process. A back button should be there instead.
+    - Players can only choose male leaders. They need to be able to pick a gender or random, where the unit has more than one possible gender.
     - Perhaps let the host fire this at other times to let players create a new character, e.g. when handing side 7 or 8 to observers or recycling a dead side 2-5 to observers.
-    - data/units.lua probably can be reused if summoners are added to the regular unit list, but then filtered out in the actual Summon Foo
-    - Have the host restrict what units are possible for peasants to use (level, type, etc.) or let a vote be held first on the level.
+    - Have the host be able to change which level is available, which types are available, etc., and/or let a vote be held first on the level.
     - A similar unit dialog can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
       - Make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
       - And eventually they can be tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
@@ -167,6 +169,7 @@ When this list is complete/empty, bump to version 0.9
   * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
   * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
   * BUG: Objectives don't show up right in the set menu.
+  * BUG: Filter out the summoners before the dialog part so there aren't e.g. empty Level 4s for Summon <Foo>
 
   * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
   * FEATURE: AMLAing probably shouldn't increase max experience.
@@ -184,6 +187,8 @@ When this list is complete/empty, bump to version 0.9
   * CODE: remove all submenu_ functions in upgrades.lua and terrain_editor.lua
   * CODE: upgrades.lua need to put the non-menu functions in tables
     - upgrades.lua is a mess; behavior could be moved into functions
+  * CODE: Re-sort the units.lua menu so that the order makes sense.
+  * CODE: Clean up the gui2.lua code, which is now a mess and not entirely accurate in its names (e.g. "summoner" vs. "unit").
 
  (6) Future
     * Extend the GUI2 wrapper so that it can handle more  than one return value.

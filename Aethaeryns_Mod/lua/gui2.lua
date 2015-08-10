@@ -56,6 +56,15 @@ end
 function menu(list, image, title, description, build_list, sublist_index, sidebar)
    local dialog = {}
    local not_empty = true
+   if sidebar == "unit" then
+      local new_list = {}
+      for i, unit in ipairs(list) do
+         if is_summoner[unit] == nil then
+            table.insert(new_list, unit)
+         end
+      end
+      list = new_list
+   end
    if list[1] == nil then
       not_empty = false
    end
@@ -68,7 +77,7 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
          local function select()
             if sidebar ~= nil then
                local i = wesnoth.get_dialog_value("menu_list")
-               if sidebar == "unit" then
+               if sidebar == "unit" or sidebar == "summoner" then
                   local unit_data = wesnoth.unit_types[list[i]].__cfg
                   wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
                   wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s",

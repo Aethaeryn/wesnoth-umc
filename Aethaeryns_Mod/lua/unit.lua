@@ -2,6 +2,7 @@
 <<
 change_unit = {}
 spawn_unit = {}
+change_unit.max_level = 2
 
 function change_unit.side(x, y, new_side)
    local unit = wesnoth.get_unit(x, y)
