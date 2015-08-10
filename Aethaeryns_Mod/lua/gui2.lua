@@ -81,51 +81,10 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
          local function select()
             if sidebar ~= nil then
                local i = wesnoth.get_dialog_value("menu_list")
-               if sidebar == "summoner" then sidebar = "unit" end
-               if sidebar == "unit" then gui2.on_select[sidebar](list, i)
-               elseif sidebar == "team_stats" then
-                  wesnoth.set_dialog_value("Information about the selected stat:  \n", "menu_sidebar_intro")
-                  wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-                  wesnoth.set_dialog_value(string.format("%s : %s", list[i][1], list[i][2]), "menu_sidebar_text")
-               elseif sidebar == "item_stats" then
-                  wesnoth.set_dialog_value("Information about the selected item:  \n", "menu_sidebar_intro")
-                  wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-                  wesnoth.set_dialog_value(list[i][2], "menu_image")
-                  if list[i][5] == nil then
-                     wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\n%s</small>",
-                                                            list[i][1],
-                                                            list[i][3],
-                                                            list[i][4]),
-                                              "menu_sidebar_text")
-                  else
-                     wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\nQuantity: %d\n%s</small>",
-                                                            list[i][1],
-                                                            list[i][3],
-                                                            list[i][5],
-                                                            list[i][4]),
-                                              "menu_sidebar_text")
-                  end
-               elseif sidebar == "upgrade_stats" then
-                  wesnoth.set_dialog_value("Information about the selected upgrade:  \n", "menu_sidebar_intro")
-                  wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-                  wesnoth.set_dialog_value(list[i][2], "menu_image")
-                  if list[i][5] then
-                     wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d of %d\nPrice: %d\n%s</small>",
-                                                            list[i][1],
-                                                            list[i][4],
-                                                            list[i][5],
-                                                            list[i][3],
-                                                            list[i][6]),
-                                              "menu_sidebar_text")
-                  else
-                     wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d\nPrice: %d\n%s</small>",
-                                                            list[i][1],
-                                                            list[i][4],
-                                                            list[i][3],
-                                                            list[i][6]),
-                                              "menu_sidebar_text")
-                  end
+               if sidebar == "summoner" then
+                  sidebar = "unit"
                end
+               gui2.on_select[sidebar](list, i)
             else
                wesnoth.set_dialog_value(image, "menu_image")
             end
@@ -288,6 +247,54 @@ function gui2.on_select.unit(list, i)
                                           unit_data.hitpoints,
                                           unit_data.movement),
                             "menu_sidebar_text")
+end
+
+function gui2.on_select.team_stats(list, i)
+   wesnoth.set_dialog_value("Information about the selected stat:  \n", "menu_sidebar_intro")
+   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+   wesnoth.set_dialog_value(string.format("%s : %s", list[i][1], list[i][2]), "menu_sidebar_text")
+end
+
+function gui2.on_select.item_stats(list, i)
+   wesnoth.set_dialog_value("Information about the selected item:  \n", "menu_sidebar_intro")
+   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+   wesnoth.set_dialog_value(list[i][2], "menu_image")
+   if list[i][5] == nil then
+      wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\n%s</small>",
+                                             list[i][1],
+                                             list[i][3],
+                                             list[i][4]),
+                               "menu_sidebar_text")
+   else
+      wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\nQuantity: %d\n%s</small>",
+                                             list[i][1],
+                                             list[i][3],
+                                             list[i][5],
+                                             list[i][4]),
+                               "menu_sidebar_text")
+   end
+end
+
+function gui2.on_select.upgrade_stats(list, i)
+   wesnoth.set_dialog_value("Information about the selected upgrade:  \n", "menu_sidebar_intro")
+   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+   wesnoth.set_dialog_value(list[i][2], "menu_image")
+   if list[i][5] then
+      wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d of %d\nPrice: %d\n%s</small>",
+                                             list[i][1],
+                                             list[i][4],
+                                             list[i][5],
+                                             list[i][3],
+                                             list[i][6]),
+                               "menu_sidebar_text")
+   else
+      wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d\nPrice: %d\n%s</small>",
+                                             list[i][1],
+                                             list[i][4],
+                                             list[i][3],
+                                             list[i][6]),
+                               "menu_sidebar_text")
+   end
 end
 >>
 #enddef
