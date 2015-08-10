@@ -133,10 +133,10 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role)
       fire.capture_village(x, y)
       unit_stats.moves = 0
    end
-   if icon then
+   if icon ~= nil then
       unit_stats.overlays = icon
    end
-   if unit_role then
+   if unit_role ~= nil then
       unit_stats.role = unit_role
    end
    wesnoth.put_unit(x, y, unit_stats)
@@ -155,7 +155,7 @@ function spawn_unit.reg_spawner(x, y, unit_type, unit_role, side_number)
    local summoner = find_summoner(x, y, wesnoth.get_units {side = side_number, role = unit_role})
    if summoner.hitpoints > unit_cost then
       summoner.hitpoints = summoner.hitpoints - unit_cost
-      spawn_unit.spawn_unit(x, y, unit_type, side_number, false, false)
+      spawn_unit.spawn_unit(x, y, unit_type, side_number)
       return true
    else
       return false

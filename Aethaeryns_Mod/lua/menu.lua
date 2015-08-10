@@ -112,7 +112,7 @@ function mod_menu.unit_commands()
             end
          elseif option == "Collect Gold" then
             wesnoth.sides[wesnoth.current.side]["gold"] = wesnoth.sides[wesnoth.current.side]["gold"] + containers[e.x1][e.y1]["gold"]
-            clear_game_object(e.x1, e.y1)
+            game_object.clear(e.x1, e.y1)
          elseif option == "Remove from Chest" then
             local description = "What item do you want to remove from the chest?"
             local inventory = show_current_inventory(containers[e.x1][e.y1]["chest"])
@@ -263,20 +263,20 @@ function mod_menu.place_object()
    local option = menu(options, mod_menu.lich_image, title, description, menu_picture_list, 1)
    if option then
       if option == "Place Shop" then
-         simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
+         game_object.simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
       elseif option == "Place Chest" then
-         simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
+         game_object.simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
       elseif option == "Place Pack" then
-         simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
+         game_object.simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
       elseif option == "Place Gold Pile" then
          local description = "How much gold do you want to place in the pile?"
          local label = "Gold:"
          local gold = menu_text_input(mod_menu.lich_image, title, description, label)
          if gold and type(gold) == "number" and gold > 0 then
-            place_gold(e.x1, e.y1, gold)
+            game_object.gold_place(e.x1, e.y1, gold)
          end
       elseif option == "Clear Hex" then
-         clear_game_object(e.x1, e.y1)
+         game_object.clear(e.x1, e.y1)
       end
    end
 end
@@ -402,6 +402,12 @@ local function menu_item_summon(unit_role)
 end
 
 function set_all_menu_items()
+   -- Generates a quick yes/no table for summoners.
+   for key, unit_list in pairs(summoners) do
+      for i, unit in pairs(unit_list) do
+         is_summoner[unit] = true
+      end
+   end
    -- Generates the toggleable, general menu items.
    for key, menu_item in pairs(mod_menu_items) do
       if menu_item.status then

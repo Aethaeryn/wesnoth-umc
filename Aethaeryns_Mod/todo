@@ -152,10 +152,12 @@ When this list is complete/empty, bump to version 0.9
 
  (5) Issues (2%)
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
+    - e.g. some border hexes can change terrain and some just change (1,1)
+    - and all the units spawned on borders spawn on (1,1) instead, potentially overwriting a unit on (1,1)
   * VERY MAJOR BUG: Container state is wiped on every load because the container table doesn't persist.
-    - See: NotSoEasyCoding on the wiki.
-  * VERY MAJOR BUG: The tables don't seem to even recreate themselves when loading, even the ones containing functions!
-    - Preload does *not* fix this!!! (Maybe because it uses WML macros)
+    - So containers do not show up as containers in Interact and they do not contain any inventory after a reload.
+    - Unit inventory is unaffected.
+    - The state of right click menus will also not be saved.
 
   * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
   * BUG: Fix icon size for Summon <foo> and Summon Summoner.

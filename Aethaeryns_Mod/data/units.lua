@@ -5,6 +5,8 @@ SIDES = {1, 2, 3, 4, 5, 6, 7, 8}
 SUMMON_ROLES = {"Undead", "Nature", "Elves", "Fire", "Loyalists", "Outlaws",
                 "Orcs", "Dwarves", "Earth", "Swamp", "Water", "Khalifate"}
 
+is_summoner = {}
+
 PORTRAIT = {
    Undead    = "portraits/undead/transparent/spectre.png",
    Nature    = "portraits/elves/transparent/shyde.png",

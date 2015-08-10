@@ -2,6 +2,7 @@
 <<
 containers = {}
 mod_inventory = {}
+game_object = {}
 
 local function check_x_coord(x)
    if containers[x] == nil then
@@ -25,7 +26,7 @@ function mod_inventory.chest_remove(e, y, name)
    end
 end
 
-function clear_game_object(x, y)
+function game_object.clear(x, y)
    w_items.remove(x, y)
    if containers[x] ~= nil then
       containers[x][y] = nil
@@ -33,8 +34,8 @@ function clear_game_object(x, y)
    fire.label(x, y, "")
 end
 
-function simple_place(x, y, container_type, image, inventory)
-   clear_game_object(x,y)
+function game_object.simple_place(x, y, container_type, image, inventory)
+   game_object.clear(x,y)
    w_items.place_image(x, y, image)
    check_x_coord(x)
    containers[x][y] = {}
@@ -50,7 +51,7 @@ function simple_place(x, y, container_type, image, inventory)
    end
 end
 
-function place_gold(x, y, gold)
+function game_object.gold_place(x, y, gold)
    local gold_image = "items/gold-coins-medium.png"
    if gold < 20 then
       gold_image = "items/gold-coins-small.png"
@@ -58,7 +59,7 @@ function place_gold(x, y, gold)
       gold_image = "items/gold-coins-large.png"
    end
 
-   simple_place(x, y, "gold", gold_image, false)
+   game_object.simple_place(x, y, "gold", gold_image, false)
    check_x_coord(x)
    containers[x][y]["gold"] = gold
 end
