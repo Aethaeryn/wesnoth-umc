@@ -40,27 +40,44 @@ function mod_menu.toggle(menu_item)
    end
 end
 
+local function get_levels(category)
+   local levels = {}
+   for key, value in pairs(regular[category]) do
+      if tonumber(string.sub(key, 7)) <= change_unit.max_level then
+         table.insert(levels, key)
+      end
+   end
+   table.sort(levels)
+   return levels
+end
+
 function mod_menu.select_leader()
-   local leader = wesnoth.get_units { side = wesnoth.current.side, canrecruit = true }[1]
+   local leaders = wesnoth.get_units { side = wesnoth.current.side, canrecruit = true }
+   local leader
+   if leaders[1] ~= nil then
+      leader = leaders[1]
+   else
+      return
+   end
    if leader.type == "Peasant" then
       local title = "Leader Selection"
       local description = "Select a leader type."
-      local leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
-      if leader_category then
-         local levels = {}
-         for key, value in pairs(regular[leader_category]) do
-            if tonumber(string.sub(key, 7)) <= change_unit.max_level then
-               table.insert(levels, key)
-            end
-         end
-         table.sort(levels)
-         local description = "Select a level."
-         local level = menu(levels, mod_menu.lich_image, title, description, menu_simple_list)
-         if level then
-            local description = "Select a unit."
-            local choice = menu(regular[leader_category][level], mod_menu.lich_image, title, description, menu_unit_list, nil, "summoner")
-            if choice then
-               change_unit.transform(leader.x, leader.y, choice)
+      local leader_category = false
+      while not leader_category do
+         leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
+         if leader_category then
+            local description = "Select a level."
+            local level = menu(get_levels(leader_category), mod_menu.lich_image, title, description, menu_simple_list)
+            if level then
+               local description = "Select a unit."
+               local choice = menu(regular[leader_category][level], mod_menu.lich_image, title, description, menu_unit_list, nil, "summoner")
+               if choice then
+                  change_unit.transform(leader.x, leader.y, choice)
+               else
+                  leader_category = false
+               end
+            else
+               leader_category = false
             end
          end
       end

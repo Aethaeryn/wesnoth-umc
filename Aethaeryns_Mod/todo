@@ -109,13 +109,12 @@ When this list is complete/empty, bump to version 0.9
 
  (4) Details (2%)
   - Pick character dialog.
-    - Add the event that actually fires the pick character dialog.
-    - Make sure that movement changes properly if the target unit has more or less MP than 5.
-    - Players can cancel the leader selection process. A back button should be there instead.
     - Players can only choose male leaders. They need to be able to pick a gender or random, where the unit has more than one possible gender.
     - Perhaps let the host fire this at other times to let players create a new character, e.g. when handing side 7 or 8 to observers or recycling a dead side 2-5 to observers.
     - Have the host be able to change which level is available, which types are available, etc., and/or let a vote be held first on the level.
-    - A similar unit dialog can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
+
+  - Spawn non-summoner unit dialog.
+    - A similar unit dialog to pick character dialog can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
       - Make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
       - And eventually they can be tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
         - And of course this opens the door to quests, preset interactions/messages, etc.
@@ -174,6 +173,7 @@ When this list is complete/empty, bump to version 0.9
   * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
   * BUG: Objectives don't show up right in the set menu.
   * BUG: Filter out the summoners before the dialog part so there aren't e.g. empty Level 4s for Summon <Foo>
+  * BUG? What happens if someone disconnects during the character selection dialog?
 
   * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
   * FEATURE: AMLAing probably shouldn't increase max experience.

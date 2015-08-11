@@ -97,6 +97,7 @@ function change_unit.transform(x, y, new_unit)
       if unit_type == new_unit then
          wesnoth.transform_unit(unit, new_unit)
          unit.hitpoints = unit.max_hitpoints
+         unit.moves = unit.max_moves
       end
    end
 end
