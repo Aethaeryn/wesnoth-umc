@@ -183,6 +183,7 @@ When this list is complete/empty, bump to version 0.9
   * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
 
   * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
+    * Maybe override [advancement] i.e. AMLA_DEFAULT?
   * CODE: Find a replacement for get_roles() and get_sides_with_all()
   * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
     - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"

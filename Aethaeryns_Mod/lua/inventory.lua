@@ -4,12 +4,6 @@ containers = {}
 mod_inventory = {}
 game_object = {}
 
-local function check_x_coord(x)
-   if containers[x] == nil then
-      containers[x] = {}
-   end
-end
-
 function mod_inventory.chest_add(unit, x, y, name)
    containers[x][y]["chest"][name] = containers[x][y]["chest"][name] + 1
    unit.variables[name] = unit.variables[name] - 1
@@ -42,8 +36,12 @@ end
 function game_object.simple_place(x, y, container_type, image, inventory)
    game_object.clear(x,y)
    w_items.place_image(x, y, image)
-   check_x_coord(x)
-   containers[x][y] = {}
+   if containers[x] == nil then
+      containers[x] = {}
+   end
+   if containers[x][y] == nil then
+      containers[x][y] = {}
+   end
    containers[x][y][container_type] = {}
    local l = wesnoth.get_variable("mod_containers.length")
    wesnoth.set_variable(string.format("mod_containers[%d]", l), { x = x, y = y })
@@ -67,7 +65,6 @@ function game_object.gold_place(x, y, gold)
    end
 
    game_object.simple_place(x, y, "gold", gold_image, false)
-   check_x_coord(x)
    containers[x][y]["gold"] = gold
 end
 
@@ -109,8 +106,7 @@ end
 
 function find_interactions(x, y)
    local interactions = {}
-   check_x_coord(x)
-   if containers[x][y] ~= nil then
+   if containers[x] ~= nil and containers[x][y] ~= nil then
       if containers[x][y]["shop"] ~= nil then
          table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
       elseif containers[x][y]["chest"] ~= nil then
@@ -127,8 +123,7 @@ end
 
 function find_interactions_to_modify(x, y)
    local interactions = {}
-   check_x_coord(x)
-   if containers[x][y] ~= nil then
+   if containers[x] ~= nil and containers[x][y] ~= nil then
       if containers[x][y]["shop"] ~= nil then
          table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
       elseif containers[x][y]["chest"] ~= nil then
