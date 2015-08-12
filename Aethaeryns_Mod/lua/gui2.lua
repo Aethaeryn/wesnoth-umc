@@ -220,6 +220,13 @@ function menu_unit_name_and_location(units)
    end
 end
 
+function menu_upgrade_list(upgrades)
+   for i, upgrade in ipairs(upgrades) do
+      wesnoth.set_dialog_value(upgrade.name, "menu_list", i, "label")
+      wesnoth.set_dialog_value(upgrade.image, "menu_list", i, "icon")
+   end
+end
+
 function menu_picture_list(list)
    for i, sublist in ipairs(list) do
       wesnoth.set_dialog_value(sublist[1], "menu_list", i, "label")
@@ -287,24 +294,24 @@ function gui2.on_select.item_stats(list, i)
    end
 end
 
-function gui2.on_select.upgrade_stats(list, i)
+function gui2.on_select.upgrade_stats(upgrades, i)
    wesnoth.set_dialog_value("Information about the selected upgrade:  \n", "menu_sidebar_intro")
    wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-   wesnoth.set_dialog_value(list[i][2], "menu_image")
-   if list[i][5] then
+   wesnoth.set_dialog_value(upgrades[i].image, "menu_image")
+   if upgrades[i].cap then
       wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d of %d\nPrice: %d\n%s</small>",
-                                             list[i][1],
-                                             list[i][4],
-                                             list[i][5],
-                                             list[i][3],
-                                             list[i][6]),
+                                             upgrades[i].name,
+                                             upgrades[i].count,
+                                             upgrades[i].cap,
+                                             upgrades[i].cost,
+                                             upgrades[i].msg),
                                "menu_sidebar_text")
    else
       wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d\nPrice: %d\n%s</small>",
-                                             list[i][1],
-                                             list[i][4],
-                                             list[i][3],
-                                             list[i][6]),
+                                             upgrades[i].name,
+                                             upgrades[i].count,
+                                             upgrades[i].cost,
+                                             upgrades[i].msg),
                                "menu_sidebar_text")
    end
 end

@@ -193,7 +193,34 @@ function mod_menu.unit_commands()
          mod_inventory.use(e.x1, e.y1, item)
       end
    elseif option == "Upgrades" then
-      submenu_upgrade_unit()
+      local unit = wesnoth.get_unit(e.x1, e.y1)
+      local points = unit.variables["advancement"]
+      local point_word = "points"
+      local upgrades = {}
+      if points == nil then
+         points = 0
+      end
+      if points == 1 then
+         point_word = "point"
+      end
+      for i, upgrade in ipairs(upgrade_table) do
+         local upgrade_count = 0
+         if unit.variables["upgrade"..upgrade.name] ~= nil then
+            upgrade_count = unit.variables["upgrade"..upgrade.name]
+         end
+         table.insert(upgrades, {name = upgrade.name,
+                                 image = upgrade.image,
+                                 cost = upgrade.cost,
+                                 count = upgrade_count,
+                                 cap = upgrade.cap,
+                                 msg = upgrade.msg})
+      end
+      local title = "Unit Commands"
+      local description = string.format("What do you want to upgrade? You have %d %s available.", points, point_word)
+      local upgrade = menu(upgrades, "", title, description, menu_upgrade_list, 1, "upgrade_stats")
+      if upgrade then
+         upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
+      end
    elseif option == "Speak" then
       fire.custom_message()
    end
