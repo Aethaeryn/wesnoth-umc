@@ -2,19 +2,8 @@ AETHAERYN'S MOD TODO LIST (92% Progress)
 When this list is complete/empty, bump to version 0.9
 
  (1) Inventory Containers (2%)
-  - Save and load container state so that it works for saves and loads.
-    - Even the array used to verify interactions doesn't seem to save.
-      - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
-
-  - Allow multiple containers on the same hex.
-    - Probably only show one icon.
-    - Make sure simple_place only adds it to the location list if it's not already there.
-    - Make sure clear only clears it if all containers are removed.
-
-  - Large parts of inventory.lua need rewriting so the code is more general for the changes below.
-    - Make sure functions live in tables.
-    - Use a slider instead of text input for gold quantity and inventory quantity.
-    - Use inventory quantity on purchasing instead of assuming just one.
+  - Use a slider instead of text input for gold quantity and inventory adding quantity.
+  - Use inventory quantity on purchasing instead of assuming just one.
 
   - Container changes on host or unit actions:
     - shops:
@@ -72,6 +61,15 @@ When this list is complete/empty, bump to version 0.9
     - If it dies on a hex with an existing pack, the items are added to the pack's items.
     - If it dies on a hex with another non-pack container, the drop is there in Investigate but is not map-visible.
     - If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
+
+  - Save and load container state so that it works for saves and loads.
+    - Even the array used to verify interactions doesn't seem to save.
+      - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
+
+  - Allow multiple containers on the same hex.
+    - Probably only show one icon.
+    - Make sure simple_place only adds it to the location list if it's not already there.
+    - Make sure clear only clears it if all containers are removed.
 
  (2) Interaction (1%)
   - Let units give things to adjacent units.
