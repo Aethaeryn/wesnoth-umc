@@ -63,12 +63,16 @@ function change_unit.max_experience(x, y, change)
    wesnoth.put_unit(x, y, unit)
 end
 
-function change_unit.gender(x, y)
+function change_unit.gender(x, y, gender)
    local unit = wesnoth.get_unit(x, y).__cfg
-   if unit.gender == "male" then
-      unit.gender = "female"
-   elseif unit.gender == "female" then
-      unit.gender = "male"
+   if gender ~= nil then
+      unit.gender = gender
+   else
+      if unit.gender == "male" then
+         unit.gender = "female"
+      elseif unit.gender == "female" then
+         unit.gender = "male"
+      end
    end
    wesnoth.put_unit(x, y, unit)
 end
@@ -90,14 +94,24 @@ function change_unit.leader(x, y)
    end
 end
 
-function change_unit.transform(x, y, new_unit)
+function change_unit.transform(x, y, new_unit, gender)
    local unit = wesnoth.get_unit(x, y)
    -- Only transforms if a valid unit was input.
-   for unit_type, i in pairs(wesnoth.unit_types) do
+   for unit_type, unit_data in pairs(wesnoth.unit_types) do
       if unit_type == new_unit then
+         -- Gender must change first for single-gender target units.
+         if unit_data.__cfg.gender == "female" and unit.__cfg.gender ~= "female" then
+            change_unit.gender(x, y)
+         -- Yes, in Wesnoth male is literally the default.
+         elseif unit_data.__cfg.gender == nil and unit.__cfg.gender == "female" then
+            change_unit.gender(x, y)
+         elseif unit_data.__cfg.gender == "male,female" and gender ~= nil then
+            change_unit.gender(x, y, gender)
+         end
          wesnoth.transform_unit(unit, new_unit)
          unit.hitpoints = unit.max_hitpoints
          unit.moves = unit.max_moves
+         return
       end
    end
 end

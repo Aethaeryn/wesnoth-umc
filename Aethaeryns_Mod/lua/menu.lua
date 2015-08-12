@@ -93,7 +93,7 @@ function mod_menu.select_leader()
       return
    end
    if leader.type == "Peasant" then
-      local title = _ "Leader Selection"
+      local title = _ "Leader"
       local description = _ "Select a leader type."
       local leader_category = false
       while not leader_category do
@@ -105,7 +105,17 @@ function mod_menu.select_leader()
                local description = _ "Select a unit."
                local choice = menu(regular[leader_category][level], mod_menu.lich_image, title, description, menu_unit_list, nil, "summoner")
                if choice then
-                  change_unit.transform(leader.x, leader.y, choice)
+                  if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
+                     change_unit.transform(leader.x, leader.y, choice)
+                  else
+                     local description = _ "Select a gender."
+                     local gender = menu({{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
+                     if gender then
+                        change_unit.transform(leader.x, leader.y, choice, gender)
+                     else
+                        leader_category = false
+                     end
+                  end
                else
                   leader_category = false
                end

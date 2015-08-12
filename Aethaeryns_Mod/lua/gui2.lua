@@ -25,7 +25,7 @@ local function generate_dialog(not_empty, menu_type, has_sidebar)
    if not_empty then
       buttons = T.row {
          T.column { T.button { id = "ok", label = _ "OK" }},
-         T.column { T.button { id = "cancel", label = _ "Close" }}}
+         T.column { T.button { id = "cancel", label = _ "Cancel" }}}
    else
       buttons = T.row {
          T.column { T.button { id = "cancel", label = _ "Close" }}}

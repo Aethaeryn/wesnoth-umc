@@ -88,7 +88,6 @@ When this list is complete/empty, bump to version 0.9
       - Undead, elementals, animals, monsters, etc., cannot be bribed unless manually set that way.
     - Bribing will consume all movement and disable attacks and will only be allowed if you haven't attacked.
 
-
  (3) Inventory (1%)
   - Multiples stack the turn duration, not the effect strength.
   - Do the turn effects by repeatedly applying an [object] of duration
@@ -101,11 +100,9 @@ When this list is complete/empty, bump to version 0.9
   - Ale: "Confidence" ability: +5 max HP for 3 turns.
     - 25% chance of also becoming drunk (berserk melee) for that duration each time used
 
- (4) Details (2%)
+ (4) Details (1%)
   - Pick character dialog.
-    - Players can only choose male leaders. They need to be able to pick a gender or random, where the unit has more than one possible gender.
-    - Perhaps let the host fire this at other times to let players create a new character, e.g. when handing side 7 or 8 to observers or recycling a dead side 2-5 to observers.
-    - Have the host be able to change which level is available, which types are available, etc., and/or let a vote be held first on the level.
+    - Have the host be able to change which level is available, which types are available, etc.
 
   - Spawn non-summoner unit dialog.
     - A similar unit dialog to pick character dialog can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
@@ -114,6 +111,11 @@ When this list is complete/empty, bump to version 0.9
         - And of course this opens the door to quests, preset interactions/messages, etc.
         - Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
     - This could also then replace the textbox in Transform.
+
+***
+
+ (4) Details (1%)
+  - Maybe let the host fire the character selection at other times to let players create a new character, e.g. when handing side 7 or 8 to observers or recycling a dead side 2-5 to observers.
 
   - Upgrades
     - Raise the cap on intelligence upgrades so there can be more than one?
@@ -125,10 +127,8 @@ When this list is complete/empty, bump to version 0.9
     - There needs to be a visible indicator over the unit that the unit can be upgraded.
 
   - Host unit modifying.
-    - Make sure to handle negative numbers properly.
-      - Or use sliders and keep values within a reasonable range, which will vary depending on the stat.
+    - Use sliders and keep values within a reasonable range, which will vary depending on the stat.
     - Toggle the boss regenerate on/off, e.g. optionally for when turned to/from summoner.
-    - Make sure that everything that can be done in Lua to a unit is doable somehow.
     - Allow modifying attacks and traits if possible.
     - Add a unit teleport command.
 
@@ -144,13 +144,14 @@ When this list is complete/empty, bump to version 0.9
 
   - Summoners.
     - Add a toggleable default gender to use when two genders are possible so it doesn't always default to male.
-      - Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
-      - Make sure one-gender units stay the gender they're supposed to be, just in case Transform is used.
+    - Allow one option, the default, to be Random Gender. Make sure to use a random that's MP safe.
+    - Also allow selection on an individual basis once the GUI2 is extended (see Future).
 
   - Check how inventory's effects interact if promoted while the effect is still on.
 
   - Let Sylphs and/or Shydes disguise themselves as regular Elvish Ladies.
     - They would stay as summoners but lose the icon, being the only stealth summoners in the game.
+    - Perhaps allow other disguising, e.g. Assassins.
 
  (5) Issues (2%)
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
@@ -160,7 +161,6 @@ When this list is complete/empty, bump to version 0.9
   * BUG: The state of toggled right click menus is not saved.
   * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
   * BUG: Fix icon size for Summon <foo> and Summon Summoner.
-  * BUG: Transforming a unit to a female-only unit doesn't actually change its gender, so if it's transformed again it's still male.
   * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
     - In fact, it locks the unit into the old portrait even if it promotes.
   * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
@@ -189,7 +189,14 @@ When this list is complete/empty, bump to version 0.9
   * CODE: Re-sort the units.lua menu so that the order makes sense.
   * CODE: Clean up the gui2.lua code, which is now a mess and not entirely accurate in its names (e.g. "summoner" vs. "unit").
 
+***
+
  (6) Future
+    * Character selection
+      * Have the host (or a vote, or the map) be able to restrict the unit categories/types available in character selection.
+      * Allow player votes for things like max level or next map instead of leaving all the decisions to the host.
+      * Select gender through the same window rather than a separate window.
+      * Allow a random gender, and make this the default.
     * Extend the GUI2 wrapper so that it can handle more  than one return value.
       * Some windows could do more than one action with sliders, checkboxes, etc., instead of with text input.
         * especially changing side variables
