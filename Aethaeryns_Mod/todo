@@ -74,7 +74,6 @@ When this list is complete/empty, bump to version 0.9
     - If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
 
  (2) Interaction (1%)
-  - If the unit at the chosen interaction location is not standing on a shop/chest/gold/drop then they shouldn't be part of the possible interacting units because a unit cannot interact with itself!
   - Hostile units on a container hex should block their use so mobs can guard shops, gold, chests, etc.
   - If there is only one possible interaction, there is no need to bring up the prompt (make it like the unit disambiguation)
 

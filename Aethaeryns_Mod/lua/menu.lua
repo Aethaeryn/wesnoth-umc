@@ -130,8 +130,18 @@ function mod_menu.interact()
    local current_side = wesnoth.current.side
    for i, hex in ipairs(interaction_hexes) do
       local unit = wesnoth.get_unit(hex[1], hex[2])
+      -- A unit must be in the radius on the current side...
       if unit ~= nil and unit.side == current_side then
-         table.insert(unit_list, unit)
+         -- ...but a unit can't interact with itself so there must be
+         -- something else on the hex other than a unit to interact
+         -- with if a unit is on the hex.
+         if hex[1] == e.x1 and hex[2] == e.y1 then
+            if containers[e.x1] ~= nil and containers[e.x1][e.y1] ~= nil then
+               table.insert(unit_list, unit)
+            end
+         else
+            table.insert(unit_list, unit)
+         end
       end
    end
    local unit = unit_list[1]
