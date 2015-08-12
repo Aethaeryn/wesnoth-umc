@@ -135,11 +135,7 @@ function mod_menu.interact()
          -- ...but a unit can't interact with itself so there must be
          -- something else on the hex other than a unit to interact
          -- with if a unit is on the hex.
-         if hex[1] == e.x1 and hex[2] == e.y1 then
-            if containers[e.x1] ~= nil and containers[e.x1][e.y1] ~= nil then
-               table.insert(unit_list, unit)
-            end
-         else
+         if (hex[1] ~= e.x1 or hex[2] ~= e.y1) or (containers[e.x1] ~= nil and containers[e.x1][e.y1] ~= nil) then
             table.insert(unit_list, unit)
          end
       end
