@@ -268,9 +268,15 @@ When this list is complete/empty, bump to version 0.9
     * Let the AI be able handle things as NPCs/enemies, including summoning.
       * A very high probability to summon each turn if activated and HP > 50%
       * This gives the units for the AI-controled side to use in battle.
-    * Make sure that the translatable strings are marked as such.
     * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
     * Make the time of day last longer (3 turns per phase?) so alignment matters more on the huge maps
       * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
     * Eventually make this the framework for RPGs in general, not just ones where the host controls sides 1 & 6.
       * Not even just RPGs. A lot of the general code can be used for completely different game types, e.g. recruiting via villages.
+
+ (T) Translations
+  - Units call .name in their menu and so are translated for free. (The strings are IDs, not names.)
+  - Terrains call .editor_name and so are also translated for free. (Terrains are IDs, not names.)
+  - Sometimes the code can use a simple _ prefix to the strings and work.
+  - Most menu list of strings are more complicated because of the way the gui2 dialog code currently works.
+  - Strings that are used with string.format() do not seem to work with the Wesnoth translation system, either.

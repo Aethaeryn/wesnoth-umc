@@ -24,11 +24,11 @@ local function generate_dialog(not_empty, menu_type, has_sidebar)
    local buttons = {}
    if not_empty then
       buttons = T.row {
-         T.column { T.button { id = "ok", label = "OK" }},
-         T.column { T.button { id = "cancel", label = "Close" }}}
+         T.column { T.button { id = "ok", label = _ "OK" }},
+         T.column { T.button { id = "cancel", label = _ "Close" }}}
    else
       buttons = T.row {
-         T.column { T.button { id = "cancel", label = "Close" }}}
+         T.column { T.button { id = "cancel", label = _ "Close" }}}
    end
    left_column = {}
    if has_sidebar ~= nil then
@@ -178,7 +178,7 @@ function gui2_error(text)
    dialog = generate_dialog(false, "error")
    local function safe_dialog()
       local function preshow()
-         wesnoth.set_dialog_value("Error!", "menu_title")
+         wesnoth.set_dialog_value(_ "Error!", "menu_title")
          wesnoth.set_dialog_value(text, "menu_description")
       end
 
