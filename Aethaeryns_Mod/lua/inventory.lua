@@ -137,7 +137,7 @@ function find_interactions_to_modify(x, y)
    return interactions
 end
 
-function show_current_inventory(item_holder)
+function mod_inventory.show_current(item_holder)
    local options = {}
    for i, item in ipairs(item_table) do
       quantity = item_holder[item.name]
@@ -148,7 +148,7 @@ function show_current_inventory(item_holder)
    return options
 end
 
-function show_all_inventory()
+function mod_inventory.show_all()
    local options = {}
    for i, item in ipairs(item_table) do
       table.insert(options, {item.name, item.image, item.price, item.msg})

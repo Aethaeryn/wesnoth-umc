@@ -149,7 +149,7 @@ function mod_menu.interact()
    if option then
       if option == "Visit Shop" then
          local description = "What item do you want to purchase from the shop?"
-         local inventory = show_current_inventory(containers[e.x1][e.y1]["shop"])
+         local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["shop"])
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
          if item then
             mod_inventory.shop_buy(unit, e.x1, e.y1, item, wesnoth.current.side)
@@ -159,14 +159,14 @@ function mod_menu.interact()
          game_object.clear(e.x1, e.y1)
       elseif option == "Remove from Chest" then
          local description = "What item do you want to remove from the chest?"
-         local inventory = show_current_inventory(containers[e.x1][e.y1]["chest"])
+         local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["chest"])
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
          if item then
             mod_inventory.chest_remove(unit, e.x1, e.y1, item)
          end
       elseif option == "Add to Chest" then
          local description = "What item do you want to put in the chest?"
-         local inventory = show_current_inventory(wesnoth.get_unit(e.x1, e.y1).variables)
+         local inventory = mod_inventory.show_current(wesnoth.get_unit(e.x1, e.y1).variables)
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
          if item then
             mod_inventory.chest_add(unit, e.x1, e.y1, item)
@@ -187,7 +187,7 @@ function mod_menu.unit_commands()
    local option = menu(options, image, title, description, menu_picture_list, 1)
    if option == "Use Item" then
       local description = "Which item do you want to use?"
-      local inventory = show_current_inventory(wesnoth.get_unit(e.x1, e.y1).variables)
+      local inventory = mod_inventory.show_current(wesnoth.get_unit(e.x1, e.y1).variables)
       local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
       if item then
          mod_inventory.use(e.x1, e.y1, item)
@@ -220,7 +220,7 @@ function mod_menu.unit_editor()
          end
       elseif choice == "Inventory" then
          local description = "Which item do you want to add?"
-         local item = menu(show_all_inventory(), "", title, description, menu_picture_list, 1, "item_stats")
+         local item = menu(mod_inventory.show_all(), "", title, description, menu_picture_list, 1, "item_stats")
          if item then
             submenu_inventory_quantity(item, wesnoth.get_unit(e.x1, e.y1).variables)
          end
@@ -367,13 +367,13 @@ function mod_menu.settings()
          if interaction then
             if interaction == "Modify Shop" then
                local description = "Which item do you want to add?"
-               local item = menu(show_all_inventory(), "", title, description, menu_picture_list, 1, "item_stats")
+               local item = menu(mod_inventory.show_all(), "", title, description, menu_picture_list, 1, "item_stats")
                if item then
                   submenu_inventory_quantity(item, containers[e.x1][e.y1]["shop"])
                end
             elseif interaction == "Modify Chest" then
                local description = "Which item do you want to add?"
-               local item = menu(show_all_inventory(), "", title, description, menu_picture_list, 1, "item_stats")
+               local item = menu(mod_inventory.show_all(), "", title, description, menu_picture_list, 1, "item_stats")
                if item then
                   submenu_inventory_quantity(item, containers[e.x1][e.y1]["chest"])
                end
