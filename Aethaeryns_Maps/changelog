@@ -1,4 +1,4 @@
-AETHAERYN'S MAPS         VERSION 0.5.2+git
+AETHAERYN'S MAPS         VERSION 0.5.2+dev
 2p Twin Rivers           (version 0.5)
 3p Fortress Defense      (version 0.7)
 4p Chambers              (version 0.5)
@@ -8,16 +8,20 @@ AETHAERYN'S MAPS         VERSION 0.5.2+git
 5p Dwarven Fortress      (version 0.2)
 6p Random Rumble         (version 0.3)
 
-VERSION 0.5.2+git
- - Master of Dungeons moved to its own add-on, rewritten in Lua
+VERSION 0.5.2+dev
+ - updated the Mixed Flowers terrain code for 1.12 where used by the maps
+ - Master of Dungeons moved to its own add-on as MoD, rewritten in Lua
  - Gladiator Arena removed
    - the summoner code became Aethaeryn's MoD before the rewrite
    - the old, imbalanced map becames the battle map in MoD
  - Hide and Seek removed
    - it was a nightmare to balance, but it's now an RPG map in MoD
  - Fortress Assault updated to 1.2
+   - opened up some of the cave for easier movement
    - remove the bottleneck in the tunnel when attacking from the cave
    - added a village by tunnel to try to make it important again post-mine
+   - fully forded the crossing by the tunnel to make the tunnel gate important
+   - very slight terrain adjustments all over
 
 VERSION 0.5.2 for Wesnoth 1.8.1 (10 May 2010)
  - Master of Dungeons updated to 0.3
