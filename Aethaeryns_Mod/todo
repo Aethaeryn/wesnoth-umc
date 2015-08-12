@@ -74,9 +74,6 @@ When this list is complete/empty, bump to version 0.9
     - If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
 
  (2) Interaction (1%)
-  - Hostile units on a container hex should block their use so mobs can guard shops, gold, chests, etc.
-  - If there is only one possible interaction, there is no need to bring up the prompt (make it like the unit disambiguation)
-
   - Let units give things to adjacent units.
     - Inventory (all unequipped items)
     - Gold (if leader)

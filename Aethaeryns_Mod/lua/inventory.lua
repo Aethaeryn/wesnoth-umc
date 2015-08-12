@@ -104,39 +104,6 @@ function mod_inventory.shop_buy(unit, x, y, name, side_number)
    end
 end
 
-function find_interactions(x, y)
-   local interactions = {}
-   if containers[x] ~= nil and containers[x][y] ~= nil then
-      if containers[x][y]["shop"] ~= nil then
-         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
-      elseif containers[x][y]["chest"] ~= nil then
-         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png"})
-         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png"})
-      elseif containers[x][y]["pack"] ~= nil then
-         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png"})
-      elseif containers[x][y]["gold"] ~= nil then
-         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
-      end
-   end
-   return interactions
-end
-
-function find_interactions_to_modify(x, y)
-   local interactions = {}
-   if containers[x] ~= nil and containers[x][y] ~= nil then
-      if containers[x][y]["shop"] ~= nil then
-         table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
-      elseif containers[x][y]["chest"] ~= nil then
-         table.insert(interactions, 1, {"Modify Chest", "items/chest-plain-closed.png"})
-      elseif containers[x][y]["pack"] ~= nil then
-         table.insert(interactions, 1, {"Modify Drop", "items/leather-pack.png"})
-      elseif containers[x][y]["gold"] ~= nil then
-         table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
-      end
-   end
-   return interactions
-end
-
 function mod_inventory.show_current(item_holder)
    local options = {}
    for i, item in ipairs(item_table) do

@@ -30,6 +30,39 @@ local function submenu_inventory_quantity(item, container)
    end
 end
 
+local function find_interactions(x, y, blocked)
+   local interactions = {}
+   if containers[x] ~= nil and containers[x][y] ~= nil and not blocked then
+      if containers[x][y]["shop"] ~= nil then
+         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
+      elseif containers[x][y]["chest"] ~= nil then
+         table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png"})
+         table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png"})
+      elseif containers[x][y]["pack"] ~= nil then
+         table.insert(interactions, 1, {"Investigate Drop", "items/leather-pack.png"})
+      elseif containers[x][y]["gold"] ~= nil then
+         table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
+      end
+   end
+   return interactions
+end
+
+local function find_interactions_to_modify(x, y)
+   local interactions = {}
+   if containers[x] ~= nil and containers[x][y] ~= nil then
+      if containers[x][y]["shop"] ~= nil then
+         table.insert(interactions, 1, {"Modify Shop", "scenery/tent-shop-weapons.png"})
+      elseif containers[x][y]["chest"] ~= nil then
+         table.insert(interactions, 1, {"Modify Chest", "items/chest-plain-closed.png"})
+      elseif containers[x][y]["pack"] ~= nil then
+         table.insert(interactions, 1, {"Modify Drop", "items/leather-pack.png"})
+      elseif containers[x][y]["gold"] ~= nil then
+         table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
+      end
+   end
+   return interactions
+end
+
 function mod_menu.toggle(menu_item)
    if mod_menu_items[menu_item].status then
       mod_menu_items[menu_item].status = false
@@ -128,6 +161,7 @@ function mod_menu.interact()
    local interaction_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = 1 }
    local unit_list = {}
    local current_side = wesnoth.current.side
+   local blocked = false
    for i, hex in ipairs(interaction_hexes) do
       local unit = wesnoth.get_unit(hex[1], hex[2])
       -- A unit must be in the radius on the current side...
@@ -138,6 +172,10 @@ function mod_menu.interact()
          if (hex[1] ~= e.x1 or hex[2] ~= e.y1) or (containers[e.x1] ~= nil and containers[e.x1][e.y1] ~= nil) then
             table.insert(unit_list, unit)
          end
+      -- A hostile unit blocks all non-unit interactions on that hex.
+      elseif unit ~= nil and unit.side ~= current_side
+      and wesnoth.sides[unit.side].team_name ~= wesnoth.sides[current_side].team_name then
+         blocked = true
       end
    end
    local unit = unit_list[1]
@@ -151,7 +189,7 @@ function mod_menu.interact()
       end
    end
    local description = _ "How do you want to interact?"
-   local option = menu(find_interactions(e.x1, e.y1), image, title, description, menu_picture_list, 1)
+   local option = menu(find_interactions(e.x1, e.y1, blocked), image, title, description, menu_picture_list, 1)
    if option then
       if option == "Visit Shop" then
          local description = _ "What item do you want to purchase from the shop?"
