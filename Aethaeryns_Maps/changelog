@@ -2,7 +2,7 @@ AETHAERYN'S MAPS         VERSION 0.5.2+git
 2p Twin Rivers           (version 0.5)
 3p Fortress Defense      (version 0.7)
 4p Chambers              (version 0.5)
-4p Fortress Assault      (version 1.1)
+4p Fortress Assault      (version 1.2)
 4p Four Bases            (version 0.4)
 5p Aethaeryn's Empires   (version 0.2)
 5p Dwarven Fortress      (version 0.2)
@@ -15,6 +15,8 @@ VERSION 0.5.2+git
    - the old, imbalanced map becames the battle map in MoD
  - Hide and Seek removed
    - it was a nightmare to balance, but it's now an RPG map in MoD
+ - Fortress Assault updated to 1.2
+   - remove the bottleneck in the tunnel when attacking from the cave
 
 VERSION 0.5.2 for Wesnoth 1.8.1 (10 May 2010)
  - Master of Dungeons updated to 0.3
