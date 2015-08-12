@@ -17,6 +17,7 @@ VERSION 0.5.2+git
    - it was a nightmare to balance, but it's now an RPG map in MoD
  - Fortress Assault updated to 1.2
    - remove the bottleneck in the tunnel when attacking from the cave
+   - added a village by tunnel to try to make it important again post-mine
 
 VERSION 0.5.2 for Wesnoth 1.8.1 (10 May 2010)
  - Master of Dungeons updated to 0.3
