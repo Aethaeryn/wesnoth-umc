@@ -102,12 +102,7 @@ When this list is complete/empty, bump to version 0.9
 
  (4) Details (1%)
   - Spawn non-summoner unit dialog.
-    - A similar unit dialog to pick character dialog can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
-      - Make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
-      - And eventually they can be tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
-        - And of course this opens the door to quests, preset interactions/messages, etc.
-        - Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
-    - This could also then replace the textbox in Transform.
+    - Make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
 
 ***
 
@@ -184,10 +179,15 @@ When this list is complete/empty, bump to version 0.9
   * CODE: Re-sort the units.lua menu so that the order makes sense.
   * CODE: Clean up the gui2.lua code, which is now a mess and not entirely accurate in its names (e.g. "summoner" vs. "unit").
   * CODE: Use a slider for setting the max level.
+  * CODE: Replace the text box in Transform with the menu used in summon_units and select_leader?
 
 ***
 
  (6) Future
+    * Make spawning units/groups/objects tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
+      - And of course this opens the door to quests, preset interactions/messages, etc.
+        - Even ones that the host can place.
+      - Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
     * Character selection
       * Have the host (or a vote, or the map) be able to restrict the unit categories/types available in character selection.
       * Allow player votes for things like max level or next map instead of leaving all the decisions to the host.

@@ -1,6 +1,13 @@
 #define MOD_DATA_MENU
 <<
 mod_menu_items = {
+   summon_units = {
+      id = "MOD_003",
+      text = _ "Summon Units",
+      image = "terrain/symbols/terrain_group_custom_30.png",
+      filter = aeth_mod_filter.summon_summoner,
+      command = "mod_menu.summon_units()",
+      status = true },
    summon_summoner = {
       id = "MOD_005",
       text = _ "Summon Summoner",

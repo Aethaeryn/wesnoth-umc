@@ -141,7 +141,7 @@ local function find_summoner(x, y, summoners)
 end
 
 -- Unit role is summoner type; icon and unit_role are optional.
-function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role)
+function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, gender)
    local unit_stats = {type = unit_type,
                        side = side_number,
                        upkeep = 0}
@@ -154,6 +154,9 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role)
    end
    if unit_role ~= nil then
       unit_stats.role = unit_role
+   end
+   if gender ~= nil then
+      unit_stats.gender = gender
    end
    wesnoth.put_unit(x, y, unit_stats)
 end

@@ -508,5 +508,19 @@ regular = {
       },
    }
 }
+
+unit_groups_menu = { "Goblins" }
+
+unit_groups = {
+   Goblins = {
+      "Goblin Rouser",
+      "Goblin Impaler",
+      "Goblin Spearman",
+      "Goblin Spearman",
+      "Goblin Spearman",
+      "Goblin Spearman",
+      "Goblin Spearman",
+   },
+}
 >>
 #enddef

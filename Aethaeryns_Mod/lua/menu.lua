@@ -99,7 +99,7 @@ function mod_menu.select_leader()
       while not leader_category do
          leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
          if leader_category then
-            local description = _ "Select a level."
+            local description = _ "Select a unit level."
             local level = menu(get_levels(leader_category), mod_menu.lich_image, title, description, menu_simple_list)
             if level then
                local description = _ "Select a unit."
@@ -121,6 +121,51 @@ function mod_menu.select_leader()
                end
             else
                leader_category = false
+            end
+         end
+      end
+   end
+end
+
+function mod_menu.summon_units()
+   local e = wesnoth.current.event_context
+   local title = _ "Summon Units"
+   local description = _ "Select what kind of summon to use."
+   local option = menu({"Summon Group", "Summon Unit"}, mod_menu.lich_image, title, description, menu_simple_list)
+   if option then
+      if option == "Summon Group" then
+         local description = _ "Select a group."
+         local group = menu(unit_groups_menu, mod_menu.lich_image, title, description, menu_simple_list)
+         if group then
+            for i, units in ipairs(unit_groups[group]) do
+               debugOut(units)
+            end
+         end
+      elseif option == "Summon Unit" then
+         local description = _ "Select a unit category."
+         local unit_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
+         if unit_category then
+            local levels = {}
+            for key, value in pairs(regular[unit_category]) do
+               table.insert(levels, key)
+            end
+            table.sort(levels)
+            local description = _ "Select a unit level."
+            local level = menu(levels, mod_menu.lich_image, title, description, menu_simple_list)
+            if level then
+               local description = _ "Select a unit."
+               local choice = menu(regular[unit_category][level], mod_menu.lich_image, title, description, menu_unit_list, nil, "summoner")
+               if choice then
+                  if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
+                     spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side)
+                  else
+                     local description = _ "Select a gender."
+                     local gender = menu({{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
+                     if gender then
+                        spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender)
+                     end
+                  end
+               end
             end
          end
       end
