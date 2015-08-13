@@ -2,7 +2,7 @@ AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
  (1) Inventory Containers (2%)
-  - Use a slider instead of text input for gold quantity and inventory adding quantity.
+  - Use a slider instead of text input for inventory adding quantity.
   - Use inventory quantity on purchasing instead of assuming just one.
 
   - Container changes on host or unit actions:

@@ -474,7 +474,7 @@ function mod_menu.place_object()
       elseif option == "Place Gold Pile" then
          local description = _ "How much gold do you want to place in the pile?"
          local label = "Gold:"
-         local gold = menu_text_input(mod_menu.lich_image, title, description, label)
+         local gold = menu_slider(mod_menu.lich_image, title, description, label, {max = 500, min = 0, step = 10, value = 100})
          if gold and type(gold) == "number" and gold > 0 then
             game_object.gold_place(e.x1, e.y1, gold)
          end

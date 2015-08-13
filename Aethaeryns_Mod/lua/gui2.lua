@@ -4,7 +4,7 @@ gui2 = {
    with_list = {},
    on_select = {}}
 
-local function generate_dialog(not_empty, menu_type, has_sidebar)
+local function generate_dialog(not_empty, menu_type, has_sidebar, slider)
    local menu_core = {}
    if not_empty then
       if menu_type == "list" then
@@ -16,7 +16,15 @@ local function generate_dialog(not_empty, menu_type, has_sidebar)
       elseif menu_type == "text_input" then
          menu_core = T.column { T.grid {
                                    T.row { T.column { T.label { id = "menu_text_box_label" }}},
-                                   T.row { T.column { T.text_box { definition = "default", id = "menu_text_box" }}}}}
+                                   T.row { T.column { T.text_box { id = "menu_text_box" }}}}}
+      elseif menu_type == "slider" then
+         menu_core = T.column { T.grid {
+                                   T.row { T.column { T.label { id = "menu_slider_label" }}},
+                                   T.row { T.column { T.slider {
+                                                         id = "menu_slider",
+                                                         minimum_value = slider.min,
+                                                         maximum_value = slider.max,
+                                                         step_size = slider.step}}}}}
       end
    else
       menu_core = T.column { T.label { id = "menu_list_empty" }}
@@ -157,6 +165,42 @@ function menu_text_input(image, title, description, label, default_text)
 
       local function postshow()
          choice = wesnoth.get_dialog_value("menu_text_box")
+      end
+
+      local button = wesnoth.show_dialog(dialog, preshow, postshow)
+      -- OK
+      if button == -1 and choice ~= "" then
+         return { value = choice }
+      -- Close
+      else
+         return { value = false }
+      end
+   end
+
+   local safe_choice = wesnoth.synchronize_choice(safe_dialog).value
+   return safe_choice
+end
+
+function menu_slider(image, title, description, label, slider)
+   local dialog = {}
+   dialog = generate_dialog(true, "slider", nil, slider)
+   if default_text == nil then
+      default_text = ""
+   end
+
+   local function safe_dialog()
+      local choice = ""
+
+      local function preshow()
+         wesnoth.set_dialog_value(title, "menu_title")
+         wesnoth.set_dialog_value(description, "menu_description")
+         wesnoth.set_dialog_value(slider.value, "menu_slider")
+         wesnoth.set_dialog_value(label, "menu_slider_label")
+         wesnoth.set_dialog_value(image, "menu_image")
+      end
+
+      local function postshow()
+         choice = wesnoth.get_dialog_value("menu_slider")
       end
 
       local button = wesnoth.show_dialog(dialog, preshow, postshow)
