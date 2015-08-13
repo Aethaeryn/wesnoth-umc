@@ -116,6 +116,12 @@ function mod_inventory.shop_buy(unit, x, y, name, quantity, price, side_number)
    end
 end
 
+function mod_inventory.shop_sell(unit, x, y, name, quantity, price, side_number)
+   wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + math.floor(price * quantity * 0.8)
+   mod_inventory.add(name, quantity, containers[x][y]["shop"])
+   mod_inventory.add(name, -1 * quantity, unit.variables)
+end
+
 function mod_inventory.collect_gold(x, y, quantity, side)
    if quantity > 0 and quantity <= containers[x][y]["gold"] then
       wesnoth.sides[side]["gold"] = wesnoth.sides[side]["gold"] + quantity

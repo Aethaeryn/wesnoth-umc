@@ -1,7 +1,7 @@
 AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
- (1) Inventory Containers (2%)
+ (1) Inventory Containers (1%)
   - Container changes on host or unit actions:
     - shops:
       - shops start as "Shop (Empty)" if no template is chosen or "Shop" otherwise
@@ -14,48 +14,38 @@ When this list is complete/empty, bump to version 0.9
     - gold:
       - gold pile initial size is based on starting gold quantity
       - gold pile size changes based on additions or removals
-    - pack:
-      - if pack is empty it disappears
-
-  - Player container interactions:
-    - remove from container (using slider)
-      - buy if shop
-      - remove if pack or chest
-    - add to container (using slider)
-      - sell items if shop at math.floor(0.8 * cost)
-      - simple add if chest
 
   - Host container and unit interactions:
     - view current inventory
     - add items based on template
-    - add item (using slider)
+    - add item (using slider) (implemented)
     - remove item (using slider)
     - change amount for each item (using slider?)
       - absolute numbers instead of relative numbers
+    - clear inventory?
 
   - Templates (tired, for quick-stocking):
     - shops, chests, packs, units
     - when first placing shops/chests/packs, call a template dialog with the default selection as "Empty"
       - except for packs, which can't be empty when placed
 
+ (1) Inventory Containers (1%)
   - Add code for investigate drop (pack) container.
     - Make sure container code no longer assumes that there is only one container per hex.
     - The drop is the only container that can coexist with another hex, but it won't be map-visible if it does.
+    - But if the gold pile goes away, will it become visible?
+    - You can remove (with slider) but cannot add to it and if it is empty and visible, it disappears from hex.
+    - Make sure clearing a hex does not wipe out drops if there are drops, but makes the drop visible instead.
 
   - On a unit with inventory's death:
     - If not standing on a hex with container, a pack icon appears and inventory is added to a drop container.
     - If it dies on a hex with an existing pack, the items are added to the pack's items.
     - If it dies on a hex with another non-pack container, the drop is there in Investigate but is not map-visible.
-    - If a unit dies to plague, the inventory stays on the zombie until dead, but zombies cannot manage inventory!
+    - If a unit dies to plague, the inventory stays on the zombie until dead!
 
   - Save and load container state so that it works for saves and loads.
     - Even the array used to verify interactions doesn't seem to save.
       - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
-
-  - Allow multiple containers on the same hex.
-    - Probably only show one icon.
-    - Make sure simple_place only adds it to the location list if it's not already there.
-    - Make sure clear only clears it if all containers are removed.
 
  (2) Interaction (1%)
   - Let units give things to adjacent units.

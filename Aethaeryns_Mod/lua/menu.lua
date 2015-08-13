@@ -34,7 +34,8 @@ local function find_interactions(x, y, blocked)
    local interactions = {}
    if containers[x] ~= nil and containers[x][y] ~= nil and not blocked then
       if containers[x][y]["shop"] ~= nil then
-         table.insert(interactions, 1, {"Visit Shop", "scenery/tent-shop-weapons.png"})
+         table.insert(interactions, 1, {"Buy from Shop", "scenery/tent-shop-weapons.png"})
+         table.insert(interactions, 2, {"Sell to Shop", "scenery/tent-shop-weapons.png"})
       elseif containers[x][y]["chest"] ~= nil then
          table.insert(interactions, 1, {"Remove from Chest", "items/chest-plain-closed.png"})
          table.insert(interactions, 2, {"Add to Chest", "items/chest-plain-closed.png"})
@@ -251,7 +252,7 @@ function mod_menu.interact()
    local description = _ "How do you want to interact?"
    local option = menu(find_interactions(e.x1, e.y1, blocked), image, title, description, menu_picture_list, 1)
    if option then
-      if option == "Visit Shop" then
+      if option == "Buy from Shop" then
          local description = _ "What item do you want to purchase from the shop?"
          local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["shop"])
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
@@ -265,6 +266,19 @@ function mod_menu.interact()
             local quantity = menu_slider("", title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
             if quantity then
                mod_inventory.shop_buy(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
+            end
+         end
+      elseif option == "Sell to Shop" then
+         local description = _ "What item do you want to sell to the shop?"
+         local inventory = mod_inventory.show_current(unit.variables)
+         local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+         if item then
+            local description = _ "How much do you want to sell?"
+            local price = mod_inventory.get_item_price(item)
+            local max = unit.variables[item]
+            local quantity = menu_slider("", title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
+            if quantity then
+               mod_inventory.shop_sell(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
             end
          end
       elseif option == "Collect Gold" then
