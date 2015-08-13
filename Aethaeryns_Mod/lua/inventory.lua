@@ -88,19 +88,34 @@ function mod_inventory.add(name, quantity, container)
    end
 end
 
-function mod_inventory.shop_buy(unit, x, y, name, side_number)
-   local price = 99999
+function mod_inventory.get_item_price(name)
+   local price = 9999
    for i, item in ipairs(item_table) do
       if item.name == name then
          price = item.price
       end
    end
-   if wesnoth.sides[side_number]["gold"] >= price then
-      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] - price
-      mod_inventory.add(name, -1, containers[x][y]["shop"])
-      mod_inventory.add(name, 1, unit.variables)
+   return price
+end
+
+function mod_inventory.shop_buy(unit, x, y, name, quantity, price, side_number)
+   if wesnoth.sides[side_number]["gold"] >= price * quantity then
+      wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] - (price * quantity)
+      mod_inventory.add(name, -1 * quantity, containers[x][y]["shop"])
+      mod_inventory.add(name, quantity, unit.variables)
    else
       gui2_error("You can't afford that!")
+   end
+end
+
+function mod_inventory.collect_gold(x, y, quantity, side)
+   if quantity > 0 and quantity <= containers[x][y]["gold"] then
+      wesnoth.sides[side]["gold"] = wesnoth.sides[side]["gold"] + quantity
+      if quantity == containers[x][y]["gold"] then
+         game_object.clear(x, y)
+      else
+         containers[x][y]["gold"] = containers[x][y]["gold"] - quantity
+      end
    end
 end
 

@@ -2,8 +2,8 @@ AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
  (1) Inventory Containers (2%)
-  - Use a slider instead of text input for inventory adding quantity.
-  - Use inventory quantity on purchasing instead of assuming just one.
+  - Use inventory quantity on chest adding instead of assuming just one.
+  - Use inventory quantity on chest removing instead of assuming just one.
 
   - Container changes on host or unit actions:
     - shops:
@@ -28,10 +28,6 @@ When this list is complete/empty, bump to version 0.9
         - if sliders are powerful enough, maybe it can disable the OK button if you can't afford it
         - or just set the max of the slider to the max you can afford instead of the max of the shop's inventory
       - remove if pack or chest
-      - remove gold quantity if gold pile
-        - defaults to 100% because that's probably going to be the most common (players are greedy)
-        - maybe eventually add a "share gold" game option to split gold piles evenly among players automatically
-          - it would only split the gold with friendly leaders within a certain radius
     - add to container (using slider)
       - sell items if shop at math.floor(0.8 * cost)
       - simple add if chest
@@ -154,6 +150,7 @@ When this list is complete/empty, bump to version 0.9
   * BUG: Objectives don't show up right in the set menu.
   * BUG: Filter out the summoners before the dialog part so there aren't e.g. empty Level 4s for Summon <Foo>
   * BUG? What happens if someone disconnects during the character selection dialog?
+  * BUG: Slider doesn't go all the way over, it just ends about half way through.
 
   * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
   * FEATURE: AMLAing probably shouldn't increase max experience.
@@ -179,10 +176,14 @@ When this list is complete/empty, bump to version 0.9
   * CODE: Random gender when group spawning units that have more than one possible gender.
   * CODE: Expand the radius for Summon Group (removes cap of 7) and make it keep trying to place the unit as long as it can instead of not placing it.
   * CODE: Make Summon Group check for bad (e.g. impassable) terrain as well as unoccupied terrain.
+  * CODE: No need to use a slider if max = min, e.g. if you can only buy or use 1 item.
+  * CODE: Make the shop slider also show cost so people know how much they're spending.
+  * CODE: Make item use's max quantity context-aware, e.g. don't suggest more healing potions than would be useful to use at the moment.
 
 ***
 
  (6) Future
+    * Allow sharing gold as an option when collecting gold, splitting it evenly among players whose leaders are within a certain radius.
     * Make spawning units/groups/objects tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
       - And of course this opens the door to quests, preset interactions/messages, etc.
         - Even ones that the host can place.

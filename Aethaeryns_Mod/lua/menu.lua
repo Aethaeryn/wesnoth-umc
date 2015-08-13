@@ -24,7 +24,7 @@ local function submenu_inventory_quantity(item, container)
    local title = "Change Inventory"
    local description = string.format("How much of %s do you want to give?", item)
    local label = "Item Quantity:"
-   local count = menu_text_input(mod_menu.lich_image, title, description, label)
+   local count = menu_slider(mod_menu.lich_image, title, description, label, {max = 20, min = 1, step = 1, value = 1})
    if count and count > 0 then
       mod_inventory.add(item, count, container)
    end
@@ -256,11 +256,24 @@ function mod_menu.interact()
          local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["shop"])
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
          if item then
-            mod_inventory.shop_buy(unit, e.x1, e.y1, item, wesnoth.current.side)
+            local description = _ "How much do you want to buy?"
+            local price = mod_inventory.get_item_price(item)
+            local max = math.floor(wesnoth.sides[wesnoth.current.side]["gold"] / price)
+            if max < 1 then
+               max = 1
+            end
+            local quantity = menu_slider(mod_menu.lich_image, title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
+            if quantity then
+               mod_inventory.shop_buy(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
+            end
          end
       elseif option == "Collect Gold" then
-         wesnoth.sides[wesnoth.current.side]["gold"] = wesnoth.sides[wesnoth.current.side]["gold"] + containers[e.x1][e.y1]["gold"]
-         game_object.clear(e.x1, e.y1)
+         local description = _ "How much gold do you want to take?"
+         local max = containers[e.x1][e.y1]["gold"]
+         local amount = menu_slider(mod_menu.lich_image, title, description, _ "Gold", {max = max, min = 10, step = 10, value = max})
+         if amount then
+            mod_inventory.collect_gold(e.x1, e.y1, amount, wesnoth.current.side)
+         end
       elseif option == "Remove from Chest" then
          local description = _ "What item do you want to remove from the chest?"
          local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["chest"])
@@ -291,10 +304,17 @@ function mod_menu.unit_commands()
    local option = menu(options, image, title, description, menu_picture_list, 1)
    if option == "Use Item" then
       local description = _ "Which item do you want to use?"
-      local inventory = mod_inventory.show_current(wesnoth.get_unit(e.x1, e.y1).variables)
+      local unit = wesnoth.get_unit(e.x1, e.y1)
+      local inventory = mod_inventory.show_current(unit.variables)
       local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
       if item then
-         mod_inventory.use(e.x1, e.y1, item)
+         local description = _ "How much do you want to use?"
+         local quantity = menu_slider(mod_menu.lich_image, title, description, _ "Quantity", {max = unit.variables[item], min = 1, step = 1, value = 1})
+         if quantity then
+            for i=1,quantity do
+               mod_inventory.use(e.x1, e.y1, item)
+            end
+         end
       end
    elseif option == "Upgrades" then
       local unit = wesnoth.get_unit(e.x1, e.y1)
@@ -474,7 +494,7 @@ function mod_menu.place_object()
       elseif option == "Place Gold Pile" then
          local description = _ "How much gold do you want to place in the pile?"
          local label = "Gold:"
-         local gold = menu_slider(mod_menu.lich_image, title, description, label, {max = 500, min = 0, step = 10, value = 100})
+         local gold = menu_slider(mod_menu.lich_image, title, description, label, {max = 500, min = 10, step = 10, value = 100})
          if gold and type(gold) == "number" and gold > 0 then
             game_object.gold_place(e.x1, e.y1, gold)
          end
