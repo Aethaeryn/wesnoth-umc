@@ -2,9 +2,6 @@ AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
  (1) Inventory Containers (2%)
-  - Use inventory quantity on chest adding instead of assuming just one.
-  - Use inventory quantity on chest removing instead of assuming just one.
-
   - Container changes on host or unit actions:
     - shops:
       - shops start as "Shop (Empty)" if no template is chosen or "Shop" otherwise
@@ -17,16 +14,12 @@ When this list is complete/empty, bump to version 0.9
     - gold:
       - gold pile initial size is based on starting gold quantity
       - gold pile size changes based on additions or removals
-      - if gold pile is empty it disappears
     - pack:
       - if pack is empty it disappears
-      - this means the host cannot place a pack unless a non-empty template is chosen
 
   - Player container interactions:
     - remove from container (using slider)
-      - buy if shop (checks to see if you can afford it)
-        - if sliders are powerful enough, maybe it can disable the OK button if you can't afford it
-        - or just set the max of the slider to the max you can afford instead of the max of the shop's inventory
+      - buy if shop
       - remove if pack or chest
     - add to container (using slider)
       - sell items if shop at math.floor(0.8 * cost)
@@ -39,14 +32,11 @@ When this list is complete/empty, bump to version 0.9
     - remove item (using slider)
     - change amount for each item (using slider?)
       - absolute numbers instead of relative numbers
-      - if container, image/label changes above also apply
-    - if gold, instead of "item" it is just gold quantity
-      - no template for gold
 
   - Templates (tired, for quick-stocking):
-    - shops, chests, packs, units (not gold piles; units include mobs)
-    - when first placing, call a template dialog with the default selection as "Empty"
-      - except for gold piles, which will just be the slider
+    - shops, chests, packs, units
+    - when first placing shops/chests/packs, call a template dialog with the default selection as "Empty"
+      - except for packs, which can't be empty when placed
 
   - Add code for investigate drop (pack) container.
     - Make sure container code no longer assumes that there is only one container per hex.
@@ -177,6 +167,7 @@ When this list is complete/empty, bump to version 0.9
   * CODE: Expand the radius for Summon Group (removes cap of 7) and make it keep trying to place the unit as long as it can instead of not placing it.
   * CODE: Make Summon Group check for bad (e.g. impassable) terrain as well as unoccupied terrain.
   * CODE: No need to use a slider if max = min, e.g. if you can only buy or use 1 item.
+    * But still display a confirmation because players will expect some window first.
   * CODE: Make the shop slider also show cost so people know how much they're spending.
   * CODE: Make item use's max quantity context-aware, e.g. don't suggest more healing potions than would be useful to use at the moment.
 
@@ -211,6 +202,8 @@ When this list is complete/empty, bump to version 0.9
       * Faerie fire (new ranged attack for one turn)
       * Fireball (new ranged attack for one turn)
       * Also implement spells, which are similar but permanent and only for magical units.
+        * Perhaps a magic type system determines what spells are available.
+        * e.g. necromancy, light magic, faerie magic, nature magic, water magic, fire magic
     * Implement equipment (an extension of the inventory concept).
       * Using the item equips it into an equipment spot.
       * Unequipping it is possible from its own menu.

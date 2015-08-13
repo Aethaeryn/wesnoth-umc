@@ -4,17 +4,25 @@ containers = {}
 mod_inventory = {}
 game_object = {}
 
-function mod_inventory.chest_add(unit, x, y, name)
-   containers[x][y]["chest"][name] = containers[x][y]["chest"][name] + 1
-   unit.variables[name] = unit.variables[name] - 1
+function mod_inventory.chest_add(unit, x, y, name, quantity)
+   if quantity <= unit.variables[name] then
+      if containers[x][y]["chest"][name] == nil then
+         containers[x][y]["chest"][name] = quantity
+      else
+         containers[x][y]["chest"][name] = containers[x][y]["chest"][name] + quantity
+      end
+      unit.variables[name] = unit.variables[name] - quantity
+   end
 end
 
-function mod_inventory.chest_remove(unit, x, y, name)
-   containers[x][y]["chest"][name] = containers[x][y]["chest"][name] - 1
-   if unit.variables[name] == nil then
-      unit.variables[name] = 1
-   else
-      unit.variables[name] = unit.variables[name] + 1
+function mod_inventory.chest_remove(unit, x, y, name, quantity)
+   if quantity <= containers[x][y]["chest"][name] then
+      containers[x][y]["chest"][name] = containers[x][y]["chest"][name] - quantity
+      if unit.variables[name] == nil then
+         unit.variables[name] = quantity
+      else
+         unit.variables[name] = unit.variables[name] + quantity
+      end
    end
 end
 
@@ -60,7 +68,7 @@ function game_object.gold_place(x, y, gold)
    local gold_image = "items/gold-coins-medium.png"
    if gold < 20 then
       gold_image = "items/gold-coins-small.png"
-   elseif gold >= 50 then
+   elseif gold >= 100 then
       gold_image = "items/gold-coins-large.png"
    end
 
