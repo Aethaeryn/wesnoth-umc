@@ -440,6 +440,7 @@ function mod_menu.settings()
    local description = _ "What action do you want to do?"
    local options = {"Modify Container",
                     "Modify Side",
+                    "Max Starting Level",
                     "New Scenario",
                     "Toggle Summon Summoners",
                     "Toggle Unit Editor",
@@ -508,6 +509,13 @@ function mod_menu.settings()
                   end
                end
             end
+         end
+      elseif option == "Max Starting Level" then
+         local description = "What level should be the maximum for leader selection?"
+         local levels = {1, 2, 3, 4, 5}
+         local level = menu(levels, mod_menu.lich_image, title, description, menu_simple_list)
+         if level then
+            change_unit.max_level = level
          end
       elseif option == "New Scenario" then
          local description = "Which scenario do you want to start?"

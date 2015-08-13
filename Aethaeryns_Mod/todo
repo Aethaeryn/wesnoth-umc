@@ -31,7 +31,7 @@ When this list is complete/empty, bump to version 0.9
       - remove gold quantity if gold pile
         - defaults to 100% because that's probably going to be the most common (players are greedy)
         - maybe eventually add a "share gold" game option to split gold piles evenly among players automatically
-          - only really works thematically if they stay next to each other, though
+          - it would only split the gold with friendly leaders within a certain radius
     - add to container (using slider)
       - sell items if shop at math.floor(0.8 * cost)
       - simple add if chest
@@ -101,9 +101,6 @@ When this list is complete/empty, bump to version 0.9
     - 25% chance of also becoming drunk (berserk melee) for that duration each time used
 
  (4) Details (1%)
-  - Pick character dialog.
-    - Have the host be able to change which level is available, which types are available, etc.
-
   - Spawn non-summoner unit dialog.
     - A similar unit dialog to pick character dialog can also be used to spawn every single unit as regular non-summoning/non-summoned enemies/NPC for flavor
       - Make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
@@ -121,9 +118,6 @@ When this list is complete/empty, bump to version 0.9
     - Raise the cap on intelligence upgrades so there can be more than one?
     - Add strength and dexterity upgrades.
       - They probably need to be implemented differently, with [object]
-      - Damage increase should probably actually be roughly constant, i.e. more damage increase for units with fewer strikes
-        - e.g. +4 if 1 strike, +2 if 2 strikes, +1 otherwise
-        - how would this work if under a temporary strike-increasing effect, for units whose strikes change, or for units with more than one attack?
     - There needs to be a visible indicator over the unit that the unit can be upgraded.
 
   - Host unit modifying.
@@ -159,7 +153,8 @@ When this list is complete/empty, bump to version 0.9
     - and all the units spawned on borders spawn on (1,1) instead, potentially overwriting a unit on (1,1)
 
   * BUG: The state of toggled right click menus is not saved.
-  * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
+  * BUG: The state of the terrain editor is not saved.
+  * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their abilities.
   * BUG: Fix icon size for Summon <foo> and Summon Summoner.
   * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
     - In fact, it locks the unit into the old portrait even if it promotes.
@@ -188,6 +183,7 @@ When this list is complete/empty, bump to version 0.9
     - upgrades.lua is a mess; behavior could be moved into functions
   * CODE: Re-sort the units.lua menu so that the order makes sense.
   * CODE: Clean up the gui2.lua code, which is now a mess and not entirely accurate in its names (e.g. "summoner" vs. "unit").
+  * CODE: Use a slider for setting the max level.
 
 ***
 
