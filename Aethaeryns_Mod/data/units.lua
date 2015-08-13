@@ -509,7 +509,13 @@ regular = {
    }
 }
 
-unit_groups_menu = { "Goblins" }
+unit_groups_menu = {
+   "Goblins",
+   "Orcs",
+   "Village",
+   "Army",
+   "Elves",
+}
 
 unit_groups = {
    Goblins = {
@@ -520,6 +526,42 @@ unit_groups = {
       "Goblin Spearman",
       "Goblin Spearman",
       "Goblin Spearman",
+   },
+   Orcs = {
+      "Orcish Warrior",
+      "Orcish Grunt",
+      "Orcish Grunt",
+      "Orcish Grunt",
+      "Orcish Grunt",
+      "Orcish Archer",
+      "Orcish Assassin",
+   },
+   Village = {
+      "Sergeant",
+      "Spearman",
+      "Bowman",
+      "Peasant",
+      "Peasant",
+      "Peasant",
+      "Woodsman",
+   },
+   Army = {
+      "Lieutenant",
+      "Spearman",
+      "Spearman",
+      "Spearman",
+      "Bowman",
+      "Bowman",
+      "Heavy Infantryman",
+   },
+   Elves = {
+      "Elvish Lord",
+      "Elvish Archer",
+      "Elvish Archer",
+      "Elvish Archer",
+      "Elvish Fighter",
+      "Elvish Fighter",
+      "Elvish Shaman",
    },
 }
 >>

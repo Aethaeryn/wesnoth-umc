@@ -1,4 +1,4 @@
-AETHAERYN'S MOD TODO LIST (92% Progress)
+AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
  (1) Inventory Containers (2%)
@@ -100,10 +100,6 @@ When this list is complete/empty, bump to version 0.9
   - Ale: "Confidence" ability: +5 max HP for 3 turns.
     - 25% chance of also becoming drunk (berserk melee) for that duration each time used
 
- (4) Details (1%)
-  - Spawn non-summoner unit dialog.
-    - Make sure that there's a way to mass-spawn a whole group of NPCs for quickly setting up towns/enemies.
-
 ***
 
  (4) Details (1%)
@@ -180,6 +176,9 @@ When this list is complete/empty, bump to version 0.9
   * CODE: Clean up the gui2.lua code, which is now a mess and not entirely accurate in its names (e.g. "summoner" vs. "unit").
   * CODE: Use a slider for setting the max level.
   * CODE: Replace the text box in Transform with the menu used in summon_units and select_leader?
+  * CODE: Random gender when group spawning units that have more than one possible gender.
+  * CODE: Expand the radius for Summon Group (removes cap of 7) and make it keep trying to place the unit as long as it can instead of not placing it.
+  * CODE: Make Summon Group check for bad (e.g. impassable) terrain as well as unoccupied terrain.
 
 ***
 

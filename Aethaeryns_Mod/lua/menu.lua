@@ -136,9 +136,14 @@ function mod_menu.summon_units()
       if option == "Summon Group" then
          local description = _ "Select a group."
          local group = menu(unit_groups_menu, mod_menu.lich_image, title, description, menu_simple_list)
+         local hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = 1 }
+         local j = 1
          if group then
-            for i, units in ipairs(unit_groups[group]) do
-               debugOut(units)
+            for i, unit in ipairs(unit_groups[group]) do
+               if wesnoth.get_unit(hexes[j][1], hexes[j][2]) == nil then
+                  spawn_unit.spawn_unit(hexes[j][1], hexes[j][2], unit, wesnoth.current.side)
+               end
+               j = j + 1
             end
          end
       elseif option == "Summon Unit" then
