@@ -126,6 +126,20 @@ function change_unit.role(x, y, new_role)
    end
 end
 
+function change_unit.add_turn_effect(x, y, effect)
+   local wml_effect = T.effect { }
+   local wml_effect_2 = T.effect { }
+   if effect == "haste" then
+      wml_effect = T.effect { apply_to = "movement", increase = 2 }
+      wml_effect_2 = T.effect { apply_to = "attack", range = "melee", increase_attacks = 1}
+   end
+   wesnoth.fire("object", { duration = "turn",
+                            silent = "yes",
+                            T.filter { x = x, y = y },
+                            wml_effect,
+                            wml_effect_2 })
+end
+
 -- Chooses the adjacent summoner with the highest HP.
 local function find_summoner(x, y, summoners)
    local max_hp = 0
