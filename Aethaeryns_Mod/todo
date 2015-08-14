@@ -1,6 +1,10 @@
 AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
+  - use scrollbars with custom messages so spacebar doesn't dismiss plot
+  - have players start with 1 upgrade point on their leader
+  - make upgrade points purchasable via a scroll spell
+
  (1) Inventory Containers (1%)
   - Container changes on host or unit actions:
     - shops:
@@ -65,12 +69,12 @@ When this list is complete/empty, bump to version 0.9
     - Bribing will consume all movement and disable attacks and will only be allowed if you haven't attacked.
 
  (3) Inventory (1%)
-  - Multiples stack the turn duration, not the effect strength.
-  - Do the turn effects by repeatedly applying an [object] of duration
-    turn each turn until the counter goes to 0, adding to the counter
-    if more items are used? Or use abilities?
-  - And once you get the berserk, the berserk will stay until the
-    entire effect goes away.
+  - Multiples stack the turn duration, not the effect strength. So if it's already active, simply add to the counter.
+  - Each time the counter is not nil and > 0, the turn [object] needs to be added on side n turn for side n.
+    - Which subtracts from the counter.
+  - A dummy ability should also be active as long as the [object] is being applied.
+    - i.e. once the counter starts a side turn at 0, remove it
+  - The "drunk" ability and [object] uses confidence's counter to refresh once triggered.
 
   - Haste: Extra melee strike, +2 total moves.
   - Ale: "Confidence" ability: +5 max HP for 3 turns.
