@@ -142,7 +142,7 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
    end
 end
 
--- Fixme: I cannot find a way to give a text box the default focus
+-- fixme: I cannot find a way to give a text box the default focus
 -- like some core game text box. It might not be possible right now
 -- via wesnoth/src/scripting/lua_gui2.cpp
 function menu_text_input(image, title, description, label, default_text)

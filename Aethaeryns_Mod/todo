@@ -1,6 +1,13 @@
 AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
+  - if you cancel the leader selection menu, then you need to be able
+    to go back to it via right click
+
+  - log all the numerial change_unit actions in unit variables and
+    reapply them when certain actions that would wipe them happen,
+    like promotions and the application of [object]s
+
  (1) Inventory Containers (1%)
   - Container changes on host or unit actions:
     - shops:

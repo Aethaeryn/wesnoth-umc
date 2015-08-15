@@ -31,7 +31,7 @@ local function submenu_inventory_quantity(item, container)
    end
 end
 
-local function find_interactions(x, y, blocked)
+local function find_interactions(x, y, blocked, on_hex)
    local interactions = {}
    if containers[x] ~= nil and containers[x][y] ~= nil and not blocked then
       if containers[x][y]["shop"] ~= nil then
@@ -47,7 +47,7 @@ local function find_interactions(x, y, blocked)
       end
    end
    local unit = wesnoth.get_unit(x, y)
-   if unit ~= nil then
+   if unit ~= nil and not on_hex then
       table.insert(interactions, {"Interact with Unit", string.format("%s~RC(magenta>%s)", unit.__cfg.image, wesnoth.sides[unit.side].color)})
    end
    return interactions
@@ -106,9 +106,11 @@ function mod_menu.select_leader()
    if leader.type == "Peasant" and leader.variables["advancement"] == nil then
       local title = _ "Leader"
       local description = _ "Select a leader type."
-      local leader_category = false
-      while not leader_category do
-         leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
+      -- You only exit the menu at the top level, or if you choose a
+      -- unit successfully.
+      local done = false
+      while not done do
+         local leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
          if leader_category then
             local description = _ "Select a unit level."
             local level = menu(get_levels(leader_category), mod_menu.lich_image, title, description, menu_simple_list)
@@ -119,22 +121,20 @@ function mod_menu.select_leader()
                   if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
                      change_unit.transform(leader.x, leader.y, choice)
                      mod_upgrade.increment(leader)
+                     done = true
                   else
                      local description = _ "Select a gender."
                      local gender = menu(mod_menu.gender, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
                      if gender then
                         change_unit.transform(leader.x, leader.y, choice, gender)
                         mod_upgrade.increment(leader)
-                     else
-                        leader_category = false
+                        done = true
                      end
                   end
-               else
-                  leader_category = false
                end
-            else
-               leader_category = false
             end
+         else
+            done = true
          end
       end
    end
@@ -235,6 +235,7 @@ function mod_menu.interact()
    local unit_list = {}
    local current_side = wesnoth.current.side
    local blocked = false
+   local on_hex = false
    for i, hex in ipairs(interaction_hexes) do
       local unit = wesnoth.get_unit(hex[1], hex[2])
       -- A unit must be in the radius on the current side...
@@ -261,8 +262,11 @@ function mod_menu.interact()
          return
       end
    end
+   if unit.x == e.x1 and unit.y == e.y1 then
+      on_hex = true
+   end
    local description = _ "How do you want to interact?"
-   local option = menu(find_interactions(e.x1, e.y1, blocked), image, title, description, menu_picture_list, 1)
+   local option = menu(find_interactions(e.x1, e.y1, blocked, on_hex), image, title, description, menu_picture_list, 1)
    if option then
       if option == "Interact with Unit" then
          local description = _ "What do you want to give to this unit?"
@@ -400,7 +404,23 @@ function mod_menu.unit_commands()
          upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
       end
    elseif option == "Speak" then
-      fire.custom_message()
+      local unit = wesnoth.get_unit(e.x1, e.y1)
+      local description = _ "What do you want to say?"
+      local label = _ "Message:"
+      -- fixme (1.13): afaik, there's no way to force a focus on
+      -- the text input except through the C++
+      local message = menu_text_input(mod_menu.lich_image, title, description, label)
+      if message then
+         -- fixme (1.13): wesnoth.message does *not* show up in Chat
+         -- Log because Wesnoth is full of terrible, hardcoded
+         -- assumptions about how things will be used via buggy,
+         -- half-implemented APIs.
+         --
+         -- fixme (1.12): make a log of these messages somewhere so
+         -- that they can be accessed outside of the replay?
+         wesnoth.message(string.format("(%d, %d) %s", unit.x, unit.y, tostring(unit.name)), message)
+         fire.custom_message(message)
+      end
    end
 end
 
@@ -645,26 +665,18 @@ function mod_menu.settings()
          end
       elseif option == "New Scenario" then
          local description = "Which scenario do you want to start?"
-         local scenarios = {"Introduction",
-                            "Introduction (Underground)",
-                            "Battle",
-                            "Cavern",
-                            "Classic",
-                            "Hide and Seek",
-                            "Open Dungeon",
-                            "Woods"}
-         local scenario_ids = {
-            ["Introduction"] = "intro",
-            ["Introduction (Underground)"] = "intro2",
-            ["Battle"] = "battle",
-            ["Cavern"] = "cavern",
-            ["Classic"] = "classic",
-            ["Hide and Seek"] = "hide_and_seek",
-            ["Open Dungeon"] = "open_dungeon",
-            ["Woods"] = "woods"}
-         local scenario = menu(scenarios, mod_menu.lich_image, title, description, menu_simple_list)
+         local scenarios = {
+            {"Introduction", "intro"},
+            {"Introduction (Underground)", "intro2"},
+            {"Battle", "battle"},
+            {"Cavern", "cavern"},
+            {"Classic", "classic"},
+            {"Hide and Seek", "hide_and_seek"},
+            {"Open Dungeon", "open_dungeon"},
+            {"Woods", "woods"}}
+         local scenario = menu(scenarios, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
          if scenario then
-            fire.end_scenario(scenario_ids[scenario])
+            fire.end_scenario(scenario)
          end
       elseif option == "Toggle Summon Summoners" then
          mod_menu.toggle("summon_summoner")

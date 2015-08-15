@@ -12,23 +12,11 @@ function fire.end_scenario(new_scenario)
                    carryover_percentage = 100 })
 end
 
-function fire.custom_message()
+function fire.custom_message(message)
    wesnoth.fire("message", {
-                   speaker  = "unit",
-                   caption  = "Unit Message",
-                   message  = "What will you say?",
-                   show_for = "$side_number",
-                   T["text_input"] {
-                      variable  = "aeth_custom_message",
-                      label     = "Type Here:",
-                      max_chars = 50 }})
-   local message = wesnoth.get_variable('aeth_custom_message')
-   if message ~= "" then
-      wesnoth.fire("message", {
-                      side    = "$side_number",
-                      speaker = "unit",
-                      message = "$aeth_custom_message" })
-   end
+                   side    = "$side_number",
+                   speaker = "unit",
+                   message = message })
 end
 
 function fire.capture_village(x, y)
