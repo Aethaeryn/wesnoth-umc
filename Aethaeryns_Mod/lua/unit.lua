@@ -3,7 +3,7 @@
 change_unit = {}
 spawn_unit = {}
 units_with_effects = {}
-change_unit.max_level = 2
+change_unit.max_level = 1
 
 function change_unit.side(x, y, new_side)
    local unit = wesnoth.get_unit(x, y)
@@ -136,7 +136,7 @@ function change_unit.add_turn_effect(x, y, effect, turns, refresh)
       wml_effect_ability = T.effect { apply_to = "new_ability",
                                       T.abilities {
                                          T.dummy { name = _ "Haste",
-                                                   description = _ "This unit has an extra melee strike and two extra moves." }}}
+                                                   description = _ "This unit has an extra strike and two extra moves." }}}
       if unit.variables["haste"] == nil or unit.variables["haste"] == 0 or refresh ~= nil then
          if refresh == nil then
             unit.variables["haste"] = (turns - 1)
@@ -146,7 +146,7 @@ function change_unit.add_turn_effect(x, y, effect, turns, refresh)
             unit.moves = unit.moves + 2
          end
          wml_effect = T.effect { apply_to = "movement", increase = 2 }
-         wml_effect_2 = T.effect { apply_to = "attack", range = "melee", increase_attacks = 1 }
+         wml_effect_2 = T.effect { apply_to = "attack", increase_attacks = 1 }
          wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_2, wml_effect_ability })
       elseif unit.variables["haste"] > 0 then
          unit.variables["haste"] = unit.variables["haste"] + (turns - 1)
