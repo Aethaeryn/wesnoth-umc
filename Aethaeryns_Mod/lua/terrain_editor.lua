@@ -30,6 +30,34 @@ terrain.overlays = {
    Castle = {"^Cov", "^Kov"},
    Bridge = {"^Bw|", "^Bw/", "^Bw\\", "^Bsb|", "^Bsb/", "^Bsb\\", "^Bs|", "^Bs/", "^Bs\\"},
    Special = {"^Vov", "^Cov", "^Kov"}}
+terrain.options = {
+   "Repeat last terrain",
+   "Set an overlay",
+   "Change radius",
+   "Water",
+   "Flat",
+   "Desert",
+   "Fall",
+   "Frozen",
+   "Rough",
+   "Cave",
+   "Obstacle",
+   "Castle",
+   "Special"}
+terrain.overlay_options = {
+   "Repeat last overlay",
+   "Water",
+   "Desert",
+   "Embellishments",
+   "Forest",
+   "Frozen",
+   "Rough",
+   "Cave",
+   "Obstacle",
+   "Village",
+   "Bridge",
+   "Special",
+   "Remove overlay"}
 
 function terrain.set_terrain(terrain_symbol)
    terrain.last_terrain = terrain_symbol

@@ -3,6 +3,15 @@
 mod_menu = {}
 mod_menu.lich_image = "portraits/undead/transparent/ancient-lich.png"
 mod_menu.gender = {{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}
+mod_menu.scenarios = {
+   {"Introduction", "intro"},
+   {"Introduction (Underground)", "intro2"},
+   {"Battle", "battle"},
+   {"Cavern", "cavern"},
+   {"Classic", "classic"},
+   {"Hide and Seek", "hide_and_seek"},
+   {"Open Dungeon", "open_dungeon"},
+   {"Woods", "woods"}}
 
 local function get_roles()
    local roles = {}
@@ -79,10 +88,10 @@ function mod_menu.toggle(menu_item)
    end
 end
 
-local function get_levels(category)
+local function get_levels(category, max_level)
    local levels = {}
    for key, value in pairs(regular[category]) do
-      if tonumber(string.sub(key, 7)) <= change_unit.max_level then
+      if tonumber(string.sub(key, 7)) <= max_level then
          table.insert(levels, key)
       end
    end
@@ -113,7 +122,7 @@ function mod_menu.select_leader()
          local leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
          if leader_category then
             local description = _ "Select a unit level."
-            local level = menu(get_levels(leader_category), mod_menu.lich_image, title, description, menu_simple_list)
+            local level = menu(get_levels(leader_category, change_unit.max_level), mod_menu.lich_image, title, description, menu_simple_list)
             if level then
                local description = _ "Select a unit."
                local choice = menu(regular[leader_category][level], mod_menu.lich_image, title, description, menu_unit_list, nil, "summoner")
@@ -149,27 +158,15 @@ function mod_menu.summon_units()
       if option == "Summon Group" then
          local description = _ "Select a group."
          local group = menu(unit_groups_menu, mod_menu.lich_image, title, description, menu_simple_list)
-         local hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = 1 }
-         local j = 1
          if group then
-            for i, unit in ipairs(unit_groups[group]) do
-               if wesnoth.get_unit(hexes[j][1], hexes[j][2]) == nil then
-                  spawn_unit.spawn_unit(hexes[j][1], hexes[j][2], unit, wesnoth.current.side)
-               end
-               j = j + 1
-            end
+            spawn_unit.spawn_group(e.x1, e.y1, unit_groups[group], wesnoth.current.side)
          end
       elseif option == "Summon Unit" then
          local description = _ "Select a unit category."
          local unit_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, menu_simple_list)
          if unit_category then
-            local levels = {}
-            for key, value in pairs(regular[unit_category]) do
-               table.insert(levels, key)
-            end
-            table.sort(levels)
             local description = _ "Select a unit level."
-            local level = menu(levels, mod_menu.lich_image, title, description, menu_simple_list)
+            local level = menu(get_levels(unit_category, 5), mod_menu.lich_image, title, description, menu_simple_list)
             if level then
                local description = _ "Select a unit."
                local choice = menu(regular[unit_category][level], mod_menu.lich_image, title, description, menu_unit_list, nil, "summoner")
@@ -195,12 +192,7 @@ function mod_menu.summon(summoner_type)
    local title = string.format("Summon %s", summoner_type)
    local description = _ "Select a unit level."
    local image = PORTRAIT[summoner_type]
-   local levels = {}
-   for key, value in pairs(regular[summoner_type]) do
-      table.insert(levels, key)
-   end
-   table.sort(levels)
-   local level = menu(levels, image, title, description, menu_simple_list)
+   local level = menu(get_levels(summoner_type, 5), image, title, description, menu_simple_list)
    if level then
       local description = _ "Select a unit to summon."
       local choice = menu(regular[summoner_type][level], image, title, description, menu_unit_list_with_cost, nil, "unit")
@@ -484,21 +476,7 @@ function mod_menu.terrain_editor()
    terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
    local title = _ "Terrain Editor"
    local description = _ "Which terrain would you like to switch to?"
-   local options = {
-      "Repeat last terrain",
-      "Set an overlay",
-      "Change radius",
-      "Water",
-      "Flat",
-      "Desert",
-      "Fall",
-      "Frozen",
-      "Rough",
-      "Cave",
-      "Obstacle",
-      "Castle",
-      "Special"}
-   local name = menu(options, mod_menu.lich_image, title, description, menu_simple_list)
+   local name = menu(terrain.options, mod_menu.lich_image, title, description, menu_simple_list)
    if name then
       if name == "Repeat last terrain" then
          terrain.set_terrain(terrain.last_terrain)
@@ -509,22 +487,8 @@ function mod_menu.terrain_editor()
             terrain.radius = new_radius
          end
       elseif name == "Set an overlay" then
-         local options_overlay = {
-            "Repeat last overlay",
-            "Water",
-            "Desert",
-            "Embellishments",
-            "Forest",
-            "Frozen",
-            "Rough",
-            "Cave",
-            "Obstacle",
-            "Village",
-            "Bridge",
-            "Special",
-            "Remove overlay"}
          local description = _ "Which terrain would you like to switch to?"
-         local overlay_name = menu(options_overlay, mod_menu.lich_image, title, description, menu_simple_list)
+         local overlay_name = menu(terrain.overlay_options, mod_menu.lich_image, title, description, menu_simple_list)
          if overlay_name then
             if overlay_name == "Repeat last overlay" then
                terrain.set_overlay(terrain.last_overlay)
@@ -665,16 +629,7 @@ function mod_menu.settings()
          end
       elseif option == "New Scenario" then
          local description = "Which scenario do you want to start?"
-         local scenarios = {
-            {"Introduction", "intro"},
-            {"Introduction (Underground)", "intro2"},
-            {"Battle", "battle"},
-            {"Cavern", "cavern"},
-            {"Classic", "classic"},
-            {"Hide and Seek", "hide_and_seek"},
-            {"Open Dungeon", "open_dungeon"},
-            {"Woods", "woods"}}
-         local scenario = menu(scenarios, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
+         local scenario = menu(mod_menu.scenarios, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
          if scenario then
             fire.end_scenario(scenario)
          end

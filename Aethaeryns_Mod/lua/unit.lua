@@ -225,6 +225,17 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, ge
    wesnoth.put_unit(x, y, unit_stats)
 end
 
+function spawn_unit.spawn_group(x, y, units, side_number)
+   local hexes = wesnoth.get_locations { x = x, y = y, radius = 1 }
+   local j = 1
+   for i, unit in ipairs(units) do
+      if wesnoth.get_unit(hexes[j][1], hexes[j][2]) == nil then
+         spawn_unit.spawn_unit(hexes[j][1], hexes[j][2], unit, side_number)
+      end
+      j = j + 1
+   end
+end
+
 function spawn_unit.boss_spawner(x, y, unit_type, unit_role, side_number)
    spawn_unit.spawn_unit(x, y, unit_type, side_number, "misc/hero-icon.png", unit_role)
    local regenerates = wesnoth.get_variable("regenerates")
