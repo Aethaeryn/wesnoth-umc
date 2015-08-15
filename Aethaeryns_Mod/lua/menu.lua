@@ -386,7 +386,7 @@ function mod_menu.unit_commands()
                                  msg = upgrade.msg})
       end
       local description = string.format("What do you want to upgrade? You have %d %s available.", points, point_word)
-      local upgrade = menu(upgrades, "", title, description, menu_upgrade_list, 1, "upgrade_stats")
+      local upgrade = menu(upgrades, "", title, description, menu_upgrade_list, nil, "upgrade_stats")
       if upgrade then
          upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
       end
