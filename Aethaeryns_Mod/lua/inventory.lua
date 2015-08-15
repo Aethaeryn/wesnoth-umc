@@ -85,6 +85,10 @@ function mod_inventory.use(x, y, name)
       change_unit.heal(x, y, 6)
    elseif name == "Healing Potion" then
       change_unit.heal(x, y, 14)
+   elseif name == "Small Haste Potion" then
+      change_unit.add_turn_effect(x, y, "haste", 2)
+   elseif name == "Haste Potion" then
+      change_unit.add_turn_effect(x, y, "haste", 4)
    end
 end
 

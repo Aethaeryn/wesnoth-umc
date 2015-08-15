@@ -2,6 +2,7 @@
 <<
 change_unit = {}
 spawn_unit = {}
+units_with_effects = {}
 change_unit.max_level = 2
 
 function change_unit.side(x, y, new_side)
@@ -126,14 +127,52 @@ function change_unit.role(x, y, new_role)
    end
 end
 
-function change_unit.add_turn_effect(x, y, effect)
+function change_unit.add_turn_effect(x, y, effect, turns, refresh)
    local wml_effect = T.effect { }
    local wml_effect_2 = T.effect { }
+   local unit = wesnoth.get_unit(x, y)
    if effect == "haste" then
-      wml_effect = T.effect { apply_to = "movement", increase = 2 }
-      wml_effect_2 = T.effect { apply_to = "attack", range = "melee", increase_attacks = 1}
+      if unit.variables["haste"] == nil or unit.variables["haste"] == 0 or refresh ~= nil then
+         if refresh == nil then
+            unit.variables["haste"] = (turns - 1)
+            table.insert(units_with_effects, unit)
+         end
+         if unit.moves == unit.max_moves then
+            unit.moves = unit.moves + 2
+         end
+         wml_effect = T.effect { apply_to = "movement", increase = 2 }
+         wml_effect_2 = T.effect { apply_to = "attack", range = "melee", increase_attacks = 1 }
+         wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_2 })
+      elseif unit.variables["haste"] > 0 then
+         unit.variables["haste"] = unit.variables["haste"] + (turns - 1)
+      end
    end
-   wesnoth.add_modification(wesnoth.get_unit(x, y), "object", { duration = "turn", wml_effect, wml_effect_2 })
+end
+
+-- Any [object] effects will only last until turn refresh. If there is
+-- a multi-turn effect still in progress, then it needs to be added
+-- again at turn refresh manually.
+function change_unit.update_turn_effects()
+   local finished_units = {}
+   for i, unit in ipairs(units_with_effects) do
+      if unit.side == wesnoth.current.side then
+         if unit.variables["haste"] ~= nil and unit.variables["haste"] > 0 then
+            unit.variables["haste"] = unit.variables["haste"] - 1
+            -- Obviously once more than one effect is in place, all
+            -- effects need to be at 0 for this to work.
+            if unit.variables["haste"] == 0 then
+               table.insert(finished_units, 1, i)
+            end
+            change_unit.add_turn_effect(unit.x, unit.y, "haste", 0, true)
+         end
+      end
+   end
+   -- Units done with effects need to be removed separately so the
+   -- table index doesn't shift until the end. The removal has to be
+   -- in reverse index order.
+   for i, j in ipairs(finished_units) do
+      table.remove(units_with_effects, j)
+   end
 end
 
 -- Chooses the adjacent summoner with the highest HP.

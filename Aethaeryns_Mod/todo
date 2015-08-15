@@ -1,10 +1,6 @@
 AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
-  - use scrollbars with custom messages so spacebar doesn't dismiss plot
-  - have players start with 1 upgrade point on their leader
-  - make upgrade points purchasable via a scroll spell
-
  (1) Inventory Containers (1%)
   - Container changes on host or unit actions:
     - shops:
@@ -69,9 +65,13 @@ When this list is complete/empty, bump to version 0.9
     - Bribing will consume all movement and disable attacks and will only be allowed if you haven't attacked.
 
  (3) Inventory (1%)
-  - Multiples stack the turn duration, not the effect strength. So if it's already active, simply add to the counter.
-  - Each time the counter is not nil and > 0, the turn [object] needs to be added on side n turn for side n.
+  - Each time the counter is not nil and > 0, the turn [object] needs to be added on turn refresh for each side's turn.
     - Which subtracts from the counter.
+  - What happens when the unit dies?
+    - bad argument #1 to '__index' (unknown unit)
+  - What happens when a unit is changed with an effect that requires changing a copy and replacing the unit?
+    - It seems to work fine.
+  - What happens when more than one unit is in the table, do they get removed properly?
   - A dummy ability should also be active as long as the [object] is being applied.
     - i.e. once the counter starts a side turn at 0, remove it
   - The "drunk" ability and [object] uses confidence's counter to refresh once triggered.
@@ -90,6 +90,7 @@ When this list is complete/empty, bump to version 0.9
     - Add strength and dexterity upgrades.
       - They probably need to be implemented differently, with [object]
     - There needs to be a visible indicator over the unit that the unit can be upgraded.
+    - Make upgrade points purchasable via a scroll spell.
 
   - Host unit modifying.
     - Use sliders and keep values within a reasonable range, which will vary depending on the stat.
@@ -123,6 +124,7 @@ When this list is complete/empty, bump to version 0.9
     - e.g. some border hexes can change terrain and some just change (1,1)
     - and all the units spawned on borders spawn on (1,1) instead, potentially overwriting a unit on (1,1)
 
+  * BUG: The state of multi-turn potion effects is not saved.
   * BUG: The state of toggled right click menus is not saved.
   * BUG: The state of the terrain editor is not saved.
   * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their abilities.

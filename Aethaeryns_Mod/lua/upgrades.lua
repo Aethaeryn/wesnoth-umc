@@ -2,6 +2,8 @@
 <<
 is_amla = false
 
+mod_upgrade = {}
+
 function event_post_advance()
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
@@ -37,7 +39,10 @@ function event_advance()
       is_amla = true
    end
 
-   -- Increment the unit's advancement points by one.
+   mod_upgrade.increment(unit)
+end
+
+function mod_upgrade.increment(unit)
    if unit.variables["advancement"] == nil then
       unit.variables["advancement"] = 1
    else

@@ -2,6 +2,7 @@
 <<
 mod_menu = {}
 mod_menu.lich_image = "portraits/undead/transparent/ancient-lich.png"
+mod_menu.gender = {{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}
 
 local function get_roles()
    local roles = {}
@@ -85,6 +86,11 @@ local function get_levels(category)
    return levels
 end
 
+-- Transforms the peasant leader unit on the start of game into a unit
+-- that the character selects. The unit then gets a free upgrade
+-- point. The existence of upgrade points is later used to verify that
+-- the peasant is a new spawn (instead of a chosen leader) when a new
+-- scenario is selected so the menu doesn't fire on chosen peasants.
 function mod_menu.select_leader()
    local leaders = wesnoth.get_units { side = wesnoth.current.side, canrecruit = true }
    local leader
@@ -93,7 +99,7 @@ function mod_menu.select_leader()
    else
       return
    end
-   if leader.type == "Peasant" then
+   if leader.type == "Peasant" and leader.variables["advancement"] == nil then
       local title = _ "Leader"
       local description = _ "Select a leader type."
       local leader_category = false
@@ -108,11 +114,13 @@ function mod_menu.select_leader()
                if choice then
                   if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
                      change_unit.transform(leader.x, leader.y, choice)
+                     mod_upgrade.increment(leader)
                   else
                      local description = _ "Select a gender."
-                     local gender = menu({{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
+                     local gender = menu(mod_menu.gender, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
                      if gender then
                         change_unit.transform(leader.x, leader.y, choice, gender)
+                        mod_upgrade.increment(leader)
                      else
                         leader_category = false
                      end
@@ -166,7 +174,7 @@ function mod_menu.summon_units()
                      spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side)
                   else
                      local description = _ "Select a gender."
-                     local gender = menu({{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
+                     local gender = menu(mod_menu.gender, mod_menu.lich_image, title, description, menu_almost_simple_list, 2)
                      if gender then
                         spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender)
                      end
