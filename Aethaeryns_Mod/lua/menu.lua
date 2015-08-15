@@ -265,7 +265,24 @@ function mod_menu.interact()
    local option = menu(find_interactions(e.x1, e.y1, blocked), image, title, description, menu_picture_list, 1)
    if option then
       if option == "Interact with Unit" then
-         gui2_error("Feature not yet implemented!")
+         local description = _ "What do you want to give to this unit?"
+         local interactions = { "Items" }
+         local interaction = menu(interactions, mod_menu.lich_image, title, description, menu_simple_list)
+         if interaction then
+            if interaction == "Items" then
+               local description = _ "Which item do you want to give to this unit?"
+               local inventory = mod_inventory.show_current(unit.variables)
+               local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")
+               if item then
+                  local description = _ "How many items do you want to gift?"
+                  local max = unit.variables[item]
+                  local quantity = menu_slider("", title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
+                  if quantity then
+                     mod_inventory.transfer_item(unit, e.x1, e.y1, item, quantity)
+                  end
+               end
+            end
+         end
       elseif option == "Buy from Shop" then
          local description = _ "What item do you want to purchase from the shop?"
          local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["shop"])

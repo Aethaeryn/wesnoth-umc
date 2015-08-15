@@ -4,6 +4,18 @@ containers = {}
 mod_inventory = {}
 game_object = {}
 
+function mod_inventory.transfer_item(unit, x, y, name, quantity)
+   if quantity <= unit.variables[name] then
+      local target_unit = wesnoth.get_unit(x, y)
+      if target_unit.variables[name] == nil then
+         target_unit.variables[name] = quantity
+      else
+         target_unit.variables[name] = target_unit.variables[name] + quantity
+      end
+      unit.variables[name] = unit.variables[name] - quantity
+   end
+end
+
 function mod_inventory.chest_add(unit, x, y, name, quantity)
    if quantity <= unit.variables[name] then
       if containers[x][y]["chest"][name] == nil then

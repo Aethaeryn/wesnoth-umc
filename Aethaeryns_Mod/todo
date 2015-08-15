@@ -48,11 +48,10 @@ When this list is complete/empty, bump to version 0.9
       - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
 
  (2) Interaction (1%)
-  - Let units give things to adjacent units.
-    - Inventory (all unequipped items)
-    - Gold (if leader)
-      - Gold coins (item) if not leader (anyone should be able to hold them, but only leader should be able to cash them)
-        - This means that gold piles should always be in intervals of 10 and regular units will only pick up coins, not gold.
+  - Let units give gold to adjacent units:
+    - If friendly leader: gold
+    - If other friendly unit: gold coins (item) (anyone should be able to hold them, but only leader should be able to cash them)
+    - If non-leader (hostile or side 6 (NPCs)) that can be bribed: bribe
 
   - Bribing
     - Allow certain units to be bribed through interactions (and mark with certain icon?) if the host toggles them.
