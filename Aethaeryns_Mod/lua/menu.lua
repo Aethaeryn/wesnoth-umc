@@ -106,13 +106,8 @@ end
 -- scenario is selected so the menu doesn't fire on chosen peasants.
 function mod_menu.select_leader()
    local leaders = wesnoth.get_units { side = wesnoth.current.side, canrecruit = true }
-   local leader
-   if leaders[1] ~= nil then
-      leader = leaders[1]
-   else
-      return
-   end
-   if leader.type == "Peasant" and leader.variables["advancement"] == nil then
+   if leaders[1] ~= nil and leaders[1].type == "Peasant" and leaders[1].variables["advancement"] == nil then
+      local leader = leaders[1]
       local title = _ "Leader"
       local description = _ "Select a leader type."
       -- You only exit the menu at the top level, or if you choose a
