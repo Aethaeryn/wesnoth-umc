@@ -515,6 +515,11 @@ unit_groups_menu = {
    "Village",
    "Army",
    "Elves",
+   "Zombies",
+   "Skeletons",
+   "Mixed Undead",
+   "Outlaws (Weak)",
+   "Outlaws",
 }
 
 unit_groups = {
@@ -563,6 +568,51 @@ unit_groups = {
       "Elvish Fighter",
       "Elvish Shaman",
    },
+   Zombies = {
+      "Soulless",
+      "Soulless",
+      "Walking Corpse",
+      "Walking Corpse",
+      "Walking Corpse",
+      "Walking Corpse",
+      "Walking Corpse",
+   },
+   Skeletons = {
+      "Skeleton",
+      "Skeleton",
+      "Skeleton",
+      "Skeleton",
+      "Skeleton Archer",
+      "Skeleton Archer",
+      "Skeleton Archer",
+   },
+   ['Mixed Undead'] = {
+      "Skeleton",
+      "Skeleton",
+      "Skeleton Archer",
+      "Ghoul",
+      "Ghoul",
+      "Ghost",
+      "Soulless",
+   },
+   ['Outlaws (Weak)'] = {
+      "Thug",
+      "Footpad",
+      "Ruffian",
+      "Ruffian",
+      "Ruffian",
+      "Woodsman",
+      "Woodsman",
+   },
+   Outlaws = {
+      "Bandit",
+      "Thug",
+      "Thug",
+      "Footpad",
+      "Poacher",
+      "Thief",
+      "Thief",
+   }
 }
 >>
 #enddef

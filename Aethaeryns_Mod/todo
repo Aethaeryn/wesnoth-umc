@@ -137,6 +137,7 @@ When this list is complete/empty, bump to version 0.9
   * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
   * FEATURE: If possible add a back button in addition to close for the complicated menus.
   * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
+  * FEATURE: Zombie variations need to be possible instead of just the boring plain zombie.
 
   * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
     * Maybe override [advancement] i.e. AMLA_DEFAULT?
