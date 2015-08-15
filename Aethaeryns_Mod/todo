@@ -51,9 +51,8 @@ When this list is complete/empty, bump to version 0.9
   - Let units give gold to adjacent units:
     - If friendly leader: gold
     - If other friendly unit: gold coins (item) (anyone should be able to hold them, but only leader should be able to cash them)
-    - If non-leader (hostile or side 6 (NPCs)) that can be bribed: bribe
 
-  - Bribing
+  - Bribing (non-leader, hostile or side 1 or side 6)
     - Allow certain units to be bribed through interactions (and mark with certain icon?) if the host toggles them.
     - For 1.5x cost in gold, they will change to player's team and then lose the ability to be bribed.
     - In addition to a unit-by-unit setting, there will be game setting that will allow some lower-level units to spawn as bribable:
@@ -115,10 +114,12 @@ When this list is complete/empty, bump to version 0.9
     - e.g. some border hexes can change terrain and some just change (1,1)
     - and all the units spawned on borders spawn on (1,1) instead, potentially overwriting a unit on (1,1)
 
-  * BUG: The state of multi-turn potion effects is not saved.
-  * BUG: The state of toggled right click menus is not saved.
-  * BUG: The state of the terrain editor is not saved.
-  * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their abilities.
+  * BUG: Things stored in lua tables do not have their states saved:
+    * Multi-turn potion effects.
+    * Shop inventory.
+    * Toggled right click.
+    * Terrain editor state.
+  * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
   * BUG: Fix icon size for Summon <foo> and Summon Summoner.
   * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
     - In fact, it locks the unit into the old portrait even if it promotes.
@@ -129,6 +130,7 @@ When this list is complete/empty, bump to version 0.9
   * BUG? What happens if someone disconnects during the character selection dialog?
   * BUG: Slider doesn't go all the way over, it just ends about half way through.
 
+  * FEATURE: Add hotkeys to the set_menu_item menu items.
   * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
   * FEATURE: AMLAing probably shouldn't increase max experience.
   * FEATURE: Change objectives by subsections (victory, loss, etc.) in a new interface so that formatting can be preserved.
@@ -164,6 +166,8 @@ When this list is complete/empty, bump to version 0.9
  (6) Future
     * Allow sharing gold as an option when collecting gold, splitting it evenly among players whose leaders are within a certain radius.
     * Make spawning units/groups/objects tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
+      - Give the host options for quick placing units on the map or on parts of the map using this same map logic.
+        - So e.g. an area could use orcs, undead, etc.
       - And of course this opens the door to quests, preset interactions/messages, etc.
         - Even ones that the host can place.
       - Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
@@ -172,7 +176,7 @@ When this list is complete/empty, bump to version 0.9
       * Allow player votes for things like max level or next map instead of leaving all the decisions to the host.
       * Select gender through the same window rather than a separate window.
       * Allow a random gender, and make this the default.
-    * Extend the GUI2 wrapper so that it can handle more  than one return value.
+    * Extend the GUI2 wrapper so that it can handle more than one return value.
       * Some windows could do more than one action with sliders, checkboxes, etc., instead of with text input.
         * especially changing side variables
           * showing all the stats at once instead of only on select would be useful here too
@@ -207,15 +211,6 @@ When this list is complete/empty, bump to version 0.9
       * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
     * Reduce max HP on summoner by 1 per level of active summoned unit?
     * Do something with boats?
-    * Is there a way to alter promotions?
-      * Ancient Lich; ENABLE_ANCIENT_LICH
-      * Great Wolf & Dire Wolf; ENABLE_WOLF_ADVANCEMENT
-      * Armageddon Drake; ENABLE_ARMAGEDDON_DRAKE
-      * Dwarvish Runesmith; ENABLE_DWARVISH_RUNESMITH
-      * Dwarvish Arcanister; ENABLE_DWARVISH_ARCANISTER
-      * Troll Shaman; ENABLE_TROLL_SHAMAN
-      * Death Knight; ENABLE_DEATH_KNIGHT
-      * in mainline, this is done in [campaign] extra_defines in SoF and LoW, only one each
     * Resurrection.
       * When units die they are saved in a resurrection table.
       * The host can resurrect a unit. (rematches of old bosses?)
@@ -235,7 +230,7 @@ When this list is complete/empty, bump to version 0.9
       * Also make terrain changes able to have costs, require being done by units or triggers, etc.
       * Similarly, traps, chests, etc., could be manually placed and/or moved by units if this happens.
       * If the NPCs/mob sides are restricted or AI, a lot of the options like unit levels to start at could be done by player vote.
-    * Require download (as [modification]?), but make the Lua imported in a cleaner way and define some custom WML tags.
+    * Require download (modification, era, MP campaign(s)), but make the Lua imported in a cleaner way and define some custom WML tags.
       * This will solve the problem of what to do for certain icons, e.g. for potion types, scrolls, and menu items.
       * The current closed scroll icon could be used for unidentified scrolls if it's going to be like roguelikes and require identifying.
       * This means more units can be added.
