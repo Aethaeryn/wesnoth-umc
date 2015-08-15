@@ -46,6 +46,10 @@ local function find_interactions(x, y, blocked)
          table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
       end
    end
+   local unit = wesnoth.get_unit(x, y)
+   if unit ~= nil then
+      table.insert(interactions, {"Interact with Unit", string.format("%s~RC(magenta>%s)", unit.__cfg.image, wesnoth.sides[unit.side].color)})
+   end
    return interactions
 end
 
@@ -260,7 +264,9 @@ function mod_menu.interact()
    local description = _ "How do you want to interact?"
    local option = menu(find_interactions(e.x1, e.y1, blocked), image, title, description, menu_picture_list, 1)
    if option then
-      if option == "Buy from Shop" then
+      if option == "Interact with Unit" then
+         gui2_error("Feature not yet implemented!")
+      elseif option == "Buy from Shop" then
          local description = _ "What item do you want to purchase from the shop?"
          local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["shop"])
          local item = menu(inventory, "", title, description, menu_picture_list, 1, "item_stats")

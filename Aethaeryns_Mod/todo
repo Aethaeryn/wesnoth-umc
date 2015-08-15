@@ -68,10 +68,9 @@ When this list is complete/empty, bump to version 0.9
   - What happens when a unit is changed with an effect that requires changing a copy and replacing the unit?
     - It seems to overwrite the changes when reapplying the [object]
     - So most of change_unit might need to be fixed.
-  - What happens when more than one unit is in the table, do they get removed properly?
-  - The "drunk" ability and [object] uses confidence's counter to refresh once triggered.
   - Ale: "Confidence" ability: +5 max HP for 3 turns.
     - 25% chance of also becoming drunk (berserk melee) for that duration each time used
+    - The "drunk" ability and [object] use confidence's counter to refresh once triggered.
 
 ***
 
