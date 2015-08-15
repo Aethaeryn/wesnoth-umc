@@ -127,29 +127,81 @@ function change_unit.role(x, y, new_role)
    end
 end
 
+local function add_drunk_effect(unit)
+   local wml_effect_1 = T.effect { apply_to = "attack", range = "melee", T.set_specials { mode = "append",
+                                                                                          T.special { wesnoth.get_variable("berserk")}}}
+   local wml_effect_2 = T.effect { apply_to = "attack", remove_specials = "marksman" }
+   wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect_1, wml_effect_2})
+end
+
 function change_unit.add_turn_effect(x, y, effect, turns, refresh)
-   local wml_effect = T.effect { }
-   local wml_effect_2 = T.effect { }
-   local wml_effect_ability = T.effect { }
    local unit = wesnoth.get_unit(x, y)
    if effect == "haste" then
-      wml_effect_ability = T.effect { apply_to = "new_ability",
-                                      T.abilities {
-                                         T.dummy { name = _ "Haste",
-                                                   description = _ "This unit has an extra strike and two extra moves." }}}
+      local wml_effect_ability = T.effect { apply_to = "new_ability",
+                                            T.abilities {
+                                               T.dummy { name = _ "haste",
+                                                         description = _ "This unit has an extra strike and two extra moves." }}}
       if unit.variables["haste"] == nil or unit.variables["haste"] == 0 or refresh ~= nil then
          if refresh == nil then
             unit.variables["haste"] = (turns - 1)
-            table.insert(units_with_effects, unit)
+            if unit.variables["confidence"] == nil or unit.variables["confidence"] == 0 then
+               table.insert(units_with_effects, unit)
+            end
          end
          if unit.moves == unit.max_moves then
             unit.moves = unit.moves + 2
          end
-         wml_effect = T.effect { apply_to = "movement", increase = 2 }
-         wml_effect_2 = T.effect { apply_to = "attack", increase_attacks = 1 }
+         local wml_effect = T.effect { apply_to = "movement", increase = 2 }
+         local wml_effect_2 = T.effect { apply_to = "attack", increase_attacks = 1 }
          wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_2, wml_effect_ability })
       elseif unit.variables["haste"] > 0 then
          unit.variables["haste"] = unit.variables["haste"] + (turns - 1)
+      end
+   elseif effect == "confidence" then
+      local wml_effect_ability = T.effect { apply_to = "new_ability",
+                                            T.abilities {
+                                               T.dummy { name = _ "confidence",
+                                                         description = _ "This unit has +5 HP." }}}
+      local ability_drunk = T.effect { apply_to = "new ability",
+                                       T.abilities {
+                                          T.dummy { name = _ "drunk",
+                                                    description = _ "This unit is very, very drunk." }}}
+      if unit.variables["confidence"] == nil or unit.variables["confidence"] == 0 or refresh ~= nil then
+         if refresh == nil then
+            unit.variables["confidence"] = (turns - 1)
+            if unit.variables["haste"] == nil or unit.variables["haste"] == 0 then
+               table.insert(units_with_effects, unit)
+            end
+         end
+         if unit.hitpoints == unit.max_hitpoints then
+            unit.hitpoints = unit.hitpoints + 5
+         end
+         local wml_effect = T.effect { apply_to = "hitpoints", increase_total = 5 }
+         if refresh ~= nil and unit.variables["drunk"] ~= nil and unit.variables["drunk"] >= 0 then
+            add_drunk_effect(unit)
+         elseif refresh == nil then
+            local become_drunk = helper.rand("no,no,no,yes")
+            if become_drunk then
+               unit.variables["drunk"] = unit.variables["confidence"]
+               add_drunk_effect(unit)
+            end
+         end
+         if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
+            wml_effect_ability = ability_drunk
+         end
+         wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_ability })
+      elseif unit.variables["confidence"] > 0 then
+         unit.variables["confidence"] = unit.variables["confidence"] + (turns - 1)
+         if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
+            unit.variables["drunk"] = unit.variables["confidence"]
+         else
+            local become_drunk = helper.rand("no,no,no,yes")
+            debugOut(become_drunk)
+            if become_drunk then
+               unit.variables["drunk"] = unit.variables["confidence"]
+               add_drunk_effect(unit)
+            end
+         end
       end
    end
 end
@@ -163,12 +215,18 @@ function change_unit.update_turn_effects()
       if unit.side == wesnoth.current.side then
          if unit.variables["haste"] ~= nil and unit.variables["haste"] > 0 then
             unit.variables["haste"] = unit.variables["haste"] - 1
-            -- Obviously once more than one effect is in place, all
-            -- effects need to be at 0 for this to work.
-            if unit.variables["haste"] == 0 then
-               table.insert(finished_units, 1, i)
-            end
             change_unit.add_turn_effect(unit.x, unit.y, "haste", 0, true)
+         end
+         if unit.variables["confidence"] ~= nil and unit.variables["confidence"] > 0 then
+            unit.variables["confidence"] = unit.variables["confidence"] - 1
+            if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
+               unit.variables["drunk"] = unit.variables["drunk"] - 1
+            end
+            change_unit.add_turn_effect(unit.x, unit.y, "confidence", 0, true)
+         end
+         if (unit.variables["haste"] == nil or unit.variables["haste"] == 0)
+         and (unit.variables["confidence"] == nil or unit.variables["confidence"] == 0) then
+            table.insert(finished_units, 1, i)
          end
       end
    end
