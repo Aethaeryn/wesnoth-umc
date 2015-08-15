@@ -130,8 +130,13 @@ end
 function change_unit.add_turn_effect(x, y, effect, turns, refresh)
    local wml_effect = T.effect { }
    local wml_effect_2 = T.effect { }
+   local wml_effect_ability = T.effect { }
    local unit = wesnoth.get_unit(x, y)
    if effect == "haste" then
+      wml_effect_ability = T.effect { apply_to = "new_ability",
+                                      T.abilities {
+                                         T.dummy { name = _ "Haste",
+                                                   description = _ "This unit has an extra melee strike and two extra moves." }}}
       if unit.variables["haste"] == nil or unit.variables["haste"] == 0 or refresh ~= nil then
          if refresh == nil then
             unit.variables["haste"] = (turns - 1)
@@ -142,7 +147,7 @@ function change_unit.add_turn_effect(x, y, effect, turns, refresh)
          end
          wml_effect = T.effect { apply_to = "movement", increase = 2 }
          wml_effect_2 = T.effect { apply_to = "attack", range = "melee", increase_attacks = 1 }
-         wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_2 })
+         wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_2, wml_effect_ability })
       elseif unit.variables["haste"] > 0 then
          unit.variables["haste"] = unit.variables["haste"] + (turns - 1)
       end
@@ -172,6 +177,16 @@ function change_unit.update_turn_effects()
    -- in reverse index order.
    for i, j in ipairs(finished_units) do
       table.remove(units_with_effects, j)
+   end
+end
+
+function change_unit.death_cleanup()
+   local e = wesnoth.current.event_context
+   local dead_unit = wesnoth.get_unit(e.x1, e.y1)
+   for i, unit in ipairs(units_with_effects) do
+      if unit.x == dead_unit.x and unit.y == dead_unit.y then
+         table.remove(units_with_effects, i)
+      end
    end
 end
 

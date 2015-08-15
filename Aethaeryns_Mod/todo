@@ -65,18 +65,11 @@ When this list is complete/empty, bump to version 0.9
     - Bribing will consume all movement and disable attacks and will only be allowed if you haven't attacked.
 
  (3) Inventory (1%)
-  - Each time the counter is not nil and > 0, the turn [object] needs to be added on turn refresh for each side's turn.
-    - Which subtracts from the counter.
-  - What happens when the unit dies?
-    - bad argument #1 to '__index' (unknown unit)
   - What happens when a unit is changed with an effect that requires changing a copy and replacing the unit?
-    - It seems to work fine.
+    - It seems to overwrite the changes when reapplying the [object]
+    - So most of change_unit might need to be fixed.
   - What happens when more than one unit is in the table, do they get removed properly?
-  - A dummy ability should also be active as long as the [object] is being applied.
-    - i.e. once the counter starts a side turn at 0, remove it
   - The "drunk" ability and [object] uses confidence's counter to refresh once triggered.
-
-  - Haste: Extra melee strike, +2 total moves.
   - Ale: "Confidence" ability: +5 max HP for 3 turns.
     - 25% chance of also becoming drunk (berserk melee) for that duration each time used
 
