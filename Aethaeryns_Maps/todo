@@ -1,2 +1,6 @@
 - Fix maps with broken WML:
   - Aethaeryn's Empires
+
+Rewrite the fancy WML into Lua.
+
+Is a macro name conflict the reason that the fortress works now when it didn't use to?
