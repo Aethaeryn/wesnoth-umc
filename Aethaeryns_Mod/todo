@@ -259,4 +259,3 @@ When this list is complete/empty, bump to version 0.9
   - Terrains call .editor_name and so are also translated for free. (Terrains are IDs, not names.)
   - Sometimes the code can use a simple _ prefix to the strings and work.
   - Most menu list of strings are more complicated because of the way the gui2 dialog code currently works.
-  - Strings that are used with string.format() do not seem to work with the Wesnoth translation system, either.
