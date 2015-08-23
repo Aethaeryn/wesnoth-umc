@@ -129,7 +129,6 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
    if list[1] == nil then
       not_empty = false
    end
-   local dialog = gui2.wml.dialog(not_empty, "list", sidebar)
 
    local function preshow()
       wesnoth.set_dialog_value(title, "menu_title")
@@ -151,7 +150,10 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
       end
    end
 
-   local choice = wesnoth.synchronize_choice(dialog_choice(dialog, preshow, not_empty, "menu_list")).value
+   local choice = wesnoth.synchronize_choice(dialog_choice(gui2.wml.dialog(not_empty, "list", sidebar),
+                                                           preshow,
+                                                           not_empty,
+                                                           "menu_list")).value
    if choice then
       if sublist_index ~= nil then
          return list[choice][sublist_index]
@@ -165,7 +167,6 @@ end
 
 -- fixme: when updated for 1.13, make the text input box start focused
 function menu_text_input(image, title, description, label, default_text)
-   local dialog = gui2.wml.dialog(true, "text_input")
    if default_text == nil then
       default_text = ""
    end
@@ -178,12 +179,13 @@ function menu_text_input(image, title, description, label, default_text)
       wesnoth.set_dialog_value(image, "menu_image")
    end
 
-   return wesnoth.synchronize_choice(dialog_choice(dialog, preshow, true, "menu_text_box")).value
+   return wesnoth.synchronize_choice(dialog_choice(gui2.wml.dialog(true, "text_input"),
+                                                   preshow,
+                                                   true,
+                                                   "menu_text_box")).value
 end
 
 function menu_slider(image, title, description, label, slider)
-   local dialog = gui2.wml.dialog(true, "slider", nil, slider)
-
    local function preshow()
       wesnoth.set_dialog_value(title, "menu_title")
       wesnoth.set_dialog_value(description, "menu_description")
@@ -192,12 +194,13 @@ function menu_slider(image, title, description, label, slider)
       wesnoth.set_dialog_value(image, "menu_image")
    end
 
-   return wesnoth.synchronize_choice(dialog_choice(dialog, preshow, true, "menu_slider")).value
+   return wesnoth.synchronize_choice(dialog_choice(gui2.wml.dialog(true, "slider", nil, slider),
+                                                   preshow,
+                                                   true,
+                                                   "menu_slider")).value
 end
 
 function gui2_error(text)
-   local dialog = gui2.wml.dialog(false)
-
    local function preshow()
       wesnoth.set_dialog_value(_ "Error!", "menu_title")
       wesnoth.set_dialog_value(text, "menu_description")
@@ -205,7 +208,7 @@ function gui2_error(text)
 
    local function error_dialog()
       -- Close
-      wesnoth.show_dialog(dialog, preshow)
+      wesnoth.show_dialog(gui2.wml.dialog(false), preshow)
       return { value = false }
    end
 
