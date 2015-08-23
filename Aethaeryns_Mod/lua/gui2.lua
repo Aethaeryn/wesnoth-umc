@@ -63,76 +63,81 @@ local function generate_dialog(not_empty, menu_type, has_sidebar, slider)
                                                            T.row { T.column { T.grid { buttons }}}}}}}}}}}
 end
 
+-- This is a closure around choice. Postshow modifies the choice, and
+-- then an OK button sends the choice in a WML table. It must be run
+-- through wesnoth.synchronize_choice.
+local function safe_dialog(dialog, preshow, not_empty)
+   local choice
+
+   local function postshow()
+      if not_empty then
+         choice = wesnoth.get_dialog_value("menu_list")
+      else
+         choice = false
+      end
+   end
+
+   -- OK and Cancel
+   return function ()
+      local button = wesnoth.show_dialog(dialog, preshow, postshow)
+      if button == -1 then
+         return { value = choice }
+      else
+         return { value = false }
+      end
+   end
+end
+
+local function remove_summoners(list)
+   local new_list = {}
+   for i, unit in ipairs(list) do
+      if is_summoner[unit] == nil then
+         table.insert(new_list, unit)
+      end
+   end
+   return new_list
+end
+
 -- This is a menu that is suitable for most of MOD. It takes in a
 -- list, an image that shows on the left for decoration, a title and
 -- description that show at the top, and a function that specifies how
 -- the list needs to be built.
 function menu(list, image, title, description, build_list, sublist_index, sidebar)
-   local dialog = {}
    local not_empty = true
    if sidebar == "unit" then
-      local new_list = {}
-      for i, unit in ipairs(list) do
-         if is_summoner[unit] == nil then
-            table.insert(new_list, unit)
-         end
-      end
-      list = new_list
+      list = remove_summoners(list)
+   end
+   if sidebar == "summoner" then
+      sidebar = "unit"
    end
    if list[1] == nil then
       not_empty = false
    end
-   dialog = generate_dialog(not_empty, "list", sidebar)
+   local dialog = generate_dialog(not_empty, "list", sidebar)
 
-   local function safe_dialog()
-      local choice = 0
-
-      local function preshow()
-         local function select()
-            if sidebar ~= nil then
-               local i = wesnoth.get_dialog_value("menu_list")
-               if sidebar == "summoner" then
-                  sidebar = "unit"
-               end
-               gui2.on_select[sidebar](list, i)
-            else
-               wesnoth.set_dialog_value(image, "menu_image")
+   local function preshow()
+      wesnoth.set_dialog_value(title, "menu_title")
+      wesnoth.set_dialog_value(description, "menu_description")
+      if not_empty then
+         build_list(list)
+         wesnoth.set_dialog_value(1, "menu_list")
+         wesnoth.set_dialog_callback(select_actions, "menu_list")
+         if sidebar ~= nil then
+            local function select()
+               gui2.on_select[sidebar](list, wesnoth.get_dialog_value("menu_list"))
             end
-         end
-
-         wesnoth.set_dialog_value(title, "menu_title")
-         wesnoth.set_dialog_value(description, "menu_description")
-         if not_empty then
-            build_list(list)
-            wesnoth.set_dialog_value(1, "menu_list")
-            wesnoth.set_dialog_callback(select_actions, "menu_list")
             wesnoth.set_dialog_callback(select, "menu_list")
             select()
          else
             wesnoth.set_dialog_value(image, "menu_image")
-            wesnoth.set_dialog_value("None", "menu_list_empty")
          end
-      end
-
-      local function postshow()
-         if not_empty then
-            choice = wesnoth.get_dialog_value("menu_list")
-         else
-            choice = false
-         end
-      end
-
-      local button = wesnoth.show_dialog(dialog, preshow, postshow)
-      -- OK
-      if button == -1 then
-         return { value = choice }
-      -- Close
       else
-         return { value = false }
+         wesnoth.set_dialog_value(image, "menu_image")
+         wesnoth.set_dialog_value("None", "menu_list_empty")
       end
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog).value
+   local safe_choice = wesnoth.synchronize_choice(safe_dialog(dialog, preshow, not_empty)).value
    if safe_choice then
       if sublist_index ~= nil then
          return list[safe_choice][sublist_index]
@@ -144,18 +149,15 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
    end
 end
 
--- fixme: I cannot find a way to give a text box the default focus
--- like some core game text box. It might not be possible right now
--- via wesnoth/src/scripting/lua_gui2.cpp
+-- fixme: when updated for 1.13, make the text input box start focused
 function menu_text_input(image, title, description, label, default_text)
-   local dialog = {}
-   dialog = generate_dialog(true, "text_input")
+   local dialog = generate_dialog(true, "text_input")
    if default_text == nil then
       default_text = ""
    end
 
-   local function safe_dialog()
-      local choice = ""
+   local function safe_dialog_()
+      local choice
 
       local function preshow()
          wesnoth.set_dialog_value(title, "menu_title")
@@ -169,29 +171,24 @@ function menu_text_input(image, title, description, label, default_text)
          choice = wesnoth.get_dialog_value("menu_text_box")
       end
 
+      -- OK and Cancel
       local button = wesnoth.show_dialog(dialog, preshow, postshow)
-      -- OK
       if button == -1 and choice ~= "" then
          return { value = choice }
-      -- Close
       else
          return { value = false }
       end
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog).value
+   local safe_choice = wesnoth.synchronize_choice(safe_dialog_).value
    return safe_choice
 end
 
 function menu_slider(image, title, description, label, slider)
-   local dialog = {}
-   dialog = generate_dialog(true, "slider", nil, slider)
-   if default_text == nil then
-      default_text = ""
-   end
+   local dialog = generate_dialog(true, "slider", nil, slider)
 
-   local function safe_dialog()
-      local choice = ""
+   local function safe_dialog_()
+      local choice
 
       local function preshow()
          wesnoth.set_dialog_value(title, "menu_title")
@@ -205,34 +202,34 @@ function menu_slider(image, title, description, label, slider)
          choice = wesnoth.get_dialog_value("menu_slider")
       end
 
+      -- OK and Cancel
       local button = wesnoth.show_dialog(dialog, preshow, postshow)
-      -- OK
       if button == -1 and choice ~= "" then
          return { value = choice }
-      -- Close
       else
          return { value = false }
       end
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog).value
+   local safe_choice = wesnoth.synchronize_choice(safe_dialog_).value
    return safe_choice
 end
 
 function gui2_error(text)
    local dialog = {}
    dialog = generate_dialog(false, "error")
-   local function safe_dialog()
+   local function safe_dialog_()
       local function preshow()
          wesnoth.set_dialog_value(_ "Error!", "menu_title")
          wesnoth.set_dialog_value(text, "menu_description")
       end
 
+      -- Close
       wesnoth.show_dialog(dialog, preshow)
       return { value = false }
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog).value
+   local safe_choice = wesnoth.synchronize_choice(safe_dialog_).value
    return safe_choice
 end
 
