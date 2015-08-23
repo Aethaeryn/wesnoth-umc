@@ -1,7 +1,7 @@
 #define MOD_GUI2
 <<
 gui2 = {
-   with_list = {},
+   make_list = {},
    on_select = {},
    wml = {}}
 
@@ -118,7 +118,7 @@ end
 -- list, an image that shows on the left for decoration, a title and
 -- description that show at the top, and a function that specifies how
 -- the list needs to be built.
-function menu(list, image, title, description, build_list, sublist_index, sidebar)
+function menu(list, image, title, description, dialog_list, sublist_index, sidebar)
    local not_empty = true
    if sidebar == "unit" then
       list = remove_summoners(list)
@@ -135,7 +135,7 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
       wesnoth.set_dialog_value(title, "menu_title")
       wesnoth.set_dialog_value(description, "menu_description")
       if not_empty then
-         build_list(list)
+         gui2.make_list[dialog_list](list)
          wesnoth.set_dialog_value(1, "menu_list")
          wesnoth.set_dialog_callback(select_actions, "menu_list")
          if sidebar ~= nil then
@@ -214,7 +214,7 @@ end
 
 ---- GUI2 List Builders ----
 
-function menu_unit_list(units)
+function gui2.make_list.unit(units)
    local team_color = wesnoth.sides[wesnoth.current.side].color
    for i, unit in ipairs(units) do
       local unit_data = wesnoth.unit_types[unit].__cfg
@@ -223,7 +223,7 @@ function menu_unit_list(units)
    end
 end
 
-function menu_unit_list_with_cost(units)
+function gui2.make_list.unit_cost(units)
    local team_color = wesnoth.sides[wesnoth.current.side].color
    for i, unit in ipairs(units) do
       local unit_data = wesnoth.unit_types[unit].__cfg
@@ -232,7 +232,7 @@ function menu_unit_list_with_cost(units)
    end
 end
 
-function menu_unit_name_and_location(units)
+function gui2.make_list.unit_name_and_location(units)
    local team_color = wesnoth.sides[wesnoth.current.side].color
    for i, unit in ipairs(units) do
       wesnoth.set_dialog_value(string.format("%s (%s) (%d, %d)",
@@ -244,33 +244,33 @@ function menu_unit_name_and_location(units)
    end
 end
 
-function menu_upgrade_list(upgrades)
+function gui2.make_list.upgrade(upgrades)
    for i, upgrade in ipairs(upgrades) do
       wesnoth.set_dialog_value(upgrade.name, "menu_list", i, "label")
       wesnoth.set_dialog_value(upgrade.image, "menu_list", i, "icon")
    end
 end
 
-function menu_picture_list(list)
+function gui2.make_list.with_picture(list)
    for i, sublist in ipairs(list) do
       wesnoth.set_dialog_value(sublist[1], "menu_list", i, "label")
       wesnoth.set_dialog_value(sublist[2], "menu_list", i, "icon")
    end
 end
 
-function menu_terrain_list(list)
+function gui2.make_list.terrain(list)
    for i, terrain_code in ipairs(list) do
       wesnoth.set_dialog_value(wesnoth.get_terrain_info(terrain_code).editor_name, "menu_list", i, "label")
    end
 end
 
-function menu_simple_list(list)
+function gui2.make_list.simple(list)
    for i, item in ipairs(list) do
       wesnoth.set_dialog_value(item, "menu_list", i, "label")
    end
 end
 
-function menu_almost_simple_list(list)
+function gui2.make_list.almost_simple(list)
    for i, sublist in ipairs(list) do
       wesnoth.set_dialog_value(sublist[1], "menu_list", i, "label")
    end
@@ -308,7 +308,7 @@ function gui2.on_select.team_stats(list)
    end
 end
 
-function gui2.on_select.item_stats(list)
+function gui2.on_select.item(list)
    return function ()
       local i = wesnoth.get_dialog_value("menu_list")
       wesnoth.set_dialog_value("Information about the selected item:  \n", "menu_sidebar_intro")
@@ -331,7 +331,7 @@ function gui2.on_select.item_stats(list)
    end
 end
 
-function gui2.on_select.upgrade_stats(upgrades)
+function gui2.on_select.upgrade(upgrades)
    return function ()
       local i = wesnoth.get_dialog_value("menu_list")
       wesnoth.set_dialog_value("Information about the selected upgrade:  \n", "menu_sidebar_intro")

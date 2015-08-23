@@ -153,11 +153,10 @@ When this list is complete/empty, bump to version 0.9
     - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
   * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
   * CODE: Fix spacing on GUI2 GUIs, especially the error message and the areas with more than one button.
-  * CODE: remove all submenu_ functions in upgrades.lua and terrain_editor.lua
   * CODE: upgrades.lua need to put the non-menu functions in tables
     - upgrades.lua is a mess; behavior could be moved into functions
   * CODE: Re-sort the units.lua menu so that the order makes sense.
-  * CODE: Clean up the gui2.lua code, which is now a mess and not entirely accurate in its names (e.g. "summoner" vs. "unit").
+  * CODE: Merge menu()'s sidebar and dialog_list into one variable in gui2.lua
   * CODE: Use a slider for setting the max level.
   * CODE: Replace the text box in Transform with the menu used in summon_units and select_leader?
   * CODE: Random gender when group spawning units that have more than one possible gender.
