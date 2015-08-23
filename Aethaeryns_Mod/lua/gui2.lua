@@ -2,54 +2,68 @@
 <<
 gui2 = {
    with_list = {},
-   on_select = {}}
+   on_select = {},
+   wml = {}}
 
-local function generate_dialog(not_empty, menu_type, has_sidebar, slider)
-   local menu_core = {}
-   if not_empty then
-      if menu_type == "list" then
-         menu_core = T.column { horizontal_grow = true, T.listbox { id = "menu_list",
-             T.list_definition { T.row { T.column { horizontal_grow = true,
+---- GUI2 WML ----
+
+gui2.wml.list = T.column {
+   horizontal_grow = true,
+   T.listbox { id = "menu_list",
+               T.list_definition { T.row { T.column { horizontal_grow = true,
                  T.toggle_panel {
                     return_value_id = "ok",
                     T.grid { T.row {
                                 T.column { horizontal_alignment = "left", T.image { id = "icon" }},
                                 T.column { horizontal_alignment = "left", T.label { id = "label" }}}}}}}}}}
-      elseif menu_type == "text_input" then
-         menu_core = T.column { T.grid {
-                                   T.row { T.column { T.label { id = "menu_text_box_label" }}},
-                                   T.row { T.column { T.text_box { id = "menu_text_box" }}}}}
-      elseif menu_type == "slider" then
-         menu_core = T.column { T.grid {
-                                   T.row { T.column { T.label { id = "menu_slider_label" }}},
-                                   T.row { T.column { T.slider {
-                                                         id = "menu_slider",
-                                                         minimum_value = slider.min,
-                                                         maximum_value = slider.max,
-                                                         step_size = slider.step}}}}}
-      end
-   else
-      menu_core = T.column { T.label { id = "menu_list_empty" }}
-   end
-   local buttons = {}
+
+gui2.wml.text_input = T.column {
+   T.grid {
+      T.row { T.column { T.label { id = "menu_text_box_label" }}},
+      T.row { T.column { T.text_box { id = "menu_text_box" }}}}}
+
+gui2.wml.empty = T.column { T.label { id = "menu_list_empty" }}
+
+function gui2.wml.buttons(not_empty)
    if not_empty then
-      buttons = T.row {
+      return T.row {
          T.column { T.button { id = "ok", label = _ "OK" }},
          T.column { T.button { id = "cancel", label = _ "Cancel" }}}
    else
-      buttons = T.row {
+      return T.row {
          T.column { T.button { id = "cancel", label = _ "Close" }}}
    end
-   left_column = {}
+end
+
+function gui2.wml.left_column(has_sidebar)
    if has_sidebar ~= nil then
-      left_column = T.column { T.grid {
-                                  T.row { T.column { T.image { id = "menu_image" }}},
-                                  T.row { T.column { horizontal_grow = true,
-                                                     T.label { id = "menu_sidebar_intro" }}},
-                                  T.row { T.column { horizontal_grow = true,
-                                                     T.label { id = "menu_sidebar_text"}}}}}
+      return T.column { T.grid {
+                           T.row { T.column { T.image { id = "menu_image" }}},
+                           T.row { T.column { horizontal_grow = true,
+                                              T.label { id = "menu_sidebar_intro" }}},
+                           T.row { T.column { horizontal_grow = true,
+                                              T.label { id = "menu_sidebar_text"}}}}}
    else
-      left_column = T.column { T.image { id = "menu_image" }}
+      return T.column { T.image { id = "menu_image" }}
+   end
+end
+
+function gui2.wml.dialog(not_empty, dialog_type, has_sidebar, slider)
+   if not not_empty then
+      dialog_type = "empty"
+   end
+   local dialog_core
+   if dialog_type ~= "slider" then
+      dialog_core = gui2.wml[dialog_type]
+   else
+      dialog_core = T.column {
+         T.grid {
+            T.row { T.column { T.label { id = "menu_slider_label" }}},
+            T.row { T.column { T.slider {
+                                  id = "menu_slider",
+                                  minimum_value = slider.min,
+                                  maximum_value = slider.max,
+                                  step_size = slider.step}}}}}
    end
    return {
       T.tooltip { id = "tooltip_large" },
@@ -57,16 +71,18 @@ local function generate_dialog(not_empty, menu_type, has_sidebar, slider)
       T.grid {
          T.row { T.column { T.label { id = "menu_title" }}},
          T.row { T.column { T.label { id = "menu_description" }}},
-         T.row { T.column { T.grid { T.row { left_column,
+         T.row { T.column { T.grid { T.row { gui2.wml.left_column(has_sidebar),
                                              T.column { T.grid {
-                                                           T.row { menu_core },
-                                                           T.row { T.column { T.grid { buttons }}}}}}}}}}}
+                                                           T.row { dialog_core },
+                                                           T.row { T.column { T.grid { gui2.wml.buttons(not_empty) }}}}}}}}}}}
 end
+
+---- GUI2 Lua Dialogs ----
 
 -- This is a closure around choice. Postshow modifies the choice, and
 -- then an OK button sends the choice in a WML table. It must be run
 -- through wesnoth.synchronize_choice.
-local function safe_dialog(dialog, preshow, not_empty, dialog_name)
+local function dialog_choice(dialog, preshow, not_empty, dialog_name)
    local choice
 
    local function postshow()
@@ -113,7 +129,7 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
    if list[1] == nil then
       not_empty = false
    end
-   local dialog = generate_dialog(not_empty, "list", sidebar)
+   local dialog = gui2.wml.dialog(not_empty, "list", sidebar)
 
    local function preshow()
       wesnoth.set_dialog_value(title, "menu_title")
@@ -135,12 +151,12 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
       end
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog(dialog, preshow, not_empty, "menu_list")).value
-   if safe_choice then
+   local choice = wesnoth.synchronize_choice(dialog_choice(dialog, preshow, not_empty, "menu_list")).value
+   if choice then
       if sublist_index ~= nil then
-         return list[safe_choice][sublist_index]
+         return list[choice][sublist_index]
       else
-         return list[safe_choice]
+         return list[choice]
       end
    else
       return false
@@ -149,7 +165,7 @@ end
 
 -- fixme: when updated for 1.13, make the text input box start focused
 function menu_text_input(image, title, description, label, default_text)
-   local dialog = generate_dialog(true, "text_input")
+   local dialog = gui2.wml.dialog(true, "text_input")
    if default_text == nil then
       default_text = ""
    end
@@ -162,11 +178,11 @@ function menu_text_input(image, title, description, label, default_text)
       wesnoth.set_dialog_value(image, "menu_image")
    end
 
-   return wesnoth.synchronize_choice(safe_dialog(dialog, preshow, true, "menu_text_box")).value
+   return wesnoth.synchronize_choice(dialog_choice(dialog, preshow, true, "menu_text_box")).value
 end
 
 function menu_slider(image, title, description, label, slider)
-   local dialog = generate_dialog(true, "slider", nil, slider)
+   local dialog = gui2.wml.dialog(true, "slider", nil, slider)
 
    local function preshow()
       wesnoth.set_dialog_value(title, "menu_title")
@@ -176,11 +192,11 @@ function menu_slider(image, title, description, label, slider)
       wesnoth.set_dialog_value(image, "menu_image")
    end
 
-   return wesnoth.synchronize_choice(safe_dialog(dialog, preshow, true, "menu_slider")).value
+   return wesnoth.synchronize_choice(dialog_choice(dialog, preshow, true, "menu_slider")).value
 end
 
 function gui2_error(text)
-   local dialog = generate_dialog(false, "error")
+   local dialog = gui2.wml.dialog(false)
 
    local function preshow()
       wesnoth.set_dialog_value(_ "Error!", "menu_title")
@@ -195,6 +211,8 @@ function gui2_error(text)
 
    return wesnoth.synchronize_choice(error_dialog).value
 end
+
+---- GUI2 List Builders ----
 
 function menu_unit_list(units)
    local team_color = wesnoth.sides[wesnoth.current.side].color
@@ -257,6 +275,8 @@ function menu_almost_simple_list(list)
       wesnoth.set_dialog_value(sublist[1], "menu_list", i, "label")
    end
 end
+
+---- GUI2 On Select Actions ----
 
 function gui2.on_select.unit(list)
    return function ()
