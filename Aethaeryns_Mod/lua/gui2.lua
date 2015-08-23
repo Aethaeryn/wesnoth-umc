@@ -66,12 +66,12 @@ end
 -- This is a closure around choice. Postshow modifies the choice, and
 -- then an OK button sends the choice in a WML table. It must be run
 -- through wesnoth.synchronize_choice.
-local function safe_dialog(dialog, preshow, not_empty)
+local function safe_dialog(dialog, preshow, not_empty, dialog_name)
    local choice
 
    local function postshow()
       if not_empty then
-         choice = wesnoth.get_dialog_value("menu_list")
+         choice = wesnoth.get_dialog_value(dialog_name)
       else
          choice = false
       end
@@ -80,7 +80,7 @@ local function safe_dialog(dialog, preshow, not_empty)
    -- OK and Cancel
    return function ()
       local button = wesnoth.show_dialog(dialog, preshow, postshow)
-      if button == -1 then
+      if button == -1 and choice ~= "" then
          return { value = choice }
       else
          return { value = false }
@@ -123,9 +123,7 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
          wesnoth.set_dialog_value(1, "menu_list")
          wesnoth.set_dialog_callback(select_actions, "menu_list")
          if sidebar ~= nil then
-            local function select()
-               gui2.on_select[sidebar](list, wesnoth.get_dialog_value("menu_list"))
-            end
+            local select = gui2.on_select[sidebar](list)
             wesnoth.set_dialog_callback(select, "menu_list")
             select()
          else
@@ -137,7 +135,7 @@ function menu(list, image, title, description, build_list, sublist_index, sideba
       end
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog(dialog, preshow, not_empty)).value
+   local safe_choice = wesnoth.synchronize_choice(safe_dialog(dialog, preshow, not_empty, "menu_list")).value
    if safe_choice then
       if sublist_index ~= nil then
          return list[safe_choice][sublist_index]
@@ -156,81 +154,46 @@ function menu_text_input(image, title, description, label, default_text)
       default_text = ""
    end
 
-   local function safe_dialog_()
-      local choice
-
-      local function preshow()
-         wesnoth.set_dialog_value(title, "menu_title")
-         wesnoth.set_dialog_value(description, "menu_description")
-         wesnoth.set_dialog_value(default_text, "menu_text_box")
-         wesnoth.set_dialog_value(label, "menu_text_box_label")
-         wesnoth.set_dialog_value(image, "menu_image")
-      end
-
-      local function postshow()
-         choice = wesnoth.get_dialog_value("menu_text_box")
-      end
-
-      -- OK and Cancel
-      local button = wesnoth.show_dialog(dialog, preshow, postshow)
-      if button == -1 and choice ~= "" then
-         return { value = choice }
-      else
-         return { value = false }
-      end
+   local function preshow()
+      wesnoth.set_dialog_value(title, "menu_title")
+      wesnoth.set_dialog_value(description, "menu_description")
+      wesnoth.set_dialog_value(default_text, "menu_text_box")
+      wesnoth.set_dialog_value(label, "menu_text_box_label")
+      wesnoth.set_dialog_value(image, "menu_image")
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog_).value
-   return safe_choice
+   return wesnoth.synchronize_choice(safe_dialog(dialog, preshow, true, "menu_text_box")).value
 end
 
 function menu_slider(image, title, description, label, slider)
    local dialog = generate_dialog(true, "slider", nil, slider)
 
-   local function safe_dialog_()
-      local choice
-
-      local function preshow()
-         wesnoth.set_dialog_value(title, "menu_title")
-         wesnoth.set_dialog_value(description, "menu_description")
-         wesnoth.set_dialog_value(slider.value, "menu_slider")
-         wesnoth.set_dialog_value(label, "menu_slider_label")
-         wesnoth.set_dialog_value(image, "menu_image")
-      end
-
-      local function postshow()
-         choice = wesnoth.get_dialog_value("menu_slider")
-      end
-
-      -- OK and Cancel
-      local button = wesnoth.show_dialog(dialog, preshow, postshow)
-      if button == -1 and choice ~= "" then
-         return { value = choice }
-      else
-         return { value = false }
-      end
+   local function preshow()
+      wesnoth.set_dialog_value(title, "menu_title")
+      wesnoth.set_dialog_value(description, "menu_description")
+      wesnoth.set_dialog_value(slider.value, "menu_slider")
+      wesnoth.set_dialog_value(label, "menu_slider_label")
+      wesnoth.set_dialog_value(image, "menu_image")
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog_).value
-   return safe_choice
+   return wesnoth.synchronize_choice(safe_dialog(dialog, preshow, true, "menu_slider")).value
 end
 
 function gui2_error(text)
-   local dialog = {}
-   dialog = generate_dialog(false, "error")
-   local function safe_dialog_()
-      local function preshow()
-         wesnoth.set_dialog_value(_ "Error!", "menu_title")
-         wesnoth.set_dialog_value(text, "menu_description")
-      end
+   local dialog = generate_dialog(false, "error")
 
+   local function preshow()
+      wesnoth.set_dialog_value(_ "Error!", "menu_title")
+      wesnoth.set_dialog_value(text, "menu_description")
+   end
+
+   local function error_dialog()
       -- Close
       wesnoth.show_dialog(dialog, preshow)
       return { value = false }
    end
 
-   local safe_choice = wesnoth.synchronize_choice(safe_dialog_).value
-   return safe_choice
+   return wesnoth.synchronize_choice(error_dialog).value
 end
 
 function menu_unit_list(units)
@@ -295,67 +258,79 @@ function menu_almost_simple_list(list)
    end
 end
 
-function gui2.on_select.unit(list, i)
-   local unit_data = wesnoth.unit_types[list[i]].__cfg
-   wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
-   wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s",
-                                          unit_data.image,
-                                          wesnoth.sides[wesnoth.current.side].color),
-                            "menu_image")
-   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-   wesnoth.set_dialog_value(string.format("<span size='small'>%s\n%s\nHP: %d\nMP: %d</span>",
-                                          unit_data.name,
-                                          unit_data.alignment,
-                                          unit_data.hitpoints,
-                                          unit_data.movement),
-                            "menu_sidebar_text")
-end
-
-function gui2.on_select.team_stats(list, i)
-   wesnoth.set_dialog_value("Information about the selected stat:  \n", "menu_sidebar_intro")
-   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-   wesnoth.set_dialog_value(string.format("%s : %s", list[i][1], list[i][2]), "menu_sidebar_text")
-end
-
-function gui2.on_select.item_stats(list, i)
-   wesnoth.set_dialog_value("Information about the selected item:  \n", "menu_sidebar_intro")
-   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-   wesnoth.set_dialog_value(list[i][2], "menu_image")
-   if list[i][5] == nil then
-      wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\n%s</small>",
-                                             list[i][1],
-                                             list[i][3],
-                                             list[i][4]),
-                               "menu_sidebar_text")
-   else
-      wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\nQuantity: %d\n%s</small>",
-                                             list[i][1],
-                                             list[i][3],
-                                             list[i][5],
-                                             list[i][4]),
+function gui2.on_select.unit(list)
+   return function ()
+      local i = wesnoth.get_dialog_value("menu_list")
+      local unit_data = wesnoth.unit_types[list[i]].__cfg
+      wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
+      wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s",
+                                             unit_data.image,
+                                             wesnoth.sides[wesnoth.current.side].color),
+                               "menu_image")
+      wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+      wesnoth.set_dialog_value(string.format("<span size='small'>%s\n%s\nHP: %d\nMP: %d</span>",
+                                             unit_data.name,
+                                             unit_data.alignment,
+                                             unit_data.hitpoints,
+                                             unit_data.movement),
                                "menu_sidebar_text")
    end
 end
 
-function gui2.on_select.upgrade_stats(upgrades, i)
-   wesnoth.set_dialog_value("Information about the selected upgrade:  \n", "menu_sidebar_intro")
-   wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-   wesnoth.set_dialog_value(upgrades[i].image, "menu_image")
-   if upgrades[i].cap then
-      wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d of %d\nPrice: %d\n%s</small>",
-                                             upgrades[i].name,
-                                             upgrades[i].count,
-                                             upgrades[i].cap,
-                                             upgrades[i].cost,
-                                             upgrades[i].msg),
-                               "menu_sidebar_text")
-   else
-      wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d\nPrice: %d\n%s</small>",
-                                             upgrades[i].name,
-                                             upgrades[i].count,
-                                             upgrades[i].cost,
-                                             upgrades[i].msg),
-                               "menu_sidebar_text")
+function gui2.on_select.team_stats(list)
+   return function ()
+      local i = wesnoth.get_dialog_value("menu_list")
+      wesnoth.set_dialog_value("Information about the selected stat:  \n", "menu_sidebar_intro")
+      wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+      wesnoth.set_dialog_value(string.format("%s : %s", list[i][1], list[i][2]), "menu_sidebar_text")
+   end
+end
+
+function gui2.on_select.item_stats(list)
+   return function ()
+      local i = wesnoth.get_dialog_value("menu_list")
+      wesnoth.set_dialog_value("Information about the selected item:  \n", "menu_sidebar_intro")
+      wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+      wesnoth.set_dialog_value(list[i][2], "menu_image")
+      if list[i][5] == nil then
+         wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\n%s</small>",
+                                                list[i][1],
+                                                list[i][3],
+                                                list[i][4]),
+                                  "menu_sidebar_text")
+      else
+         wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\nQuantity: %d\n%s</small>",
+                                                list[i][1],
+                                                list[i][3],
+                                                list[i][5],
+                                                list[i][4]),
+                                  "menu_sidebar_text")
+      end
+   end
+end
+
+function gui2.on_select.upgrade_stats(upgrades)
+   return function ()
+      local i = wesnoth.get_dialog_value("menu_list")
+      wesnoth.set_dialog_value("Information about the selected upgrade:  \n", "menu_sidebar_intro")
+      wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+      wesnoth.set_dialog_value(upgrades[i].image, "menu_image")
+      if upgrades[i].cap then
+         wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d of %d\nPrice: %d\n%s</small>",
+                                                upgrades[i].name,
+                                                upgrades[i].count,
+                                                upgrades[i].cap,
+                                                upgrades[i].cost,
+                                                upgrades[i].msg),
+                                  "menu_sidebar_text")
+      else
+         wesnoth.set_dialog_value(string.format("%s\n<small>\nProgress: %d\nPrice: %d\n%s</small>",
+                                                upgrades[i].name,
+                                                upgrades[i].count,
+                                                upgrades[i].cost,
+                                                upgrades[i].msg),
+                                  "menu_sidebar_text")
+      end
    end
 end
 >>
