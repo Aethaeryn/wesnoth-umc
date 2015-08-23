@@ -10,9 +10,11 @@ local function generate_dialog(not_empty, menu_type, has_sidebar, slider)
       if menu_type == "list" then
          menu_core = T.column { horizontal_grow = true, T.listbox { id = "menu_list",
              T.list_definition { T.row { T.column { horizontal_grow = true,
-                 T.toggle_panel { T.grid { T.row {
-                                              T.column { horizontal_alignment = "left", T.image { id = "icon" }},
-                                              T.column { horizontal_alignment = "left", T.label { id = "label" }}}}}}}}}}
+                 T.toggle_panel {
+                    return_value_id = "ok",
+                    T.grid { T.row {
+                                T.column { horizontal_alignment = "left", T.image { id = "icon" }},
+                                T.column { horizontal_alignment = "left", T.label { id = "label" }}}}}}}}}}
       elseif menu_type == "text_input" then
          menu_core = T.column { T.grid {
                                    T.row { T.column { T.label { id = "menu_text_box_label" }}},
