@@ -491,7 +491,7 @@ function mod_menu.terrain_editor()
                terrain.remove_overlay()
             else
                local description = _ "Which terrain overlay would you like to place?"
-               local terrain_choice = menu(terrain.overlays[overlay_name], mod_menu.lich_image, title, description, "terrain")
+               local terrain_choice = menu(terrain.overlays[overlay_name], mod_menu.lich_image, title, description, "terrain", nil, "terrain")
                if terrain_choice then
                   terrain.set_overlay(terrain_choice)
                end
@@ -499,7 +499,7 @@ function mod_menu.terrain_editor()
          end
       else
          local description = _ "Which terrain would you like to place?"
-         local terrain_choice = menu(terrain.terrain[name], mod_menu.lich_image, title, description, "terrain")
+         local terrain_choice = menu(terrain.terrain[name], mod_menu.lich_image, title, description, "terrain", nil, "terrain")
          if terrain_choice then
             terrain.set_terrain(terrain_choice)
          end

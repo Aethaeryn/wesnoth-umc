@@ -358,5 +358,19 @@ function gui2.on_select.upgrade(upgrades)
       end
    end
 end
+
+function gui2.on_select.terrain(terrain_code)
+   return function ()
+      local i = wesnoth.get_dialog_value("menu_list")
+      local terrain_info = wesnoth.get_terrain_info(terrain_code[i])
+      wesnoth.set_dialog_value("Terrain information:  \n", "menu_sidebar_intro")
+      wesnoth.set_dialog_markup(true, "menu_sidebar_text")
+      -- wesnoth.set_dialog_value(terrain_info.editor_image, "menu_image")
+      wesnoth.set_dialog_value(string.format("%s\n<small>%s</small>",
+                                             tostring(terrain_info.editor_name),
+                                             tostring(terrain_info.name)),
+                               "menu_sidebar_text")
+   end
+end
 >>
 #enddef
