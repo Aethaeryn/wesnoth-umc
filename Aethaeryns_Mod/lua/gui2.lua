@@ -136,7 +136,6 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
       if not_empty then
          gui2.make_list[dialog_list](list)
          wesnoth.set_dialog_value(1, "menu_list")
-         wesnoth.set_dialog_callback(select_actions, "menu_list")
          if sidebar ~= nil then
             local select = gui2.on_select[sidebar](list)
             wesnoth.set_dialog_callback(select, "menu_list")
@@ -286,7 +285,7 @@ function gui2.on_select.unit(list)
       local i = wesnoth.get_dialog_value("menu_list")
       local unit_data = wesnoth.unit_types[list[i]].__cfg
       wesnoth.set_dialog_value("Information about the selected unit:  \n", "menu_sidebar_intro")
-      wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s",
+      wesnoth.set_dialog_value(string.format("%s~RC(magenta>%s)",
                                              unit_data.image,
                                              wesnoth.sides[wesnoth.current.side].color),
                                "menu_image")
