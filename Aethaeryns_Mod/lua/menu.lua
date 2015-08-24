@@ -443,7 +443,7 @@ function mod_menu.unit_editor()
             change_unit.side(e.x1, e.y1, side)
          end
       elseif choice == "Stats" then
-         local stats = {"Hitpoints", "Max Hitpoints", "Max Moves",
+         local stats = {"Hitpoints", "Max Hitpoints", "Moves", "Max Moves",
                         "Experience", "Max Experience", "Gender",
                         "Leader"}
          local description = _ "Which stat do you want to change?"
