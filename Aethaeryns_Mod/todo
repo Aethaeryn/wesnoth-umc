@@ -131,6 +131,7 @@ When this list is complete/empty, bump to version 0.9
   * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
     - In fact, it locks the unit into the old portrait even if it promotes.
   * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
+    - unit.variables.dont_make_me_quick = yes
   * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
   * BUG: Objectives don't show up right in the set menu.
   * BUG: Filter out the summoners before the dialog part so there aren't e.g. empty Level 4s for Summon <Foo>
