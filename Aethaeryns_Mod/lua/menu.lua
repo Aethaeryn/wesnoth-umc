@@ -113,6 +113,8 @@ function mod_menu.select_leader()
       -- You only exit the menu at the top level, or if you choose a
       -- unit successfully.
       local done = false
+      -- Lets the player come back to this menu.
+      leader.variables.selection_active = true
       while not done do
          local leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, description, "simple")
          if leader_category then
@@ -125,6 +127,8 @@ function mod_menu.select_leader()
                   if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
                      change_unit.transform(leader.x, leader.y, choice)
                      mod_upgrade.increment(leader)
+                     leader.variables.dont_make_me_quick = true
+                     leader.variables.selection_active = false
                      done = true
                   else
                      local description = _ "Select a gender."
@@ -132,13 +136,14 @@ function mod_menu.select_leader()
                      if gender then
                         change_unit.transform(leader.x, leader.y, choice, gender)
                         mod_upgrade.increment(leader)
+                        leader.variables.dont_make_me_quick = true
+                        leader.variables.selection_active = false
                         done = true
                      end
                   end
                end
             end
          else
-            leader.variables.selection_active = true
             done = true
          end
       end

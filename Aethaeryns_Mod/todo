@@ -1,11 +1,18 @@
 AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
+  - allow the host on turn 1 to quick-spawn NPCs and hostile units in
+    some areas or all of a map, varying depending on the map
+
+  - allow pets (e.g. bat, falcon, wolf, etc.)
+
   - log all the numerial change_unit actions in unit variables and
     reapply them when certain actions that would wipe them happen,
     like promotions and the application of [object]s
 
   - rewrite the mess of multi-turn [objects] and Ale
+
+  - use boats for fast travel between piers in Woods
 
  (1) Inventory Containers (1%)
   - Container changes on host or unit actions:
@@ -129,22 +136,18 @@ When this list is complete/empty, bump to version 0.9
   * BUG: Fix icon size for Summon <foo> and Summon Summoner.
   * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
     - In fact, it locks the unit into the old portrait even if it promotes.
-  * BUG: Transforming a leader unit will automatically give it quick on the next map if becomes a dwarf, wose, etc. (4 MP?)
-    - unit.variables.dont_make_me_quick = yes
   * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
   * BUG: Objectives don't show up right in the set menu.
   * BUG: Filter out the summoners before the dialog part so there aren't e.g. empty Level 4s for Summon <Foo>
-  * BUG? What happens if someone disconnects during the character selection dialog?
   * BUG: Slider doesn't go all the way over, it just ends about half way through.
 
   * FEATURE: Add hotkeys to the set_menu_item menu items.
   * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
   * FEATURE: AMLAing probably shouldn't increase max experience.
   * FEATURE: Change objectives by subsections (victory, loss, etc.) in a new interface so that formatting can be preserved.
-  * FEATURE: Change the XP level from 100% or just modify AMLA XP to be lower?
-  * FEATURE: If possible add a back button in addition to close for the complicated menus.
   * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
   * FEATURE: Zombie variations need to be possible instead of just the boring plain zombie.
+  * FEATURE: If possible, units should keep their name when zombified.
 
   * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
     * Maybe override [advancement] i.e. AMLA_DEFAULT?
@@ -216,7 +219,6 @@ When this list is complete/empty, bump to version 0.9
       * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
       * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
     * Reduce max HP on summoner by 1 per level of active summoned unit?
-    * Do something with boats?
     * Resurrection.
       * When units die they are saved in a resurrection table.
       * The host can resurrect a unit. (rematches of old bosses?)
