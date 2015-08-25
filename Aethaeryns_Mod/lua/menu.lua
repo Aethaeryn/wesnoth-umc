@@ -138,6 +138,7 @@ function mod_menu.select_leader()
                end
             end
          else
+            leader.variables.selection_active = true
             done = true
          end
       end
@@ -340,6 +341,7 @@ end
 
 function mod_menu.unit_commands()
    local e = wesnoth.current.event_context
+   local unit = wesnoth.get_unit(e.x1, e.y1)
    local title = _ "Unit Commands"
    local description = _ "What do you want to do with this unit?"
    local image = mod_menu.lich_image -- todo: definitely not appropriate here
@@ -347,10 +349,16 @@ function mod_menu.unit_commands()
       {"Use Item", "icons/potion_red_small.png"},
       {"Upgrades", "attacks/woodensword.png"},
       {"Speak", "icons/letter_and_ale.png"}}
+   if unit.variables.selection_active == true then
+      table.insert(options, 1, {"Select Unit", "attacks/thorns.png"})
+   end
    local option = menu(options, image, title, description, "with_picture", 1)
+   if option == "Select Unit" then
+      unit.variables.selection_active = false
+      mod_menu.select_leader()
+   end
    if option == "Use Item" then
       local description = _ "Which item do you want to use?"
-      local unit = wesnoth.get_unit(e.x1, e.y1)
       local inventory = mod_inventory.show_current(unit.variables)
       local item = menu(inventory, "", title, description, "with_picture", 1, "item")
       if item then
@@ -363,7 +371,6 @@ function mod_menu.unit_commands()
          end
       end
    elseif option == "Upgrades" then
-      local unit = wesnoth.get_unit(e.x1, e.y1)
       local points = unit.variables["advancement"]
       local point_word = "points"
       local upgrades = {}
@@ -391,7 +398,6 @@ function mod_menu.unit_commands()
          upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
       end
    elseif option == "Speak" then
-      local unit = wesnoth.get_unit(e.x1, e.y1)
       local description = _ "What do you want to say?"
       local label = _ "Message:"
       -- fixme (1.13): afaik, there's no way to force a focus on
