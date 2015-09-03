@@ -13,6 +13,13 @@ mod_menu.scenarios = {
    {"Open Dungeon", "open_dungeon"},
    {"Woods", "woods"}}
 
+mod_menu.place_object_options = {
+   {"Place Shop", "scenery/tent-shop-weapons.png"},
+   {"Place Chest", "items/chest-plain-closed.png"},
+   {"Place Pack", "items/leather-pack.png"},
+   {"Place Gold Pile", "items/gold-coins-large.png"},
+   {"Clear Hex", "terrain/grass/green-symbol.png"}}
+
 local function get_roles()
    local roles = {}
    for i, v in ipairs(SUMMON_ROLES) do
@@ -350,14 +357,14 @@ function mod_menu.unit_commands()
    local title = _ "Unit Commands"
    local description = _ "What do you want to do with this unit?"
    local image = mod_menu.lich_image -- todo: definitely not appropriate here
-   local options = {
+   local unit_command_options = {
       {"Use Item", "icons/potion_red_small.png"},
       {"Upgrades", "attacks/woodensword.png"},
       {"Speak", "icons/letter_and_ale.png"}}
    if unit.variables.selection_active == true then
-      table.insert(options, 1, {"Select Unit", "attacks/thorns.png"})
+      table.insert(unit_command_options, 1, {"Select Unit", "attacks/thorns.png"})
    end
-   local option = menu(options, image, title, description, "with_picture", 1)
+   local option = menu(unit_command_options, image, title, description, "with_picture", 1)
    if option == "Select Unit" then
       unit.variables.selection_active = false
       mod_menu.select_leader()
@@ -522,13 +529,7 @@ function mod_menu.place_object()
    local e = wesnoth.current.event_context
    local title = _ "Place Object"
    local description = _ "What do you want to do with this unit?"
-   local options = {
-      {"Place Shop", "scenery/tent-shop-weapons.png"},
-      {"Place Chest", "items/chest-plain-closed.png"},
-      {"Place Pack", "items/leather-pack.png"},
-      {"Place Gold Pile", "items/gold-coins-large.png"},
-      {"Clear Hex", "terrain/grass/green-symbol.png"}}
-   local option = menu(options, mod_menu.lich_image, title, description, "with_picture", 1)
+   local option = menu(mod_menu.place_object_options, mod_menu.lich_image, title, description, "with_picture", 1)
    if option then
       if option == "Place Shop" then
          game_object.simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
