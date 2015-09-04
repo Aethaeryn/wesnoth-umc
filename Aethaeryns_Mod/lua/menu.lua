@@ -85,6 +85,29 @@ local function find_interactions_to_modify(x, y)
    return interactions
 end
 
+local function unit_interaction(x, y, current_side)
+   local hexes = wesnoth.get_locations { x = x, y = y, radius = 1 }
+   local unit_list = {}
+   local blocked = false
+   for i, hex in ipairs(hexes) do
+      local unit = wesnoth.get_unit(hex[1], hex[2])
+      -- A unit must be in the radius on the current side...
+      if unit ~= nil and unit.side == current_side then
+         -- ...but a unit can't interact with itself so there must be
+         -- something else on the hex other than a unit to interact
+         -- with if a unit is on the hex.
+         if (hex[1] ~= x or hex[2] ~= y) or (containers[x] ~= nil and containers[x][y] ~= nil) then
+            table.insert(unit_list, unit)
+         end
+      -- A hostile unit blocks all non-unit interactions on that hex.
+      elseif unit ~= nil and unit.side ~= current_side
+      and wesnoth.sides[unit.side].team_name ~= wesnoth.sides[current_side].team_name then
+         blocked = true
+      end
+   end
+   return unit_list, blocked
+end
+
 function mod_menu.toggle(menu_item)
    if mod_menu_items[menu_item].status then
       mod_menu_items[menu_item].status = false
@@ -231,27 +254,8 @@ function mod_menu.interact()
    local e = wesnoth.current.event_context
    local title = _ "Interactions"
    local image = mod_menu.lich_image -- todo: definitely not appropriate here
-   local interaction_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = 1 }
-   local unit_list = {}
-   local current_side = wesnoth.current.side
-   local blocked = false
    local on_hex = false
-   for i, hex in ipairs(interaction_hexes) do
-      local unit = wesnoth.get_unit(hex[1], hex[2])
-      -- A unit must be in the radius on the current side...
-      if unit ~= nil and unit.side == current_side then
-         -- ...but a unit can't interact with itself so there must be
-         -- something else on the hex other than a unit to interact
-         -- with if a unit is on the hex.
-         if (hex[1] ~= e.x1 or hex[2] ~= e.y1) or (containers[e.x1] ~= nil and containers[e.x1][e.y1] ~= nil) then
-            table.insert(unit_list, unit)
-         end
-      -- A hostile unit blocks all non-unit interactions on that hex.
-      elseif unit ~= nil and unit.side ~= current_side
-      and wesnoth.sides[unit.side].team_name ~= wesnoth.sides[current_side].team_name then
-         blocked = true
-      end
-   end
+   local unit_list, blocked = unit_interaction(e.x1, e.y1, wesnoth.current.side)
    local unit = unit_list[1]
    if unit_list[2] ~= nil then
       local description = _ "Which unit is doing the interaction?"
