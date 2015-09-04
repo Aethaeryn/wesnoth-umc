@@ -140,6 +140,7 @@ When this list is complete/empty, bump to version 0.9
   * BUG: Objectives don't show up right in the set menu.
   * BUG: Filter out the summoners before the dialog part so there aren't e.g. empty Level 4s for Summon <Foo>
   * BUG: Slider doesn't go all the way over, it just ends about half way through.
+  * BUG: If a leader changes player control or is replaced with a new leader unit mid-scenario, it isn't remembered on the next scenario.
 
   * FEATURE: Add hotkeys to the set_menu_item menu items.
   * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
