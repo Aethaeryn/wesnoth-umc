@@ -254,7 +254,6 @@ function mod_menu.interact()
    local e = wesnoth.current.event_context
    local title = _ "Interactions"
    local image = mod_menu.lich_image -- todo: definitely not appropriate here
-   local on_hex = false
    local unit_list, blocked = unit_interaction(e.x1, e.y1, wesnoth.current.side)
    local unit = unit_list[1]
    if unit_list[2] ~= nil then
@@ -266,9 +265,7 @@ function mod_menu.interact()
          return
       end
    end
-   if unit.x == e.x1 and unit.y == e.y1 then
-      on_hex = true
-   end
+   local on_hex = unit.x == e.x1 and unit.y == e.y1
    local description = _ "How do you want to interact?"
    local option = menu(find_interactions(e.x1, e.y1, blocked, on_hex), image, title, description, "with_picture", 1)
    if option then
