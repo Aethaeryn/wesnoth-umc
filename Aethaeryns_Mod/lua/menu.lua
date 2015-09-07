@@ -108,14 +108,15 @@ local function unit_interaction(x, y, current_side)
    return unit_list, blocked
 end
 
-function mod_menu.toggle(menu_item)
-   if mod_menu_items[menu_item].status then
-      mod_menu_items[menu_item].status = false
-      fire.clear_menu_item(mod_menu_items[menu_item].id)
-   else
-      mod_menu_items[menu_item].status = true
-      fire.set_menu_item(mod_menu_items[menu_item])
+local function get_unit_commands(leader_selection)
+   local temp_table = {
+      {"Use Item", "icons/potion_red_small.png"},
+      {"Upgrades", "attacks/woodensword.png"},
+      {"Speak", "icons/letter_and_ale.png"}}
+   if leader_selection then
+      table.insert(tmp_table, 1, {"Select Unit", "attacks/thorns.png"})
    end
+   return temp_table
 end
 
 local function get_levels(category, max_level)
@@ -127,6 +128,16 @@ local function get_levels(category, max_level)
    end
    table.sort(levels)
    return levels
+end
+
+function mod_menu.toggle(menu_item)
+   if mod_menu_items[menu_item].status then
+      mod_menu_items[menu_item].status = false
+      fire.clear_menu_item(mod_menu_items[menu_item].id)
+   else
+      mod_menu_items[menu_item].status = true
+      fire.set_menu_item(mod_menu_items[menu_item])
+   end
 end
 
 -- Transforms the peasant leader unit on the start of game into a unit
@@ -358,19 +369,11 @@ function mod_menu.unit_commands()
    local title = _ "Unit Commands"
    local description = _ "What do you want to do with this unit?"
    local image = mod_menu.lich_image -- todo: definitely not appropriate here
-   local unit_command_options = {
-      {"Use Item", "icons/potion_red_small.png"},
-      {"Upgrades", "attacks/woodensword.png"},
-      {"Speak", "icons/letter_and_ale.png"}}
-   if unit.variables.selection_active == true then
-      table.insert(unit_command_options, 1, {"Select Unit", "attacks/thorns.png"})
-   end
-   local option = menu(unit_command_options, image, title, description, "with_picture", 1)
+   local option = menu(get_unit_commands(unit.variables.selection_active), image, title, description, "with_picture", 1)
    if option == "Select Unit" then
       unit.variables.selection_active = false
       mod_menu.select_leader()
-   end
-   if option == "Use Item" then
+   elseif option == "Use Item" then
       local description = _ "Which item do you want to use?"
       local inventory = mod_inventory.show_current(unit.variables)
       local item = menu(inventory, "", title, description, "with_picture", 1, "item")
