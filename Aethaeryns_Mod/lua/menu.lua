@@ -405,11 +405,8 @@ function mod_menu.unit_commands()
          end
       end
    elseif option == "Upgrades" then
-      local points = unit.variables["advancement"]
+      local points = unit.variables["advancement"] or 0
       local point_word = "points"
-      if points == nil then
-         points = 0
-      end
       if points == 1 then
          point_word = "point"
       end
