@@ -150,6 +150,8 @@ When this list is complete/empty, bump to version 0.9
   * FEATURE: Zombie variations need to be possible instead of just the boring plain zombie.
   * FEATURE: If possible, units should keep their name when zombified.
 
+  * MAJOR CODE ISSUE: Make menus use callbacks so code can be shared, e.g. for all the identical menu calls for inventory?
+
   * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
     * Maybe override [advancement] i.e. AMLA_DEFAULT?
   * CODE: Find a replacement for get_roles() and get_sides_with_all()
