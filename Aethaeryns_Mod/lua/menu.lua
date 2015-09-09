@@ -284,7 +284,7 @@ function mod_menu.interact()
    local title = _ "Interactions"
    local image = mod_menu.lich_image -- todo: definitely not appropriate here
    local unit_list, blocked = unit_interaction(e.x1, e.y1, wesnoth.current.side)
-   local unit = unit_list[1]
+   local unit
    if unit_list[2] ~= nil then
       local description = _ "Which unit is doing the interaction?"
       local selected_unit = menu(unit_list, image, title, description, "unit_name_and_location")
@@ -293,6 +293,8 @@ function mod_menu.interact()
       else
          return
       end
+   else
+      unit = unit_list[1]
    end
    local on_hex = unit.x == e.x1 and unit.y == e.y1
    local description = _ "How do you want to interact?"
@@ -635,8 +637,7 @@ function mod_menu.settings()
          end
       elseif option == "Max Starting Level" then
          local description = "What level should be the maximum for leader selection?"
-         local levels = {1, 2, 3, 4, 5}
-         local level = menu(levels, mod_menu.lich_image, title, description, "simple")
+         local level = menu({1, 2, 3, 4, 5}, mod_menu.lich_image, title, description, "simple")
          if level then
             change_unit.max_level = level
          end
