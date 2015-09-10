@@ -327,12 +327,13 @@ function mod_menu.interact()
             local price = mod_inventory.get_item_price(item)
             local max = math.floor(wesnoth.sides[wesnoth.current.side]["gold"] / price)
             if max < 1 then
-               max = 1
-            end
-            local description = _ "How much do you want to buy?"
-            local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
-            if quantity then
-               mod_inventory.shop_buy(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
+               gui2_error(_ "You can't afford that.")
+            else
+               local description = _ "How much do you want to buy?"
+               local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
+               if quantity then
+                  mod_inventory.shop_buy(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
+               end
             end
          end
       elseif option == "Sell to Shop" then
