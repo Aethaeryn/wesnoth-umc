@@ -41,7 +41,7 @@ local function submenu_inventory_quantity(item, container)
    local title = "Change Inventory"
    local description = string.format("How much of %s do you want to give?", item)
    local label = "Item Quantity:"
-   local count = menu_slider("", title, description, label, {max = 20, min = 1, step = 1, value = 1})
+   local count = menu_slider(title, description, label, {max = 20, min = 1, step = 1, value = 1})
    if count and count > 0 then
       mod_inventory.add(item, count, container)
    end
@@ -312,7 +312,7 @@ function mod_menu.interact()
                if item then
                   local description = _ "How many items do you want to gift?"
                   local max = unit.variables[item]
-                  local quantity = menu_slider("", title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
+                  local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
                   if quantity then
                      mod_inventory.transfer_item(unit, e.x1, e.y1, item, quantity)
                   end
@@ -330,7 +330,7 @@ function mod_menu.interact()
                max = 1
             end
             local description = _ "How much do you want to buy?"
-            local quantity = menu_slider("", title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
+            local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
             if quantity then
                mod_inventory.shop_buy(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
             end
@@ -343,7 +343,7 @@ function mod_menu.interact()
             local description = _ "How much do you want to sell?"
             local price = mod_inventory.get_item_price(item)
             local max = unit.variables[item]
-            local quantity = menu_slider("", title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
+            local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
             if quantity then
                mod_inventory.shop_sell(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
             end
@@ -351,7 +351,7 @@ function mod_menu.interact()
       elseif option == "Collect Gold" then
          local description = _ "How much gold do you want to take?"
          local max = containers[e.x1][e.y1]["gold"]
-         local amount = menu_slider("", title, description, _ "Gold", {max = max, min = 10, step = 10, value = max})
+         local amount = menu_slider(title, description, _ "Gold", {max = max, min = 10, step = 10, value = max})
          if amount then
             mod_inventory.collect_gold(e.x1, e.y1, amount, wesnoth.current.side)
          end
@@ -362,7 +362,7 @@ function mod_menu.interact()
          if item then
             local description = _ "How much do you want to remove?"
             local max = containers[e.x1][e.y1]["chest"][item]
-            local quantity = menu_slider("", title, description, _ "Quantity", {max = max, min = 1, step = 1, value = max})
+            local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = max})
             if quantity then
                mod_inventory.chest_remove(unit, e.x1, e.y1, item, quantity)
             end
@@ -374,7 +374,7 @@ function mod_menu.interact()
          if item then
             local description = _ "How much do you want to add?"
             local max = unit.variables[item]
-            local quantity = menu_slider("", title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
+            local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
             if quantity then
                mod_inventory.chest_add(unit, e.x1, e.y1, item, quantity)
             end
@@ -399,7 +399,7 @@ function mod_menu.unit_commands()
       local item = menu(inventory, "", title, description, "with_picture", 1, "item")
       if item then
          local description = _ "How much do you want to use?"
-         local quantity = menu_slider("", title, description, _ "Quantity", {max = unit.variables[item], min = 1, step = 1, value = 1})
+         local quantity = menu_slider(title, description, _ "Quantity", {max = unit.variables[item], min = 1, step = 1, value = 1})
          if quantity then
             for i=1,quantity do
                mod_inventory.use(e.x1, e.y1, item)
@@ -548,7 +548,7 @@ function mod_menu.place_object()
       elseif option == "Place Gold Pile" then
          local description = _ "How much gold do you want to place in the pile?"
          local label = "Gold:"
-         local gold = menu_slider("", title, description, label, {max = 500, min = 10, step = 10, value = 100})
+         local gold = menu_slider(title, description, label, {max = 500, min = 10, step = 10, value = 100})
          if gold and type(gold) == "number" and gold > 0 then
             game_object.gold_place(e.x1, e.y1, gold)
          end

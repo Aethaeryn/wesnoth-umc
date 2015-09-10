@@ -184,13 +184,13 @@ function menu_text_input(image, title, description, label, default_text)
                                                    "menu_text_box")).value
 end
 
-function menu_slider(image, title, description, label, slider)
+function menu_slider(title, description, label, slider)
    local function preshow()
       wesnoth.set_dialog_value(title, "menu_title")
       wesnoth.set_dialog_value(description, "menu_description")
       wesnoth.set_dialog_value(slider.value, "menu_slider")
       wesnoth.set_dialog_value(label, "menu_slider_label")
-      wesnoth.set_dialog_value(image, "menu_image")
+      wesnoth.set_dialog_value("", "menu_image")
    end
 
    return wesnoth.synchronize_choice(dialog_choice(gui2.wml.dialog(true, "slider", nil, slider),
