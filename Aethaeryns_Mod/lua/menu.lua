@@ -1,5 +1,6 @@
 #define MOD_MENU
 <<
+-- Menu Options --
 mod_menu = {}
 mod_menu.lich_image = "portraits/undead/transparent/ancient-lich.png"
 mod_menu.gender = {{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}
@@ -19,6 +20,8 @@ mod_menu.place_object_options = {
    {"Place Pack", "items/leather-pack.png"},
    {"Place Gold Pile", "items/gold-coins-large.png"},
    {"Clear Hex", "terrain/grass/green-symbol.png"}}
+
+-- (Most) Local Functions --
 
 local function get_roles()
    local roles = {}
@@ -148,6 +151,8 @@ local function get_upgrade_options(unit)
    return upgrades
 end
 
+-- Special --
+
 function mod_menu.toggle(menu_item)
    if mod_menu_items[menu_item].status then
       mod_menu_items[menu_item].status = false
@@ -157,6 +162,8 @@ function mod_menu.toggle(menu_item)
       fire.set_menu_item(mod_menu_items[menu_item])
    end
 end
+
+-- Menus --
 
 -- Transforms the peasant leader unit on the start of game into a unit
 -- that the character selects. The unit then gets a free upgrade
@@ -279,22 +286,28 @@ function mod_menu.summon_summoner()
    end
 end
 
+local function submenu_interact_unit_selection(unit_list, image, title, description)
+   if unit_list[2] ~= nil then
+      local description = _ "Which unit is doing the interaction?"
+      local selected_unit = menu(unit_list, image, title, description, "unit_name_and_location")
+      if selected_unit then
+         return selected_unit
+      else
+         return false
+      end
+   else
+      return unit_list[1]
+   end
+end
+
 function mod_menu.interact()
    local e = wesnoth.current.event_context
    local title = _ "Interactions"
    local image = mod_menu.lich_image -- todo: definitely not appropriate here
    local unit_list, blocked = unit_interaction(e.x1, e.y1, wesnoth.current.side)
-   local unit
-   if unit_list[2] ~= nil then
-      local description = _ "Which unit is doing the interaction?"
-      local selected_unit = menu(unit_list, image, title, description, "unit_name_and_location")
-      if selected_unit then
-         unit = selected_unit
-      else
-         return
-      end
-   else
-      unit = unit_list[1]
+   local unit = submenu_interact_unit_selection(unit_list, image, title, description)
+   if not unit then
+      return
    end
    local on_hex = unit.x == e.x1 and unit.y == e.y1
    local description = _ "How do you want to interact?"
@@ -661,6 +674,8 @@ function mod_menu.settings()
       end
    end
 end
+
+-- Setup --
 
 local function menu_item_summon(unit_role)
    local menu_item = {
