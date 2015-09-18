@@ -196,13 +196,8 @@ function gui2_error(text)
       wesnoth.set_dialog_value(text, "menu_description")
    end
 
-   local function error_dialog()
-      -- Close
-      wesnoth.show_dialog(gui2.wml.dialog(false), preshow)
-      return { value = false }
-   end
-
-   return wesnoth.synchronize_choice(error_dialog).value
+   wesnoth.show_dialog(gui2.wml.dialog(false), preshow)
+   return false
 end
 
 ---- GUI2 List Builders ----
