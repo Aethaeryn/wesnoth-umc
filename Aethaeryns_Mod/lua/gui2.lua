@@ -161,6 +161,13 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
    end
 end
 
+function menu2(list, image, title, description, dialog_list, sublist_index, sidebar, f)
+   local choice = menu(list, image, title, description, dialog_list, sublist_index, sidebar)
+   if choice then
+      f(choice)
+   end
+end
+
 -- fixme: when updated for 1.13, make the text input box start focused
 function menu_text_input(image, title, description, label, default_text)
    if default_text == nil then

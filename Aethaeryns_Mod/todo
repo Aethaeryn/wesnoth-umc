@@ -172,7 +172,6 @@ When this list is complete/empty, bump to version 0.9
     * But still display a confirmation because players will expect some window first.
   * CODE: Make the shop slider also show cost so people know how much they're spending.
   * CODE: Make item use's max quantity context-aware, e.g. don't suggest more healing potions than would be useful to use at the moment.
-  * CODE: Make items use a table like upgrades do instead of just hardcoding the index position for each stat.
 
 ***
 
