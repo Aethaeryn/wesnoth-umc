@@ -156,7 +156,11 @@ function mod_inventory.show_current(item_holder)
    for i, item in ipairs(item_table) do
       quantity = item_holder[item.name]
       if quantity ~= nil and quantity > 0 then
-         table.insert(options, {item.name, item.image, item.price, item.msg, quantity})
+         table.insert(options, {name = item.name,
+                                image = item.image,
+                                price = item.price,
+                                msg = item.msg,
+                                quantity = quantity})
       end
    end
    return options
@@ -165,7 +169,10 @@ end
 function mod_inventory.show_all()
    local options = {}
    for i, item in ipairs(item_table) do
-      table.insert(options, {item.name, item.image, item.price, item.msg})
+      table.insert(options, {name = item.name,
+                             image = item.image,
+                             price = item.price,
+                             msg = item.msg})
    end
    return options
 end

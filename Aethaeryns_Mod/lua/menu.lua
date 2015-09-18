@@ -321,8 +321,9 @@ function mod_menu.interact()
             if interaction == "Items" then
                local description = _ "Which item do you want to give to this unit?"
                local inventory = mod_inventory.show_current(unit.variables)
-               local item = menu(inventory, "", title, description, "with_picture", 1, "item")
+               local item = menu(inventory, "", title, description, "item", nil, "item")
                if item then
+                  local item = item.name
                   local description = _ "How many items do you want to gift?"
                   local max = unit.variables[item]
                   local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
@@ -335,8 +336,9 @@ function mod_menu.interact()
       elseif option == "Buy from Shop" then
          local description = _ "What item do you want to purchase from the shop?"
          local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["shop"])
-         local item = menu(inventory, "", title, description, "with_picture", 1, "item")
+         local item = menu(inventory, "", title, description, "item", nil, "item")
          if item then
+            local item = item.name
             local price = mod_inventory.get_item_price(item)
             local max = math.floor(wesnoth.sides[wesnoth.current.side]["gold"] / price)
             if max < 1 then
@@ -352,8 +354,9 @@ function mod_menu.interact()
       elseif option == "Sell to Shop" then
          local description = _ "What item do you want to sell to the shop?"
          local inventory = mod_inventory.show_current(unit.variables)
-         local item = menu(inventory, "", title, description, "with_picture", 1, "item")
+         local item = menu(inventory, "", title, description, "item", nil, "item")
          if item then
+            local item = item.name
             local description = _ "How much do you want to sell?"
             local price = mod_inventory.get_item_price(item)
             local max = unit.variables[item]
@@ -372,8 +375,9 @@ function mod_menu.interact()
       elseif option == "Remove from Chest" then
          local description = _ "What item do you want to remove from the chest?"
          local inventory = mod_inventory.show_current(containers[e.x1][e.y1]["chest"])
-         local item = menu(inventory, "", title, description, "with_picture", 1, "item")
+         local item = menu(inventory, "", title, description, "item", nil, "item")
          if item then
+            local item = item.name
             local description = _ "How much do you want to remove?"
             local max = containers[e.x1][e.y1]["chest"][item]
             local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = max})
@@ -384,8 +388,9 @@ function mod_menu.interact()
       elseif option == "Add to Chest" then
          local description = _ "What item do you want to put in the chest?"
          local inventory = mod_inventory.show_current(unit.variables)
-         local item = menu(inventory, "", title, description, "with_picture", 1, "item")
+         local item = menu(inventory, "", title, description, "item", nil, "item")
          if item then
+            local item = item.name
             local description = _ "How much do you want to add?"
             local max = unit.variables[item]
             local quantity = menu_slider(title, description, _ "Quantity", {max = max, min = 1, step = 1, value = 1})
@@ -410,8 +415,9 @@ function mod_menu.unit_commands()
    elseif option == "Use Item" then
       local description = _ "Which item do you want to use?"
       local inventory = mod_inventory.show_current(unit.variables)
-      local item = menu(inventory, "", title, description, "with_picture", 1, "item")
+      local item = menu(inventory, "", title, description, "item", nil, "item")
       if item then
+         local item = item.name
          local description = _ "How much do you want to use?"
          local quantity = menu_slider(title, description, _ "Quantity", {max = unit.variables[item], min = 1, step = 1, value = 1})
          if quantity then
@@ -473,8 +479,9 @@ function mod_menu.unit_editor()
          end
       elseif choice == "Inventory" then
          local description = _ "Which item do you want to add?"
-         local item = menu(mod_inventory.show_all(), "", title, description, "with_picture", 1, "item")
+         local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
          if item then
+            local item = item.name
             submenu_inventory_quantity(item, wesnoth.get_unit(e.x1, e.y1).variables)
          end
       elseif choice == "Side" then
@@ -593,14 +600,16 @@ function mod_menu.settings()
          if interaction then
             if interaction == "Modify Shop" then
                local description = _ "Which item do you want to add?"
-               local item = menu(mod_inventory.show_all(), "", title, description, "with_picture", 1, "item")
+               local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
                if item then
+                  local item = item.name
                   submenu_inventory_quantity(item, containers[e.x1][e.y1]["shop"])
                end
             elseif interaction == "Modify Chest" then
                local description = _ "Which item do you want to add?"
-               local item = menu(mod_inventory.show_all(), "", title, description, "with_picture", 1, "item")
+               local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
                if item then
+                  local item = item.name
                   submenu_inventory_quantity(item, containers[e.x1][e.y1]["chest"])
                end
             end

@@ -239,6 +239,13 @@ function gui2.make_list.upgrade(upgrades)
    end
 end
 
+function gui2.make_list.item(items)
+   for i, item in ipairs(items) do
+      wesnoth.set_dialog_value(item.name, "menu_list", i, "label")
+      wesnoth.set_dialog_value(item.image, "menu_list", i, "icon")
+   end
+end
+
 function gui2.make_list.with_picture(list)
    for i, sublist in ipairs(list) do
       wesnoth.set_dialog_value(sublist[1], "menu_list", i, "label")
@@ -301,19 +308,19 @@ function gui2.on_select.item(list)
       local i = wesnoth.get_dialog_value("menu_list")
       wesnoth.set_dialog_value("Information about the selected item:  \n", "menu_sidebar_intro")
       wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-      wesnoth.set_dialog_value(list[i][2], "menu_image")
-      if list[i][5] == nil then
+      wesnoth.set_dialog_value(list[i].image, "menu_image")
+      if list[i].quantity == nil then
          wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\n%s</small>",
-                                                list[i][1],
-                                                list[i][3],
-                                                list[i][4]),
+                                                list[i].name,
+                                                list[i].price,
+                                                list[i].msg),
                                   "menu_sidebar_text")
       else
          wesnoth.set_dialog_value(string.format("%s\n<small>Price: %d Gold\nQuantity: %d\n%s</small>",
-                                                list[i][1],
-                                                list[i][3],
-                                                list[i][5],
-                                                list[i][4]),
+                                                list[i].name,
+                                                list[i].price,
+                                                list[i].quantity,
+                                                list[i].msg),
                                   "menu_sidebar_text")
       end
    end
