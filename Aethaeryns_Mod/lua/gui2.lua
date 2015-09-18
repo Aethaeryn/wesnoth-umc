@@ -94,14 +94,15 @@ local function dialog_choice(dialog, preshow, not_empty, dialog_name)
    end
 
    -- OK and Cancel
-   return function ()
-      local button = wesnoth.show_dialog(dialog, preshow, postshow)
-      if button == -1 and choice ~= "" then
-         return { value = choice }
-      else
-         return { value = false }
-      end
-   end
+   return wesnoth.synchronize_choice(
+      function ()
+         local button = wesnoth.show_dialog(dialog, preshow, postshow)
+         if button == -1 and choice ~= "" then
+            return { value = choice }
+         else
+            return { value = false }
+         end
+      end).value
 end
 
 local function remove_summoners(list)
@@ -149,10 +150,8 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
       end
    end
 
-   local choice = wesnoth.synchronize_choice(dialog_choice(gui2.wml.dialog(not_empty, "list", sidebar),
-                                                           preshow,
-                                                           not_empty,
-                                                           "menu_list")).value
+   local choice = dialog_choice(gui2.wml.dialog(not_empty, "list", sidebar), preshow, not_empty, "menu_list")
+
    if choice then
       if sublist_index ~= nil then
          return list[choice][sublist_index]
@@ -178,10 +177,7 @@ function menu_text_input(image, title, description, label, default_text)
       wesnoth.set_dialog_value(image, "menu_image")
    end
 
-   return wesnoth.synchronize_choice(dialog_choice(gui2.wml.dialog(true, "text_input"),
-                                                   preshow,
-                                                   true,
-                                                   "menu_text_box")).value
+   return dialog_choice(gui2.wml.dialog(true, "text_input"), preshow, true, "menu_text_box")
 end
 
 function menu_slider(title, description, label, slider)
@@ -193,10 +189,7 @@ function menu_slider(title, description, label, slider)
       wesnoth.set_dialog_value("", "menu_image")
    end
 
-   return wesnoth.synchronize_choice(dialog_choice(gui2.wml.dialog(true, "slider", nil, slider),
-                                                   preshow,
-                                                   true,
-                                                   "menu_slider")).value
+   return dialog_choice(gui2.wml.dialog(true, "slider", nil, slider), preshow, true, "menu_slider")
 end
 
 function gui2_error(text)
