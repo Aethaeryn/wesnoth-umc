@@ -79,9 +79,17 @@ end
 
 ---- GUI2 Lua Dialogs ----
 
--- This is a closure around choice. Postshow modifies the choice, and
--- then an OK button sends the choice in a WML table. It must be run
--- through wesnoth.synchronize_choice.
+local function remove_summoners(list)
+   local new_list = {}
+   for i, unit in ipairs(list) do
+      if is_summoner[unit] == nil then
+         table.insert(new_list, unit)
+      end
+   end
+   return new_list
+end
+
+-- This returns the selection of the choice.
 local function dialog_choice(dialog, preshow, not_empty, dialog_name)
    local choice
 
@@ -103,16 +111,6 @@ local function dialog_choice(dialog, preshow, not_empty, dialog_name)
             return { value = false }
          end
       end).value
-end
-
-local function remove_summoners(list)
-   local new_list = {}
-   for i, unit in ipairs(list) do
-      if is_summoner[unit] == nil then
-         table.insert(new_list, unit)
-      end
-   end
-   return new_list
 end
 
 -- This is a menu that is suitable for most of MOD. It takes in a
