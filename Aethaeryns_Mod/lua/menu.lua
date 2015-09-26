@@ -247,13 +247,12 @@ function mod_menu.summon(summoner_type)
    local image = PORTRAIT[summoner_type]
    local level = menu(get_levels(summoner_type, 5), image, title, description, "simple")
    if level then
-      local description = _ "Select a unit to summon."
-      local choice = menu(regular[summoner_type][level], image, title, description, "unit_cost", nil, "unit")
-      if choice then
-         local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
-         if not spawn_success then
-            gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
-         end
+      menu2(regular[summoner_type][level], image, title, "Select a unit to summon.", "unit_cost", nil, "unit",
+            function(choice)
+               local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
+               if not spawn_success then
+                  gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
+      end)
       end
    end
 end
@@ -264,11 +263,8 @@ function mod_menu.summon_summoner()
    local description = _ "Select a summoner type."
    local summoner_type = menu(SUMMON_ROLES, mod_menu.lich_image, title, description, "simple")
    if summoner_type then
-      local description = _ "Select a unit to summon."
-      local summoner = menu(summoners[summoner_type], mod_menu.lich_image, title, description, "unit", nil, "summoner")
-      if summoner then
-         spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
-      end
+      menu2(summoners[summoner_type], mod_menu.lich_image, title, "Select a unit to summon.", "unit", nil, "summoner",
+            function(summoner) spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side) end)
    end
 end
 
@@ -419,10 +415,8 @@ function mod_menu.unit_commands()
          point_word = "point"
       end
       local description = string.format("What do you want to upgrade? You have %d %s available.", points, point_word)
-      local upgrade = menu(get_upgrade_options(unit), "", title, description, "upgrade", nil, "upgrade")
-      if upgrade then
-         upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
-      end
+      menu2(get_upgrade_options(unit), "", title, description, "upgrade", nil, "upgrade", nil,
+            function(upgrade) upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap) end)
    elseif option == "Speak" then
       local description = _ "What do you want to say?"
       local label = _ "Message:"
@@ -459,22 +453,15 @@ function mod_menu.unit_editor()
          end
       elseif choice == "Role" then
          local description = _ "Select a new (summoning) role for this unit."
-         local role = menu(get_roles(), mod_menu.lich_image, title, description, "simple")
-         if role then
-            change_unit.role(e.x1, e.y1, role)
-         end
+         menu2(get_roles(), mod_menu.lich_image, title, description, "simple", nil, nil, nil,
+               function(role) change_unit.role(e.x1, e.y1, role) end)
       elseif choice == "Inventory" then
          local description = _ "Which item do you want to add?"
-         local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
-         if item then
-            local item = item.name
-            submenu_inventory_quantity(item, wesnoth.get_unit(e.x1, e.y1).variables)
-         end
+         menu2(mod_inventory.show_all(), "", title, description, "item", nil, "item", nil,
+               function(item) submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables) end)
       elseif choice == "Side" then
-         local side = menu(SIDES, mod_menu.lich_image, title, "Select a target side.", "simple")
-         if side then
-            change_unit.side(e.x1, e.y1, side)
-         end
+         menu2(SIDES, mod_menu.lich_image, title, "Select a target side.", "simple", nil, nil, nil,
+               function(side) change_unit.side(e.x1, e.y1, side) end)
       elseif choice == "Stats" then
          local stats = {"Hitpoints", "Max Hitpoints", "Moves", "Max Moves",
                         "Experience", "Max Experience", "Gender",
