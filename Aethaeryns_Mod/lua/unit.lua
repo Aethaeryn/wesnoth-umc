@@ -140,74 +140,83 @@ local function add_drunk_effect(unit)
    wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect_1, wml_effect_2})
 end
 
+local function haste(unit, effect, turns, refresh)
+   local wml_effect_ability = T.effect { apply_to = "new_ability",
+                                         T.abilities {
+                                            T.dummy { name = _ "haste",
+                                                      description = _ "This unit has an extra strike and two extra moves." }}}
+   if unit.variables["haste"] == nil or unit.variables["haste"] == 0 or refresh ~= nil then
+      if refresh == nil then
+         unit.variables["haste"] = (turns - 1)
+         if unit.variables["confidence"] == nil or unit.variables["confidence"] == 0 then
+            table.insert(units_with_effects, unit)
+         end
+      end
+      if unit.moves == unit.max_moves then
+         unit.moves = unit.moves + 2
+      end
+      local wml_effect = T.effect { apply_to = "movement", increase = 2 }
+      local wml_effect_2 = T.effect { apply_to = "attack", increase_attacks = 1 }
+      wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_2, wml_effect_ability })
+   elseif unit.variables["haste"] > 0 then
+      unit.variables["haste"] = unit.variables["haste"] + (turns - 1)
+   end
+end
+
+local function confidence(unit, effect, turns, refresh)
+   local wml_effect_ability = T.effect { apply_to = "new_ability",
+                                         T.abilities {
+                                            T.dummy { name = _ "confidence",
+                                                      description = _ "This unit has +5 HP." }}}
+   local ability_drunk = T.effect { apply_to = "new ability",
+                                    T.abilities {
+                                       T.dummy { name = _ "drunk",
+                                                 description = _ "This unit is very, very drunk." }}}
+   if unit.variables["confidence"] == nil or unit.variables["confidence"] == 0 or refresh ~= nil then
+      if refresh == nil then
+         unit.variables["confidence"] = (turns - 1)
+         if unit.variables["haste"] == nil or unit.variables["haste"] == 0 then
+            table.insert(units_with_effects, unit)
+         end
+      end
+      if unit.hitpoints == unit.max_hitpoints then
+         unit.hitpoints = unit.hitpoints + 5
+      end
+      local wml_effect = T.effect { apply_to = "hitpoints", increase_total = 5 }
+      if refresh ~= nil and unit.variables["drunk"] ~= nil and unit.variables["drunk"] >= 0 then
+         add_drunk_effect(unit)
+      elseif refresh == nil then
+         local become_drunk = helper.rand("no,no,no,yes")
+         if become_drunk then
+            unit.variables["drunk"] = unit.variables["confidence"]
+            add_drunk_effect(unit)
+         end
+      end
+      if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
+         wml_effect_ability = ability_drunk
+      end
+      wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_ability })
+   elseif unit.variables["confidence"] > 0 then
+      unit.variables["confidence"] = unit.variables["confidence"] + (turns - 1)
+      if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
+         unit.variables["drunk"] = unit.variables["confidence"]
+      else
+         local become_drunk = helper.rand("no,no,no,yes")
+         debugOut(become_drunk)
+         if become_drunk then
+            unit.variables["drunk"] = unit.variables["confidence"]
+            add_drunk_effect(unit)
+         end
+      end
+   end
+end
+
 function change_unit.add_turn_effect(x, y, effect, turns, refresh)
    local unit = wesnoth.get_unit(x, y)
    if effect == "haste" then
-      local wml_effect_ability = T.effect { apply_to = "new_ability",
-                                            T.abilities {
-                                               T.dummy { name = _ "haste",
-                                                         description = _ "This unit has an extra strike and two extra moves." }}}
-      if unit.variables["haste"] == nil or unit.variables["haste"] == 0 or refresh ~= nil then
-         if refresh == nil then
-            unit.variables["haste"] = (turns - 1)
-            if unit.variables["confidence"] == nil or unit.variables["confidence"] == 0 then
-               table.insert(units_with_effects, unit)
-            end
-         end
-         if unit.moves == unit.max_moves then
-            unit.moves = unit.moves + 2
-         end
-         local wml_effect = T.effect { apply_to = "movement", increase = 2 }
-         local wml_effect_2 = T.effect { apply_to = "attack", increase_attacks = 1 }
-         wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_2, wml_effect_ability })
-      elseif unit.variables["haste"] > 0 then
-         unit.variables["haste"] = unit.variables["haste"] + (turns - 1)
-      end
+      haste(unit, effect, turns, refresh)
    elseif effect == "confidence" then
-      local wml_effect_ability = T.effect { apply_to = "new_ability",
-                                            T.abilities {
-                                               T.dummy { name = _ "confidence",
-                                                         description = _ "This unit has +5 HP." }}}
-      local ability_drunk = T.effect { apply_to = "new ability",
-                                       T.abilities {
-                                          T.dummy { name = _ "drunk",
-                                                    description = _ "This unit is very, very drunk." }}}
-      if unit.variables["confidence"] == nil or unit.variables["confidence"] == 0 or refresh ~= nil then
-         if refresh == nil then
-            unit.variables["confidence"] = (turns - 1)
-            if unit.variables["haste"] == nil or unit.variables["haste"] == 0 then
-               table.insert(units_with_effects, unit)
-            end
-         end
-         if unit.hitpoints == unit.max_hitpoints then
-            unit.hitpoints = unit.hitpoints + 5
-         end
-         local wml_effect = T.effect { apply_to = "hitpoints", increase_total = 5 }
-         if refresh ~= nil and unit.variables["drunk"] ~= nil and unit.variables["drunk"] >= 0 then
-            add_drunk_effect(unit)
-         elseif refresh == nil then
-            local become_drunk = helper.rand("no,no,no,yes")
-            if become_drunk then
-               unit.variables["drunk"] = unit.variables["confidence"]
-               add_drunk_effect(unit)
-            end
-         end
-         if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
-            wml_effect_ability = ability_drunk
-         end
-         wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_ability })
-      elseif unit.variables["confidence"] > 0 then
-         unit.variables["confidence"] = unit.variables["confidence"] + (turns - 1)
-         if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
-            unit.variables["drunk"] = unit.variables["confidence"]
-         else
-            local become_drunk = helper.rand("no,no,no,yes")
-            debugOut(become_drunk)
-            if become_drunk then
-               unit.variables["drunk"] = unit.variables["confidence"]
-               add_drunk_effect(unit)
-            end
-         end
+      confidence(unit, effect, turns, refresh)
       end
    end
 end
