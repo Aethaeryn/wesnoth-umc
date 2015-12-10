@@ -252,8 +252,8 @@ function mod_menu.summon(summoner_type)
                local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
                if not spawn_success then
                   gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
+               end
       end)
-      end
    end
 end
 
