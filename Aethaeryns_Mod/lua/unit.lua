@@ -133,136 +133,6 @@ function change_unit.role(x, y, new_role)
    end
 end
 
-local function add_drunk_effect(unit)
-   local wml_effect_1 = T.effect { apply_to = "attack", range = "melee", T.set_specials { mode = "append",
-                                                                                          T.special { wesnoth.get_variable("berserk")}}}
-   local wml_effect_2 = T.effect { apply_to = "attack", remove_specials = "marksman" }
-   wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect_1, wml_effect_2})
-end
-
-local function haste(unit, effect, turns, refresh)
-   local wml_effect_ability = T.effect { apply_to = "new_ability",
-                                         T.abilities {
-                                            T.dummy { name = _ "haste",
-                                                      description = _ "This unit has an extra strike and two extra moves." }}}
-   if unit.variables["haste"] == nil or unit.variables["haste"] == 0 or refresh ~= nil then
-      if refresh == nil then
-         unit.variables["haste"] = (turns - 1)
-         if unit.variables["confidence"] == nil or unit.variables["confidence"] == 0 then
-            table.insert(units_with_effects, unit)
-         end
-      end
-      if unit.moves == unit.max_moves then
-         unit.moves = unit.moves + 2
-      end
-      local wml_effect = T.effect { apply_to = "movement", increase = 2 }
-      local wml_effect_2 = T.effect { apply_to = "attack", increase_attacks = 1 }
-      wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_2, wml_effect_ability })
-   elseif unit.variables["haste"] > 0 then
-      unit.variables["haste"] = unit.variables["haste"] + (turns - 1)
-   end
-end
-
-local function confidence(unit, effect, turns, refresh)
-   local wml_effect_ability = T.effect { apply_to = "new_ability",
-                                         T.abilities {
-                                            T.dummy { name = _ "confidence",
-                                                      description = _ "This unit has +5 HP." }}}
-   local ability_drunk = T.effect { apply_to = "new ability",
-                                    T.abilities {
-                                       T.dummy { name = _ "drunk",
-                                                 description = _ "This unit is very, very drunk." }}}
-   if unit.variables["confidence"] == nil or unit.variables["confidence"] == 0 or refresh ~= nil then
-      if refresh == nil then
-         unit.variables["confidence"] = (turns - 1)
-         if unit.variables["haste"] == nil or unit.variables["haste"] == 0 then
-            table.insert(units_with_effects, unit)
-         end
-      end
-      if unit.hitpoints == unit.max_hitpoints then
-         unit.hitpoints = unit.hitpoints + 5
-      end
-      local wml_effect = T.effect { apply_to = "hitpoints", increase_total = 5 }
-      if refresh ~= nil and unit.variables["drunk"] ~= nil and unit.variables["drunk"] >= 0 then
-         add_drunk_effect(unit)
-      elseif refresh == nil then
-         local become_drunk = helper.rand("no,no,no,yes")
-         if become_drunk then
-            unit.variables["drunk"] = unit.variables["confidence"]
-            add_drunk_effect(unit)
-         end
-      end
-      if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
-         wml_effect_ability = ability_drunk
-      end
-      wesnoth.add_modification(unit, "object", { duration = "turn", wml_effect, wml_effect_ability })
-   elseif unit.variables["confidence"] > 0 then
-      unit.variables["confidence"] = unit.variables["confidence"] + (turns - 1)
-      if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
-         unit.variables["drunk"] = unit.variables["confidence"]
-      else
-         local become_drunk = helper.rand("no,no,no,yes")
-         debugOut(become_drunk)
-         if become_drunk then
-            unit.variables["drunk"] = unit.variables["confidence"]
-            add_drunk_effect(unit)
-         end
-      end
-   end
-end
-
-function change_unit.add_turn_effect(x, y, effect, turns, refresh)
-   local unit = wesnoth.get_unit(x, y)
-   if effect == "haste" then
-      haste(unit, effect, turns, refresh)
-   elseif effect == "confidence" then
-      confidence(unit, effect, turns, refresh)
-      end
-   end
-end
-
--- Any [object] effects will only last until turn refresh. If there is
--- a multi-turn effect still in progress, then it needs to be added
--- again at turn refresh manually.
-function change_unit.update_turn_effects()
-   local finished_units = {}
-   for i, unit in ipairs(units_with_effects) do
-      if unit.side == wesnoth.current.side then
-         if unit.variables["haste"] ~= nil and unit.variables["haste"] > 0 then
-            unit.variables["haste"] = unit.variables["haste"] - 1
-            change_unit.add_turn_effect(unit.x, unit.y, "haste", 0, true)
-         end
-         if unit.variables["confidence"] ~= nil and unit.variables["confidence"] > 0 then
-            unit.variables["confidence"] = unit.variables["confidence"] - 1
-            if unit.variables["drunk"] ~= nil and unit.variables["drunk"] > 0 then
-               unit.variables["drunk"] = unit.variables["drunk"] - 1
-            end
-            change_unit.add_turn_effect(unit.x, unit.y, "confidence", 0, true)
-         end
-         if (unit.variables["haste"] == nil or unit.variables["haste"] == 0)
-         and (unit.variables["confidence"] == nil or unit.variables["confidence"] == 0) then
-            table.insert(finished_units, 1, i)
-         end
-      end
-   end
-   -- Units done with effects need to be removed separately so the
-   -- table index doesn't shift until the end. The removal has to be
-   -- in reverse index order.
-   for i, j in ipairs(finished_units) do
-      table.remove(units_with_effects, j)
-   end
-end
-
-function change_unit.death_cleanup()
-   local e = wesnoth.current.event_context
-   local dead_unit = wesnoth.get_unit(e.x1, e.y1)
-   for i, unit in ipairs(units_with_effects) do
-      if unit.x == dead_unit.x and unit.y == dead_unit.y then
-         table.remove(units_with_effects, i)
-      end
-   end
-end
-
 -- Chooses the adjacent summoner with the highest HP.
 local function find_summoner(x, y, summoners)
    local max_hp = 0
@@ -275,6 +145,17 @@ local function find_summoner(x, y, summoners)
       end
    end
    return summoners[max_key]
+end
+
+function haste(x, y, moves)
+   wesnoth.add_modification(wesnoth.get_unit(x, y),
+                            "object",
+                            { duration = "turn",
+                              T.effect { apply_to = "movement", increase = moves },
+                              T.effect { apply_to = "attack", increase_attacks = 1 },
+                              T.effect { apply_to = "new_ability",
+                                         T.abilities { T.dummy { name = _ "haste",
+                                                                 description = _ "This unit has extra attacks and movement." } } } })
 end
 
 -- Unit role is summoner type; icon and unit_role are optional.
