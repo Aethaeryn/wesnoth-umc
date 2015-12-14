@@ -2,14 +2,14 @@ border_size=1
 usage=map
 
 Mm, Mm, Mm^Xm, Mm, Mm, Mm, Mm, Mm, Rr, Mm, Mm, Mm, Mm, Hh^Fds, Gs^Fds, Gs^Fds, Rb, Rb, Gs^Fds, Gs^Fds
-Mm^Xm, 1 Mm, Mm^Xm, Mm, Hh, Mm, Hh^Vhh, Mm, Rr, Mm, Hh, Chr, Hh, Hh^Fds, Gs^Fds, Gs^Fds, Rb, Rb, Gs^Fds, Gs^Fds
-Rd, Mm^Xm, Hh, Hh, Hh, Hh, Hh, Hh, Hh, Rr, Rr, Hh, Hh, Hh^Fds, Gs^Fds, Rb^Vh, Rb, Gs^Fds, Gs^Fds, Gs^Fds
+Mm^Xm, 1 Mm, Mm^Xm, Mm, Hh, Mm, Hh^Vhh, Mm, Rr, Mm, Hh, Ko, Hh, Hh^Fds, Gs^Fds, Gs^Fds, Rb, Rb, Gs^Fds, Gs^Fds
+Rd, Mm^Xm, Hh, Hh, Hh, Hh, Hh, Hh, Hh, Rr, Rr, Rr, Hh, Hh^Fds, Gs^Fds, Rb^Vl, Rb, Gs^Fds, Gs^Fds, Gs^Fds
 Gs, Rd, Rd, Rd, Rd, Re, Re, Hh, Hh, Hh, Rr, Hh, Hh, Hh^Fds, Rb, Rb, Rb, Gs^Fds, Hh^Fds, Gs^Fds
 Gs, Gd, Gd, Gd, Gd, Re, Rb, Re, Rb, Rr, Kh, Rr, Re, Re, Rb, Rb, Hh^Fds, Gs^Fds, Gs^Fds, Hh^Fds
 Ww, Gs^Vh, Gg, Gs, Gs, Gs, Rb, Re, Rb, Re, Re, Rb, Re, Rb, Gd, Ce, Hh^Fds, Hh^Fds, Hh^Fds, Hh
 Ww, Ww, Ww, Gs, Rb, Rb, Rb, Rb, 4 Gs, Rb, 2 Gs, Rb, Rb, Rb, Gd, Gs, Gd, Hh, Hh, Hh
 Gg, Ww, Ww, Ww, Ww^Bw/, Rb, Rb, 5 Gs, Gs, Gd, Gd, 3 Gs, Rb, Rb, Gs, Gd^Vh, Gs, Hh, Hh, Hh
 Gs, Rb, Rb, Ww^Bw/, Ww, Rb, Gs, Gs, Gd, Gs, Gd, Gs, Rb, Rb, Gg, Gd, Gs, Ce, Wo^Xo, Wo^Xo
-Rb, Rb, Rb, Ww, Ww, Gd^Vh, Gs, Gg, Gg, Gd, Gg, Gs, Rb, Rb, Gs, Gg, Gs, Wo^Xo, Wo^Xo, Wo^Xo
-Rb, Rb, Gs, Gd, Gs, Ww, Ww, Gs, Gs, Gd, Gs, Gg, Rb, Rb, Ce, Gs, Wo^Xo, Wo^Xo, 6 Rb^Gvs, Rb^Gvs
+Rb, Rb, Rb, Ww, Ww, Gd^Vhc, Gs, Gg, Gg, Gd, Gg, Gs, Rb, Rb, Gs, Gg, Gs, Wo^Xo, Wo^Xo, Wo^Xo
+Rb, Rb, Gs, Gd, Gs, Ww, Ww, Gs, Gs, Gd, Gs, Gg, Rb, Rb, Ket, Gs, Wo^Xo, Wo^Xo, 6 Rb^Gvs, Rb^Gvs
 Rb, Gs, Gd, Gd, Gs, Gs, Ww, Ww, Gg, Gs, Gs, Gs, Rb, Rb, Rb, Wo^Xo, Wo^Xo, Wo^Xo, Rb^Gvs, Rb^Gvs
