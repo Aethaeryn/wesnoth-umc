@@ -457,7 +457,7 @@ function mod_menu.unit_editor()
                function(role) change_unit.role(e.x1, e.y1, role) end)
       elseif choice == "Inventory" then
          local description = _ "Which item do you want to add?"
-         menu2(mod_inventory.show_all(), "", title, description, "item", nil, "item", nil,
+         menu2(mod_inventory.show_all(), "", title, description, "item", nil, "item",
                function(item) submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables) end)
       elseif choice == "Side" then
          menu2(SIDES, mod_menu.lich_image, title, "Select a target side.", "simple", nil, nil, nil,
