@@ -9,9 +9,7 @@ mod_menu.scenarios = {
    {"Introduction (Underground)", "intro2"},
    {"Battle", "battle"},
    {"Cavern", "cavern"},
-   {"Classic", "classic"},
    {"Hide and Seek", "hide_and_seek"},
-   {"Open Dungeon", "open_dungeon"},
    {"Woods", "woods"},
    {"Temple", "temple"}}
 
