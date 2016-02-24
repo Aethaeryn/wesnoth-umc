@@ -12,7 +12,8 @@ mod_menu.scenarios = {
    {"Classic", "classic"},
    {"Hide and Seek", "hide_and_seek"},
    {"Open Dungeon", "open_dungeon"},
-   {"Woods", "woods"}}
+   {"Woods", "woods"},
+   {"Temple", "temple"}}
 
 mod_menu.place_object_options = {
    {"Place Shop", "scenery/tent-shop-weapons.png"},
