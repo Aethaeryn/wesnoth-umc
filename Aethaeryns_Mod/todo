@@ -1,6 +1,12 @@
 AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
+  - separate summoner/summoned unit lists from a generic species-based
+    unit list so the character selection process at the start can be
+    more intuitive and be translated for free
+
+    - and use that list instead of a text box for transform unit?
+
   - allow the host on turn 1 to quick-spawn NPCs and hostile units in
     some areas or all of a map, varying depending on the map
 
@@ -164,7 +170,6 @@ When this list is complete/empty, bump to version 0.9
   * CODE: Re-sort the units.lua menu so that the order makes sense.
   * CODE: Merge menu()'s sidebar and dialog_list into one variable in gui2.lua
   * CODE: Use a slider for setting the max level.
-  * CODE: Replace the text box in Transform with the menu used in summon_units and select_leader?
   * CODE: Random gender when group spawning units that have more than one possible gender.
   * CODE: Expand the radius for Summon Group (removes cap of 7) and make it keep trying to place the unit as long as it can instead of not placing it.
   * CODE: Make Summon Group check for bad (e.g. impassable) terrain as well as unoccupied terrain.
