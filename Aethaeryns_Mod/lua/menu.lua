@@ -12,13 +12,22 @@ mod_menu.scenarios = {
    {"Hide and Seek", "hide_and_seek"},
    {"Woods", "woods"},
    {"Temple", "temple"}}
-
 mod_menu.place_object_options = {
    {"Place Shop", "scenery/tent-shop-weapons.png"},
    {"Place Chest", "items/chest-plain-closed.png"},
    {"Place Pack", "items/leather-pack.png"},
    {"Place Gold Pile", "items/gold-coins-large.png"},
    {"Clear Hex", "terrain/grass/green-symbol.png"}}
+mod_menu.misc_settings =  {
+   "Modify Container",
+   "Modify Side",
+   "Max Starting Level",
+   "New Scenario",
+   "Toggle Summon Summoners",
+   "Toggle Summon Units",
+   "Toggle Unit Editor",
+   "Toggle Terrain Editor",
+   "Toggle Place Object"}
 
 -- (Most) Local Functions --
 
@@ -555,16 +564,7 @@ function mod_menu.settings()
    local e = wesnoth.current.event_context
    local title = _ "Settings"
    local description = _ "What action do you want to do?"
-   local options = {"Modify Container",
-                    "Modify Side",
-                    "Max Starting Level",
-                    "New Scenario",
-                    "Toggle Summon Summoners",
-                    "Toggle Summon Units",
-                    "Toggle Unit Editor",
-                    "Toggle Terrain Editor",
-                    "Toggle Place Object"}
-   local option = menu(options, mod_menu.lich_image, title, description, "simple")
+   local option = menu(mod_menu.misc_settings, mod_menu.lich_image, title, description, "simple")
    if option then
       if option == "Modify Container" then
          local description = _ "Which container do you want to modify?"
