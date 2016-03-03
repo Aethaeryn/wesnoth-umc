@@ -509,6 +509,429 @@ regular = {
    }
 }
 
+-- Generally follows the website's unit tree, except in a few areas,
+-- where the rider's species is counted rather than the mount's
+-- species.
+units_by_species = {
+   Bats = {
+      ['Level 0'] = {
+         "Vampire Bat",
+      },
+      ['Level 1'] = {
+         "Blood Bat",
+      },
+      ['Level 2'] = {
+         "Dread Bat",
+      },
+   },
+
+   Drakes = {
+      ['Level 1'] = {
+         "Drake Glider",
+         "Drake Fighter",
+         "Drake Clasher",
+         "Drake Burner",
+      },
+      ['Level 2'] = {
+         "Sky Drake",
+         "Drake Warrior",
+         "Drake Arbiter",
+         "Drake Thrasher",
+         "Drake Flare",
+         "Fire Drake",
+      },
+      ['Level 3'] = {
+         "Drake Flameheart",
+         "Inferno Drake",
+         "Drake Warden",
+         "Drake Enforcer",
+         "Drake Blademaster",
+         "Hurricane Drake",
+      },
+      ['Level 4'] ={
+         "Armageddon Drake",
+      },
+   },
+
+   Dwarves = {
+      ['Level 1'] = {
+         "Dwarvish Fighter",
+         "Dwarvish Thunderer",
+         "Dwarvish Scout",
+         "Dwarvish Guardsman",
+         "Dwarvish Ulfserker",
+         "Gryphon Rider",
+      },
+      ['Level 2'] = {
+         "Dwarvish Steelclad",
+         "Dwarvish Runesmith",
+         "Dwarvish Pathfinder",
+         "Dwarvish Thunderguard",
+         "Dwarvish Stalwart",
+         "Dwarvish Berserker",
+         "Gryphon Master",
+      },
+      ['Level 3'] = {
+         "Dwarvish Lord",
+         "Dwarvish Runemaster",
+         "Dwarvish Sentinel",
+         "Dwarvish Explorer",
+         "Dwarvish Dragonguard",
+      },
+      ['Level 4'] = {
+         "Dwarvish Arcanister",
+      },
+   },
+
+   Elves = {
+      ['Level 1'] = {
+         "Elvish Shaman",
+         "Elvish Fighter",
+         "Elvish Archer",
+         "Elvish Scout",
+      },
+      ['Level 2'] = {
+         "Elvish Rider",
+         "Elvish Captain",
+         "Elvish Hero",
+         "Elvish Druid",
+         "Elvish Sorceress",
+         "Elvish Marksman",
+         "Elvish Ranger",
+         "Elvish Lord",
+      },
+      ['Level 3'] = {
+         "Elvish Outrider",
+         "Elvish Champion",
+         "Elvish Marshal",
+         "Elvish Enchantress",
+         "Elvish Shyde",
+         "Elvish Sharpshooter",
+         "Elvish Avenger",
+         "Elvish High Lord",
+         "Elvish Lady",
+      },
+      ['Level 4'] = {
+         "Elvish Sylph",
+      },
+   },
+
+   Falcons = {
+      ['Level 0'] = {
+         "Falcon",
+      },
+      ['Level 1'] = {
+         "Elder Falcon",
+      },
+   },
+
+   Gryphons = {
+      ['Level 2'] = {
+         "Gryphon",
+      },
+   },
+
+   Humans = {
+      ['Level 0'] = {
+         "Peasant",
+         "Ruffian",
+         "Woodsman",
+      },
+      ['Level 1'] = {
+         "Mage",
+         "Dark Adept",
+         "Bowman",
+         "Spearman",
+         "Fencer",
+         "Cavalryman",
+         "Heavy Infantryman",
+         "Horseman",
+         "Sergeant",
+         "Thief",
+         "Thug",
+         "Footpad",
+         "Poacher",
+      },
+      ['Level 2'] = {
+         "Red Mage",
+         "White Mage",
+         "Dark Sorcerer",
+         "Javelineer",
+         "Pikeman",
+         "Swordsman",
+         "Longbowman",
+         "Duelist",
+         "Dragoon",
+         "Shock Trooper",
+         "Knight",
+         "Lancer",
+         "Lieutenant",
+         "Bandit",
+         "Rogue",
+         "Outlaw",
+         "Trapper",
+      },
+      ['Level 3'] = {
+         "Arch Mage",
+         "Silver Mage",
+         "Mage of Light",
+         "Necromancer",
+         "Lich",
+         "Royal Guard",
+         "Royal Warrior",
+         "Halberdier",
+         "Master at Arms",
+         "Master Bowman",
+         "Iron Mauler",
+         "Cavalier",
+         "Grand Knight",
+         "Paladin",
+         "General",
+         "Assassin",
+         "Highwayman",
+         "Fugitive",
+         "Huntsman",
+         "Ranger",
+      },
+      ['Level 4'] = {
+         "Great Mage",
+         "Ancient Lich",
+         "Grand Marshal",
+      },
+      ['Level 5'] = {
+         "Elder Mage",
+      },
+   },
+
+   Khalifate = {
+      ['Level 1'] = {
+         "Arif",
+         "Hakim",
+         "Jundi",
+         "Khaiyal",
+         "Naffat",
+         "Rami",
+      },
+      ['Level 2'] = {
+         "Ghazi",
+         "Mudafi",
+         "Tabib",
+         "Monawish",
+         "Muharib",
+         "Faris",
+         "Qanas",
+         "Qatif_al_nar",
+         "Saree",
+      },
+      ['Level 3'] = {
+         "Shuja",
+         "Rasikh",
+         "Mighwar",
+         "Batal",
+         "Mufariq",
+         "Hadaf",
+         "Tineen",
+         "Jawal",
+      },
+      ['Level 4'] = {
+         "Khalid",
+      },
+   },
+
+   Mermen = {
+      ['Level 1'] = {
+         "Merman Fighter",
+         "Merman Hunter",
+         "Mermaid Initiate",
+      },
+      ['Level 2'] = {
+         "Merman Warrior",
+         "Merman Netcaster",
+         "Merman Spearman",
+         "Mermaid Enchantress",
+         "Mermaid Priestess",
+      },
+      ['Level 3'] = {
+         "Merman Hoplite",
+         "Merman Triton",
+         "Merman Entangler",
+         "Merman Javelineer",
+         "Mermaid Siren",
+         "Mermaid Diviner",
+      },
+   },
+
+   Monsters = {
+      ['Level 0'] = {
+         "Mudcrawler",
+         "Giant Rat",
+      },
+      ['Level 1'] = {
+         "Giant Mudcrawler",
+         "Giant Scorpion",
+         "Fire Guardian",
+         "Tentacle of the Deep",
+      },
+      ['Level 2'] = {
+         "Water Serpent",
+         "Cuttle Fish",
+      },
+      ['Level 3'] = {
+         "Giant Spider",
+         "Sea Serpent",
+      },
+      ['Level 4'] ={
+         "Yeti",
+      },
+      ['Level 5'] = {
+         "Fire Dragon",
+      },
+   },
+
+   Nagas = {
+      ['Level 1'] = {
+         "Naga Fighter",
+      },
+      ['Level 2'] = {
+         "Naga Warrior",
+      },
+      ['Level 3'] = {
+         "Naga Myrmidon",
+      },
+   },
+
+   Ogres = {
+      ['Level 1'] = {
+         "Young Ogre",
+      },
+      ['Level 2'] = {
+         "Ogre",
+      },
+   },
+
+   Orcs = {
+      ['Level 0'] = {
+         "Goblin Spearman",
+      },
+      ['Level 1'] = {
+         "Orcish Grunt",
+         "Goblin Impaler",
+         "Goblin Rouser",
+         "Orcish Archer",
+         "Orcish Assassin",
+         "Wolf Rider",
+         "Orcish Leader",
+      },
+      ['Level 2'] = {
+         "Orcish Crossbowman",
+         "Orcish Warrior",
+         "Goblin Pillager",
+         "Goblin Knight",
+         "Orcish Slayer",
+         "Orcish Ruler",
+      },
+      ['Level 3'] = {
+         "Direwolf Rider",
+         "Orcish Slurbow",
+         "Orcish Warlord",
+         "Orcish Sovereign",
+      },
+   },
+
+   Saurians = {
+      ['Level 1'] = {
+         "Naga Fighter",
+         "Saurian Skirmisher",
+         "Saurian Augur",
+      },
+      ['Level 2'] = {
+         "Naga Warrior",
+         "Saurian Oracle",
+         "Saurian Soothsayer",
+         "Saurian Ambusher",
+      },
+      ['Level 3'] = {
+         "Naga Myrmidon",
+         "Saurian Flanker",
+      },
+   },
+
+   Trolls = {
+      ['Level 1'] = {
+         "Troll Whelp",
+      },
+      ['Level 2'] = {
+         "Troll",
+         "Troll Rocklobber",
+         "Troll Hero",
+         "Troll Shaman",
+      },
+      ['Level 3'] = {
+         "Troll Warrior",
+         "Great Troll",
+      },
+   },
+
+   Undead = {
+      ['Level 0'] = {
+         "Walking Corpse",
+      },
+      ['Level 1'] = {
+         "Soulless",
+         "Skeleton Archer",
+         "Skeleton",
+         "Ghoul",
+         "Ghost",
+      },
+      ['Level 2'] = {
+         "Bone Shooter",
+         "Necrophage",
+         "Deathblade",
+         "Revenant",
+         "Chocobone",
+         "Shadow",
+         "Wraith",
+      },
+      ['Level 3'] = {
+         "Banebow",
+         "Ghast",
+         "Death Knight",
+         "Draug",
+         "Nightgaunt",
+         "Spectre",
+         "Lich",
+      },
+      ['Level 4'] = {
+         "Ancient Lich",
+         "Skeletal Dragon",
+      },
+   },
+
+   Wolves = {
+      ['Level 1'] = {
+         "Wolf",
+      },
+      ['Level 2'] = {
+         "Great Wolf",
+      },
+      ['Level 3'] = {
+         "Direwolf",
+      },
+   },
+
+   Woses = {
+      ['Level 1'] = {
+         "Wose",
+      },
+      ['Level 2'] = {
+         "Elder Wose",
+      },
+      ['Level 3'] = {
+         "Ancient Wose",
+      },
+   },
+}
+
 unit_groups_menu = {
    "Goblins",
    "Orcs",
