@@ -7,8 +7,11 @@ SIDES = {1, 2, 3, 4, 5, 6, 7, 8}
 SUMMON_ROLES = {"Undead", "Nature", "Elves", "Fire", "Loyalists", "Outlaws",
                 "Orcs", "Dwarves", "Earth", "Swamp", "Water", "Khalifate"}
 
-LEADER_ROLES = {"Mages", "Undead", "Nature", "Elves", "Fire", "Loyalists", "Outlaws",
-                "Orcs", "Dwarves", "Earth", "Swamp", "Water", "Khalifate"}
+LEADER_ROLES = {"Humans", "Bats", "Drakes", "Dwarves", "Elves", "Falcons",
+                "Gryphons", "Khalifate", "Mermen", "Monsters", "Nagas",
+                "Ogres", "Orcs", "Saurians", "Trolls", "Undead", "Wolves",
+                "Woses"}
+
 
 is_summoner = {}
 
@@ -840,18 +843,15 @@ units_by_species = {
 
    Saurians = {
       ['Level 1'] = {
-         "Naga Fighter",
          "Saurian Skirmisher",
          "Saurian Augur",
       },
       ['Level 2'] = {
-         "Naga Warrior",
          "Saurian Oracle",
          "Saurian Soothsayer",
          "Saurian Ambusher",
       },
       ['Level 3'] = {
-         "Naga Myrmidon",
          "Saurian Flanker",
       },
    },

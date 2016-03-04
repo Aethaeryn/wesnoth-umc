@@ -132,7 +132,7 @@ end
 
 local function get_levels(category, max_level)
    local levels = {}
-   for key, value in pairs(regular[category]) do
+   for key, value in pairs(units_by_species[category]) do
       if tonumber(string.sub(key, 7)) <= max_level then
          table.insert(levels, key)
       end
@@ -193,7 +193,7 @@ function mod_menu.select_leader()
          if leader_category then
             menu2(get_levels(leader_category, change_unit.max_level), mod_menu.lich_image, title, "Select a unit level.", "simple", nil, nil,
                  function(level)
-                    menu2(regular[leader_category][level], mod_menu.lich_image, title, "Select a unit.", "unit", nil, "summoner",
+                    menu2(units_by_species[leader_category][level], mod_menu.lich_image, title, "Select a unit.", "unit", nil, "summoner",
                           function(choice)
                              if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
                                 change_unit.transform(leader.x, leader.y, choice)
