@@ -423,7 +423,7 @@ function mod_menu.unit_commands()
          point_word = "point"
       end
       local description = string.format("What do you want to upgrade? You have %d %s available.", points, point_word)
-      menu2(get_upgrade_options(unit), "", title, description, "upgrade", nil, "upgrade", nil,
+      menu2(get_upgrade_options(unit), "", title, description, "upgrade", nil, "upgrade",
             function(upgrade) upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap) end)
    elseif option == "Speak" then
       local description = _ "What do you want to say?"
