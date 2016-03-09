@@ -251,29 +251,49 @@ end
 function mod_menu.summon(summoner_type)
    local e = wesnoth.current.event_context
    local title = string.format("Summon %s", summoner_type)
-   local description = _ "Select a unit level."
    local image = PORTRAIT[summoner_type]
-   local level = menu(get_levels(summoner_type, 5), image, title, description, "simple")
-   if level then
-      menu2(regular[summoner_type][level], image, title, "Select a unit to summon.", "unit_cost", nil, "unit",
-            function(choice)
-               local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
-               if not spawn_success then
-                  gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
-               end
-      end)
-   end
+   menu3{list = get_levels(summoner_type, 5),
+         image = image,
+         title = title,
+         description = _ "Select a unit level.",
+         dialog_list = "simple",
+         action = function(level)
+            if level then
+               menu3{list = regular[summoner_type][level],
+                     image = image,
+                     title = title,
+                     description = _ "Select a unit to summon.",
+                     dialog_list = "unit_cost",
+                     sidebar = "unit",
+                     action = function(choice)
+                        local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
+                        if not spawn_success then
+                           gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
+                        end
+               end}
+            end
+   end}
 end
 
 function mod_menu.summon_summoner()
    local e = wesnoth.current.event_context
    local title = _ "Summon Summoner"
-   local description = _ "Select a summoner type."
-   local summoner_type = menu(SUMMON_ROLES, mod_menu.lich_image, title, description, "simple")
-   if summoner_type then
-      menu2(summoners[summoner_type], mod_menu.lich_image, title, "Select a unit to summon.", "unit", nil, "summoner",
-            function(summoner) spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side) end)
-   end
+   menu3{list = SUMMON_ROLES,
+         image = mod_menu.lich_image,
+         title = title,
+         description = _ "Select a summoner type.",
+         dialog_list = "simple",
+         action = function(summoner_type)
+            if summoner_type then
+               menu3{list = summoners[summoner_type],
+                     image = mod_menu.lich_image,
+                     title = title,
+                     description = _ "Select a unit to summon.",
+                     dialog_list = "unit",
+                     sidebar = "summoner",
+                     action = function(summoner) spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side) end}
+            end
+   end}
 end
 
 local function submenu_interact_unit_selection(unit_list, image, title, description)
