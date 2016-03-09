@@ -220,6 +220,38 @@ function mod_menu.select_leader()
    end
 end
 
+local function submenu_unit_selection_common(title, max_level, no_gender_spawn, gendered_spawn)
+   menu3{list = LEADER_ROLES,
+         title = title,
+         description = _ "Select a unit category.",
+         dialog_list = "simple",
+         action = function(unit_category)
+            menu3{list = get_levels(unit_category, max_level),
+                  title = title,
+                  description = _ "Select a unit level.",
+                  dialog_list = "simple",
+                  action = function(level)
+                     menu3{list = units_by_species[unit_category][level],
+                           title = title,
+                           description = _ "Select a unit.",
+                           dialog_list = "unit",
+                           sidebar = "summoner",
+                           action = function(choice)
+                              if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
+                                 no_gender_spawn(choice)
+                              else
+                                 menu3{list = mod_menu.gender,
+                                       title = title,
+                                       description = _ "Select a gender.",
+                                       dialog_list = "almost_simple",
+                                       sublist_index = 2,
+                                       action = function(gender) gendered_spawn(choice, gender) end}
+                              end
+                     end}
+            end}
+   end}
+end
+
 function mod_menu.summon_units()
    local e = wesnoth.current.event_context
    local title = _ "Summon Units"
@@ -235,35 +267,9 @@ function mod_menu.summon_units()
                      dialog_list = "simple",
                      action = function(choice) spawn_unit.spawn_group(e.x1, e.y1, unit_groups[choice], wesnoth.current.side) end}
             elseif option == "Summon Unit" then
-               menu3{list = LEADER_ROLES,
-                     title = title,
-                     description = _ "Select a unit category.",
-                     dialog_list = "simple",
-                     action = function(unit_category)
-                        menu3{list = get_levels(unit_category, 5),
-                              title = title,
-                              description = _ "Select a unit level.",
-                              dialog_list = "simple",
-                              action = function(level)
-                                 menu3{list = units_by_species[unit_category][level],
-                                       title = title,
-                                       description = _ "Select a unit.",
-                                       dialog_list = "unit",
-                                       sidebar = "summoner",
-                                       action = function(choice)
-                                          if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
-                                             spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side)
-                                          else
-                                             menu3{list = mod_menu.gender,
-                                                   title = title,
-                                                   description = _ "Select a gender.",
-                                                   dialog_list = "almost_simple",
-                                                   sublist_index = 2,
-                                                   action = function(gender) spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender) end}
-                                          end
-                                 end}
-                        end}
-               end}
+               submenu_unit_selection_common(title, 5,
+                                             function(choice) spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side) end,
+                                             function(choice, gender) spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender) end)
             end
    end}
 end
