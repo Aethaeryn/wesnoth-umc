@@ -169,6 +169,10 @@ function menu2(list, image, title, description, dialog_list, sublist_index, side
 end
 
 function menu3(arg_table)
+   if arg_table.image == nil then
+      arg_table.image = mod_menu.lich_image
+   end
+
    local choice = menu(arg_table.list,
                        arg_table.image,
                        arg_table.title,
