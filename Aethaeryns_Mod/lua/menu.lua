@@ -125,7 +125,7 @@ local function get_unit_commands(leader_selection)
       {"Upgrades", "attacks/woodensword.png"},
       {"Speak", "icons/letter_and_ale.png"}}
    if leader_selection then
-      table.insert(tmp_table, 1, {"Select Unit", "attacks/thorns.png"})
+      table.insert(temp_table, 1, {"Select Unit", "attacks/thorns.png"})
    end
    return temp_table
 end
