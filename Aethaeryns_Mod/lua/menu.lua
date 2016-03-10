@@ -589,41 +589,63 @@ function mod_menu.terrain_editor()
    local e = wesnoth.current.event_context
    terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
    local title = _ "Terrain Editor"
-   local description = _ "Which terrain would you like to switch to?"
-   local name = menu(terrain.options, mod_menu.lich_image, title, description, "simple")
-   if name then
-      if name == "Repeat last terrain" then
-         terrain.set_terrain(terrain.last_terrain)
-      elseif name == "Change radius" then
-         local description = _ "What do you want to set the terrain radius as?"
-         local new_radius = menu(terrain.possible_radius, mod_menu.lich_image, title, description, "simple")
-         if new_radius then
-            terrain.radius = new_radius
-         end
-      elseif name == "Set an overlay" then
-         local description = _ "Which terrain would you like to switch to?"
-         local overlay_name = menu(terrain.overlay_options, mod_menu.lich_image, title, description, "simple")
-         if overlay_name then
-            if overlay_name == "Repeat last overlay" then
-               terrain.set_overlay(terrain.last_overlay)
-            elseif overlay_name == "Remove overlay" then
-               terrain.remove_overlay()
-            else
-               local description = _ "Which terrain overlay would you like to place?"
-               local terrain_choice = menu(terrain.overlays[overlay_name], mod_menu.lich_image, title, description, "terrain", nil, "terrain")
-               if terrain_choice then
-                  terrain.set_overlay(terrain_choice)
+   menu3{
+      list = terrain.options,
+      title = title,
+      description = _ "Which terrain would you like to switch to?",
+      dialog_list = "simple",
+      action = function(name)
+         if name == "Repeat last terrain" then
+            terrain.set_terrain(terrain.last_terrain)
+         elseif name == "Change radius" then
+            menu3{
+               list = terrain.possible_radius,
+               title = title,
+               description = _ "What do you want to set the terrain radius as?",
+               dialog_list = "simple",
+               action = function(choice)
+                  terrain.radius = choice
                end
-            end
-         end
-      else
-         local description = _ "Which terrain would you like to place?"
-         local terrain_choice = menu(terrain.terrain[name], mod_menu.lich_image, title, description, "terrain", nil, "terrain")
-         if terrain_choice then
-            terrain.set_terrain(terrain_choice)
+            }
+         elseif name == "Set an overlay" then
+            menu3{
+               list = terrain.overlay_options,
+               title = title,
+               description = _ "Which overlay would you like to switch to?",
+               dialog_list = "simple",
+               action = function(overlay_name)
+                  if overlay_name == "Repeat last overlay" then
+                     terrain.set_overlay(terrain.last_overlay)
+                  elseif overlay_name == "Remove overlay" then
+                     terrain.remove_overlay()
+                  else
+                     menu3{
+                        list = terrain.overlays[overlay_name],
+                        title = title,
+                        description = _ "Which terrain overlay would you like to place?",
+                        dialog_list = "terrain",
+                        sidebar = "terrain",
+                        action = function(choice)
+                           terrain.set_overlay(choice)
+                        end
+                     }
+                  end
+               end
+            }
+         else
+            menu3{
+               list = terrain.terrain[name],
+               title = title,
+               description = _ "Which terrain would you like to place?",
+               dialog_list = "terrain",
+               sidebar = "terrain",
+               action = function(choice)
+                  terrain.set_terrain(choice)
+               end
+            }
          end
       end
-   end
+   }
 end
 
 function mod_menu.place_object()
