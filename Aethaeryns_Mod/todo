@@ -1,12 +1,6 @@
 AETHAERYN'S MOD TODO LIST (93% Progress)
 When this list is complete/empty, bump to version 0.9
 
-  - separate summoner/summoned unit lists from a generic species-based
-    unit list so the character selection process at the start can be
-    more intuitive and be translated for free
-
-    - and use that list instead of a text box for transform unit?
-
   - allow the host on turn 1 to quick-spawn NPCs and hostile units in
     some areas or all of a map, varying depending on the map
 

@@ -522,12 +522,14 @@ function mod_menu.unit_editor()
    local choice = menu(options, mod_menu.lich_image, title, description, "simple")
    if choice then
       if choice == "Transform" then
-         local description = _ "What unit do you want it to transform to?"
-         local label = _ "Unit Type:"
-         local new_unit = menu_text_input(mod_menu.lich_image, title, description, label)
-         if new_unit then
-            change_unit.transform(e.x1, e.y1, new_unit)
-         end
+         submenu_unit_selection_common(title, 5,
+                                       function(choice)
+                                          change_unit.transform(e.x1, e.y1, choice)
+                                       end,
+                                       function(choice, gender)
+                                          change_unit.transform(e.x1, e.y1, choice)
+                                       end
+         )
       elseif choice == "Role" then
          menu3{
             list = get_roles(),
