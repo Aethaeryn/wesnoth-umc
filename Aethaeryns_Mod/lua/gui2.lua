@@ -182,6 +182,8 @@ function menu3(arg_table)
                        arg_table.sidebar)
    if choice then
       arg_table.action(choice)
+   elseif arg_table.else_action ~= nil then
+      arg_table.else_action()
    end
 end
 

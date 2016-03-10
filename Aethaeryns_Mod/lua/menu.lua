@@ -173,6 +173,47 @@ end
 
 -- Menus --
 
+local function submenu_unit_selection_common(title, max_level, no_gender_spawn, gendered_spawn)
+   -- You only exit the menu at the top level or if you choose a unit.
+   local done = false
+   while not done do
+      menu3{list = LEADER_ROLES,
+            title = title,
+            description = _ "Select a unit category.",
+            dialog_list = "simple",
+            action = function(unit_category)
+               menu3{list = get_levels(unit_category, max_level),
+                     title = title,
+                     description = _ "Select a unit level.",
+                     dialog_list = "simple",
+                     action = function(level)
+                        menu3{list = units_by_species[unit_category][level],
+                              title = title,
+                              description = _ "Select a unit.",
+                              dialog_list = "unit",
+                              sidebar = "summoner",
+                              action = function(choice)
+                                 if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
+                                    no_gender_spawn(choice)
+                                    done = true
+                                 else
+                                    menu3{list = mod_menu.gender,
+                                          title = title,
+                                          description = _ "Select a gender.",
+                                          dialog_list = "almost_simple",
+                                          sublist_index = 2,
+                                          action = function(gender)
+                                             gendered_spawn(choice, gender)
+                                             done = true
+                                    end}
+                                 end
+                        end}
+               end}
+            end,
+            else_action = function() done = true end}
+   end
+end
+
 -- Transforms the peasant leader unit on the start of game into a unit
 -- that the character selects. The unit then gets a free upgrade
 -- point. The existence of upgrade points is later used to verify that
@@ -183,73 +224,23 @@ function mod_menu.select_leader()
    if leaders[1] ~= nil and leaders[1].type == "Peasant" and leaders[1].variables["advancement"] == nil then
       local leader = leaders[1]
       local title = _ "Leader"
-      -- You only exit the menu at the top level, or if you choose a
-      -- unit successfully.
-      local done = false
-      -- Lets the player come back to this menu.
+      -- Lets the player come back to the submenu.
       leader.variables.selection_active = true
-      while not done do
-         local leader_category = menu(LEADER_ROLES, mod_menu.lich_image, title, "Select a leader type.", "simple")
-         if leader_category then
-            menu2(get_levels(leader_category, change_unit.max_level), mod_menu.lich_image, title, "Select a unit level.", "simple", nil, nil,
-                 function(level)
-                    menu2(units_by_species[leader_category][level], mod_menu.lich_image, title, "Select a unit.", "unit", nil, "summoner",
-                          function(choice)
-                             if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
-                                change_unit.transform(leader.x, leader.y, choice)
-                                mod_upgrade.increment(leader)
-                                leader.variables.dont_make_me_quick = true
-                                leader.variables.selection_active = false
-                                done = true
-                             else
-                                menu2(mod_menu.gender, mod_menu.lich_image, title, "Select a gender.", "almost_simple", 2, nil,
-                                      function(gender)
-                                         change_unit.transform(leader.x, leader.y, choice, gender)
-                                         mod_upgrade.increment(leader)
-                                         leader.variables.dont_make_me_quick = true
-                                         leader.variables.selection_active = false
-                                         done = true
-                                end)
-                             end
-                    end)
-            end)
-         else
-            done = true
-         end
-      end
+      submenu_unit_selection_common(title,
+                                    change_unit.max_level,
+                                    function(choice)
+                                       change_unit.transform(leader.x, leader.y, choice)
+                                       mod_upgrade.increment(leader)
+                                       leader.variables.dont_make_me_quick = true
+                                       leader.variables.selection_active = false
+                                    end,
+                                    function(choice, gender)
+                                       change_unit.transform(leader.x, leader.y, choice, gender)
+                                       mod_upgrade.increment(leader)
+                                       leader.variables.dont_make_me_quick = true
+                                       leader.variables.selection_active = false
+      end)
    end
-end
-
-local function submenu_unit_selection_common(title, max_level, no_gender_spawn, gendered_spawn)
-   menu3{list = LEADER_ROLES,
-         title = title,
-         description = _ "Select a unit category.",
-         dialog_list = "simple",
-         action = function(unit_category)
-            menu3{list = get_levels(unit_category, max_level),
-                  title = title,
-                  description = _ "Select a unit level.",
-                  dialog_list = "simple",
-                  action = function(level)
-                     menu3{list = units_by_species[unit_category][level],
-                           title = title,
-                           description = _ "Select a unit.",
-                           dialog_list = "unit",
-                           sidebar = "summoner",
-                           action = function(choice)
-                              if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
-                                 no_gender_spawn(choice)
-                              else
-                                 menu3{list = mod_menu.gender,
-                                       title = title,
-                                       description = _ "Select a gender.",
-                                       dialog_list = "almost_simple",
-                                       sublist_index = 2,
-                                       action = function(gender) gendered_spawn(choice, gender) end}
-                              end
-                     end}
-            end}
-   end}
 end
 
 function mod_menu.summon_units()
