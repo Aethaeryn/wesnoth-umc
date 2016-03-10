@@ -173,41 +173,44 @@ end
 
 -- Menus --
 
-local function submenu_unit_selection_common(title, max_level, no_gender_spawn, gendered_spawn)
+local function submenu_unit_selection_common(arg_table)
    -- You only exit the menu at the top level or if you choose a unit.
    local done = false
+   if arg_table.max_level == nil then
+      arg_table.max_level = 5
+   end
    while not done do
       menu3{
          list = LEADER_ROLES,
-         title = title,
+         title = arg_table.title,
          description = _ "Select a unit category.",
          dialog_list = "simple",
          action = function(unit_category)
             menu3{
-               list = get_levels(unit_category, max_level),
-               title = title,
+               list = get_levels(unit_category, arg_table.max_level),
+               title = arg_table.title,
                description = _ "Select a unit level.",
                dialog_list = "simple",
                action = function(level)
                   menu3{
                      list = units_by_species[unit_category][level],
-                     title = title,
+                     title = arg_table.title,
                      description = _ "Select a unit.",
                      dialog_list = "unit",
                      sidebar = "summoner",
                      action = function(choice)
                         if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
-                           no_gender_spawn(choice)
+                           arg_table.action(choice)
                            done = true
                         else
                            menu3{
                               list = mod_menu.gender,
-                              title = title,
+                              title = arg_table.title,
                               description = _ "Select a gender.",
                               dialog_list = "almost_simple",
                               sublist_index = 2,
                               action = function(gender)
-                                 gendered_spawn(choice, gender)
+                                 arg_table.gender_action(choice, gender)
                                  done = true
                               end
                            }
@@ -234,21 +237,22 @@ function mod_menu.select_leader()
       local title = _ "Leader"
       -- Lets the player come back to the submenu.
       leader.variables.selection_active = true
-      submenu_unit_selection_common(title,
-                                    change_unit.max_level,
-                                    function(choice)
-                                       change_unit.transform(leader.x, leader.y, choice)
-                                       mod_upgrade.increment(leader)
-                                       leader.variables.dont_make_me_quick = true
-                                       leader.variables.selection_active = false
-                                    end,
-                                    function(choice, gender)
-                                       change_unit.transform(leader.x, leader.y, choice, gender)
-                                       mod_upgrade.increment(leader)
-                                       leader.variables.dont_make_me_quick = true
-                                       leader.variables.selection_active = false
-                                    end
-      )
+      submenu_unit_selection_common{
+         title = title,
+         max_level = change_unit.max_level,
+         action = function(choice)
+            change_unit.transform(leader.x, leader.y, choice)
+            mod_upgrade.increment(leader)
+            leader.variables.dont_make_me_quick = true
+            leader.variables.selection_active = false
+         end,
+         gender_action = function(choice, gender)
+            change_unit.transform(leader.x, leader.y, choice, gender)
+            mod_upgrade.increment(leader)
+            leader.variables.dont_make_me_quick = true
+            leader.variables.selection_active = false
+         end
+      }
    end
 end
 
@@ -270,14 +274,15 @@ function mod_menu.summon_units()
                action = function(choice) spawn_unit.spawn_group(e.x1, e.y1, unit_groups[choice], wesnoth.current.side) end
             }
          elseif option == "Summon Unit" then
-            submenu_unit_selection_common(title, 5,
-                                          function(choice)
-                                             spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side)
-                                          end,
-                                          function(choice, gender)
-                                             spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender)
-                                          end
-            )
+            submenu_unit_selection_common{
+               title = title,
+               action = function(choice)
+                  spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side)
+               end,
+               gender_action = function(choice, gender)
+                  spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender)
+               end
+            }
          end
       end
    }
@@ -522,14 +527,15 @@ function mod_menu.unit_editor()
    local choice = menu(options, mod_menu.lich_image, title, description, "simple")
    if choice then
       if choice == "Transform" then
-         submenu_unit_selection_common(title, 5,
-                                       function(choice)
-                                          change_unit.transform(e.x1, e.y1, choice)
-                                       end,
-                                       function(choice, gender)
-                                          change_unit.transform(e.x1, e.y1, choice, gender)
-                                       end
-         )
+         submenu_unit_selection_common{
+            title = title,
+            action = function(choice)
+               change_unit.transform(e.x1, e.y1, choice)
+            end,
+            gender_action = function(choice, gender)
+               change_unit.transform(e.x1, e.y1, choice, gender)
+            end
+         }
       elseif choice == "Role" then
          menu3{
             list = get_roles(),
