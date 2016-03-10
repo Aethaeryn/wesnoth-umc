@@ -177,40 +177,48 @@ local function submenu_unit_selection_common(title, max_level, no_gender_spawn, 
    -- You only exit the menu at the top level or if you choose a unit.
    local done = false
    while not done do
-      menu3{list = LEADER_ROLES,
-            title = title,
-            description = _ "Select a unit category.",
-            dialog_list = "simple",
-            action = function(unit_category)
-               menu3{list = get_levels(unit_category, max_level),
+      menu3{
+         list = LEADER_ROLES,
+         title = title,
+         description = _ "Select a unit category.",
+         dialog_list = "simple",
+         action = function(unit_category)
+            menu3{
+               list = get_levels(unit_category, max_level),
+               title = title,
+               description = _ "Select a unit level.",
+               dialog_list = "simple",
+               action = function(level)
+                  menu3{
+                     list = units_by_species[unit_category][level],
                      title = title,
-                     description = _ "Select a unit level.",
-                     dialog_list = "simple",
-                     action = function(level)
-                        menu3{list = units_by_species[unit_category][level],
+                     description = _ "Select a unit.",
+                     dialog_list = "unit",
+                     sidebar = "summoner",
+                     action = function(choice)
+                        if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
+                           no_gender_spawn(choice)
+                           done = true
+                        else
+                           menu3{
+                              list = mod_menu.gender,
                               title = title,
-                              description = _ "Select a unit.",
-                              dialog_list = "unit",
-                              sidebar = "summoner",
-                              action = function(choice)
-                                 if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
-                                    no_gender_spawn(choice)
-                                    done = true
-                                 else
-                                    menu3{list = mod_menu.gender,
-                                          title = title,
-                                          description = _ "Select a gender.",
-                                          dialog_list = "almost_simple",
-                                          sublist_index = 2,
-                                          action = function(gender)
-                                             gendered_spawn(choice, gender)
-                                             done = true
-                                    end}
-                                 end
-                        end}
-               end}
-            end,
-            else_action = function() done = true end}
+                              description = _ "Select a gender.",
+                              dialog_list = "almost_simple",
+                              sublist_index = 2,
+                              action = function(gender)
+                                 gendered_spawn(choice, gender)
+                                 done = true
+                              end
+                           }
+                        end
+                     end
+                  }
+               end
+            }
+         end,
+         else_action = function() done = true end
+      }
    end
 end
 
@@ -239,87 +247,111 @@ function mod_menu.select_leader()
                                        mod_upgrade.increment(leader)
                                        leader.variables.dont_make_me_quick = true
                                        leader.variables.selection_active = false
-      end)
+                                    end
+      )
    end
 end
 
 function mod_menu.summon_units()
    local e = wesnoth.current.event_context
    local title = _ "Summon Units"
-   menu3{list = {"Summon Group", "Summon Unit"},
-         title = title,
-         description = _ "Select what kind of summon to use.",
-         dialog_list = "simple",
-         action = function(option)
-            if option == "Summon Group" then
-               menu3{list = unit_groups_menu,
-                     title = title,
-                     description = _ "Select a group.",
-                     dialog_list = "simple",
-                     action = function(choice) spawn_unit.spawn_group(e.x1, e.y1, unit_groups[choice], wesnoth.current.side) end}
-            elseif option == "Summon Unit" then
-               submenu_unit_selection_common(title, 5,
-                                             function(choice) spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side) end,
-                                             function(choice, gender) spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender) end)
-            end
-   end}
+   menu3{
+      list = {"Summon Group", "Summon Unit"},
+      title = title,
+      description = _ "Select what kind of summon to use.",
+      dialog_list = "simple",
+      action = function(option)
+         if option == "Summon Group" then
+            menu3{
+               list = unit_groups_menu,
+               title = title,
+               description = _ "Select a group.",
+               dialog_list = "simple",
+               action = function(choice) spawn_unit.spawn_group(e.x1, e.y1, unit_groups[choice], wesnoth.current.side) end
+            }
+         elseif option == "Summon Unit" then
+            submenu_unit_selection_common(title, 5,
+                                          function(choice)
+                                             spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side)
+                                          end,
+                                          function(choice, gender)
+                                             spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender)
+                                          end
+            )
+         end
+      end
+   }
 end
 
 function mod_menu.summon(summoner_type)
    local e = wesnoth.current.event_context
    local title = string.format("Summon %s", summoner_type)
    local image = PORTRAIT[summoner_type]
-   menu3{list = get_levels(summoner_type, 5),
-         image = image,
-         title = title,
-         description = _ "Select a unit level.",
-         dialog_list = "simple",
-         action = function(level)
-            if level then
-               menu3{list = regular[summoner_type][level],
-                     image = image,
-                     title = title,
-                     description = _ "Select a unit to summon.",
-                     dialog_list = "unit_cost",
-                     sidebar = "unit",
-                     action = function(choice)
-                        local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
-                        if not spawn_success then
-                           gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
-                        end
-               end}
-            end
-   end}
+   menu3{
+      list = get_levels(summoner_type, 5),
+      image = image,
+      title = title,
+      description = _ "Select a unit level.",
+      dialog_list = "simple",
+      action = function(level)
+         if level then
+            menu3{
+               list = regular[summoner_type][level],
+               image = image,
+               title = title,
+               description = _ "Select a unit to summon.",
+               dialog_list = "unit_cost",
+               sidebar = "unit",
+               action = function(choice)
+                  local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
+                  if not spawn_success then
+                     gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
+                  end
+               end
+            }
+         end
+      end
+   }
 end
 
 function mod_menu.summon_summoner()
    local e = wesnoth.current.event_context
    local title = _ "Summon Summoner"
-   menu3{list = SUMMON_ROLES,
-         title = title,
-         description = _ "Select a summoner type.",
-         dialog_list = "simple",
-         action = function(summoner_type)
-            if summoner_type then
-               menu3{list = summoners[summoner_type],
-                     title = title,
-                     description = _ "Select a unit to summon.",
-                     dialog_list = "unit",
-                     sidebar = "summoner",
-                     action = function(summoner) spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side) end}
-            end
-   end}
+   menu3{
+      list = SUMMON_ROLES,
+      title = title,
+      description = _ "Select a summoner type.",
+      dialog_list = "simple",
+      action = function(summoner_type)
+         if summoner_type then
+            menu3{
+               list = summoners[summoner_type],
+               title = title,
+               description = _ "Select a unit to summon.",
+               dialog_list = "unit",
+               sidebar = "summoner",
+               action = function(summoner)
+                  spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
+               end
+            }
+         end
+      end
+   }
 end
 
 local function submenu_interact_unit_selection(unit_list, image, title)
    if unit_list[2] ~= nil then
       -- fixme: always seems to be false
-      menu3{list = unit_list,
-            image = image,
-            title = title,
-            description = _ "Which unit is doing the interaction?",
-            dialog_list = "unit_name_and_location",
-            action = function(choice) return choice end}
+      menu3{
+         list = unit_list,
+         image = image,
+         title = title,
+         description = _ "Which unit is doing the interaction?",
+         dialog_list = "unit_name_and_location",
+         action = function(choice)
+            return choice
+         end
+      }
    else
       return unit_list[1]
    end
