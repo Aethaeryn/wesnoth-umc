@@ -484,14 +484,16 @@ function mod_menu.unit_commands()
          end
       end
    elseif option == "Upgrades" then
-      local points = unit.variables["advancement"] or 0
-      local point_word = "points"
-      if points == 1 then
-         point_word = "point"
-      end
-      local description = string.format("What do you want to upgrade? You have %d %s available.", points, point_word)
-      menu2(get_upgrade_options(unit), "", title, description, "upgrade", nil, "upgrade",
-            function(upgrade) upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap) end)
+      menu3{
+         list = get_upgrade_options(unit),
+         title = title,
+         description = string.format("What do you want to upgrade? You have %d point(s) available.", unit.variables["advancement"] or 0),
+         dialog_list = "upgrade",
+         sidebar = "upgrade",
+         action = function(upgrade)
+            upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
+         end
+      }
    elseif option == "Speak" then
       local description = _ "What do you want to say?"
       local label = _ "Message:"
@@ -527,16 +529,36 @@ function mod_menu.unit_editor()
             change_unit.transform(e.x1, e.y1, new_unit)
          end
       elseif choice == "Role" then
-         local description = _ "Select a new (summoning) role for this unit."
-         menu2(get_roles(), mod_menu.lich_image, title, description, "simple", nil, nil, nil,
-               function(role) change_unit.role(e.x1, e.y1, role) end)
+         menu3{
+            list = get_roles(),
+            title = title,
+            description = _ "Select a new (summoning) role for this unit.",
+            dialog_list = "simple",
+            action = function(role)
+               change_unit.role(e.x1, e.y1, role)
+            end
+         }
       elseif choice == "Inventory" then
-         local description = _ "Which item do you want to add?"
-         menu2(mod_inventory.show_all(), "", title, description, "item", nil, "item",
-               function(item) submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables) end)
+         menu3{
+            list = mod_inventory.show_all(),
+            title = title,
+            description = _ "Which item do you want to add?",
+            dialog_list = "item",
+            sidebar = "item",
+            action = function(item)
+               submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables)
+            end
+         }
       elseif choice == "Side" then
-         menu2(SIDES, mod_menu.lich_image, title, "Select a target side.", "simple", nil, nil, nil,
-               function(side) change_unit.side(e.x1, e.y1, side) end)
+         menu3{
+            list = SIDES,
+            title = title,
+            description = _ "Select a target side.",
+            dialog_list = "simple",
+            action = function(side)
+               change_unit.side(e.x1, e.y1, side)
+            end
+         }
       elseif choice == "Stats" then
          local stats = {"Hitpoints", "Max Hitpoints", "Moves", "Max Moves",
                         "Experience", "Max Experience", "Gender",

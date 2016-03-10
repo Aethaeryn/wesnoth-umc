@@ -161,13 +161,6 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
    end
 end
 
-function menu2(list, image, title, description, dialog_list, sublist_index, sidebar, f)
-   local choice = menu(list, image, title, description, dialog_list, sublist_index, sidebar)
-   if choice then
-      f(choice)
-   end
-end
-
 function menu3(arg_table)
    if arg_table.image == nil then
       arg_table.image = mod_menu.lich_image
