@@ -527,7 +527,7 @@ function mod_menu.unit_editor()
                                           change_unit.transform(e.x1, e.y1, choice)
                                        end,
                                        function(choice, gender)
-                                          change_unit.transform(e.x1, e.y1, choice)
+                                          change_unit.transform(e.x1, e.y1, choice, gender)
                                        end
          )
       elseif choice == "Role" then
