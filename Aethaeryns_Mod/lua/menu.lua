@@ -299,22 +299,20 @@ function mod_menu.summon(summoner_type)
       description = _ "Select a unit level.",
       dialog_list = "simple",
       action = function(level)
-         if level then
-            menu3{
-               list = regular[summoner_type][level],
-               image = image,
-               title = title,
-               description = _ "Select a unit to summon.",
-               dialog_list = "unit_cost",
-               sidebar = "unit",
-               action = function(choice)
-                  local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
-                  if not spawn_success then
-                     gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
-                  end
+         menu3{
+            list = regular[summoner_type][level],
+            image = image,
+            title = title,
+            description = _ "Select a unit to summon.",
+            dialog_list = "unit_cost",
+            sidebar = "unit",
+            action = function(choice)
+               local spawn_success = spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side)
+               if not spawn_success then
+                  gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
                end
-            }
-         end
+            end
+         }
       end
    }
 end
@@ -328,18 +326,16 @@ function mod_menu.summon_summoner()
       description = _ "Select a summoner type.",
       dialog_list = "simple",
       action = function(summoner_type)
-         if summoner_type then
-            menu3{
-               list = summoners[summoner_type],
-               title = title,
-               description = _ "Select a unit to summon.",
-               dialog_list = "unit",
-               sidebar = "summoner",
-               action = function(summoner)
-                  spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
-               end
-            }
-         end
+         menu3{
+            list = summoners[summoner_type],
+            title = title,
+            description = _ "Select a unit to summon.",
+            dialog_list = "unit",
+            sidebar = "summoner",
+            action = function(summoner)
+               spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
+            end
+         }
       end
    }
 end
