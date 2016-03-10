@@ -518,73 +518,79 @@ end
 function mod_menu.unit_editor()
    local e = wesnoth.current.event_context
    local title = _ "Change Unit"
-   local description = _ "What stat do you want to modify?"
-   local options = {"Side", "Inventory", "Transform", "Role", "Stats"}
-   local choice = menu(options, mod_menu.lich_image, title, description, "simple")
-   if choice then
-      if choice == "Transform" then
-         submenu_unit_selection_common{
-            title = title,
-            action = function(choice)
-               change_unit.transform(e.x1, e.y1, choice)
-            end,
-            gender_action = function(choice, gender)
-               change_unit.transform(e.x1, e.y1, choice, gender)
-            end
-         }
-      elseif choice == "Role" then
-         menu3{
-            list = get_roles(),
-            title = title,
-            description = _ "Select a new (summoning) role for this unit.",
-            dialog_list = "simple",
-            action = function(role)
-               change_unit.role(e.x1, e.y1, role)
-            end
-         }
-      elseif choice == "Inventory" then
-         menu3{
-            list = mod_inventory.show_all(),
-            title = title,
-            description = _ "Which item do you want to add?",
-            dialog_list = "item",
-            sidebar = "item",
-            action = function(item)
-               submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables)
-            end
-         }
-      elseif choice == "Side" then
-         menu3{
-            list = SIDES,
-            title = title,
-            description = _ "Select a target side.",
-            dialog_list = "simple",
-            action = function(side)
-               change_unit.side(e.x1, e.y1, side)
-            end
-         }
-      elseif choice == "Stats" then
-         local stats = {"Hitpoints", "Max Hitpoints", "Moves", "Max Moves",
-                        "Experience", "Max Experience", "Gender",
-                        "Leader"}
-         local description = _ "Which stat do you want to change?"
-         local stat = menu(stats, mod_menu.lich_image, title, description, "simple")
-         if stat then
-            stat = string.gsub(string.lower(stat), " ", "_")
-            if stat ~= "gender" and stat ~= "leader" then
-               local description = string.format("What should the new value of %s be?", stat)
-               local label = "New Value:"
-               local new_value
-               new_value = menu_text_input(mod_menu.lich_image, title, description, label)
-               if new_value then
-                  change_unit[stat](e.x1, e.y1, new_value)
+   menu3{
+      list = {"Side", "Inventory", "Transform", "Role", "Stats"},
+      title = title,
+      description = _ "What stat do you want to modify?",
+      dialog_list = "simple",
+      action = function(choice)
+         if choice == "Transform" then
+            submenu_unit_selection_common{
+               title = title,
+               action = function(choice)
+                  change_unit.transform(e.x1, e.y1, choice)
+               end,
+               gender_action = function(choice, gender)
+                  change_unit.transform(e.x1, e.y1, choice, gender)
                end
-            else
-               change_unit[stat](e.x1, e.y1)
-            end
+            }
+         elseif choice == "Role" then
+            menu3{
+               list = get_roles(),
+               title = title,
+               description = _ "Select a new (summoning) role for this unit.",
+               dialog_list = "simple",
+               action = function(role)
+                  change_unit.role(e.x1, e.y1, role)
+               end
+            }
+         elseif choice == "Inventory" then
+            menu3{
+               list = mod_inventory.show_all(),
+               title = title,
+               description = _ "Which item do you want to add?",
+               dialog_list = "item",
+               sidebar = "item",
+               action = function(item)
+                  submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables)
+               end
+            }
+         elseif choice == "Side" then
+            menu3{
+               list = SIDES,
+               title = title,
+               description = _ "Select a target side.",
+               dialog_list = "simple",
+               action = function(side)
+                  change_unit.side(e.x1, e.y1, side)
+               end
+            }
+         elseif choice == "Stats" then
+            menu3{
+               list = {"Hitpoints", "Max Hitpoints", "Moves", "Max Moves",
+                       "Experience", "Max Experience", "Gender",
+                       "Leader"},
+               title = title,
+               description = _ "Which stat do you want to change?",
+               dialog_list = "simple",
+               action = function(stat)
+                  stat = string.gsub(string.lower(stat), " ", "_")
+                  if stat ~= "gender" and stat ~= "leader" then
+                     local description = string.format("What should the new value of %s be?", stat)
+                     local label = "New Value:"
+                     local new_value
+                     new_value = menu_text_input(mod_menu.lich_image, title, description, label)
+                     if new_value then
+                        change_unit[stat](e.x1, e.y1, new_value)
+                     end
+                  else
+                     change_unit[stat](e.x1, e.y1)
+                  end
+               end
+            }
          end
       end
-   end
+   }
 end
 
 function mod_menu.terrain_editor()
