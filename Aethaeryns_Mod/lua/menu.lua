@@ -490,55 +490,65 @@ function mod_menu.unit_commands()
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local title = _ "Unit Commands"
-   local description = _ "What do you want to do with this unit?"
-   local image = mod_menu.lich_image -- todo: definitely not appropriate here
-   local option = menu(get_unit_commands(unit.variables.selection_active), image, title, description, "with_picture", 1)
-   if option == "Select Unit" then
-      unit.variables.selection_active = false
-      mod_menu.select_leader()
-   elseif option == "Use Item" then
-      local description = _ "Which item do you want to use?"
-      local inventory = mod_inventory.show_current(unit.variables)
-      local item = menu(inventory, "", title, description, "item", nil, "item")
-      if item then
-         local item = item.name
-         local description = _ "How much do you want to use?"
-         local quantity = menu_slider(title, description, _ "Quantity", {max = unit.variables[item], min = 1, step = 1, value = 1})
-         if quantity then
-            for i=1,quantity do
-               mod_inventory.use(e.x1, e.y1, item)
+   menu3{
+      list = get_unit_commands(unit.variables.selection_active),
+      title = title,
+      description = _ "What do you want to do with this unit?",
+      dialog_list = "with_picture",
+      sublist_index = 1,
+      action = function(option)
+         if option == "Select Unit" then
+            unit.variables.selection_active = false
+            mod_menu.select_leader()
+         elseif option == "Use Item" then
+            menu3{
+               list = mod_inventory.show_current(unit.variables),
+               title = title,
+               description = _ "Which item do you want to use?",
+               dialog_list = "item",
+               sidebar = "item",
+               action = function(item)
+                  local item = item.name
+                  local description = _ "How much do you want to use?"
+                  local quantity = menu_slider(title, description, _ "Quantity", {max = unit.variables[item], min = 1, step = 1, value = 1})
+                  if quantity then
+                     for i=1,quantity do
+                        mod_inventory.use(e.x1, e.y1, item)
+                     end
+                  end
+               end
+            }
+         elseif option == "Upgrades" then
+            menu3{
+               list = get_upgrade_options(unit),
+               title = title,
+               description = string.format("What do you want to upgrade? You have %d point(s) available.", unit.variables["advancement"] or 0),
+               dialog_list = "upgrade",
+               sidebar = "upgrade",
+               action = function(upgrade)
+                  upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
+               end
+            }
+         elseif option == "Speak" then
+            local description = _ "What do you want to say?"
+            local label = _ "Message:"
+            -- fixme (1.13): afaik, there's no way to force a focus on
+            -- the text input except through the C++
+            local message = menu_text_input(mod_menu.lich_image, title, description, label)
+            if message then
+               -- fixme (1.13): wesnoth.message does *not* show up in Chat
+               -- Log because Wesnoth is full of terrible, hardcoded
+               -- assumptions about how things will be used via buggy,
+               -- half-implemented APIs.
+               --
+               -- fixme (1.12): make a log of these messages somewhere so
+               -- that they can be accessed outside of the replay?
+               wesnoth.message(string.format("(%d, %d) %s", unit.x, unit.y, tostring(unit.name)), message)
+               fire.custom_message(message)
             end
          end
       end
-   elseif option == "Upgrades" then
-      menu3{
-         list = get_upgrade_options(unit),
-         title = title,
-         description = string.format("What do you want to upgrade? You have %d point(s) available.", unit.variables["advancement"] or 0),
-         dialog_list = "upgrade",
-         sidebar = "upgrade",
-         action = function(upgrade)
-            upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
-         end
-      }
-   elseif option == "Speak" then
-      local description = _ "What do you want to say?"
-      local label = _ "Message:"
-      -- fixme (1.13): afaik, there's no way to force a focus on
-      -- the text input except through the C++
-      local message = menu_text_input(mod_menu.lich_image, title, description, label)
-      if message then
-         -- fixme (1.13): wesnoth.message does *not* show up in Chat
-         -- Log because Wesnoth is full of terrible, hardcoded
-         -- assumptions about how things will be used via buggy,
-         -- half-implemented APIs.
-         --
-         -- fixme (1.12): make a log of these messages somewhere so
-         -- that they can be accessed outside of the replay?
-         wesnoth.message(string.format("(%d, %d) %s", unit.x, unit.y, tostring(unit.name)), message)
-         fire.custom_message(message)
-      end
-   end
+   }
 end
 
 function mod_menu.unit_editor()
