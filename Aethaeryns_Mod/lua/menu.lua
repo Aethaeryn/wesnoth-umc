@@ -695,122 +695,130 @@ end
 function mod_menu.place_object()
    local e = wesnoth.current.event_context
    local title = _ "Place Object"
-   local description = _ "What do you want to do with this unit?"
-   local option = menu(mod_menu.place_object_options, mod_menu.lich_image, title, description, "with_picture", 1)
-   if option then
-      if option == "Place Shop" then
-         game_object.simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
-      elseif option == "Place Chest" then
-         game_object.simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
-      elseif option == "Place Pack" then
-         game_object.simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
-      elseif option == "Place Gold Pile" then
-         local description = _ "How much gold do you want to place in the pile?"
-         local label = "Gold:"
-         local gold = menu_slider(title, description, label, {max = 500, min = 10, step = 10, value = 100})
-         if gold and type(gold) == "number" and gold > 0 then
-            game_object.gold_place(e.x1, e.y1, gold)
+   menu3{list = mod_menu.place_object_options,
+         title = title,
+         description = _ "What do you want to do with this unit?",
+         dialog_list = "with_picture",
+         sublist_index = 1,
+         action = function(option)
+            if option == "Place Shop" then
+               game_object.simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
+            elseif option == "Place Chest" then
+               game_object.simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
+            elseif option == "Place Pack" then
+               game_object.simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
+            elseif option == "Place Gold Pile" then
+               local description = _ "How much gold do you want to place in the pile?"
+               local label = "Gold:"
+               local gold = menu_slider(title, description, label, {max = 500, min = 10, step = 10, value = 100})
+               if gold and type(gold) == "number" and gold > 0 then
+                  game_object.gold_place(e.x1, e.y1, gold)
+               end
+            elseif option == "Clear Hex" then
+               game_object.clear(e.x1, e.y1)
+            end
          end
-      elseif option == "Clear Hex" then
-         game_object.clear(e.x1, e.y1)
-      end
-   end
+   }
 end
 
 function mod_menu.settings()
    local e = wesnoth.current.event_context
    local title = _ "Settings"
-   local description = _ "What action do you want to do?"
-   local option = menu(mod_menu.misc_settings, mod_menu.lich_image, title, description, "simple")
-   if option then
-      if option == "Modify Container" then
-         local description = _ "Which container do you want to modify?"
-         local interaction = menu(find_interactions_to_modify(e.x1, e.y1), mod_menu.lich_image, title, description, "with_picture", 1)
-         if interaction then
-            if interaction == "Modify Shop" then
-               local description = _ "Which item do you want to add?"
-               local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
-               if item then
-                  local item = item.name
-                  submenu_inventory_quantity(item, containers[e.x1][e.y1]["shop"])
-               end
-            elseif interaction == "Modify Chest" then
-               local description = _ "Which item do you want to add?"
-               local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
-               if item then
-                  local item = item.name
-                  submenu_inventory_quantity(item, containers[e.x1][e.y1]["chest"])
+   menu3{
+      list = mod_menu.misc_settings,
+      title = title,
+      description = _ "What action do you want to do?",
+      dialog_list = "simple",
+      action = function(option)
+         if option == "Modify Container" then
+            local description = _ "Which container do you want to modify?"
+            local interaction = menu(find_interactions_to_modify(e.x1, e.y1), mod_menu.lich_image, title, description, "with_picture", 1)
+            if interaction then
+               if interaction == "Modify Shop" then
+                  local description = _ "Which item do you want to add?"
+                  local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
+                  if item then
+                     local item = item.name
+                     submenu_inventory_quantity(item, containers[e.x1][e.y1]["shop"])
+                  end
+               elseif interaction == "Modify Chest" then
+                  local description = _ "Which item do you want to add?"
+                  local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
+                  if item then
+                     local item = item.name
+                     submenu_inventory_quantity(item, containers[e.x1][e.y1]["chest"])
+                  end
                end
             end
-         end
-      elseif option == "Modify Side" then
-         local description = _ "Which side do you want to modify?"
-         local side = menu(get_sides_with_all(), mod_menu.lich_image, title, description, "simple")
-         if side then
-            local description = _ "Which variable do you want to change?"
-            local stats = {"gold", "village_gold", "base_income", "team_name", "objectives"}
-            if side == "All" then
-               stat = menu(stats, mod_menu.lich_image, title, description, "simple")
-               if stat then
-                  if stat ~= "objectives" then
-                     local title = string.format("Choose a new value for %s", stat)
-                     local label = _ "New value:"
-                     local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
-                     if new_value then
-                        for i, side in ipairs(wesnoth.sides) do
-                           side[stat] = new_value
+         elseif option == "Modify Side" then
+            local description = _ "Which side do you want to modify?"
+            local side = menu(get_sides_with_all(), mod_menu.lich_image, title, description, "simple")
+            if side then
+               local description = _ "Which variable do you want to change?"
+               local stats = {"gold", "village_gold", "base_income", "team_name", "objectives"}
+               if side == "All" then
+                  stat = menu(stats, mod_menu.lich_image, title, description, "simple")
+                  if stat then
+                     if stat ~= "objectives" then
+                        local title = string.format("Choose a new value for %s", stat)
+                        local label = _ "New value:"
+                        local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
+                        if new_value then
+                           for i, side in ipairs(wesnoth.sides) do
+                              side[stat] = new_value
+                              if stat == "team_name" then
+                                 side.user_team_name = side.team_name
+                              end
+                           end
+                        end
+                     end
+                  end
+               else
+                  local side_stats = {}
+                  for i, stat in ipairs(stats) do
+                     side_stats[i] = {stat, wesnoth.sides[side][stat]}
+                  end
+                  stat = menu(side_stats, mod_menu.lich_image, title, description, "almost_simple", 1, "team_stats")
+                  if stat then
+                     if stat ~= "objectives" then
+                        local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])
+                        local label = _ "New value:"
+                        local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
+                        if new_value then
+                           wesnoth.sides[side][stat] = new_value
                            if stat == "team_name" then
-                              side.user_team_name = side.team_name
+                              wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
                            end
                         end
                      end
                   end
                end
-            else
-               local side_stats = {}
-               for i, stat in ipairs(stats) do
-                  side_stats[i] = {stat, wesnoth.sides[side][stat]}
-               end
-               stat = menu(side_stats, mod_menu.lich_image, title, description, "almost_simple", 1, "team_stats")
-               if stat then
-                  if stat ~= "objectives" then
-                     local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])
-                     local label = _ "New value:"
-                     local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
-                     if new_value then
-                        wesnoth.sides[side][stat] = new_value
-                        if stat == "team_name" then
-                           wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
-                        end
-                     end
-                  end
-               end
             end
+         elseif option == "Max Starting Level" then
+            local description = "What level should be the maximum for leader selection?"
+            local level = menu({1, 2, 3, 4, 5}, mod_menu.lich_image, title, description, "simple")
+            if level then
+               change_unit.max_level = level
+            end
+         elseif option == "New Scenario" then
+            local description = "Which scenario do you want to start?"
+            local scenario = menu(mod_menu.scenarios, mod_menu.lich_image, title, description, "almost_simple", 2)
+            if scenario then
+               fire.end_scenario(scenario)
+            end
+         elseif option == "Toggle Summon Summoners" then
+            mod_menu.toggle("summon_summoner")
+         elseif option == "Toggle Summon Units" then
+            mod_menu.toggle("summon_units")
+         elseif option == "Toggle Unit Editor" then
+            mod_menu.toggle("unit_editor")
+         elseif option == "Toggle Terrain Editor" then
+            mod_menu.toggle("terrain_editor")
+         elseif option == "Toggle Place Object" then
+            mod_menu.toggle("place_object")
          end
-      elseif option == "Max Starting Level" then
-         local description = "What level should be the maximum for leader selection?"
-         local level = menu({1, 2, 3, 4, 5}, mod_menu.lich_image, title, description, "simple")
-         if level then
-            change_unit.max_level = level
-         end
-      elseif option == "New Scenario" then
-         local description = "Which scenario do you want to start?"
-         local scenario = menu(mod_menu.scenarios, mod_menu.lich_image, title, description, "almost_simple", 2)
-         if scenario then
-            fire.end_scenario(scenario)
-         end
-      elseif option == "Toggle Summon Summoners" then
-         mod_menu.toggle("summon_summoner")
-      elseif option == "Toggle Summon Units" then
-         mod_menu.toggle("summon_units")
-      elseif option == "Toggle Unit Editor" then
-         mod_menu.toggle("unit_editor")
-      elseif option == "Toggle Terrain Editor" then
-         mod_menu.toggle("terrain_editor")
-      elseif option == "Toggle Place Object" then
-         mod_menu.toggle("place_object")
       end
-   end
+   }
 end
 
 -- Setup --
