@@ -125,6 +125,35 @@ local function do_action(choice, list, action, else_action, sublist_index)
    end
 end
 
+local function generate_menu_preshow(list, title, description, image, dialog_list, sidebar, not_empty)
+   if image = nil then
+      image = mod_menu.lich_image
+   end
+
+   if not_empty then
+      return function()
+         wesnoth.set_dialog_value(title, "menu_title")
+         wesnoth.set_dialog_value(description, "menu_description")
+         gui2.make_list[dialog_list](list)
+         wesnoth.set_dialog_value(1, "menu_list")
+         if sidebar ~= nil then
+            local select = gui2.on_select[sidebar](list)
+            wesnoth.set_dialog_callback(select, "menu_list")
+            select()
+         else
+            wesnoth.set_dialog_value(image, "menu_image")
+         end
+      end
+   else
+      return function()
+         wesnoth.set_dialog_value(title, "menu_title")
+         wesnoth.set_dialog_value(description, "menu_description")
+         wesnoth.set_dialog_value(image, "menu_image")
+         wesnoth.set_dialog_value("None", "menu_list_empty")
+      end
+   end
+end
+
 -- This is a menu that is suitable for most of MOD. It takes in a
 -- list, an image that shows on the left for decoration, a title and
 -- description that show at the top, and a function that specifies how
@@ -146,31 +175,14 @@ function menu(arg_table)
    if arg_table.list[1] == nil then
       not_empty = false
    end
-   if arg_table.image == nil then
-      arg_table.image = mod_menu.lich_image
-   end
-
-   local function preshow()
-      wesnoth.set_dialog_value(arg_table.title, "menu_title")
-      wesnoth.set_dialog_value(arg_table.description, "menu_description")
-      if not_empty then
-         gui2.make_list[arg_table.dialog_list](arg_table.list)
-         wesnoth.set_dialog_value(1, "menu_list")
-         if arg_table.sidebar ~= nil then
-            local select = gui2.on_select[arg_table.sidebar](arg_table.list)
-            wesnoth.set_dialog_callback(select, "menu_list")
-            select()
-         else
-            wesnoth.set_dialog_value(arg_table.image, "menu_image")
-         end
-      else
-         wesnoth.set_dialog_value(arg_table.image, "menu_image")
-         wesnoth.set_dialog_value("None", "menu_list_empty")
-      end
-   end
-
    do_action(dialog_choice(gui2.wml.dialog(not_empty, "list", arg_table.sidebar),
-                           preshow,
+                           generate_menu_preshow(arg_table.list,
+                                                 arg_table.title,
+                                                 arg_table.description,
+                                                 arg_table.image,
+                                                 arg_table.dialog_list,
+                                                 arg_table.sidebar,
+                                                 not_empty),
                            not_empty,
                            "menu_list"),
              arg_table.list,
