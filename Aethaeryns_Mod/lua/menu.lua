@@ -722,6 +722,19 @@ function mod_menu.place_object()
    }
 end
 
+local function submenu_add_item(title, x, y, container_type)
+   menu3{
+      list = mod_inventory.show_all(),
+      title = title,
+      description = _ "Which item do you want to add?",
+      dialog_list = "item",
+      sidebar = "item",
+      action = function(item)
+         submenu_inventory_quantity(item.name, containers[x][y][container_type])
+      end
+   }
+end
+
 function mod_menu.settings()
    local e = wesnoth.current.event_context
    local title = _ "Settings"
@@ -732,25 +745,20 @@ function mod_menu.settings()
       dialog_list = "simple",
       action = function(option)
          if option == "Modify Container" then
-            local description = _ "Which container do you want to modify?"
-            local interaction = menu(find_interactions_to_modify(e.x1, e.y1), mod_menu.lich_image, title, description, "with_picture", 1)
-            if interaction then
-               if interaction == "Modify Shop" then
-                  local description = _ "Which item do you want to add?"
-                  local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
-                  if item then
-                     local item = item.name
-                     submenu_inventory_quantity(item, containers[e.x1][e.y1]["shop"])
-                  end
-               elseif interaction == "Modify Chest" then
-                  local description = _ "Which item do you want to add?"
-                  local item = menu(mod_inventory.show_all(), "", title, description, "item", nil, "item")
-                  if item then
-                     local item = item.name
-                     submenu_inventory_quantity(item, containers[e.x1][e.y1]["chest"])
+            menu3{
+               list = find_interactions_to_modify(e.x1, e.y1),
+               title = title,
+               description = _ "Which container do you want to modify?",
+               dialog_list = "with_picture",
+               sublist_index = 1,
+               action = function(interaction)
+                  if interaction == "Modify Shop" then
+                     submenu_add_item(title, e.x1, e.y1, "shop")
+                  elseif interaction == "Modify Chest" then
+                     submenu_add_item(title, e.x1, e.y1, "chest")
                   end
                end
-            end
+            }
          elseif option == "Modify Side" then
             menu3{
                list = get_sides_with_all(),
