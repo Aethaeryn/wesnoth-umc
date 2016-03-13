@@ -180,19 +180,19 @@ local function submenu_unit_selection_common(arg_table)
       arg_table.max_level = 5
    end
    while not done do
-      menu3{
+      menu{
          list = LEADER_ROLES,
          title = arg_table.title,
          description = _ "Select a unit category.",
          dialog_list = "simple",
          action = function(unit_category)
-            menu3{
+            menu{
                list = get_levels(unit_category, arg_table.max_level),
                title = arg_table.title,
                description = _ "Select a unit level.",
                dialog_list = "simple",
                action = function(level)
-                  menu3{
+                  menu{
                      list = units_by_species[unit_category][level],
                      title = arg_table.title,
                      description = _ "Select a unit.",
@@ -203,7 +203,7 @@ local function submenu_unit_selection_common(arg_table)
                            arg_table.action(choice)
                            done = true
                         else
-                           menu3{
+                           menu{
                               list = mod_menu.gender,
                               title = arg_table.title,
                               description = _ "Select a gender.",
@@ -259,14 +259,14 @@ end
 function mod_menu.summon_units()
    local e = wesnoth.current.event_context
    local title = _ "Summon Units"
-   menu3{
+   menu{
       list = {"Summon Group", "Summon Unit"},
       title = title,
       description = _ "Select what kind of summon to use.",
       dialog_list = "simple",
       action = function(option)
          if option == "Summon Group" then
-            menu3{
+            menu{
                list = unit_groups_menu,
                title = title,
                description = _ "Select a group.",
@@ -292,14 +292,14 @@ function mod_menu.summon(summoner_type)
    local e = wesnoth.current.event_context
    local title = string.format("Summon %s", summoner_type)
    local image = PORTRAIT[summoner_type]
-   menu3{
+   menu{
       list = get_levels(summoner_type, 5),
       image = image,
       title = title,
       description = _ "Select a unit level.",
       dialog_list = "simple",
       action = function(level)
-         menu3{
+         menu{
             list = regular[summoner_type][level],
             image = image,
             title = title,
@@ -320,13 +320,13 @@ end
 function mod_menu.summon_summoner()
    local e = wesnoth.current.event_context
    local title = _ "Summon Summoner"
-   menu3{
+   menu{
       list = SUMMON_ROLES,
       title = title,
       description = _ "Select a summoner type.",
       dialog_list = "simple",
       action = function(summoner_type)
-         menu3{
+         menu{
             list = summoners[summoner_type],
             title = title,
             description = _ "Select a unit to summon.",
@@ -343,7 +343,7 @@ end
 local function submenu_interact_unit_selection(unit_list, title)
    if unit_list[2] ~= nil then
       -- fixme: always seems to be false
-      menu3{
+      menu{
          list = unit_list,
          title = title,
          description = _ "Which unit is doing the interaction?",
@@ -366,7 +366,7 @@ function mod_menu.interact()
       return
    end
    local on_hex = unit.x == e.x1 and unit.y == e.y1
-   menu3{
+   menu{
       list = find_interactions(e.x1, e.y1, blocked, on_hex),
       title = title,
       description = _ "How do you want to interact?",
@@ -374,14 +374,14 @@ function mod_menu.interact()
       sublist_index = 1,
       action = function(option)
          if option == "Interact with Unit" then
-            menu3{
+            menu{
                list = { "Items" },
                title = title,
                description = _ "What do you want to give to this unit?",
                dialog_list = "simple",
                action = function(interaction)
                   if interaction == "Items" then
-                     menu3{
+                     menu{
                         list = mod_inventory.show_current(unit.variables),
                         title = title,
                         description = _ "Which item do you want to give to this unit?",
@@ -401,7 +401,7 @@ function mod_menu.interact()
                end
             }
          elseif option == "Buy from Shop" then
-            menu3{
+            menu{
                list = mod_inventory.show_current(containers[e.x1][e.y1]["shop"]),
                title = title,
                description = _ "What item do you want to purchase from the shop?",
@@ -423,7 +423,7 @@ function mod_menu.interact()
                end
             }
          elseif option == "Sell to Shop" then
-            menu3{
+            menu{
                list = mod_inventory.show_current(unit.variables),
                title = title,
                description = _ "What item do you want to sell to the shop?",
@@ -448,7 +448,7 @@ function mod_menu.interact()
                mod_inventory.collect_gold(e.x1, e.y1, amount, wesnoth.current.side)
             end
          elseif option == "Remove from Chest" then
-            menu3{
+            menu{
                list = mod_inventory.show_current(containers[e.x1][e.y1]["chest"]),
                title = title,
                description = _ "What item do you want to remove from the chest?",
@@ -465,7 +465,7 @@ function mod_menu.interact()
                end
             }
          elseif option == "Add to Chest" then
-            menu3{
+            menu{
                list = mod_inventory.show_current(unit.variables),
                title = title,
                description = _ "What item do you want to put in the chest?",
@@ -490,7 +490,7 @@ function mod_menu.unit_commands()
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local title = _ "Unit Commands"
-   menu3{
+   menu{
       list = get_unit_commands(unit.variables.selection_active),
       title = title,
       description = _ "What do you want to do with this unit?",
@@ -501,7 +501,7 @@ function mod_menu.unit_commands()
             unit.variables.selection_active = false
             mod_menu.select_leader()
          elseif option == "Use Item" then
-            menu3{
+            menu{
                list = mod_inventory.show_current(unit.variables),
                title = title,
                description = _ "Which item do you want to use?",
@@ -519,7 +519,7 @@ function mod_menu.unit_commands()
                end
             }
          elseif option == "Upgrades" then
-            menu3{
+            menu{
                list = get_upgrade_options(unit),
                title = title,
                description = string.format("What do you want to upgrade? You have %d point(s) available.", unit.variables["advancement"] or 0),
@@ -554,7 +554,7 @@ end
 function mod_menu.unit_editor()
    local e = wesnoth.current.event_context
    local title = _ "Change Unit"
-   menu3{
+   menu{
       list = {"Side", "Inventory", "Transform", "Role", "Stats"},
       title = title,
       description = _ "What stat do you want to modify?",
@@ -571,7 +571,7 @@ function mod_menu.unit_editor()
                end
             }
          elseif choice == "Role" then
-            menu3{
+            menu{
                list = get_roles(),
                title = title,
                description = _ "Select a new (summoning) role for this unit.",
@@ -581,7 +581,7 @@ function mod_menu.unit_editor()
                end
             }
          elseif choice == "Inventory" then
-            menu3{
+            menu{
                list = mod_inventory.show_all(),
                title = title,
                description = _ "Which item do you want to add?",
@@ -592,7 +592,7 @@ function mod_menu.unit_editor()
                end
             }
          elseif choice == "Side" then
-            menu3{
+            menu{
                list = SIDES,
                title = title,
                description = _ "Select a target side.",
@@ -602,7 +602,7 @@ function mod_menu.unit_editor()
                end
             }
          elseif choice == "Stats" then
-            menu3{
+            menu{
                list = {"Hitpoints", "Max Hitpoints", "Moves", "Max Moves",
                        "Experience", "Max Experience", "Gender",
                        "Leader"},
@@ -633,7 +633,7 @@ function mod_menu.terrain_editor()
    local e = wesnoth.current.event_context
    terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
    local title = _ "Terrain Editor"
-   menu3{
+   menu{
       list = terrain.options,
       title = title,
       description = _ "Which terrain would you like to switch to?",
@@ -642,7 +642,7 @@ function mod_menu.terrain_editor()
          if name == "Repeat last terrain" then
             terrain.set_terrain(terrain.last_terrain)
          elseif name == "Change radius" then
-            menu3{
+            menu{
                list = terrain.possible_radius,
                title = title,
                description = _ "What do you want to set the terrain radius as?",
@@ -652,7 +652,7 @@ function mod_menu.terrain_editor()
                end
             }
          elseif name == "Set an overlay" then
-            menu3{
+            menu{
                list = terrain.overlay_options,
                title = title,
                description = _ "Which overlay would you like to switch to?",
@@ -663,7 +663,7 @@ function mod_menu.terrain_editor()
                   elseif overlay_name == "Remove overlay" then
                      terrain.remove_overlay()
                   else
-                     menu3{
+                     menu{
                         list = terrain.overlays[overlay_name],
                         title = title,
                         description = _ "Which terrain overlay would you like to place?",
@@ -677,7 +677,7 @@ function mod_menu.terrain_editor()
                end
             }
          else
-            menu3{
+            menu{
                list = terrain.terrain[name],
                title = title,
                description = _ "Which terrain would you like to place?",
@@ -695,7 +695,7 @@ end
 function mod_menu.place_object()
    local e = wesnoth.current.event_context
    local title = _ "Place Object"
-   menu3{
+   menu{
       list = mod_menu.place_object_options,
       title = title,
       description = _ "What do you want to do with this unit?",
@@ -723,7 +723,7 @@ function mod_menu.place_object()
 end
 
 local function submenu_add_item(title, x, y, container_type)
-   menu3{
+   menu{
       list = mod_inventory.show_all(),
       title = title,
       description = _ "Which item do you want to add?",
@@ -738,14 +738,14 @@ end
 function mod_menu.settings()
    local e = wesnoth.current.event_context
    local title = _ "Settings"
-   menu3{
+   menu{
       list = mod_menu.misc_settings,
       title = title,
       description = _ "What action do you want to do?",
       dialog_list = "simple",
       action = function(option)
          if option == "Modify Container" then
-            menu3{
+            menu{
                list = find_interactions_to_modify(e.x1, e.y1),
                title = title,
                description = _ "Which container do you want to modify?",
@@ -760,7 +760,7 @@ function mod_menu.settings()
                end
             }
          elseif option == "Modify Side" then
-            menu3{
+            menu{
                list = get_sides_with_all(),
                title = title,
                description = _ "Which side do you want to modify?",
@@ -769,7 +769,7 @@ function mod_menu.settings()
                   local description = _ "Which variable do you want to change?"
                   local stats = {"gold", "village_gold", "base_income", "team_name", "objectives"}
                   if side == "All" then
-                     menu3{
+                     menu{
                         list = stats,
                         title = title,
                         description = description,
@@ -795,7 +795,7 @@ function mod_menu.settings()
                      for i, stat in ipairs(stats) do
                         side_stats[i] = {stat, wesnoth.sides[side][stat]}
                      end
-                     menu3{
+                     menu{
                         list = side_stats,
                         title = title,
                         description = description,
@@ -820,7 +820,7 @@ function mod_menu.settings()
                end
             }
          elseif option == "Max Starting Level" then
-            menu3{
+            menu{
                list = {1, 2, 3, 4, 5},
                title = title,
                description = _ "What level should be the maximum for leader selection?",
@@ -830,7 +830,7 @@ function mod_menu.settings()
                end
             }
          elseif option == "New Scenario" then
-            menu3{
+            menu{
                list = mod_menu.scenarios,
                title = title,
                description = _ "Which scenario do you want to start?",

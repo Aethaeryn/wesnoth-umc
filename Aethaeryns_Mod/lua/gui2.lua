@@ -113,46 +113,7 @@ local function dialog_choice(dialog, preshow, not_empty, dialog_name)
       end).value
 end
 
--- This is a menu that is suitable for most of MOD. It takes in a
--- list, an image that shows on the left for decoration, a title and
--- description that show at the top, and a function that specifies how
--- the list needs to be built.
-function menu(list, image, title, description, dialog_list, sublist_index, sidebar, action, else_action)
-   local not_empty = true
-   if sidebar == "unit" then
-      list = remove_summoners(list)
-   end
-   if sidebar == "summoner" then
-      sidebar = "unit"
-   end
-   if list[1] == nil then
-      not_empty = false
-   end
-   if image == nil then
-      image = mod_menu.lich_image
-   end
-
-   local function preshow()
-      wesnoth.set_dialog_value(title, "menu_title")
-      wesnoth.set_dialog_value(description, "menu_description")
-      if not_empty then
-         gui2.make_list[dialog_list](list)
-         wesnoth.set_dialog_value(1, "menu_list")
-         if sidebar ~= nil then
-            local select = gui2.on_select[sidebar](list)
-            wesnoth.set_dialog_callback(select, "menu_list")
-            select()
-         else
-            wesnoth.set_dialog_value(image, "menu_image")
-         end
-      else
-         wesnoth.set_dialog_value(image, "menu_image")
-         wesnoth.set_dialog_value("None", "menu_list_empty")
-      end
-   end
-
-   local choice = dialog_choice(gui2.wml.dialog(not_empty, "list", sidebar), preshow, not_empty, "menu_list")
-
+local function do_action(choice, list, action, else_action, sublist_index)
    if choice then
       if sublist_index ~= nil then
          action(list[choice][sublist_index])
@@ -164,16 +125,58 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
    end
 end
 
-function menu3(arg_table)
-   menu(arg_table.list,
-        arg_table.image,
-        arg_table.title,
-        arg_table.description,
-        arg_table.dialog_list,
-        arg_table.sublist_index,
-        arg_table.sidebar,
-        arg_table.action,
-        arg_table.else_action)
+-- This is a menu that is suitable for most of MOD. It takes in a
+-- list, an image that shows on the left for decoration, a title and
+-- description that show at the top, and a function that specifies how
+-- the list needs to be built.
+--
+-- It takes a table with the following arguments (only list, title,
+-- description, and dialog_list are mandatory):
+--
+-- list, image, title, description, dialog_list, sublist_index,
+-- sidebar, action, else_action
+function menu(arg_table)
+   local not_empty = true
+   if arg_table.sidebar == "unit" then
+      arg_table.list = remove_summoners(arg_table.list)
+   end
+   if arg_table.sidebar == "summoner" then
+      arg_table.sidebar = "unit"
+   end
+   if arg_table.list[1] == nil then
+      not_empty = false
+   end
+   if arg_table.image == nil then
+      arg_table.image = mod_menu.lich_image
+   end
+
+   local function preshow()
+      wesnoth.set_dialog_value(arg_table.title, "menu_title")
+      wesnoth.set_dialog_value(arg_table.description, "menu_description")
+      if not_empty then
+         gui2.make_list[arg_table.dialog_list](arg_table.list)
+         wesnoth.set_dialog_value(1, "menu_list")
+         if arg_table.sidebar ~= nil then
+            local select = gui2.on_select[arg_table.sidebar](arg_table.list)
+            wesnoth.set_dialog_callback(select, "menu_list")
+            select()
+         else
+            wesnoth.set_dialog_value(arg_table.image, "menu_image")
+         end
+      else
+         wesnoth.set_dialog_value(arg_table.image, "menu_image")
+         wesnoth.set_dialog_value("None", "menu_list_empty")
+      end
+   end
+
+   do_action(dialog_choice(gui2.wml.dialog(not_empty, "list", arg_table.sidebar),
+                           preshow,
+                           not_empty,
+                           "menu_list"),
+             arg_table.list,
+             arg_table.action,
+             arg_table.else_action,
+             arg_table.sublist_index)
 end
 
 -- fixme: when updated for 1.13, make the text input box start focused
