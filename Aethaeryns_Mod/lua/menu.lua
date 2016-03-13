@@ -695,29 +695,30 @@ end
 function mod_menu.place_object()
    local e = wesnoth.current.event_context
    local title = _ "Place Object"
-   menu3{list = mod_menu.place_object_options,
-         title = title,
-         description = _ "What do you want to do with this unit?",
-         dialog_list = "with_picture",
-         sublist_index = 1,
-         action = function(option)
-            if option == "Place Shop" then
-               game_object.simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
-            elseif option == "Place Chest" then
-               game_object.simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
-            elseif option == "Place Pack" then
-               game_object.simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
-            elseif option == "Place Gold Pile" then
-               local description = _ "How much gold do you want to place in the pile?"
-               local label = "Gold:"
-               local gold = menu_slider(title, description, label, {max = 500, min = 10, step = 10, value = 100})
-               if gold and type(gold) == "number" and gold > 0 then
-                  game_object.gold_place(e.x1, e.y1, gold)
-               end
-            elseif option == "Clear Hex" then
-               game_object.clear(e.x1, e.y1)
+   menu3{
+      list = mod_menu.place_object_options,
+      title = title,
+      description = _ "What do you want to do with this unit?",
+      dialog_list = "with_picture",
+      sublist_index = 1,
+      action = function(option)
+         if option == "Place Shop" then
+            game_object.simple_place(e.x1, e.y1, "shop", "scenery/tent-shop-weapons.png", true)
+         elseif option == "Place Chest" then
+            game_object.simple_place(e.x1, e.y1, "chest", "items/chest-plain-closed.png", true) -- items/chest-plain-open.png
+         elseif option == "Place Pack" then
+            game_object.simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
+         elseif option == "Place Gold Pile" then
+            local description = _ "How much gold do you want to place in the pile?"
+            local label = "Gold:"
+            local gold = menu_slider(title, description, label, {max = 500, min = 10, step = 10, value = 100})
+            if gold and type(gold) == "number" and gold > 0 then
+               game_object.gold_place(e.x1, e.y1, gold)
             end
+         elseif option == "Clear Hex" then
+            game_object.clear(e.x1, e.y1)
          end
+      end
    }
 end
 
