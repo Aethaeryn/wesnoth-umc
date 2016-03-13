@@ -454,7 +454,7 @@ function mod_menu.interact()
                description = _ "What item do you want to remove from the chest?",
                dialog_list = "item",
                sidebar = "item",
-               function(item)
+               action = function(item)
                   local item = item.name
                   local description = _ "How much do you want to remove?"
                   local max = containers[e.x1][e.y1]["chest"][item]
