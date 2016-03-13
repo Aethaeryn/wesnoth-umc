@@ -117,7 +117,7 @@ end
 -- list, an image that shows on the left for decoration, a title and
 -- description that show at the top, and a function that specifies how
 -- the list needs to be built.
-function menu(list, image, title, description, dialog_list, sublist_index, sidebar)
+function menu(list, image, title, description, dialog_list, sublist_index, sidebar, action, else_action)
    local not_empty = true
    if sidebar == "unit" then
       list = remove_summoners(list)
@@ -127,6 +127,9 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
    end
    if list[1] == nil then
       not_empty = false
+   end
+   if image == nil then
+      image = mod_menu.lich_image
    end
 
    local function preshow()
@@ -152,32 +155,25 @@ function menu(list, image, title, description, dialog_list, sublist_index, sideb
 
    if choice then
       if sublist_index ~= nil then
-         return list[choice][sublist_index]
+         action(list[choice][sublist_index])
       else
-         return list[choice]
+         action(list[choice])
       end
-   else
-      return false
+   elseif else_action ~= nil then
+      else_action()
    end
 end
 
 function menu3(arg_table)
-   if arg_table.image == nil then
-      arg_table.image = mod_menu.lich_image
-   end
-
-   local choice = menu(arg_table.list,
-                       arg_table.image,
-                       arg_table.title,
-                       arg_table.description,
-                       arg_table.dialog_list,
-                       arg_table.sublist_index,
-                       arg_table.sidebar)
-   if choice then
-      arg_table.action(choice)
-   elseif arg_table.else_action ~= nil then
-      arg_table.else_action()
-   end
+   menu(arg_table.list,
+        arg_table.image,
+        arg_table.title,
+        arg_table.description,
+        arg_table.dialog_list,
+        arg_table.sublist_index,
+        arg_table.sidebar,
+        arg_table.action,
+        arg_table.else_action)
 end
 
 -- fixme: when updated for 1.13, make the text input box start focused
