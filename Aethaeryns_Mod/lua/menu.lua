@@ -751,61 +751,86 @@ function mod_menu.settings()
                end
             end
          elseif option == "Modify Side" then
-            local description = _ "Which side do you want to modify?"
-            local side = menu(get_sides_with_all(), mod_menu.lich_image, title, description, "simple")
-            if side then
-               local description = _ "Which variable do you want to change?"
-               local stats = {"gold", "village_gold", "base_income", "team_name", "objectives"}
-               if side == "All" then
-                  stat = menu(stats, mod_menu.lich_image, title, description, "simple")
-                  if stat then
-                     if stat ~= "objectives" then
-                        local title = string.format("Choose a new value for %s", stat)
-                        local label = _ "New value:"
-                        local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
-                        if new_value then
-                           for i, side in ipairs(wesnoth.sides) do
-                              side[stat] = new_value
-                              if stat == "team_name" then
-                                 side.user_team_name = side.team_name
+            menu3{
+               list = get_sides_with_all(),
+               title = title,
+               description = _ "Which side do you want to modify?",
+               dialog_list = "simple",
+               action = function(side)
+                  local description = _ "Which variable do you want to change?"
+                  local stats = {"gold", "village_gold", "base_income", "team_name", "objectives"}
+                  if side == "All" then
+                     menu3{
+                        list = stats,
+                        title = title,
+                        description = description,
+                        dialog_list = "simple",
+                        action = function(stat)
+                           if stat ~= "objectives" then
+                              local title = string.format("Choose a new value for %s", stat)
+                              local label = _ "New value:"
+                              local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
+                              if new_value then
+                                 for i, side in ipairs(wesnoth.sides) do
+                                    side[stat] = new_value
+                                    if stat == "team_name" then
+                                       side.user_team_name = side.team_name
+                                    end
+                                 end
                               end
                            end
                         end
+                     }
+                  else
+                     local side_stats = {}
+                     for i, stat in ipairs(stats) do
+                        side_stats[i] = {stat, wesnoth.sides[side][stat]}
                      end
-                  end
-               else
-                  local side_stats = {}
-                  for i, stat in ipairs(stats) do
-                     side_stats[i] = {stat, wesnoth.sides[side][stat]}
-                  end
-                  stat = menu(side_stats, mod_menu.lich_image, title, description, "almost_simple", 1, "team_stats")
-                  if stat then
-                     if stat ~= "objectives" then
-                        local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])
-                        local label = _ "New value:"
-                        local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
-                        if new_value then
-                           wesnoth.sides[side][stat] = new_value
-                           if stat == "team_name" then
-                              wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
+                     menu3{
+                        list = side_stats,
+                        title = title,
+                        description = description,
+                        dialog_list = "almost_simple",
+                        sublist_index = 1,
+                        sidebar = "team_stats",
+                        action = function(stat)
+                           if stat ~= "objectives" then
+                              local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])
+                              local label = _ "New value:"
+                              local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
+                              if new_value then
+                                 wesnoth.sides[side][stat] = new_value
+                                 if stat == "team_name" then
+                                    wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
+                                 end
+                              end
                            end
                         end
-                     end
+                     }
                   end
                end
-            end
+            }
          elseif option == "Max Starting Level" then
-            local description = "What level should be the maximum for leader selection?"
-            local level = menu({1, 2, 3, 4, 5}, mod_menu.lich_image, title, description, "simple")
-            if level then
-               change_unit.max_level = level
-            end
+            menu3{
+               list = {1, 2, 3, 4, 5},
+               title = title,
+               description = _ "What level should be the maximum for leader selection?",
+               dialog_list = "simple",
+               action = function(option)
+                  change_unit.max_level = option
+               end
+            }
          elseif option == "New Scenario" then
-            local description = "Which scenario do you want to start?"
-            local scenario = menu(mod_menu.scenarios, mod_menu.lich_image, title, description, "almost_simple", 2)
-            if scenario then
-               fire.end_scenario(scenario)
-            end
+            menu3{
+               list = mod_menu.scenarios,
+               title = title,
+               description = _ "Which scenario do you want to start?",
+               dialog_list = "almost_simple",
+               sublist_index = 2,
+               action = function(option)
+                  fire.end_scenario(option)
+               end
+            }
          elseif option == "Toggle Summon Summoners" then
             mod_menu.toggle("summon_summoner")
          elseif option == "Toggle Summon Units" then
