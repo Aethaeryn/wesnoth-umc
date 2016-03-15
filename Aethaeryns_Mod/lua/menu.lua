@@ -28,6 +28,7 @@ mod_menu.misc_settings =  {
    "Toggle Unit Editor",
    "Toggle Terrain Editor",
    "Toggle Place Object"}
+mod_menu.levels = {1, 2, 3, 4, 5}
 
 -- (Most) Local Functions --
 
@@ -157,6 +158,14 @@ local function get_upgrade_options(unit)
                     msg = upgrade.msg})
    end
    return upgrades
+end
+
+local function side_stats(side, stats)
+   local temp = {}
+   for i, stat in ipairs(stats) do
+      temp[i] = {stat, wesnoth.sides[side][stat]}
+   end
+   return temp
 end
 
 -- Special --
@@ -791,12 +800,8 @@ function mod_menu.settings()
                         end
                      }
                   else
-                     local side_stats = {}
-                     for i, stat in ipairs(stats) do
-                        side_stats[i] = {stat, wesnoth.sides[side][stat]}
-                     end
                      menu{
-                        list = side_stats,
+                        list = side_stats(side, stats),
                         title = title,
                         description = description,
                         dialog_list = "almost_simple",
@@ -821,7 +826,7 @@ function mod_menu.settings()
             }
          elseif option == "Max Starting Level" then
             menu{
-               list = {1, 2, 3, 4, 5},
+               list = mod_menu.levels,
                title = title,
                description = _ "What level should be the maximum for leader selection?",
                dialog_list = "simple",
