@@ -126,7 +126,7 @@ local function do_action(choice, list, action, else_action, sublist_index)
 end
 
 local function generate_menu_preshow(list, title, description, image, dialog_list, sidebar, not_empty)
-   if image = nil then
+   if image == nil then
       image = mod_menu.lich_image
    end
 
