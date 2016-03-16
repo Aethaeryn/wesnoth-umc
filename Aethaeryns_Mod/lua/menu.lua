@@ -349,19 +349,22 @@ function mod_menu.summon_summoner()
 end
 
 local function submenu_interact_unit_selection(unit_list, title)
+   local unit
    if unit_list[2] ~= nil then
-      -- fixme: always seems to be false
       menu{
          list = unit_list,
          title = title,
          description = _ "Which unit is doing the interaction?",
          dialog_list = "unit_name_and_location",
          action = function(choice)
-            return choice
+            unit = choice
          end
       }
    else
       return unit_list[1]
+   end
+   if unit then
+      return unit
    end
 end
 
