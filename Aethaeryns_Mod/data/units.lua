@@ -122,31 +122,6 @@ summoners = {
 }
 
 regular = {
-   Mages = {
-      ['Level 1'] = {
-         "Mage",
-         "Dark Adept",
-      },
-      ['Level 2'] = {
-         "Red Mage",
-         "White Mage",
-         "Dark Sorcerer",
-      },
-      ['Level 3'] = {
-         "Arch Mage",
-         "Silver Mage",
-         "Mage of Light",
-         "Necromancer",
-         "Lich",
-      },
-      ['Level 4'] = {
-         "Great Mage",
-         "Ancient Lich",
-      },
-      ['Level 5'] = {
-         "Elder Mage",
-      },
-   },
    Undead = {
       ['Level 0'] = {
          "Walking Corpse",

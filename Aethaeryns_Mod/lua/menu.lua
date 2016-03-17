@@ -142,6 +142,17 @@ local function get_levels(category, max_level)
    return levels
 end
 
+local function get_summoned_levels(category, max_level)
+   local levels = {}
+   for key, value in pairs(regular[category]) do
+      if tonumber(string.sub(key, 7)) <= max_level then
+         table.insert(levels, key)
+      end
+   end
+   table.sort(levels)
+   return levels
+end
+
 local function get_upgrade_options(unit)
    local upgrades = {}
    for i, upgrade in ipairs(upgrade_table) do
@@ -302,7 +313,7 @@ function mod_menu.summon(summoner_type)
    local title = string.format("Summon %s", summoner_type)
    local image = PORTRAIT[summoner_type]
    menu{
-      list = get_levels(summoner_type, 5),
+      list = get_summoned_levels(summoner_type, 5),
       image = image,
       title = title,
       description = _ "Select a unit level.",
