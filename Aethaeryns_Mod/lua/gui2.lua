@@ -79,16 +79,6 @@ end
 
 ---- GUI2 Lua Dialogs ----
 
-local function remove_summoners(list)
-   local new_list = {}
-   for i, unit in ipairs(list) do
-      if is_summoner[unit] == nil then
-         table.insert(new_list, unit)
-      end
-   end
-   return new_list
-end
-
 -- This returns the selection of the choice.
 local function dialog_choice(dialog, preshow, not_empty, dialog_name)
    local choice
@@ -166,12 +156,6 @@ end
 -- sidebar, action, else_action
 function menu(arg_table)
    local not_empty = true
-   if arg_table.sidebar == "unit" then
-      arg_table.list = remove_summoners(arg_table.list)
-   end
-   if arg_table.sidebar == "summoner" then
-      arg_table.sidebar = "unit"
-   end
    if arg_table.list[1] == nil then
       not_empty = false
    end

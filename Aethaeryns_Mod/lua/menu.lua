@@ -217,7 +217,7 @@ local function submenu_unit_selection_common(arg_table)
                      title = arg_table.title,
                      description = _ "Select a unit.",
                      dialog_list = "unit",
-                     sidebar = "summoner",
+                     sidebar = "unit",
                      action = function(choice)
                         if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
                            arg_table.action(choice)
@@ -350,7 +350,7 @@ function mod_menu.summon_summoner()
             title = title,
             description = _ "Select a unit to summon.",
             dialog_list = "unit",
-            sidebar = "summoner",
+            sidebar = "unit",
             action = function(summoner)
                spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
             end
@@ -887,12 +887,6 @@ end
 
 function set_all_menu_items()
    helper.set_variable_array("mod_containers", {})
-   -- Generates a quick yes/no table for summoners.
-   for key, unit_list in pairs(summoners) do
-      for i, unit in pairs(unit_list) do
-         is_summoner[unit] = true
-      end
-   end
    -- Generates the toggleable, general menu items.
    for key, menu_item in pairs(mod_menu_items) do
       if menu_item.status then
