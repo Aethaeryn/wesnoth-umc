@@ -4,7 +4,6 @@ terrain = {}
 terrain.last_terrain = "Ur"
 terrain.last_overlay = "^Vh"
 terrain.radius = 0
-terrain.possible_radius = {0, 1, 2}
 terrain.terrain = {
    Water = {"Wog", "Wo", "Wot", "Wwg", "Ww", "Wwt", "Wwf", "Wwrg", "Wwr", "Wwrt", "Ss", "Sm", "Chw", "Chs", "Khw", "Khs"},
    Flat = {"Gg", "Gs", "Gd", "Gll", "Rb", "Re", "Rd", "Rr", "Rrc", "Rp", "Iwr", "Urb", "Ur"},

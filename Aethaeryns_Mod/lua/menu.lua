@@ -28,7 +28,6 @@ mod_menu.misc_settings =  {
    "Toggle Unit Editor",
    "Toggle Terrain Editor",
    "Toggle Place Object"}
-mod_menu.levels = {1, 2, 3, 4, 5}
 
 -- (Most) Local Functions --
 
@@ -664,15 +663,12 @@ function mod_menu.terrain_editor()
          if name == "Repeat last terrain" then
             terrain.set_terrain(terrain.last_terrain)
          elseif name == "Change radius" then
-            menu{
-               list = terrain.possible_radius,
-               title = title,
-               description = _ "What do you want to set the terrain radius as?",
-               dialog_list = "simple",
-               action = function(choice)
-                  terrain.radius = choice
-               end
-            }
+            local description = _ "What do you want to set the terrain radius as?"
+            local label = "Radius:"
+            local radius = menu_slider(title, description, label, {max = 3, min = 0, step = 1, value = 0})
+            if radius then
+               terrain.radius = radius
+            end
          elseif name == "Set an overlay" then
             menu{
                list = terrain.overlay_options,
@@ -838,15 +834,12 @@ function mod_menu.settings()
                end
             }
          elseif option == "Max Starting Level" then
-            menu{
-               list = mod_menu.levels,
-               title = title,
-               description = _ "What level should be the maximum for leader selection?",
-               dialog_list = "simple",
-               action = function(option)
-                  change_unit.max_level = option
-               end
-            }
+            local description = _ "What level should be the maximum for leader selection?"
+            local label = "Level:"
+            local option = menu_slider(title, description, label, {max = 5, min = 0, step = 1, value = 1})
+            if option then
+               change_unit.max_level = option
+            end
          elseif option == "New Scenario" then
             menu{
                list = mod_menu.scenarios,
