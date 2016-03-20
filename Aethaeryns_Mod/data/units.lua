@@ -12,9 +12,6 @@ LEADER_ROLES = {"Humans", "Bats", "Drakes", "Dwarves", "Elves", "Falcons",
                 "Ogres", "Orcs", "Saurians", "Trolls", "Undead", "Wolves",
                 "Woses"}
 
-
-is_summoner = {}
-
 PORTRAIT = {
    Undead    = "portraits/undead/transparent/spectre.png",
    Nature    = "portraits/elves/transparent/shyde.png",
