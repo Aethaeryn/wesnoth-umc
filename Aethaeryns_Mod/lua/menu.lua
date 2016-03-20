@@ -1,5 +1,12 @@
 #define MOD_MENU
 <<
+-- This file is built on top of the gui2.lua wrapper over the game's
+-- GUI2 API. The menus here use the other lua files in lua/ to do
+-- actions in the game engine. By convention, menu_ functions are
+-- triggered by right click menu items and submenu_ functions are
+-- triggered by other menu_ functions. Due to limitations in the
+-- engine, menu_ functions must be global.
+
 -- Menu Options --
 mod_menu = {}
 mod_menu.lich_image = "portraits/undead/transparent/ancient-lich.png"
@@ -29,7 +36,7 @@ mod_menu.misc_settings =  {
    "Toggle Terrain Editor",
    "Toggle Place Object"}
 
--- (Most) Local Functions --
+-- (Most) Helper Functions --
 
 local function get_roles()
    local roles = {}
@@ -190,7 +197,7 @@ function mod_menu.toggle(menu_item)
    end
 end
 
--- Menus --
+-- Menus and Submenus --
 
 local function submenu_unit_selection_common(arg_table)
    -- You only exit the menu at the top level or if you choose a unit.
@@ -275,6 +282,7 @@ function mod_menu.select_leader()
    end
 end
 
+-- Host-only but closer to the player menus than the host menus.
 function mod_menu.summon_units()
    local e = wesnoth.current.event_context
    local title = _ "Summon Units"
@@ -335,6 +343,7 @@ function mod_menu.summon(summoner_type)
    }
 end
 
+-- Host-only but closer to the player menus than the host menus.
 function mod_menu.summon_summoner()
    local e = wesnoth.current.event_context
    local title = _ "Summon Summoner"
@@ -358,6 +367,8 @@ function mod_menu.summon_summoner()
    }
 end
 
+-- This menu is only needed if there's more than one unit that could
+-- be doing the interacting.
 local function submenu_interact_unit_selection(unit_list, title)
    local unit
    if unit_list[2] ~= nil then
@@ -378,6 +389,8 @@ local function submenu_interact_unit_selection(unit_list, title)
    end
 end
 
+-- Everything a unit can do to interact with an adjacent hex that's
+-- not part of the game engine.
 function mod_menu.interact()
    local e = wesnoth.current.event_context
    local title = _ "Interactions"
@@ -507,6 +520,8 @@ function mod_menu.interact()
    }
 end
 
+-- Everything a unit can do that isn't interacting with an adjacent
+-- hex.
 function mod_menu.unit_commands()
    local e = wesnoth.current.event_context
    local unit = wesnoth.get_unit(e.x1, e.y1)
@@ -571,6 +586,8 @@ function mod_menu.unit_commands()
       end
    }
 end
+
+-- Host-Only Menus and Submenus --
 
 function mod_menu.unit_editor()
    local e = wesnoth.current.event_context
