@@ -55,16 +55,6 @@ local function get_sides_with_all()
    return sides
 end
 
-local function submenu_inventory_quantity(item, container)
-   local title = "Change Inventory"
-   local description = string.format("How much of %s do you want to give?", item)
-   local label = "Item Quantity:"
-   local count = menu_slider(title, description, label, {max = 20, min = 1, step = 1, value = 1})
-   if count and count > 0 then
-      mod_inventory.add(item, count, container)
-   end
-end
-
 local function find_interactions(x, y, blocked, on_hex)
    local interactions = {}
    if containers[x] ~= nil and containers[x][y] ~= nil and not blocked then
@@ -187,6 +177,16 @@ function mod_menu.toggle(menu_item)
 end
 
 -- Menus and Submenus --
+
+local function submenu_inventory_quantity(item, container)
+   local title = "Change Inventory"
+   local description = string.format("How much of %s do you want to give?", item)
+   local label = "Item Quantity:"
+   local count = menu_slider(title, description, label, {max = 20, min = 1, step = 1, value = 1})
+   if count and count > 0 then
+      mod_inventory.add(item, count, container)
+   end
+end
 
 local function submenu_unit_selection_common(arg_table)
    -- You only exit the menu at the top level or if you choose a unit.
