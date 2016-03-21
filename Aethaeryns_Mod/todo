@@ -2,23 +2,25 @@ AETHAERYN'S MOD TODO LIST (93.5% Progress)
 When this list is complete/empty, bump to version 0.9
 
 (0) Misc (0.5%)
-  - get rid of the level submenu in unit selection
+  - Get rid of the level submenu in unit selection. Flatten it to one
+    list and use the level as a section header separator instead.
 
-    - flatten it to one list and use the level as a section header
-      separator instead
+  - Allow the host on turn 1 to quick-spawn NPCs and hostile units in
+    some areas or all of a map, varying depending on the map.
 
-  - allow the host on turn 1 to quick-spawn NPCs and hostile units in
-    some areas or all of a map, varying depending on the map
+  - Allow pets (e.g. bat, falcon, wolf, etc.).
 
-  - allow pets (e.g. bat, falcon, wolf, etc.)
-
-  - log all the numerial change_unit actions in unit variables and
+  - Log all the numerial change_unit actions in unit variables and
     reapply them when certain actions that would wipe them happen,
-    like promotions and the application of [object]s
+    like promotions and the application of [object]s.
 
   - rewrite the mess of multi-turn [objects] and Ale
 
   - use boats for fast travel between piers in Woods
+
+  - Let certain leader types be disallowed (e.g. Monsters).
+
+  - Make the non-list menus use tables to match the list menu API.
 
  (1) Inventory Containers (1%)
   - Container changes on host or unit actions:
@@ -161,13 +163,11 @@ When this list is complete/empty, bump to version 0.9
   * CODE: Find a replacement for get_roles() and get_sides_with_all()
   * CODE: Most places probably can check for an empty list before calling menu() and show a better error there.
     - Alternatively, have every call feed in an error message for when the list is empty instead of saying "None"
-  * CODE: There's a lot of boiler plate when every menu makes sure that its value is not false (i.e. not closed with the close button) before doing something. There might be a better way.
   * CODE: Fix spacing on GUI2 GUIs, especially the error message and the areas with more than one button.
   * CODE: upgrades.lua need to put the non-menu functions in tables
     - upgrades.lua is a mess; behavior could be moved into functions
   * CODE: Re-sort the units.lua menu so that the order makes sense.
   * CODE: Merge menu()'s sidebar and dialog_list into one variable in gui2.lua
-  * CODE: Use a slider for setting the max level.
   * CODE: Random gender when group spawning units that have more than one possible gender.
   * CODE: Expand the radius for Summon Group (removes cap of 7) and make it keep trying to place the unit as long as it can instead of not placing it.
   * CODE: Make Summon Group check for bad (e.g. impassable) terrain as well as unoccupied terrain.
