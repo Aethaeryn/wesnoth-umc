@@ -137,20 +137,9 @@ local function get_unit_commands(leader_selection)
    return temp_table
 end
 
-local function get_levels(category, max_level)
+local function get_levels(unit_table, category, max_level)
    local levels = {}
-   for key, value in pairs(units_by_species[category]) do
-      if tonumber(string.sub(key, 7)) <= max_level then
-         table.insert(levels, key)
-      end
-   end
-   table.sort(levels)
-   return levels
-end
-
-local function get_summoned_levels(category, max_level)
-   local levels = {}
-   for key, value in pairs(regular[category]) do
+   for key, value in pairs(unit_table[category]) do
       if tonumber(string.sub(key, 7)) <= max_level then
          table.insert(levels, key)
       end
@@ -213,7 +202,7 @@ local function submenu_unit_selection_common(arg_table)
          dialog_list = "simple",
          action = function(unit_category)
             menu{
-               list = get_levels(unit_category, arg_table.max_level),
+               list = get_levels(units_by_species, unit_category, arg_table.max_level),
                title = arg_table.title,
                description = _ "Select a unit level.",
                dialog_list = "simple",
@@ -320,7 +309,7 @@ function mod_menu.summon(summoner_type)
    local title = string.format("Summon %s", summoner_type)
    local image = PORTRAIT[summoner_type]
    menu{
-      list = get_summoned_levels(summoner_type, 5),
+      list = get_levels(regular, summoner_type, 5),
       image = image,
       title = title,
       description = _ "Select a unit level.",
