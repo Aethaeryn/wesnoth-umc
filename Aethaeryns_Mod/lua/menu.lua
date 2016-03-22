@@ -212,7 +212,7 @@ local function submenu_unit_selection_common(arg_table)
                      title = arg_table.title,
                      description = _ "Select a unit.",
                      dialog_list = "unit",
-                     sidebar = "unit",
+                     sidebar = true,
                      action = function(choice)
                         if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
                            arg_table.action(choice)
@@ -321,7 +321,7 @@ function mod_menu.summon(summoner_type)
             title = title,
             description = _ "Select a unit to summon.",
             dialog_list = "unit_cost",
-            sidebar = "unit",
+            sidebar = true,
             action = function(choice)
                if not spawn_unit.reg_spawner(e.x1, e.y1, choice, summoner_type, wesnoth.current.side) then
                   gui2_error(_ "Insufficient hitpoints on the attempted summoner.")
@@ -347,7 +347,7 @@ function mod_menu.summon_summoner()
             title = title,
             description = _ "Select a unit to summon.",
             dialog_list = "unit",
-            sidebar = "unit",
+            sidebar = true,
             action = function(summoner)
                spawn_unit.boss_spawner(e.x1, e.y1, summoner, summoner_type, wesnoth.current.side)
             end
@@ -409,7 +409,7 @@ function mod_menu.interact()
                         title = title,
                         description = _ "Which item do you want to give to this unit?",
                         dialog_list = "item",
-                        sidebar = "item",
+                        sidebar = true,
                         action = function(item)
                            local item = item.name
                            local description = _ "How many items do you want to gift?"
@@ -429,7 +429,7 @@ function mod_menu.interact()
                title = title,
                description = _ "What item do you want to purchase from the shop?",
                dialog_list = "item",
-               sidebar = "item",
+               sidebar = true,
                action = function(item)
                   local item = item.name
                   local price = mod_inventory.get_item_price(item)
@@ -451,7 +451,7 @@ function mod_menu.interact()
                title = title,
                description = _ "What item do you want to sell to the shop?",
                dialog_list = "item",
-               sidebar = "item",
+               sidebar = true,
                action = function(item)
                   local item = item.name
                   local description = _ "How much do you want to sell?"
@@ -476,7 +476,7 @@ function mod_menu.interact()
                title = title,
                description = _ "What item do you want to remove from the chest?",
                dialog_list = "item",
-               sidebar = "item",
+               sidebar = true,
                action = function(item)
                   local item = item.name
                   local description = _ "How much do you want to remove?"
@@ -493,7 +493,7 @@ function mod_menu.interact()
                title = title,
                description = _ "What item do you want to put in the chest?",
                dialog_list = "item",
-               sidebar = "item",
+               sidebar = true,
                action = function(item)
                   local item = item.name
                   local description = _ "How much do you want to add?"
@@ -531,7 +531,7 @@ function mod_menu.unit_commands()
                title = title,
                description = _ "Which item do you want to use?",
                dialog_list = "item",
-               sidebar = "item",
+               sidebar = true,
                action = function(item)
                   local item = item.name
                   local description = _ "How much do you want to use?"
@@ -549,7 +549,7 @@ function mod_menu.unit_commands()
                title = title,
                description = string.format("What do you want to upgrade? You have %d point(s) available.", unit.variables["advancement"] or 0),
                dialog_list = "upgrade",
-               sidebar = "upgrade",
+               sidebar = true,
                action = function(upgrade)
                   upgrade_unit(upgrade.name, upgrade.cost, upgrade.count, upgrade.cap)
                end
@@ -613,7 +613,7 @@ function mod_menu.unit_editor()
                title = title,
                description = _ "Which item do you want to add?",
                dialog_list = "item",
-               sidebar = "item",
+               sidebar = true,
                action = function(item)
                   submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables)
                end
@@ -692,7 +692,7 @@ function mod_menu.terrain_editor()
                         title = title,
                         description = _ "Which terrain overlay would you like to place?",
                         dialog_list = "terrain",
-                        sidebar = "terrain",
+                        sidebar = true,
                         action = function(choice)
                            terrain.set_overlay(choice)
                         end
@@ -706,7 +706,7 @@ function mod_menu.terrain_editor()
                title = title,
                description = _ "Which terrain would you like to place?",
                dialog_list = "terrain",
-               sidebar = "terrain",
+               sidebar = true,
                action = function(choice)
                   terrain.set_terrain(choice)
                end
@@ -752,7 +752,7 @@ local function submenu_add_item(title, x, y, container_type)
       title = title,
       description = _ "Which item do you want to add?",
       dialog_list = "item",
-      sidebar = "item",
+      sidebar = true,
       action = function(item)
          submenu_inventory_quantity(item.name, containers[x][y][container_type])
       end
@@ -821,7 +821,7 @@ function mod_menu.settings()
                         description = description,
                         dialog_list = "almost_simple",
                         sublist_index = 1,
-                        sidebar = "team_stats",
+                        -- sidebar = "team_stats",
                         action = function(stat)
                            if stat ~= "objectives" then
                               local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])

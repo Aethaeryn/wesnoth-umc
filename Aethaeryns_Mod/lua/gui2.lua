@@ -156,16 +156,20 @@ end
 -- sidebar, action, else_action
 function menu(arg_table)
    local not_empty = true
+   local sidebar = nil
    if arg_table.list[1] == nil then
       not_empty = false
    end
-   do_action(dialog_choice(gui2.wml.dialog(not_empty, "list", arg_table.sidebar),
+   if arg_table.sidebar then
+      sidebar = arg_table.dialog_list
+   end
+   do_action(dialog_choice(gui2.wml.dialog(not_empty, "list", sidebar),
                            generate_menu_preshow(arg_table.list,
                                                  arg_table.title,
                                                  arg_table.description,
                                                  arg_table.image,
                                                  arg_table.dialog_list,
-                                                 arg_table.sidebar,
+                                                 sidebar,
                                                  not_empty),
                            not_empty,
                            "menu_list"),
@@ -306,6 +310,10 @@ function gui2.on_select.unit(list)
                                              unit_data.movement),
                                "menu_sidebar_text")
    end
+end
+
+function gui2.on_select.unit_cost(list)
+   return gui2.on_select.unit(list)
 end
 
 function gui2.on_select.team_stats(list)
