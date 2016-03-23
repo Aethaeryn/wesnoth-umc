@@ -217,7 +217,6 @@ function gui2_error(text)
    end
 
    wesnoth.show_dialog(gui2.wml.dialog(false), preshow)
-   return false
 end
 
 ---- GUI2 List Builders ----
