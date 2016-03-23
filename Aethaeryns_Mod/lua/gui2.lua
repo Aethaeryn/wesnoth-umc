@@ -196,16 +196,18 @@ function menu_text_input(image, title, description, label, default_text)
    return dialog_choice(gui2.wml.dialog(true, "text_input"), preshow, true, "menu_text_box")
 end
 
-function menu_slider(title, description, label, slider)
+-- Takes an arg table with the following values:
+-- title, description, label, max, min, step, value
+function menu_slider(arg_table)
    local function preshow()
-      wesnoth.set_dialog_value(title, "menu_title")
-      wesnoth.set_dialog_value(description, "menu_description")
-      wesnoth.set_dialog_value(slider.value, "menu_slider")
-      wesnoth.set_dialog_value(label, "menu_slider_label")
+      wesnoth.set_dialog_value(arg_table.title, "menu_title")
+      wesnoth.set_dialog_value(arg_table.description, "menu_description")
+      wesnoth.set_dialog_value(arg_table.value, "menu_slider")
+      wesnoth.set_dialog_value(arg_table.label, "menu_slider_label")
       wesnoth.set_dialog_value("", "menu_image")
    end
 
-   return dialog_choice(gui2.wml.dialog(true, "slider", nil, slider), preshow, true, "menu_slider")
+   return dialog_choice(gui2.wml.dialog(true, "slider", nil, arg_table), preshow, true, "menu_slider")
 end
 
 function gui2_error(text)
