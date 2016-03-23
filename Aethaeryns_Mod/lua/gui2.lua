@@ -179,18 +179,24 @@ function menu(arg_table)
              arg_table.sublist_index)
 end
 
+-- Takes an arg table with the following values:
+-- image, title, description, label, default_text
 -- fixme: when updated for 1.13, make the text input box start focused
-function menu_text_input(image, title, description, label, default_text)
-   if default_text == nil then
-      default_text = ""
+function menu_text_input(arg_table)
+   if arg_table.default_text == nil then
+      arg_table.default_text = ""
+   end
+
+   if arg_table.image == nil then
+      arg_table.image = mod_menu.lich_image
    end
 
    local function preshow()
-      wesnoth.set_dialog_value(title, "menu_title")
-      wesnoth.set_dialog_value(description, "menu_description")
-      wesnoth.set_dialog_value(default_text, "menu_text_box")
-      wesnoth.set_dialog_value(label, "menu_text_box_label")
-      wesnoth.set_dialog_value(image, "menu_image")
+      wesnoth.set_dialog_value(arg_table.title, "menu_title")
+      wesnoth.set_dialog_value(arg_table.description, "menu_description")
+      wesnoth.set_dialog_value(arg_table.default_text, "menu_text_box")
+      wesnoth.set_dialog_value(arg_table.label, "menu_text_box_label")
+      wesnoth.set_dialog_value(arg_table.image, "menu_image")
    end
 
    return dialog_choice(gui2.wml.dialog(true, "text_input"), preshow, true, "menu_text_box")

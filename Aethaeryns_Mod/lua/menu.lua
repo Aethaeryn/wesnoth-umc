@@ -559,7 +559,7 @@ function mod_menu.unit_commands()
             local label = _ "Message:"
             -- fixme (1.13): afaik, there's no way to force a focus on
             -- the text input except through the C++
-            local message = menu_text_input(mod_menu.lich_image, title, description, label)
+            local message = menu_text_input{title = title, description = description, label = label}
             if message then
                -- fixme (1.13): wesnoth.message does *not* show up in Chat
                -- Log because Wesnoth is full of terrible, hardcoded
@@ -642,7 +642,7 @@ function mod_menu.unit_editor()
                      local description = string.format("What should the new value of %s be?", stat)
                      local label = "New Value:"
                      local new_value
-                     new_value = menu_text_input(mod_menu.lich_image, title, description, label)
+                     new_value = menu_text_input{title = title, description = description, label = label}
                      if new_value then
                         change_unit[stat](e.x1, e.y1, new_value)
                      end
@@ -802,7 +802,7 @@ function mod_menu.settings()
                            if stat ~= "objectives" then
                               local title = string.format("Choose a new value for %s", stat)
                               local label = _ "New value:"
-                              local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
+                              local new_value = menu_text_input{title = title, description = description, label = label}
                               if new_value then
                                  for i, side in ipairs(wesnoth.sides) do
                                     side[stat] = new_value
@@ -826,7 +826,7 @@ function mod_menu.settings()
                            if stat ~= "objectives" then
                               local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])
                               local label = _ "New value:"
-                              local new_value = menu_text_input(mod_menu.lich_image, title, description, label)
+                              local new_value = menu_text_input{title =  title, description = description, label = label}
                               if new_value then
                                  wesnoth.sides[side][stat] = new_value
                                  if stat == "team_name" then
