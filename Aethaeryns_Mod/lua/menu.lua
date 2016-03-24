@@ -488,7 +488,7 @@ function mod_menu.interact()
                end
             }
          elseif option == "Collect Gold" then
-            local amount = menu_slider{
+            local quantity = menu_slider{
                title = title,
                description = _ "How much gold do you want to take?",
                label = _ "Gold",
@@ -497,8 +497,8 @@ function mod_menu.interact()
                step = 10,
                value = max
             }
-            if amount then
-               mod_inventory.collect_gold(e.x1, e.y1, amount, wesnoth.current.side)
+            if quantity then
+               mod_inventory.collect_gold(e.x1, e.y1, quantity, wesnoth.current.side)
             end
          elseif option == "Remove from Chest" then
             menu{
