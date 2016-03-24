@@ -606,22 +606,23 @@ function mod_menu.unit_commands()
          elseif option == "Speak" then
             -- fixme (1.13): afaik, there's no way to force a focus on
             -- the text input except through the C++
-            local message = menu_text_input{
+            --
+            -- fixme (1.13): wesnoth.message does *not* show up in Chat
+            -- Log because Wesnoth is full of terrible, hardcoded
+            -- assumptions about how things will be used via buggy,
+            -- half-implemented APIs.
+            --
+            -- fixme (1.12): make a log of these messages somewhere so
+            -- that they can be accessed outside of the replay?
+            menu_text_input{
                title = title,
                description = _ "What do you want to say?",
                label = _ "Message:",
+               action = function(message)
+                  wesnoth.message(string.format("(%d, %d) %s", unit.x, unit.y, tostring(unit.name)), message)
+                  fire.custom_message(message)
+               end
             }
-            if message then
-               -- fixme (1.13): wesnoth.message does *not* show up in Chat
-               -- Log because Wesnoth is full of terrible, hardcoded
-               -- assumptions about how things will be used via buggy,
-               -- half-implemented APIs.
-               --
-               -- fixme (1.12): make a log of these messages somewhere so
-               -- that they can be accessed outside of the replay?
-               wesnoth.message(string.format("(%d, %d) %s", unit.x, unit.y, tostring(unit.name)), message)
-               fire.custom_message(message)
-            end
          end
       end
    }
@@ -690,14 +691,14 @@ function mod_menu.unit_editor()
                action = function(stat)
                   stat = string.gsub(string.lower(stat), " ", "_")
                   if stat ~= "gender" and stat ~= "leader" then
-                     local new_value = menu_text_input{
+                     menu_text_input{
                         title = title,
                         description = string.format("What should the new value of %s be?", stat),
                         label = _ "New Value:",
+                        action = function(option)
+                           change_unit[stat](e.x1, e.y1, option)
+                        end
                      }
-                     if new_value then
-                        change_unit[stat](e.x1, e.y1, new_value)
-                     end
                   else
                      change_unit[stat](e.x1, e.y1)
                   end
@@ -864,19 +865,19 @@ function mod_menu.settings()
                         dialog_list = "simple",
                         action = function(stat)
                            if stat ~= "objectives" then
-                              local new_value = menu_text_input{
+                              menu_text_input{
                                  title = string.format("Choose a new value for %s", stat),
                                  description = description,
                                  label = _ "New value:",
-                              }
-                              if new_value then
-                                 for i, side in ipairs(wesnoth.sides) do
-                                    side[stat] = new_value
-                                    if stat == "team_name" then
-                                       side.user_team_name = side.team_name
+                                 action = function(option)
+                                    for i, side in ipairs(wesnoth.sides) do
+                                       side[stat] = option
+                                       if stat == "team_name" then
+                                          side.user_team_name = side.team_name
+                                       end
                                     end
                                  end
-                              end
+                              }
                            end
                         end
                      }
@@ -890,17 +891,17 @@ function mod_menu.settings()
                         -- sidebar = "team_stats",
                         action = function(stat)
                            if stat ~= "objectives" then
-                              local new_value = menu_text_input{
+                              menu_text_input{
                                  title =  string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat]),
                                  description = description,
                                  label = _ "New value:",
-                              }
-                              if new_value then
-                                 wesnoth.sides[side][stat] = new_value
-                                 if stat == "team_name" then
-                                    wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
+                                 action = function(option)
+                                    wesnoth.sides[side][stat] = option
+                                    if stat == "team_name" then
+                                       wesnoth.sides[side].user_team_name = wesnoth.sides[side].team_name
+                                    end
                                  end
-                              end
+                              }
                            end
                         end
                      }

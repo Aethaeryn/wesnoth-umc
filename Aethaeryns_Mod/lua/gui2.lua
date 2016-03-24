@@ -199,7 +199,10 @@ function menu_text_input(arg_table)
       wesnoth.set_dialog_value(arg_table.image, "menu_image")
    end
 
-   return dialog_choice(gui2.wml.dialog(true, "text_input"), preshow, true, "menu_text_box")
+   local choice = dialog_choice(gui2.wml.dialog(true, "text_input"), preshow, true, "menu_text_box")
+   if choice then
+      arg_table.action(choice)
+   end
 end
 
 -- Takes an arg table with the following values:
