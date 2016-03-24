@@ -792,7 +792,7 @@ function mod_menu.place_object()
          elseif option == "Place Pack" then
             game_object.simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
          elseif option == "Place Gold Pile" then
-            local gold = menu_slider{
+            local quantity = menu_slider{
                title = title,
                description = _ "How much gold do you want to place in the pile?",
                label = _ "Gold:",
@@ -801,8 +801,8 @@ function mod_menu.place_object()
                step = 10,
                value = 100
             }
-            if gold and type(gold) == "number" and gold > 0 then
-               game_object.gold_place(e.x1, e.y1, gold)
+            if quantity then
+               game_object.gold_place(e.x1, e.y1, quantity)
             end
          elseif option == "Clear Hex" then
             game_object.clear(e.x1, e.y1)
