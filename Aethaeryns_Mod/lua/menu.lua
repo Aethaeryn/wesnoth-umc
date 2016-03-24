@@ -179,10 +179,15 @@ end
 -- Menus and Submenus --
 
 local function submenu_inventory_quantity(item, container)
-   local title = "Change Inventory"
-   local description = string.format("How much of %s do you want to give?", item)
-   local label = "Item Quantity:"
-   local count = menu_slider{title = title, description = description, label = label, max = 20, min = 1, step = 1, value = 1}
+   local count = menu_slider{
+      title = _ "Change Inventory",
+      description = string.format("How much of %s do you want to give?", item),
+      label = _ "Item Quantity:",
+      max = 20,
+      min = 1,
+      step = 1,
+      value = 1
+   }
    if count and count > 0 then
       mod_inventory.add(item, count, container)
    end
@@ -412,9 +417,15 @@ function mod_menu.interact()
                         sidebar = true,
                         action = function(item)
                            local item = item.name
-                           local description = _ "How many items do you want to gift?"
-                           local max = unit.variables[item]
-                           local quantity = menu_slider{title = title, description = description, label = _ "Quantity", max = max, min = 1, step = 1, value = 1}
+                           local quantity = menu_slider{
+                              title = title,
+                              description = _ "How many items do you want to gift?",
+                              label = _ "Quantity",
+                              max = unit.variables[item],
+                              min = 1,
+                              step = 1,
+                              value = 1
+                           }
                            if quantity then
                               mod_inventory.transfer_item(unit, e.x1, e.y1, item, quantity)
                            end
@@ -437,8 +448,15 @@ function mod_menu.interact()
                   if max < 1 then
                      gui2_error(_ "You can't afford that.")
                   else
-                     local description = _ "How much do you want to buy?"
-                     local quantity = menu_slider{title = title, description = description, label = _ "Quantity", max = max, min = 1, step = 1, value = 1}
+                     local quantity = menu_slider{
+                        title = title,
+                        description = _ "How much do you want to buy?",
+                        label = _ "Quantity",
+                        max = max,
+                        min = 1,
+                        step = 1,
+                        value = 1
+                     }
                      if quantity then
                         mod_inventory.shop_buy(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
                      end
@@ -454,19 +472,31 @@ function mod_menu.interact()
                sidebar = true,
                action = function(item)
                   local item = item.name
-                  local description = _ "How much do you want to sell?"
                   local price = mod_inventory.get_item_price(item)
-                  local max = unit.variables[item]
-                  local quantity = menu_slider{title = title, description = description, label = _ "Quantity", max = max, min = 1, step = 1, value = 1}
+                  local quantity = menu_slider{
+                     title = title,
+                     description = _ "How much do you want to sell?",
+                     label = _ "Quantity",
+                     max = unit.variables[item],
+                     min = 1,
+                     step = 1,
+                     value = 1
+                  }
                   if quantity then
                      mod_inventory.shop_sell(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
                   end
                end
             }
          elseif option == "Collect Gold" then
-            local description = _ "How much gold do you want to take?"
-            local max = containers[e.x1][e.y1]["gold"]
-            local amount = menu_slider{title = title, description = description, label = _ "Gold", max = max, min = 10, step = 10, value = max}
+            local amount = menu_slider{
+               title = title,
+               description = _ "How much gold do you want to take?",
+               label = _ "Gold",
+               max = containers[e.x1][e.y1]["gold"],
+               min = 10,
+               step = 10,
+               value = max
+            }
             if amount then
                mod_inventory.collect_gold(e.x1, e.y1, amount, wesnoth.current.side)
             end
@@ -479,9 +509,15 @@ function mod_menu.interact()
                sidebar = true,
                action = function(item)
                   local item = item.name
-                  local description = _ "How much do you want to remove?"
-                  local max = containers[e.x1][e.y1]["chest"][item]
-                  local quantity = menu_slider{title = title, description = description, label = _ "Quantity", max = max, min = 1, step = 1, value = max}
+                  local quantity = menu_slider{
+                     title = title,
+                     description = _ "How much do you want to remove?",
+                     label = _ "Quantity",
+                     max = containers[e.x1][e.y1]["chest"][item],
+                     min = 1,
+                     step = 1,
+                     value = max
+                  }
                   if quantity then
                      mod_inventory.chest_remove(unit, e.x1, e.y1, item, quantity)
                   end
@@ -496,9 +532,15 @@ function mod_menu.interact()
                sidebar = true,
                action = function(item)
                   local item = item.name
-                  local description = _ "How much do you want to add?"
-                  local max = unit.variables[item]
-                  local quantity = menu_slider{title = title, description = description, label = _ "Quantity", max = max, min = 1, step = 1, value = 1}
+                  local quantity = menu_slider{
+                     title = title,
+                     description = _ "How much do you want to add?",
+                     label = _ "Quantity",
+                     max = unit.variables[item],
+                     min = 1,
+                     step = 1,
+                     value = 1
+                  }
                   if quantity then
                      mod_inventory.chest_add(unit, e.x1, e.y1, item, quantity)
                   end
@@ -534,8 +576,15 @@ function mod_menu.unit_commands()
                sidebar = true,
                action = function(item)
                   local item = item.name
-                  local description = _ "How much do you want to use?"
-                  local quantity = menu_slider{title = title, description = description, label = _ "Quantity", max = unit.variables[item], min = 1, step = 1, value = 1}
+                  local quantity = menu_slider{
+                     title = title,
+                     description = _ "How much do you want to use?",
+                     label = _ "Quantity",
+                     max = unit.variables[item],
+                     min = 1,
+                     step = 1,
+                     value = 1
+                  }
                   if quantity then
                      for i=1,quantity do
                         mod_inventory.use(e.x1, e.y1, item)
@@ -555,11 +604,13 @@ function mod_menu.unit_commands()
                end
             }
          elseif option == "Speak" then
-            local description = _ "What do you want to say?"
-            local label = _ "Message:"
             -- fixme (1.13): afaik, there's no way to force a focus on
             -- the text input except through the C++
-            local message = menu_text_input{title = title, description = description, label = label}
+            local message = menu_text_input{
+               title = title,
+               description = _ "What do you want to say?",
+               label = _ "Message:",
+            }
             if message then
                -- fixme (1.13): wesnoth.message does *not* show up in Chat
                -- Log because Wesnoth is full of terrible, hardcoded
@@ -639,10 +690,11 @@ function mod_menu.unit_editor()
                action = function(stat)
                   stat = string.gsub(string.lower(stat), " ", "_")
                   if stat ~= "gender" and stat ~= "leader" then
-                     local description = string.format("What should the new value of %s be?", stat)
-                     local label = "New Value:"
-                     local new_value
-                     new_value = menu_text_input{title = title, description = description, label = label}
+                     local new_value = menu_text_input{
+                        title = title,
+                        description = string.format("What should the new value of %s be?", stat),
+                        label = _ "New Value:",
+                     }
                      if new_value then
                         change_unit[stat](e.x1, e.y1, new_value)
                      end
@@ -669,9 +721,15 @@ function mod_menu.terrain_editor()
          if name == "Repeat last terrain" then
             terrain.set_terrain(terrain.last_terrain)
          elseif name == "Change radius" then
-            local description = _ "What do you want to set the terrain radius as?"
-            local label = "Radius:"
-            local radius = menu_slider{title = title, description = description, label = label, max = 3, min = 0, step = 1, value = 0}
+            local radius = menu_slider{
+               title = title,
+               description = _ "What do you want to set the terrain radius as?",
+               label = _ "Radius:",
+               max = 3,
+               min = 0,
+               step = 1,
+               value = 0
+            }
             if radius then
                terrain.radius = radius
             end
@@ -733,9 +791,15 @@ function mod_menu.place_object()
          elseif option == "Place Pack" then
             game_object.simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
          elseif option == "Place Gold Pile" then
-            local description = _ "How much gold do you want to place in the pile?"
-            local label = "Gold:"
-            local gold = menu_slider{title = title, description = description, label = label, max = 500, min = 10, step = 10, value = 100}
+            local gold = menu_slider{
+               title = title,
+               description = _ "How much gold do you want to place in the pile?",
+               label = _ "Gold:",
+               max = 500,
+               min = 10,
+               step = 10,
+               value = 100
+            }
             if gold and type(gold) == "number" and gold > 0 then
                game_object.gold_place(e.x1, e.y1, gold)
             end
@@ -800,9 +864,11 @@ function mod_menu.settings()
                         dialog_list = "simple",
                         action = function(stat)
                            if stat ~= "objectives" then
-                              local title = string.format("Choose a new value for %s", stat)
-                              local label = _ "New value:"
-                              local new_value = menu_text_input{title = title, description = description, label = label}
+                              local new_value = menu_text_input{
+                                 title = string.format("Choose a new value for %s", stat),
+                                 description = description,
+                                 label = _ "New value:",
+                              }
                               if new_value then
                                  for i, side in ipairs(wesnoth.sides) do
                                     side[stat] = new_value
@@ -824,9 +890,11 @@ function mod_menu.settings()
                         -- sidebar = "team_stats",
                         action = function(stat)
                            if stat ~= "objectives" then
-                              local title = string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat])
-                              local label = _ "New value:"
-                              local new_value = menu_text_input{title =  title, description = description, label = label}
+                              local new_value = menu_text_input{
+                                 title =  string.format("The old value of %s is: %s ", stat, wesnoth.sides[side][stat]),
+                                 description = description,
+                                 label = _ "New value:",
+                              }
                               if new_value then
                                  wesnoth.sides[side][stat] = new_value
                                  if stat == "team_name" then
@@ -840,9 +908,15 @@ function mod_menu.settings()
                end
             }
          elseif option == "Max Starting Level" then
-            local description = _ "What level should be the maximum for leader selection?"
-            local label = "Level:"
-            local option = menu_slider{title = title, description = description, label = label, max = 5, min = 0, step = 1, value = 1}
+            local option = menu_slider{
+               title = title,
+               description = _ "What level should be the maximum for leader selection?",
+               label =  _ "Level:",
+               max = 5,
+               min = 0,
+               step = 1,
+               value = 1
+            }
             if option then
                change_unit.max_level = option
             end
