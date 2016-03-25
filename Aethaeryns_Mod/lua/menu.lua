@@ -943,9 +943,7 @@ function mod_menu.settings()
                description = _ "Which scenario do you want to start?",
                dialog_list = "almost_simple",
                sublist_index = 2,
-               action = function(option)
-                  fire.end_scenario(option)
-               end
+               action = fire.end_scenario
             }
          elseif option == "Toggle Summon Summoners" then
             mod_menu.toggle("summon_summoner")
