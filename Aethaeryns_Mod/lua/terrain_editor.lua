@@ -62,16 +62,18 @@ function terrain.set_radius(radius)
    terrain.radius = radius
 end
 
-function terrain.set_terrain(terrain_symbol)
+function terrain.set_terrain(x, y, terrain_symbol)
+   local change_hexes = wesnoth.get_locations { x = x, y = y, radius = terrain.radius }
    terrain.last_terrain = terrain_symbol
-   for i, hex in ipairs(terrain.change_hexes) do
+   for i, hex in ipairs(change_hexes) do
       wesnoth.set_terrain(hex[1], hex[2], terrain_symbol)
    end
 end
 
-function terrain.set_overlay(terrain_symbol)
+function terrain.set_overlay(x, y, terrain_symbol)
+   local change_hexes = wesnoth.get_locations { x = x, y = y, radius = terrain.radius }
    terrain.last_overlay = terrain_symbol
-   for i, hex in ipairs(terrain.change_hexes) do
+   for i, hex in ipairs(change_hexes) do
       local terrain_type = wesnoth.get_terrain(hex[1], hex[2])
       local split_char = string.find(terrain_type, "%^")
       if split_char == nil then
@@ -84,8 +86,9 @@ function terrain.set_overlay(terrain_symbol)
    end
 end
 
-function terrain.remove_overlay()
-   for i, hex in ipairs(terrain.change_hexes) do
+function terrain.remove_overlay(x, y)
+   local change_hexes = wesnoth.get_locations { x = x, y = y, radius = terrain.radius }
+   for i, hex in ipairs(change_hexes) do
       local terrain_type = wesnoth.get_terrain(hex[1], hex[2])
       local split_char = string.find(terrain_type, "%^")
       if split_char ~= nil then

@@ -38,6 +38,14 @@ mod_menu.misc_settings =  {
 
 -- (Most) Helper Functions --
 
+-- Turns a function that takes (x, y, option) into a function that
+-- takes (option) with x, y saved.
+local function location_closure(func, x, y)
+   return function(option)
+      func(x, y, option)
+   end
+end
+
 -- Get a list of the roles (types) allowed for summoners.
 local function get_roles()
    local roles = {}
@@ -730,9 +738,6 @@ end
 
 function mod_menu.terrain_editor()
    local e = wesnoth.current.event_context
-   -- fixme: move this from a global variable to a closure so it
-   -- matches the other menus in style?
-   terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
    local title = _ "Terrain Editor"
    menu{
       list = terrain.options,
@@ -741,7 +746,7 @@ function mod_menu.terrain_editor()
       dialog_list = "simple",
       action = function(name)
          if name == "Repeat last terrain" then
-            terrain.set_terrain(terrain.last_terrain)
+            terrain.set_terrain(e.x1, e.y1, terrain.last_terrain)
          elseif name == "Change radius" then
             menu_slider{
                title = title,
@@ -761,9 +766,9 @@ function mod_menu.terrain_editor()
                dialog_list = "simple",
                action = function(overlay_name)
                   if overlay_name == "Repeat last overlay" then
-                     terrain.set_overlay(terrain.last_overlay)
+                     terrain.set_overlay(e.x1, e.y1, terrain.last_overlay)
                   elseif overlay_name == "Remove overlay" then
-                     terrain.remove_overlay()
+                     terrain.remove_overlay(e.x1, e.y1)
                   else
                      menu{
                         list = terrain.overlays[overlay_name],
@@ -771,7 +776,7 @@ function mod_menu.terrain_editor()
                         description = _ "Which terrain overlay would you like to place?",
                         dialog_list = "terrain",
                         sidebar = true,
-                        action = terrain.set_overlay
+                        action = location_closure(terrain.set_overlay, e.x1, e.y1)
                      }
                   end
                end
@@ -783,7 +788,7 @@ function mod_menu.terrain_editor()
                description = _ "Which terrain would you like to place?",
                dialog_list = "terrain",
                sidebar = true,
-               action = terrain.set_terrain
+               action = location_closure(terrain.set_terrain, e.x1, e.y1)
             }
          end
       end
