@@ -196,18 +196,18 @@ end
 
 -- Submenu that provides a slider for adding inventory.
 local function submenu_inventory_quantity(item, container)
-   local count = menu_slider{
+   menu_slider{
       title = _ "Change Inventory",
       description = string.format("How much of %s do you want to give?", item),
       label = _ "Item Quantity:",
       max = 20,
       min = 1,
       step = 1,
-      value = 1
+      value = 1,
+      action = function(quantity)
+         mod_inventory.add(item, quantity, container)
+      end
    }
-   if count and count > 0 then
-      mod_inventory.add(item, count, container)
-   end
 end
 
 -- Submenu that provides a common interface for selecting units by
@@ -436,18 +436,18 @@ function mod_menu.interact()
                         sidebar = true,
                         action = function(item)
                            local item = item.name
-                           local quantity = menu_slider{
+                           menu_slider{
                               title = title,
                               description = _ "How many items do you want to gift?",
                               label = _ "Quantity",
                               max = unit.variables[item],
                               min = 1,
                               step = 1,
-                              value = 1
+                              value = 1,
+                              action = function(quantity)
+                                 mod_inventory.transfer_item(unit, e.x1, e.y1, item, quantity)
+                              end
                            }
-                           if quantity then
-                              mod_inventory.transfer_item(unit, e.x1, e.y1, item, quantity)
-                           end
                         end
                      }
                   end
@@ -467,18 +467,18 @@ function mod_menu.interact()
                   if max < 1 then
                      gui2_error(_ "You can't afford that.")
                   else
-                     local quantity = menu_slider{
+                     menu_slider{
                         title = title,
                         description = _ "How much do you want to buy?",
                         label = _ "Quantity",
                         max = max,
                         min = 1,
                         step = 1,
-                        value = 1
+                        value = 1,
+                        action = function(quantity)
+                           mod_inventory.shop_buy(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
+                        end
                      }
-                     if quantity then
-                        mod_inventory.shop_buy(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
-                     end
                   end
                end
             }
@@ -492,33 +492,33 @@ function mod_menu.interact()
                action = function(item)
                   local item = item.name
                   local price = mod_inventory.get_item_price(item)
-                  local quantity = menu_slider{
+                  menu_slider{
                      title = title,
                      description = _ "How much do you want to sell?",
                      label = _ "Quantity",
                      max = unit.variables[item],
                      min = 1,
                      step = 1,
-                     value = 1
+                     value = 1,
+                     action = function(quantity)
+                        mod_inventory.shop_sell(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
+                     end
                   }
-                  if quantity then
-                     mod_inventory.shop_sell(unit, e.x1, e.y1, item, quantity, price, wesnoth.current.side)
-                  end
                end
             }
          elseif option == "Collect Gold" then
-            local quantity = menu_slider{
+            menu_slider{
                title = title,
                description = _ "How much gold do you want to take?",
                label = _ "Gold",
                max = containers[e.x1][e.y1]["gold"],
                min = 10,
                step = 10,
-               value = max
+               value = max,
+               action = function(quantity)
+                  mod_inventory.collect_gold(e.x1, e.y1, quantity, wesnoth.current.side)
+               end
             }
-            if quantity then
-               mod_inventory.collect_gold(e.x1, e.y1, quantity, wesnoth.current.side)
-            end
          elseif option == "Remove from Chest" then
             menu{
                list = mod_inventory.show_current(containers[e.x1][e.y1]["chest"]),
@@ -528,18 +528,18 @@ function mod_menu.interact()
                sidebar = true,
                action = function(item)
                   local item = item.name
-                  local quantity = menu_slider{
+                  menu_slider{
                      title = title,
                      description = _ "How much do you want to remove?",
                      label = _ "Quantity",
                      max = containers[e.x1][e.y1]["chest"][item],
                      min = 1,
                      step = 1,
-                     value = max
+                     value = max,
+                     action = function(quantity)
+                        mod_inventory.chest_remove(unit, e.x1, e.y1, item, quantity)
+                     end
                   }
-                  if quantity then
-                     mod_inventory.chest_remove(unit, e.x1, e.y1, item, quantity)
-                  end
                end
             }
          elseif option == "Add to Chest" then
@@ -551,18 +551,18 @@ function mod_menu.interact()
                sidebar = true,
                action = function(item)
                   local item = item.name
-                  local quantity = menu_slider{
+                  menu_slider{
                      title = title,
                      description = _ "How much do you want to add?",
                      label = _ "Quantity",
                      max = unit.variables[item],
                      min = 1,
                      step = 1,
-                     value = 1
+                     value = 1,
+                     action = function(quantity)
+                        mod_inventory.chest_add(unit, e.x1, e.y1, item, quantity)
+                     end
                   }
-                  if quantity then
-                     mod_inventory.chest_add(unit, e.x1, e.y1, item, quantity)
-                  end
                end
             }
          end
@@ -595,20 +595,20 @@ function mod_menu.unit_commands()
                sidebar = true,
                action = function(item)
                   local item = item.name
-                  local quantity = menu_slider{
+                  menu_slider{
                      title = title,
                      description = _ "How much do you want to use?",
                      label = _ "Quantity",
                      max = unit.variables[item],
                      min = 1,
                      step = 1,
-                     value = 1
-                  }
-                  if quantity then
-                     for i=1,quantity do
-                        mod_inventory.use(e.x1, e.y1, item)
+                     value = 1,
+                     action = function(quantity)
+                        for i=1,quantity do
+                           mod_inventory.use(e.x1, e.y1, item)
+                        end
                      end
-                  end
+                  }
                end
             }
          elseif option == "Upgrades" then
@@ -741,18 +741,18 @@ function mod_menu.terrain_editor()
          if name == "Repeat last terrain" then
             terrain.set_terrain(terrain.last_terrain)
          elseif name == "Change radius" then
-            local radius = menu_slider{
+            menu_slider{
                title = title,
                description = _ "What do you want to set the terrain radius as?",
                label = _ "Radius:",
                max = 3,
                min = 0,
                step = 1,
-               value = 0
+               value = 0,
+               action = function(radius)
+                  terrain.radius = radius
+               end
             }
-            if radius then
-               terrain.radius = radius
-            end
          elseif name == "Set an overlay" then
             menu{
                list = terrain.overlay_options,
@@ -811,18 +811,18 @@ function mod_menu.place_object()
          elseif option == "Place Pack" then
             game_object.simple_place(e.x1, e.y1, "pack", "items/leather-pack.png", true)
          elseif option == "Place Gold Pile" then
-            local quantity = menu_slider{
+            menu_slider{
                title = title,
                description = _ "How much gold do you want to place in the pile?",
                label = _ "Gold:",
                max = 500,
                min = 10,
                step = 10,
-               value = 100
+               value = 100,
+               action = function(quantity)
+                  game_object.gold_place(e.x1, e.y1, quantity)
+               end
             }
-            if quantity then
-               game_object.gold_place(e.x1, e.y1, quantity)
-            end
          elseif option == "Clear Hex" then
             game_object.clear(e.x1, e.y1)
          end
@@ -928,18 +928,18 @@ function mod_menu.settings()
                end
             }
          elseif option == "Max Starting Level" then
-            local option = menu_slider{
+            menu_slider{
                title = title,
                description = _ "What level should be the maximum for leader selection?",
                label =  _ "Level:",
                max = 5,
                min = 0,
                step = 1,
-               value = 1
+               value = 1,
+               action = function(option)
+                  change_unit.max_level = option
+               end
             }
-            if option then
-               change_unit.max_level = option
-            end
          elseif option == "New Scenario" then
             menu{
                list = mod_menu.scenarios,

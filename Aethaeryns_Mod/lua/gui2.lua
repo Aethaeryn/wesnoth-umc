@@ -216,7 +216,10 @@ function menu_slider(arg_table)
       wesnoth.set_dialog_value("", "menu_image")
    end
 
-   return dialog_choice(gui2.wml.dialog(true, "slider", nil, arg_table), preshow, true, "menu_slider")
+   local choice = dialog_choice(gui2.wml.dialog(true, "slider", nil, arg_table), preshow, true, "menu_slider")
+   if choice then
+      arg_table.action(choice)
+   end
 end
 
 function gui2_error(text)
