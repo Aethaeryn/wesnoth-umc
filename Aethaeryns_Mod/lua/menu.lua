@@ -927,9 +927,7 @@ function mod_menu.settings()
                min = 0,
                step = 1,
                value = 1,
-               action = function(option)
-                  change_unit.max_level = option
-               end
+               action = change_unit.set_max_level
             }
          elseif option == "New Scenario" then
             menu{

@@ -5,6 +5,10 @@ spawn_unit = {}
 units_with_effects = {}
 change_unit.max_level = 1
 
+function change_unit.set_max_level(option)
+   change_unit.max_level = option
+end
+
 function change_unit.side(x, y, new_side)
    local unit = wesnoth.get_unit(x, y)
    unit.side = new_side
