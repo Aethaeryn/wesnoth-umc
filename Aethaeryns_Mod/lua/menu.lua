@@ -669,9 +669,7 @@ function mod_menu.unit_editor()
          if choice == "Transform" then
             submenu_unit_selection_common{
                title = title,
-               action = function(choice)
-                  change_unit.transform(e.x1, e.y1, choice)
-               end,
+               action = location_closure(change_unit.transform, e.x1, e.y1),
                gender_action = function(choice, gender)
                   change_unit.transform(e.x1, e.y1, choice, gender)
                end
@@ -682,9 +680,7 @@ function mod_menu.unit_editor()
                title = title,
                description = _ "Select a new (summoning) role for this unit.",
                dialog_list = "simple",
-               action = function(role)
-                  change_unit.role(e.x1, e.y1, role)
-               end
+               action = location_closure(change_unit.role, e.x1, e.y1)
             }
          elseif choice == "Inventory" then
             menu{
@@ -703,9 +699,7 @@ function mod_menu.unit_editor()
                title = title,
                description = _ "Select a target side.",
                dialog_list = "simple",
-               action = function(side)
-                  change_unit.side(e.x1, e.y1, side)
-               end
+               action = location_closure(change_unit.side, e.x1, e.y1)
             }
          elseif choice == "Stats" then
             menu{
@@ -722,9 +716,7 @@ function mod_menu.unit_editor()
                         title = title,
                         description = string.format("What should the new value of %s be?", stat),
                         label = _ "New Value:",
-                        action = function(option)
-                           change_unit[stat](e.x1, e.y1, option)
-                        end
+                        action = location_closure(change_unit[stat], e.x1, e.y1)
                      }
                   else
                      change_unit[stat](e.x1, e.y1)
@@ -820,9 +812,7 @@ function mod_menu.place_object()
                min = 10,
                step = 10,
                value = 100,
-               action = function(quantity)
-                  game_object.gold_place(e.x1, e.y1, quantity)
-               end
+               action = location_closure(game_object.gold_place, e.x1, e.y1)
             }
          elseif option == "Clear Hex" then
             game_object.clear(e.x1, e.y1)
