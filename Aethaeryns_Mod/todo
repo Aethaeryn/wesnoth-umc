@@ -8,8 +8,6 @@ When this list is complete/empty, bump to version 0.9
   - Allow the host on turn 1 to quick-spawn NPCs and hostile units in
     some areas or all of a map, varying depending on the map.
 
-  - Allow pets (e.g. bat, falcon, wolf, etc.).
-
   - Log all the numerial change_unit actions in unit variables and
     reapply them when certain actions that would wipe them happen,
     like promotions and the application of [object]s.
@@ -17,8 +15,6 @@ When this list is complete/empty, bump to version 0.9
   - rewrite the mess of multi-turn [objects] and Ale
 
   - use boats for fast travel between piers in Woods
-
-  - Let certain leader types be disallowed (e.g. Monsters).
 
   - Make the non-list menus use tables to match the list menu API.
 
@@ -157,6 +153,8 @@ When this list is complete/empty, bump to version 0.9
   * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
   * FEATURE: Zombie variations need to be possible instead of just the boring plain zombie.
   * FEATURE: If possible, units should keep their name when zombified.
+  * FEATURE: Let certain leader types be disallowed (e.g. Monsters).
+  * FEATURE: Allow pets (e.g. bat, falcon, wolf, etc.).
 
   * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
     * Maybe override [advancement] i.e. AMLA_DEFAULT?
