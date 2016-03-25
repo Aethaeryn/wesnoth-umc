@@ -730,6 +730,8 @@ end
 
 function mod_menu.terrain_editor()
    local e = wesnoth.current.event_context
+   -- fixme: move this from a global variable to a closure so it
+   -- matches the other menus in style?
    terrain.change_hexes = wesnoth.get_locations { x = e.x1, y = e.y1, radius = terrain.radius }
    local title = _ "Terrain Editor"
    menu{
