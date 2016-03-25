@@ -58,6 +58,10 @@ terrain.overlay_options = {
    "Special",
    "Remove overlay"}
 
+function terrain.set_radius(radius)
+   terrain.radius = radius
+end
+
 function terrain.set_terrain(terrain_symbol)
    terrain.last_terrain = terrain_symbol
    for i, hex in ipairs(terrain.change_hexes) do

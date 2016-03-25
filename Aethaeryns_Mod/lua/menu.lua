@@ -749,9 +749,7 @@ function mod_menu.terrain_editor()
                min = 0,
                step = 1,
                value = 0,
-               action = function(radius)
-                  terrain.radius = radius
-               end
+               action = terrain.set_radius
             }
          elseif name == "Set an overlay" then
             menu{
@@ -771,9 +769,7 @@ function mod_menu.terrain_editor()
                         description = _ "Which terrain overlay would you like to place?",
                         dialog_list = "terrain",
                         sidebar = true,
-                        action = function(choice)
-                           terrain.set_overlay(choice)
-                        end
+                        action = terrain.set_overlay
                      }
                   end
                end
@@ -785,9 +781,7 @@ function mod_menu.terrain_editor()
                description = _ "Which terrain would you like to place?",
                dialog_list = "terrain",
                sidebar = true,
-               action = function(choice)
-                  terrain.set_terrain(choice)
-               end
+               action = terrain.set_terrain
             }
          end
       end
