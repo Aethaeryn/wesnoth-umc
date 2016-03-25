@@ -38,6 +38,7 @@ mod_menu.misc_settings =  {
 
 -- (Most) Helper Functions --
 
+-- Get a list of the roles (types) allowed for summoners.
 local function get_roles()
    local roles = {}
    for i, v in ipairs(SUMMON_ROLES) do
@@ -47,6 +48,7 @@ local function get_roles()
    return roles
 end
 
+-- Add an All option at the end of the side list.
 local function get_sides_with_all()
    local sides = {"All"}
    for i, v in ipairs(SIDES) do
@@ -55,6 +57,8 @@ local function get_sides_with_all()
    return sides
 end
 
+-- Finds neighboring units and containers on (x, y) that a unit is
+-- allowed to interact with.
 local function find_interactions(x, y, blocked, on_hex)
    local interactions = {}
    if containers[x] ~= nil and containers[x][y] ~= nil and not blocked then
@@ -77,6 +81,7 @@ local function find_interactions(x, y, blocked, on_hex)
    return interactions
 end
 
+-- Find containers at (x, y) that the host can modify.
 local function find_interactions_to_modify(x, y)
    local interactions = {}
    if containers[x] ~= nil and containers[x][y] ~= nil then
@@ -93,6 +98,8 @@ local function find_interactions_to_modify(x, y)
    return interactions
 end
 
+-- Find out if there are any units that can be interacted with at the
+-- location (x, y).
 local function unit_interaction(x, y, current_side)
    local hexes = wesnoth.get_locations { x = x, y = y, radius = 1 }
    local unit_list = {}
@@ -116,6 +123,8 @@ local function unit_interaction(x, y, current_side)
    return unit_list, blocked
 end
 
+-- Appends "Select Unit" to the unit commands menu if the player
+-- didn't select a leader type.
 local function get_unit_commands(leader_selection)
    local temp_table = {
       {"Use Item", "icons/potion_red_small.png"},
@@ -127,6 +136,8 @@ local function get_unit_commands(leader_selection)
    return temp_table
 end
 
+-- Returns a list of valid levels from 0 to max_level of a particular
+-- unit category in a table of units.
 local function get_levels(unit_table, category, max_level)
    local levels = {}
    for key, value in pairs(unit_table[category]) do
@@ -138,6 +149,7 @@ local function get_levels(unit_table, category, max_level)
    return levels
 end
 
+-- Generates a list of upgrades available for the Upgrade menu.
 local function get_upgrade_options(unit)
    local upgrades = {}
    for i, upgrade in ipairs(upgrade_table) do
@@ -156,6 +168,8 @@ local function get_upgrade_options(unit)
    return upgrades
 end
 
+-- Gets the current value of a stat and includes it in the menu list
+-- for that side's stats.
 local function side_stats(side, stats)
    local temp = {}
    for i, stat in ipairs(stats) do
@@ -166,6 +180,8 @@ end
 
 -- Special --
 
+-- Toggles certain features on and off so the right click menu doesn't
+-- get cluttered with something that's not currently being used.
 function mod_menu.toggle(menu_item)
    if mod_menu_items[menu_item].status then
       mod_menu_items[menu_item].status = false
@@ -178,6 +194,7 @@ end
 
 -- Menus and Submenus --
 
+-- Submenu that provides a slider for adding inventory.
 local function submenu_inventory_quantity(item, container)
    local count = menu_slider{
       title = _ "Change Inventory",
@@ -193,6 +210,8 @@ local function submenu_inventory_quantity(item, container)
    end
 end
 
+-- Submenu that provides a common interface for selecting units by
+-- species.
 local function submenu_unit_selection_common(arg_table)
    -- You only exit the menu at the top level or if you choose a unit.
    local done = false
