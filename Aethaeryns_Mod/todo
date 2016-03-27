@@ -65,18 +65,17 @@ When this list is complete/empty, bump to version 0.9
       - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
 
  (2) Interaction (1%)
-  - Let units give gold to adjacent units:
-    - If friendly leader: gold
-    - If other friendly unit: gold coins (item) (anyone should be able to hold them, but only leader should be able to cash them)
-
-  - Bribing (non-leader, hostile or side 1 or side 6)
-    - Allow certain units to be bribed through interactions (and mark with certain icon?) if the host toggles them.
-    - For 1.5x cost in gold, they will change to player's team and then lose the ability to be bribed.
-    - In addition to a unit-by-unit setting, there will be game setting that will allow some lower-level units to spawn as bribable:
-      - 100% chance for spawned non-summoner level 0s
-      - 15% chance for spawned non-summoner level 1s
-      - 10% chance for spawned non-summoner level 2s
-      - Undead, elementals, animals, monsters, etc., cannot be bribed unless manually set that way.
+  - Let leader units give gold to adjacent leader units.
+  - Bribing
+    - Allow non-leader units to be bribed if on side 1 or 6, or if they are on a hostile team.
+      - For 1.5x their cost in gold, the bribed unit will change to player's team.
+    - Only leader units can bribe other units.
+    - Every time a bribe attempt is made:
+      - 90% chance for spawned, non-summoner, non-loyal level 0s
+      - 15% chance for spawned, non-summoner, non-loyal level 1s
+      - 10% chance for spawned, non-summoner, non-loyal level 2s
+      - Undead, elementals, animals, monsters, etc., cannot be bribed.
+        - Perhaps animals could be tamed.
     - Bribing will consume all movement and disable attacks and will only be allowed if you haven't attacked.
 
  (3) Inventory (1%)
@@ -220,6 +219,8 @@ When this list is complete/empty, bump to version 0.9
     * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
 
  (7) Far Future (Past 1.0?)
+  * Leader units should be able to give gold coin items instead of gold to non-leader friendly units, so you can't teleport gold across the map.
+    - Only leaders should be able to use (cash) those gold coins. Otherwise, they sit in inventory until given to a leader unit.
   * Require download (modification, era, MP campaign(s)), but make the Lua imported in a cleaner way and define some custom WML tags.
     - This will solve the problem of what to do for certain icons, e.g. for potion types, scrolls, and menu items.
     - The current closed scroll icon could be used for unidentified scrolls if it's going to be like roguelikes and require identifying.
