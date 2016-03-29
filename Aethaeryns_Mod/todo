@@ -13,10 +13,9 @@ When this list is complete/empty, bump to version 0.9
     like promotions and the application of [object]s.
 
   - rewrite the mess of multi-turn [objects] and Ale
-
-  - use boats for fast travel between piers in Woods
-
-  - Make the non-list menus use tables to match the list menu API.
+    - use wesnoth.get_units() to iterate over every unit with some
+      stat > 0 each turn and then reapply that effect to last one turn
+      while decrementing the counter
 
  (1) Inventory Containers (1%)
   - Container changes on host or unit actions:
@@ -121,10 +120,6 @@ When this list is complete/empty, bump to version 0.9
 
   - Check how inventory's effects interact if promoted while the effect is still on.
 
-  - Let Sylphs and/or Shydes disguise themselves as regular Elvish Ladies.
-    - They would stay as summoners but lose the icon, being the only stealth summoners in the game.
-    - Perhaps allow other disguising, e.g. Assassins.
-
  (5) Issues (2%)
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
     - e.g. some border hexes can change terrain and some just change (1,1)
@@ -154,6 +149,7 @@ When this list is complete/empty, bump to version 0.9
   * FEATURE: If possible, units should keep their name when zombified.
   * FEATURE: Let certain leader types be disallowed (e.g. Monsters).
   * FEATURE: Allow pets (e.g. bat, falcon, wolf, etc.).
+  * FEATURE: Use boats for fast travel between piers in Woods.
   * FEATURE: Allow sharing gold as an option when collecting gold, splitting it evenly among players whose leaders are within a certain radius.
 
   * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
@@ -217,6 +213,7 @@ When this list is complete/empty, bump to version 0.9
     * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
     * Reduce max HP on summoner by 1 per level of active summoned unit?
     * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
+    * Should disguising hide the summoner icon if it is present?
 
  (7) Far Future (Past 1.0?)
   * Leader units should be able to give gold coin items instead of gold to non-leader friendly units, so you can't teleport gold across the map.

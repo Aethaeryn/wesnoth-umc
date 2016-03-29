@@ -131,15 +131,21 @@ local function unit_interaction(x, y, current_side)
    return unit_list, blocked
 end
 
--- Appends "Select Unit" to the unit commands menu if the player
--- didn't select a leader type.
-local function get_unit_commands(leader_selection)
+local function get_unit_commands(unit)
    local temp_table = {
       {"Use Item", "icons/potion_red_small.png"},
       {"Upgrades", "attacks/woodensword.png"},
       {"Speak", "icons/letter_and_ale.png"}}
-   if leader_selection then
+   -- Appends "Select Unit" to the unit commands menu if the player
+   -- didn't select a leader type.
+   if unit.variables.selection_active then
       table.insert(temp_table, 1, {"Select Unit", "attacks/thorns.png"})
+   end
+   -- Faerie elves have the power to disguise themselves.
+   if unit.type == "Elvish Sylph" or unit.type == "Elvish Shyde" then
+      table.insert(temp_table, 1, {"Use Disguise", "icons/jewelry_butterfly_pin.png"})
+   elseif unit.type == "Elvish Lady" and unit.variables.disguised_from then
+      table.insert(temp_table, 1, {"Remove Disguise", "icons/jewelry_butterfly_pin.png"})
    end
    return temp_table
 end
@@ -585,7 +591,7 @@ function mod_menu.unit_commands()
    local unit = wesnoth.get_unit(e.x1, e.y1)
    local title = _ "Unit Commands"
    menu{
-      list = get_unit_commands(unit.variables.selection_active),
+      list = get_unit_commands(unit),
       title = title,
       description = _ "What do you want to do with this unit?",
       dialog_list = "with_picture",
@@ -650,6 +656,21 @@ function mod_menu.unit_commands()
                   fire.custom_message(message)
                end
             }
+         elseif option == "Use Disguise" then
+            local damaged = unit.max_hitpoints - unit.hitpoints
+            unit.variables.disguised_from = unit.type
+            change_unit.transform(e.x1, e.y1, "Elvish Lady")
+            if damaged > unit.max_hitpoints then
+               unit.hitpoints = 1
+            else
+               unit.hitpoints = unit.max_hitpoints - damaged
+            end
+         elseif option == "Remove Disguise" then
+            local damaged = unit.max_hitpoints - unit.hitpoints
+            local original_unit = unit.variables.disguised_from
+            unit.variables.disguised_from = nil
+            change_unit.transform(e.x1, e.y1, original_unit)
+            unit.hitpoints = unit.max_hitpoints - damaged
          end
       end
    }
