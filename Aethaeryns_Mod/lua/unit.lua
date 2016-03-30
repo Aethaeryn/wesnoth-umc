@@ -127,6 +127,19 @@ function change_unit.transform(x, y, new_unit, gender)
    end
 end
 
+function change_unit.transform_keeping_stats(x, y, unit, new_unit)
+   local damaged = unit.max_hitpoints - unit.hitpoints
+   local moves = unit.moves
+   unit.variables.disguised_from = unit.type
+   change_unit.transform(x, y, new_unit)
+   if damaged > unit.max_hitpoints then
+      unit.hitpoints = 1
+   else
+      unit.hitpoints = unit.max_hitpoints - damaged
+   end
+   unit.moves = moves
+end
+
 function change_unit.role(x, y, new_role)
    local unit = wesnoth.get_unit(x, y)
    unit.role = new_role

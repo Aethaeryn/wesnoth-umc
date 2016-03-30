@@ -657,24 +657,9 @@ function mod_menu.unit_commands()
                end
             }
          elseif option == "Use Disguise" then
-            local damaged = unit.max_hitpoints - unit.hitpoints
-            local moves = unit.moves
-            unit.variables.disguised_from = unit.type
-            change_unit.transform(e.x1, e.y1, "Elvish Lady")
-            if damaged > unit.max_hitpoints then
-               unit.hitpoints = 1
-            else
-               unit.hitpoints = unit.max_hitpoints - damaged
-            end
-            unit.moves = moves
+            change_unit.transform_keeping_stats(e.x1, e.y1, unit, "Elvish Lady")
          elseif option == "Remove Disguise" then
-            local damaged = unit.max_hitpoints - unit.hitpoints
-            local moves = unit.moves
-            local original_unit = unit.variables.disguised_from
-            unit.variables.disguised_from = nil
-            change_unit.transform(e.x1, e.y1, original_unit)
-            unit.hitpoints = unit.max_hitpoints - damaged
-            unit.moves = moves
+            change_unit.transform_keeping_stats(e.x1, e.y1, unit, unit.variables.disguised_from)
          end
       end
    }
