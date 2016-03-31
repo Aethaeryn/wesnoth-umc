@@ -224,6 +224,21 @@ local function submenu_inventory_quantity(item, container)
    }
 end
 
+-- Adds item to container.
+-- fixme: merge with "Add to chest" submenu.
+local function submenu_add_item(title, x, y, container_type)
+   menu{
+      list = mod_inventory.show_all(),
+      title = title,
+      description = _ "Which item do you want to add?",
+      dialog_list = "item",
+      sidebar = true,
+      action = function(item)
+         submenu_inventory_quantity(item.name, containers[x][y][container_type])
+      end
+   }
+end
+
 -- Submenu that provides a common interface for selecting units by
 -- species.
 local function submenu_unit_selection_common(arg_table)
@@ -827,19 +842,6 @@ function mod_menu.place_object()
          elseif option == "Clear Hex" then
             game_object.clear(e.x1, e.y1)
          end
-      end
-   }
-end
-
-local function submenu_add_item(title, x, y, container_type)
-   menu{
-      list = mod_inventory.show_all(),
-      title = title,
-      description = _ "Which item do you want to add?",
-      dialog_list = "item",
-      sidebar = true,
-      action = function(item)
-         submenu_inventory_quantity(item.name, containers[x][y][container_type])
       end
    }
 end

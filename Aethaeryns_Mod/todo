@@ -2,6 +2,8 @@ AETHAERYN'S MOD TODO LIST (93.5% Progress)
 When this list is complete/empty, bump to version 0.9
 
 (0) Misc (0.5%)
+  - Merge "Add to Chest" submenu with add item submenu.
+
   - Get rid of the level submenu in unit selection. Flatten it to one
     list and use the level as a section header separator instead.
 
