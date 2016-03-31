@@ -597,10 +597,7 @@ function mod_menu.unit_commands()
       dialog_list = "with_picture",
       sublist_index = 1,
       action = function(option)
-         if option == "Select Unit" then
-            unit.variables.selection_active = false
-            mod_menu.select_leader()
-         elseif option == "Use Item" then
+         if option == "Use Item" then
             menu{
                list = mod_inventory.show_current(unit.variables),
                title = title,
@@ -656,6 +653,9 @@ function mod_menu.unit_commands()
                   fire.custom_message(message)
                end
             }
+         elseif option == "Select Unit" then
+            unit.variables.selection_active = false
+            mod_menu.select_leader()
          elseif option == "Use Disguise" then
             change_unit.transform_keeping_stats(e.x1, e.y1, unit, "Elvish Lady")
          elseif option == "Remove Disguise" then
