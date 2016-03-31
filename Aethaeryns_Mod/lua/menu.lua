@@ -209,12 +209,12 @@ end
 -- Menus and Submenus --
 
 -- Submenu that provides a slider for adding inventory.
-local function submenu_inventory_quantity(item, container)
+local function submenu_inventory_quantity(item, container, max)
    menu_slider{
       title = _ "Change Inventory",
-      description = string.format("How much of %s do you want to give?", item),
+      description = string.format("How much of %s do you want to add?", item),
       label = _ "Item Quantity:",
-      max = 20,
+      max = max,
       min = 1,
       step = 1,
       value = 1,
@@ -234,7 +234,7 @@ local function submenu_add_item(title, x, y, container_type)
       dialog_list = "item",
       sidebar = true,
       action = function(item)
-         submenu_inventory_quantity(item.name, containers[x][y][container_type])
+         submenu_inventory_quantity(item.name, containers[x][y][container_type], 20)
       end
    }
 end
@@ -715,7 +715,7 @@ function mod_menu.unit_editor()
                dialog_list = "item",
                sidebar = true,
                action = function(item)
-                  submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables)
+                  submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables, 20)
                end
             }
          elseif choice == "Side" then
