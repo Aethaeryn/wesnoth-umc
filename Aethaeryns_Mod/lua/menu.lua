@@ -226,7 +226,7 @@ end
 
 -- Adds item to container.
 -- fixme: merge with "Add to chest" submenu.
-local function submenu_add_item(title, x, y, container_type)
+local function submenu_add_item(title, container)
    menu{
       list = mod_inventory.show_all(),
       title = title,
@@ -234,7 +234,7 @@ local function submenu_add_item(title, x, y, container_type)
       dialog_list = "item",
       sidebar = true,
       action = function(item)
-         submenu_inventory_quantity(item.name, containers[x][y][container_type], 20)
+         submenu_inventory_quantity(item.name, container, 20)
       end
    }
 end
@@ -708,16 +708,7 @@ function mod_menu.unit_editor()
                action = location_closure(change_unit.role, e.x1, e.y1)
             }
          elseif choice == "Inventory" then
-            menu{
-               list = mod_inventory.show_all(),
-               title = title,
-               description = _ "Which item do you want to add?",
-               dialog_list = "item",
-               sidebar = true,
-               action = function(item)
-                  submenu_inventory_quantity(item.name, wesnoth.get_unit(e.x1, e.y1).variables, 20)
-               end
-            }
+            submenu_add_item(title, wesnoth.get_unit(e.x1, e.y1).variables)
          elseif choice == "Side" then
             menu{
                list = SIDES,
@@ -864,9 +855,9 @@ function mod_menu.settings()
                sublist_index = 1,
                action = function(interaction)
                   if interaction == "Modify Shop" then
-                     submenu_add_item(title, e.x1, e.y1, "shop")
+                     submenu_add_item(title, containers[e.x1][e.y1]["shop"])
                   elseif interaction == "Modify Chest" then
-                     submenu_add_item(title, e.x1, e.y1, "chest")
+                     submenu_add_item(title, containers[e.x1][e.y1]["chest"])
                   end
                end
             }
