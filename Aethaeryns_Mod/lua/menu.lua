@@ -208,25 +208,12 @@ end
 
 -- Menus and Submenus --
 
--- Submenu that provides a slider for adding inventory.
-local function submenu_inventory_quantity(item, container, max)
-   menu_slider{
-      title = _ "Change Inventory",
-      description = string.format("How much of %s do you want to add?", item),
-      label = _ "Item Quantity:",
-      max = max,
-      min = 1,
-      step = 1,
-      value = 1,
-      action = function(quantity)
-         mod_inventory.add(item, quantity, container)
-      end
-   }
-end
-
 -- Adds item to container.
 -- fixme: merge with "Add to chest" submenu.
-local function submenu_add_item(title, container)
+local function submenu_add_item(title, container, max)
+   if max == nil then
+      max = 20
+   end
    menu{
       list = mod_inventory.show_all(),
       title = title,
@@ -234,7 +221,18 @@ local function submenu_add_item(title, container)
       dialog_list = "item",
       sidebar = true,
       action = function(item)
-         submenu_inventory_quantity(item.name, container, 20)
+         menu_slider{
+            title = _ "Change Inventory",
+            description = string.format("How much of %s do you want to add?", item.name),
+            label = _ "Item Quantity:",
+            max = max,
+            min = 1,
+            step = 1,
+            value = 1,
+            action = function(quantity)
+               mod_inventory.add(item.name, quantity, container)
+            end
+         }
       end
    }
 end
