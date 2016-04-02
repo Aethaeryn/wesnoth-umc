@@ -150,3 +150,11 @@ the GPLv2 is a requirement of the Wesnoth add-on server. If I
 accidentally write some generally useful Lua code and you want it
 under a permissive license, contact me and I'll see if I can double
 license it.
+
+More information
+================
+
+Each directory in wesnoth-umc is its own add-on, intended to be
+published as a separate add-on on the Wesnoth add-on server. For
+information on the specific add-on, see the README.md in each
+directory.
