@@ -164,6 +164,9 @@ local function generate_menu_preshow(list, title, description, image, dialog_lis
          else
             wesnoth.set_dialog_value(image, "menu_image")
          end
+         if wesnoth.compare_versions(wesnoth.game_config.version, ">=", "1.13.2") then
+            wesnoth.set_dialog_focus("menu_list")
+         end
       end
    else
       return function()
@@ -171,6 +174,9 @@ local function generate_menu_preshow(list, title, description, image, dialog_lis
          wesnoth.set_dialog_value(description, "menu_description")
          wesnoth.set_dialog_value(image, "menu_image")
          wesnoth.set_dialog_value("None", "menu_list_empty")
+         if wesnoth.compare_versions(wesnoth.game_config.version, ">=", "1.13.2") then
+            wesnoth.set_dialog_focus("menu_list")
+         end
       end
    end
 end
@@ -228,6 +234,9 @@ function menu_text_input(arg_table)
       wesnoth.set_dialog_value(arg_table.default_text, "menu_text_box")
       wesnoth.set_dialog_value(arg_table.label, "menu_text_box_label")
       wesnoth.set_dialog_value(arg_table.image, "menu_image")
+      if wesnoth.compare_versions(wesnoth.game_config.version, ">=", "1.13.2") then
+         wesnoth.set_dialog_focus("menu_text_box")
+      end
    end
 
    local choice = dialog_choice(gui2.wml.dialog(true, "text_input"), preshow, true, "menu_text_box")

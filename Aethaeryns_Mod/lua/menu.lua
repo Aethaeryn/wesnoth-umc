@@ -647,9 +647,6 @@ function mod_menu.unit_commands()
                end
             }
          elseif option == "Speak" then
-            -- fixme (1.13): afaik, there's no way to force a focus on
-            -- the text input except through the C++
-            --
             -- fixme (1.13): wesnoth.message does *not* show up in Chat
             -- Log because Wesnoth is full of terrible, hardcoded
             -- assumptions about how things will be used via buggy,
