@@ -329,9 +329,8 @@ function gui2.on_select.unit(list)
    end
 end
 
-function gui2.on_select.unit_cost(list)
-   return gui2.on_select.unit(list)
-end
+-- This function is identical to the above one.
+gui2.on_select.unit_cost = gui2.on_select.unit
 
 function gui2.on_select.team_stats(list)
    return function ()
