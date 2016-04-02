@@ -117,7 +117,7 @@ end
 
 local function generate_menu_preshow(list, title, description, image, dialog_list, sidebar, not_empty)
    if image == nil then
-      image = mod_menu.lich_image
+      image = ""
    end
 
    if not_empty then
@@ -188,7 +188,7 @@ function menu_text_input(arg_table)
    end
 
    if arg_table.image == nil then
-      arg_table.image = mod_menu.lich_image
+      arg_table.image = ""
    end
 
    local function preshow()
@@ -208,12 +208,16 @@ end
 -- Takes an arg table with the following values:
 -- title, description, label, max, min, step, value
 function menu_slider(arg_table)
+   if arg_table.image == nil then
+      arg_table.image = ""
+   end
+
    local function preshow()
       wesnoth.set_dialog_value(arg_table.title, "menu_title")
       wesnoth.set_dialog_value(arg_table.description, "menu_description")
       wesnoth.set_dialog_value(arg_table.value, "menu_slider")
       wesnoth.set_dialog_value(arg_table.label, "menu_slider_label")
-      wesnoth.set_dialog_value("", "menu_image")
+      wesnoth.set_dialog_value(arg_table.image, "menu_image")
    end
 
    local choice = dialog_choice(gui2.wml.dialog(true, "slider", nil, arg_table), preshow, true, "menu_slider")
