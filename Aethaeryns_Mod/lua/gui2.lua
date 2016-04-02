@@ -17,6 +17,37 @@ gui2.wml.list = T.column {
                                 T.column { horizontal_alignment = "left", T.image { id = "icon" }},
                                 T.column { horizontal_alignment = "left", T.label { id = "label" }}}}}}}}}}
 
+-- -- Possibly buggy implementation of tree WML in Lua. Can't use until 1.13.
+-- gui2.wml.tree = T.column {
+--    horizontal_grow = true,
+--    T.tree_view { id = "menu_tree",
+--                  -- indentation_step_size = 0,
+--                  T.node {
+--                     id = "foobar",
+--                     T.node_definition { T.row {
+--                       T.column {
+--                          T.toggle_button {
+--                             id = "tree_view_node_icon",
+--                             definition = "tree_view_node",
+--                       }},
+--                       T.column {
+--                          grow_factor = 1,
+--                          horizontal_grow = "true",
+--                          border = "right",
+--                          border_size = 5,
+--                          T.label {
+--                             id = "tree_view_node_label",
+--                             definition = "default_tiny",
+--                             label = "group", }}}}},
+--                  T.node {
+--                     id = "foo",
+--                     T.node_definition { T.row { T.column { horizontal_grow = true,
+--                       T.toggle_panel {
+--                          return_value_id = "ok",
+--                          T.grid { T.row {
+--                                      T.column { horizontal_alignment = "left", T.image { id = "icon" }},
+--                                      T.column { horizontal_alignment = "left", T.label { id = "label" }}}}}}}}}}}
+
 gui2.wml.text_input = T.column {
    T.grid {
       T.row { T.column { T.label { id = "menu_text_box_label" }}},
