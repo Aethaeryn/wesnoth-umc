@@ -5,13 +5,13 @@ About
 -----
 
 This is a collection of some of the user-made content (UMC) that I
-have written for the game The Battle for Wesnoth. Each directory is or
-will eventually be on the add-on server as a separate add-on, but they
-are kept in one repository here for convenience. The add-ons are
-designed to run on both the latest stable version (1.12) and the
-latest development version (1.13) of Wesnoth, with some code that only
-runs on 1.13. None of them have been published for 1.12 or 1.13 yet
-because they are undergoing heavy rewrites.
+have written for [The Battle for Wesnoth](https://wesnoth.org). Each
+directory is or will eventually be on the add-on server as a separate
+add-on, but they are kept in one repository here for convenience. The
+add-ons are designed to run on both the latest stable version (1.12)
+and the latest development version (1.13) of Wesnoth, with some code
+that only runs on 1.13. None of them have been published for 1.12 or
+1.13 yet because they are undergoing heavy rewrites.
 
 Not every add-on of mine is currently here, but every add-on I have
 worked on recently (since 2015) is. Ones that rely on large amounts of
@@ -28,16 +28,26 @@ one (the Lua). The content are .map files (game map files), .cfg files
 Installing
 ----------
 
-Obviously, having either wesnoth 1.12, 1.13, or a current branch of
-the wesnoth git repository is a requirement to run these add-ons. I
-recommend 1.12 (the stable version) because I design with multiplayer
-in mind and the 1.13 (development) multiplayer servers are usually
-dead. Not every feature is available when you run it in 1.12,
-though. When new stable versions of Wesnoth are released, I will
-immediately drop support for old stable versions, which will
-immediately make this repository break on old stable versions, but you
-will be able to run old versions of my add-ons on old stable versions
-of Wesnoth.
+Having wesnoth 1.12 (stable), 1.13 (development), or a current branch
+of the [wesnoth git repository](https://github.com/wesnoth/wesnoth/)
+is the only requirement to run these add-ons. I recommend 1.12 (the
+stable version) because I design with multiplayer in mind and the 1.13
+(development) multiplayer servers are usually dead. Not every feature
+is available when you run it in 1.12, though. You *can* compile the
+1.12 branch from the Wesnoth git repository and use it to play
+multiplayer on the stable server. I develop and test this on the 1.12
+git branch and on the master git branch, so there might be bugs that I
+don't notice, especially in 1.13.
+
+When new stable versions of Wesnoth are released, I will immediately
+drop support for old stable versions, which will immediately make this
+repository break on old stable versions, but you will be able to run
+old versions of my add-ons on old stable versions of Wesnoth. I might
+create a 1.12 branch that still runs on 1.12 when this happens. The
+master branch is only guaranteed to work on the latest stable (1.12)
+and latest development (1.13.x) versions. Note that Wesnoth breaks
+compatibility each odd number (development) release, so if it works on
+1.13.5 it might not work on 1.13.4.
 
 To install the latest version of my add-ons, just checkout this
 repository, or download a copy of this repository, and then
