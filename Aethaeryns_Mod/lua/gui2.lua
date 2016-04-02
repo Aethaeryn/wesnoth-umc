@@ -395,7 +395,9 @@ function gui2.on_select.terrain(terrain_code)
       local terrain_info = wesnoth.get_terrain_info(terrain_code[i])
       wesnoth.set_dialog_value("Terrain information:  \n", "menu_sidebar_intro")
       wesnoth.set_dialog_markup(true, "menu_sidebar_text")
-      -- wesnoth.set_dialog_value(terrain_info.editor_image, "menu_image")
+      if wesnoth.compare_versions(wesnoth.game_config.version, ">", "1.13.4") then
+         wesnoth.set_dialog_value(terrain_info.editor_image, "menu_image")
+      end
       wesnoth.set_dialog_value(string.format("%s\n<small>%s</small>",
                                              tostring(terrain_info.editor_name),
                                              tostring(terrain_info.name)),
