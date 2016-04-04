@@ -7,6 +7,8 @@ gui2 = {
 
 ---- GUI2 WML ----
 
+--- Widget WML --
+
 gui2.wml.list = T.column {
    horizontal_grow = true,
    T.listbox { id = "menu_list",
@@ -55,6 +57,21 @@ gui2.wml.text_input = T.column {
 
 gui2.wml.empty = T.column { T.label { id = "menu_list_empty" }}
 
+function gui2.wml.slider(slider)
+   return T.column {
+      T.grid {
+         T.row { T.column { T.label { id = "menu_slider_label" }}},
+         T.row { T.column { T.slider {
+                               id = "menu_slider",
+                               minimum_value = slider.min,
+                               maximum_value = slider.max,
+                               step_size = slider.step}}}}}
+end
+
+--- Common WML ---
+
+-- Two buttons always display "OK" and "Cancel" and one button always
+-- displays "Close".
 function gui2.wml.buttons(not_empty)
    if not_empty then
       return T.row {
@@ -66,6 +83,7 @@ function gui2.wml.buttons(not_empty)
    end
 end
 
+-- There's a complex and a simple left sidebar for every window.
 function gui2.wml.left_column(has_sidebar)
    if has_sidebar ~= nil then
       return T.column { T.grid {
@@ -79,6 +97,9 @@ function gui2.wml.left_column(has_sidebar)
    end
 end
 
+-- This is the core function that generates the extremely verbose WML
+-- tables, in Lua metatable form, required for GUI2. The functions or
+-- tables above are all helper functions for this.
 function gui2.wml.dialog(not_empty, dialog_type, has_sidebar, slider)
    if not not_empty then
       dialog_type = "empty"
@@ -87,14 +108,7 @@ function gui2.wml.dialog(not_empty, dialog_type, has_sidebar, slider)
    if dialog_type ~= "slider" then
       dialog_core = gui2.wml[dialog_type]
    else
-      dialog_core = T.column {
-         T.grid {
-            T.row { T.column { T.label { id = "menu_slider_label" }}},
-            T.row { T.column { T.slider {
-                                  id = "menu_slider",
-                                  minimum_value = slider.min,
-                                  maximum_value = slider.max,
-                                  step_size = slider.step}}}}}
+      dialog_core = gui2.wml[dialog_type](slider)
    end
    return {
       T.tooltip { id = "tooltip_large" },
@@ -218,7 +232,6 @@ end
 
 -- Takes an arg table with the following values:
 -- image, title, description, label, default_text
--- fixme: when updated for 1.13, make the text input box start focused
 function menu_text_input(arg_table)
    if arg_table.default_text == nil then
       arg_table.default_text = ""
