@@ -951,6 +951,66 @@ function mod_menu.settings()
    }
 end
 
+-- Right-click menu items --
+
+mod_menu_items = {
+   summon_units = {
+      id = "MOD_003",
+      text = _ "Summon Units",
+      image = "terrain/symbols/terrain_group_custom_30.png",
+      filter = aeth_mod_filter.summon_summoner,
+      command = "mod_menu.summon_units()",
+      status = true },
+   summon_summoner = {
+      id = "MOD_005",
+      text = _ "Summon Summoner",
+      image = "terrain/symbols/terrain_group_custom2_30.png",
+      filter = aeth_mod_filter.summon_summoner,
+      command = "mod_menu.summon_summoner()",
+      status = true },
+   interact = {
+      id = "MOD_015",
+      text = _ "Interact",
+      image = "misc/key.png",
+      filter = aeth_mod_filter.interact,
+      command = "mod_menu.interact()",
+      status = true },
+   unit_commands = {
+      id = "MOD_010",
+      text = _ "Unit Commands",
+      image = "misc/key.png",
+      filter = aeth_mod_filter.unit,
+      command = "mod_menu.unit_commands()",
+      status = true },
+   unit_editor = {
+      id = "MOD_020",
+      text = _ "Change Unit",
+      image = "misc/icon-amla-tough.png",
+      filter = aeth_mod_filter.host_unit,
+      command = "mod_menu.unit_editor()",
+      status = true },
+   terrain_editor = {
+      id = "MOD_050",
+      text = _ "Change Terrain",
+      image = "misc/vision-fog-shroud.png",
+      filter = aeth_mod_filter.host,
+      command = "mod_menu.terrain_editor()",
+      status = false },
+   settings = {
+      id = "MOD_040",
+      text = _ "Settings",
+      image = "misc/ums.png",
+      filter = aeth_mod_filter.host,
+      command = "mod_menu.settings()",
+      status = true },
+   place_object = {
+      id = "MOD_070",
+      text = _ "Place Object",
+      image = "misc/dot-white.png",
+      filter = aeth_mod_filter.host_item,
+      command = "mod_menu.place_object()",
+      status = true }}
+
 -- Setup --
 
 local function menu_item_summon(unit_role)
