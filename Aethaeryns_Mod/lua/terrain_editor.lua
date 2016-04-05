@@ -1,6 +1,11 @@
 #define MOD_LUA_TERRAIN_EDITOR
 <<
+-- These functions enable editing the terrain of the map while the
+-- game is going on in multiplayer.
 terrain = {}
+
+-- Data --
+
 terrain.last_terrain = "Ur"
 terrain.last_overlay = "^Vh"
 terrain.radius = 0
@@ -57,6 +62,8 @@ terrain.overlay_options = {
    "Bridge",
    "Special",
    "Remove overlay"}
+
+-- Functions --
 
 function terrain.set_radius(radius)
    terrain.radius = radius

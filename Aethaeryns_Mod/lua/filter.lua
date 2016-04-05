@@ -1,5 +1,7 @@
 #define MOD_LUA_FILTER
 <<
+-- This file is a wrapper over a bunch of WML filters so ugly and
+-- verbose WML metatables don't clutter the rest of the mod.
 aeth_mod_filter = {}
 aeth_mod_filter.bad_summon_terrain = "X*, Q*, *^Xm, Mv"
 aeth_mod_filter.host1 = T["variable"] { name = "side_number", equals = 1 }

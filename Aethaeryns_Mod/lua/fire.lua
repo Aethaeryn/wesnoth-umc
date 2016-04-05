@@ -1,5 +1,7 @@
 #define MOD_LUA_FIRE
 <<
+-- Wrapper over the firing of Wesnoth events so it's more concise than
+-- calling wesnoth.fire directly.
 fire = {}
 
 function fire.end_scenario(new_scenario)
