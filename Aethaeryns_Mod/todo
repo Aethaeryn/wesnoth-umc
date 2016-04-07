@@ -178,53 +178,53 @@ When this list is complete/empty, bump to version 0.9
 ***
 
  (6) Future
-    * Rebalance summoning.
-      - Add a summon cap per summoner.
-        - How would deaths of summoned units be tracked back to the summoner?
-        - Would unsummoning be possible now?
-      - Let magical player characters be able to learn summoning.
-      - Remove summoning that makes no sense (e.g. human summoning) now that there are other ways to spawn units?
-    * Make spawning units/groups/objects tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
-      - Give the host options for quick placing units on the map or on parts of the map using this same map logic.
-        - So e.g. an area could use orcs, undead, etc.
-      - And of course this opens the door to quests, preset interactions/messages, etc.
-        - Even ones that the host can place.
-      - Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
-    * Character selection
-      * Allow player votes for things like max level or next map instead of leaving all the decisions to the host.
-      * Select gender through the same window rather than a separate window.
-      * Allow a random gender, and make this the default.
-    * Extend the GUI2 wrapper so that it can handle more than one return value.
-      * Some windows could do more than one action with sliders, checkboxes, etc., instead of with text input.
-        * especially changing side variables
-          * showing all the stats at once instead of only on select would be useful here too
-        * when setting objectives (three or more different text inputs at once)
-        * also changing unit stats
-      * Make the toggles have their own submenu in settings.
-        * make them use checkboxes
-        * make them say what the current state is based on check/uncheck
-    * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
-      * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
-      * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
-      * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
-    * Resurrection.
-      * When units die they are saved in a resurrection table.
-      * The host can resurrect a unit. (rematches of old bosses?)
-      * A resurrection spell on a scroll should be able to resurrect a unit too.
-    * Add a way to control the recalling of units and recall lists.
-      * Prevent the traditional keep-and-gold recalling of units.
-      * Make sure that NPCs/enemies can be recalled, not just player summons.
-    * Make sure everything (including items, secondary units, and possibly shop inventories) can transition between scenarios.
-    * More Shop Stuff:
-      * Shop options toggleable by host:
-        * Make a shop not able to buy items.
-        * Change shop price multiplier for selling to shop
-        * Change shop price multiplier for buying to shop (for expensive shops)
-      * Add more shop graphics for different flavor.
-    * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
-    * Reduce max HP on summoner by 1 per level of active summoned unit?
-    * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
-    * Should disguising hide the summoner icon if it is present?
+  * Rebalance summoning.
+    - Add a summon cap per summoner.
+      - How would deaths of summoned units be tracked back to the summoner?
+      - Would unsummoning be possible now?
+    - Let magical player characters be able to learn summoning.
+    - Remove summoning that makes no sense (e.g. human summoning) now that there are other ways to spawn units?
+  * Make spawning units/groups/objects tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
+    - Give the host options for quick placing units on the map or on parts of the map using this same map logic.
+      - So e.g. an area could use orcs, undead, etc.
+    - And of course this opens the door to quests, preset interactions/messages, etc.
+      - Even ones that the host can place.
+    - Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
+  * Character selection
+    * Allow player votes for things like max level or next map instead of leaving all the decisions to the host.
+    * Select gender through the same window rather than a separate window.
+    * Allow a random gender, and make this the default.
+  * Extend the GUI2 wrapper so that it can handle more than one return value.
+    * Some windows could do more than one action with sliders, checkboxes, etc., instead of with text input.
+      * especially changing side variables
+        * showing all the stats at once instead of only on select would be useful here too
+      * when setting objectives (three or more different text inputs at once)
+      * also changing unit stats
+    * Make the toggles have their own submenu in settings.
+      * make them use checkboxes
+      * make them say what the current state is based on check/uncheck
+  * Add preset super summoners for the late game when people have strong units, and to make high-level summons accessible.
+    * Boost Ancient Lich HP to 101 so they can summon the Skeletal Dragon without first changing their HP.
+    * Make sure there's a summoner who can summon the Yeti (Earth, 80 HP).
+    * Make sure there's a summoner who can summon the Fire Drgaon (Fire, 100 HP).
+  * Resurrection.
+    * When units die they are saved in a resurrection table.
+    * The host can resurrect a unit. (rematches of old bosses?)
+    * A resurrection spell on a scroll should be able to resurrect a unit too.
+  * Add a way to control the recalling of units and recall lists.
+    * Prevent the traditional keep-and-gold recalling of units.
+    * Make sure that NPCs/enemies can be recalled, not just player summons.
+  * Make sure everything (including items, secondary units, and possibly shop inventories) can transition between scenarios.
+  * More Shop Stuff:
+    * Shop options toggleable by host:
+      * Make a shop not able to buy items.
+      * Change shop price multiplier for selling to shop
+      * Change shop price multiplier for buying to shop (for expensive shops)
+    * Add more shop graphics for different flavor.
+  * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
+  * Reduce max HP on summoner by 1 per level of active summoned unit?
+  * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
+  * Should disguising hide the summoner icon if it is present?
 
  (7) Far Future (Past 1.0?)
   * Leader units should be able to give gold coin items instead of gold to non-leader friendly units, so you can't teleport gold across the map.
