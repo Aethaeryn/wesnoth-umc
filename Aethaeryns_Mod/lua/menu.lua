@@ -18,6 +18,7 @@ mod_menu.scenarios = {
    {"Cavern", "cavern"},
    {"Hide and Seek", "hide_and_seek"},
    {"Woods", "woods"},
+   {"The Great City", "city"},
    {"Temple", "temple"}}
 mod_menu.place_object_options = {
    {"Place Shop", "scenery/tent-shop-weapons.png"},
