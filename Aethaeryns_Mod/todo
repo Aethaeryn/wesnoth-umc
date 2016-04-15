@@ -2,17 +2,16 @@ AETHAERYN'S MOD TODO LIST (93.5% Progress)
 When this list is complete/empty, bump to version 0.9
 
 (0) Misc (0.5%)
-  - Merge "Add to Chest" submenu with add item submenu.
+  - before the next play test:
+    - make sure that containers still work
+    - add fast travel boats (cheap) and teleportation spots (expensive)
+    - add faction metadata to units so that they can quickly switch sides 1 <-> 6
+    - optional quick-spawn of units (and shops?) on various maps on turn 1
+
+  - merge "Add to Chest" submenu with add item submenu
 
   - Get rid of the level submenu in unit selection. Flatten it to one
     list and use the level as a section header separator instead.
-
-  - Allow the host on turn 1 to quick-spawn NPCs and hostile units in
-    some areas or all of a map, varying depending on the map.
-
-  - Log all the numerial change_unit actions in unit variables and
-    reapply them when certain actions that would wipe them happen,
-    like promotions and the application of [object]s.
 
   - rewrite the mess of multi-turn [objects] and Ale
     - use wesnoth.get_units() to iterate over every unit with some
@@ -155,7 +154,6 @@ When this list is complete/empty, bump to version 0.9
   * FEATURE: If possible, units should keep their name when zombified.
   * FEATURE: Let certain leader types be disallowed (e.g. Monsters).
   * FEATURE: Allow pets (e.g. bat, falcon, wolf, etc.).
-  * FEATURE: Use boats for fast travel between piers in Woods.
   * FEATURE: Allow sharing gold as an option when collecting gold, splitting it evenly among players whose leaders are within a certain radius.
 
   * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
@@ -174,6 +172,9 @@ When this list is complete/empty, bump to version 0.9
     * But still display a confirmation because players will expect some window first.
   * CODE: Make the shop slider also show cost so people know how much they're spending.
   * CODE: Make item use's max quantity context-aware, e.g. don't suggest more healing potions than would be useful to use at the moment.
+  * CODE: Log all the numerial change_unit actions in unit variables.
+    * Reapply them when certain actions that would wipe them happen, like promotions and the application of [object]s.
+
 
 ***
 
