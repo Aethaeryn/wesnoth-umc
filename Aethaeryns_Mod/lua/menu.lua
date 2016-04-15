@@ -15,11 +15,7 @@ mod_menu.scenarios = {
    {"Introduction", "intro"},
    {"Introduction (Underground)", "intro2"},
    {"Battle", "battle"},
-   {"Cavern", "cavern"},
-   {"Hide and Seek", "hide_and_seek"},
-   {"Woods", "woods"},
-   {"The Great City", "city"},
-   {"Temple", "temple"}}
+   {"Woods", "big_woods"}}
 mod_menu.place_object_options = {
    {"Place Shop", "scenery/tent-shop-weapons.png"},
    {"Place Chest", "items/chest-plain-closed.png"},
