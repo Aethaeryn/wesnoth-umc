@@ -4,7 +4,7 @@
 local function spawn_human_farmer(coord)
    spawn_unit.spawn_unit(coord[1], coord[2], "Peasant", 6)
 end
-   
+
 function spawn_default_starting_units()
    if wesnoth.get_variable("aeth_scenario_name") == "Big Woods" then
       -- human farmers
@@ -37,6 +37,43 @@ function spawn_default_starting_units()
          {70, 73},
          {72, 78},
          {78, 75},
+         {79, 67},
+         {86, 66},
+         {86, 71},
+         {88, 74},
+         {93, 67},
+         {92, 73},
+         {87, 82},
+         {91, 83},
+         {89, 86},
+         {98, 88},
+         {104, 89},
+         {102, 92},
+         {100, 62},
+         {104, 62},
+         {110, 64},
+         {112, 67},
+         {108, 74},
+         {139, 52},
+         {141, 52},
+         {141, 48},
+         {150, 49},
+         {152, 55},
+         {155, 55},
+         {151, 46},
+         {153, 44},
+         {158, 46},
+         {162, 44},
+         {166, 36},
+         {178, 37},
+         {171, 70},
+         {170, 68},
+         {173, 63},
+         {178, 63},
+         {189, 25},
+         {195, 25},
+         {196, 29},
+         {196, 20},
       }
       for i, coord in ipairs(coords) do
          spawn_human_farmer(coord)
