@@ -1,14 +1,13 @@
 #define MOD_LUA_SPAWN_UNITS
 <<
 -- Spawns all the preset units so the huge maps can get populated.
-local function spawn_human_farmer(coord)
-   spawn_unit.spawn_unit(coord[1], coord[2], "Peasant", 6)
+local function spawn_npc(coord, unit_name)
+   spawn_unit.spawn_unit(coord[1], coord[2], unit_name, 6)
 end
 
 function spawn_default_starting_units()
    if wesnoth.get_variable("aeth_scenario_name") == "Big Woods" then
-      -- human farmers
-      local coords = {
+      local peasant_coords = {
          {70, 129},
          {65, 128},
          {58, 125},
@@ -91,8 +90,18 @@ function spawn_default_starting_units()
          {58, 189},
          {57, 193},
       }
-      for i, coord in ipairs(coords) do
-         spawn_human_farmer(coord)
+      local woodsman_coords = {
+         {31, 72},
+         {39, 91},
+         {44, 94},
+         {23, 124},
+         {17, 131},
+      }
+      for i, coord in ipairs(peasant_coords) do
+         spawn_npc(coord, "Peasant")
+      end
+      for i, coord in ipairs(woodsman_coords) do
+         spawn_npc(coord, "Woodsman")
       end
    -- else
    --    debugOut(wesnoth.get_variable("aeth_scenario_name"))
