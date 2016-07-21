@@ -91,17 +91,37 @@ function spawn_default_starting_units()
          {57, 193},
       }
       local woodsman_coords = {
+         {23, 44},
          {31, 72},
          {39, 91},
          {44, 94},
          {23, 124},
          {17, 131},
       }
+      local guard_coords = {
+         {6, 54, "Spearman"},
+         {8, 58, "Heavy Infantryman"},
+         {7, 62, "Bowman"},
+         {15, 55, "Bowman"},
+         {17, 57, "Bowman"},
+         {14, 64, "Bowman"},
+         {18, 62, "Swordsman"},
+         {35, 69, "Spearman"},
+         {41, 75, "Heavy Infantryman"},
+         {44, 73, "Longbowman"},
+         {36, 77, "Bowman"},
+         {47, 75, "Horseman"},
+         {43, 78, "Horseman"},
+         {52, 77, "Cavalryman"}
+      }
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
       end
       for i, coord in ipairs(woodsman_coords) do
          spawn_npc(coord, "Woodsman")
+      end
+      for i, coord in ipairs(guard_coords) do
+         spawn_unit.spawn_unit(coord[1], coord[2], coord[3], 6)
       end
    -- else
    --    debugOut(wesnoth.get_variable("aeth_scenario_name"))
