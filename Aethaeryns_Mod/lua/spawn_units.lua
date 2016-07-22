@@ -97,6 +97,9 @@ function spawn_default_starting_units()
          {44, 94},
          {23, 124},
          {17, 131},
+         {37, 42},
+         {35, 48},
+         {53, 50},
       }
       local guard_coords = {
          {6, 54, "Spearman"},
@@ -112,7 +115,14 @@ function spawn_default_starting_units()
          {36, 77, "Bowman"},
          {47, 75, "Horseman"},
          {43, 78, "Horseman"},
-         {52, 77, "Cavalryman"}
+         {52, 77, "Cavalryman"},
+         {37, 36, "Bowman"},
+         {34, 52, "Bowman"},
+         {38, 59, "Bowman"},
+         {39, 61, "Spearman"},
+         {41, 63, "Spearman"},
+         {53, 41, "Poacher"},
+         {66, 45, "Poacher"},
       }
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
