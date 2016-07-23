@@ -123,6 +123,24 @@ function spawn_default_starting_units()
          {41, 63, "Spearman"},
          {53, 41, "Poacher"},
          {66, 45, "Poacher"},
+         {64, 58, "Poacher"},
+         {51, 65, "Bowman"},
+         {54, 67, "Longbowman"},
+         {57, 66, "Swordsman"},
+         {53, 71, "Lieutenant"},
+         {52, 68, "Spearman"},
+         {51, 70, "Spearman"},
+         {54, 72, "Bowman"},
+         {55, 72, "Bowman"},
+         {56, 72, "Spearman"},
+         {59, 72, "Spearman"},
+         {59, 67, "Bowman"},
+         {61, 67, "Spearman"},
+         {64, 68, "Spearman"},
+         {69, 69, "Bowman"},
+         {71, 68, "Spearman"},
+         {57, 67, "Cavalryman"},
+         {62, 76, "Spearman"}
       }
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
