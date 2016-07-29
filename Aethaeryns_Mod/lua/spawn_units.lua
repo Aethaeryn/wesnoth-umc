@@ -102,6 +102,16 @@ function spawn_default_starting_units()
          {53, 50},
       }
       local guard_coords = {
+         -- Mountain spawns
+         {37, 21, "Spearman"},
+         {38, 15, "Spearman"},
+         {53, 15, "Spearman"},
+         {62, 14, "Spearman"},
+         {65, 21, "Spearman"},
+         {69, 33, "Poacher"},
+         {86, 27, "Spearman"},
+         {99, 28, "Bowman"},
+         -- Northwest forest spawns
          {6, 54, "Spearman"},
          {8, 58, "Heavy Infantryman"},
          {7, 62, "Bowman"},
@@ -180,7 +190,18 @@ function spawn_default_starting_units()
          {107, 70, "Bowman"},
          {104, 71, "Spearman"},
          {102, 71, "Spearman"},
-         {100, 70, "Spearman"}
+         {100, 70, "Spearman"},
+         {115, 64, "Pikeman"},
+         {117, 66, "Swordsman"},
+         {118, 64, "Horseman"},
+         {121, 64, "Horseman"},
+         {120, 65, "Spearman"},
+         {121, 65, "Bowman"},
+         {119, 63, "Spearman"},
+         {122, 61, "Bowman"},
+         {119, 66, "Horseman"},
+         {123, 66, "Cavalryman"},
+         {107, 76, "Shock Trooper"},
       }
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
