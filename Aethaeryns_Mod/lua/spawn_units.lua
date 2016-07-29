@@ -100,6 +100,16 @@ function spawn_default_starting_units()
          {37, 42},
          {35, 48},
          {53, 50},
+         {118, 69},
+         {123, 70},
+         {125, 65},
+         {138, 81},
+      }
+      local ruffian_coords = {
+         {133, 74},
+         {135, 72},
+         {140, 79},
+         {142, 76}
       }
       local guard_coords = {
          -- Mountain spawns
@@ -201,13 +211,50 @@ function spawn_default_starting_units()
          {122, 61, "Bowman"},
          {119, 66, "Horseman"},
          {123, 66, "Cavalryman"},
+         {117, 71, "Cavalryman"},
+         {133, 73, "Cavalryman"},
          {107, 76, "Shock Trooper"},
+         {128, 62, "Spearman"},
+         {128, 63, "Bowman"},
+         {128, 66, "Spearman"},
+         {128, 67, "Bowman"},
+         {126, 68, "Lieutenant"},
+         {127, 71, "Longbowman"},
+         {139, 69, "Spearman"},
+         {136, 70, "Bowman"},
+         {134, 70, "Bowman"},
+         {130, 72, "Spearman"},
+         {130, 74, "Bowman"},
+         {136, 81, "Bowman"},
+         {139, 80, "Spearman"},
+         {146, 76, "Spearman"},
+         {147, 80, "Bowman"},
+         {147, 79, "Thug"},
+         {146, 74, "Lieutenant"},
+         {145, 74, "Fencer"},
+         {145, 75, "Knight"},
+         {144, 77, "Horseman"},
+         {146, 78, "Horseman"},
+         {142, 80, "Horseman"},
+         {139, 83, "Swordsman"},
+         {144, 83, "Pikeman"},
+         {142, 83, "Heavy Infantryman"},
+         {146, 83, "Longbowman"},
+         {147, 83, "Ranger"},
+         {145, 83, "Swordsman"},
+         {146, 82, "Heavy Infantryman"},
+         {151, 74, "Spearman"},
+         -- West forest spawns
+         -- North forest spawns
       }
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
       end
       for i, coord in ipairs(woodsman_coords) do
          spawn_npc(coord, "Woodsman")
+      end
+      for i, coord in ipairs(ruffian_coords) do
+         spawn_npc(coord, "Ruffian")
       end
       for i, coord in ipairs(guard_coords) do
          spawn_unit.spawn_unit(coord[1], coord[2], coord[3], 6)
