@@ -181,7 +181,7 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, ge
                        side = side_number,
                        upkeep = 0}
    if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil then
-      fire.capture_village(x, y)
+      fire.capture_village(x, y, side_number)
       unit_stats.moves = 0
    end
    if icon ~= nil then
