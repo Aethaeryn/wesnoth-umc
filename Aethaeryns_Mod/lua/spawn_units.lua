@@ -104,6 +104,8 @@ function spawn_default_starting_units()
          {123, 70},
          {125, 65},
          {138, 81},
+         {42, 196},
+         {46, 197},
       }
       local ruffian_coords = {
          {133, 74},
@@ -114,6 +116,9 @@ function spawn_default_starting_units()
          {117, 85},
          {107, 93},
          {107, 95},
+         {64, 194},
+         {62, 191},
+         {65, 193},
       }
       local guard_coords = {
          -- Mountain spawns
@@ -279,6 +284,24 @@ function spawn_default_starting_units()
          {94, 86, "Longbowman"},
          {92, 84, "Pikeman"},
          -- West forest spawns
+         {51, 199, "Poacher"},
+         {48, 192, "Poacher"},
+         {54, 195, "Spearman"},
+         {57, 197, "Bowman"},
+         {63, 196, "Thug"},
+         {61, 195, "Sergeant"},
+         {62, 193, "Bowman"},
+         {61, 192, "Thug"},
+         {61, 190, "Spearman"},
+         {63, 189, "Thug"},
+         {54, 189, "Footpad"},
+         {51, 188, "Footpad"},
+         {62, 185, "Spearman"},
+         {57, 185, "Bowman"},
+         {48, 185, "Poacher"},
+         {50, 184, "Spearman"},
+         {51, 183, "Bowman"},
+         {54, 180, "Spearman"},
          -- North forest spawns
       }
       for i, coord in ipairs(peasant_coords) do
