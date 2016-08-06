@@ -1,5 +1,59 @@
 #define MOD_LUA_SPAWN_UNITS
 <<
+spawn_unit = {}
+
+-- Unit role is summoner type; icon and unit_role are optional.
+function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, gender)
+   local unit_stats = {type = unit_type,
+                       side = side_number,
+                       upkeep = 0}
+   if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil then
+      fire.capture_village(x, y, side_number)
+      unit_stats.moves = 0
+   end
+   if icon ~= nil then
+      unit_stats.overlays = icon
+   end
+   if unit_role ~= nil then
+      unit_stats.role = unit_role
+   end
+   if gender ~= nil then
+      unit_stats.gender = gender
+   end
+   wesnoth.put_unit(x, y, unit_stats)
+end
+
+function spawn_unit.spawn_group(x, y, units, side_number)
+   local hexes = wesnoth.get_locations { x = x, y = y, radius = 1 }
+   local j = 1
+   for i, unit in ipairs(units) do
+      if wesnoth.get_unit(hexes[j][1], hexes[j][2]) == nil then
+         spawn_unit.spawn_unit(hexes[j][1], hexes[j][2], unit, side_number)
+      end
+      j = j + 1
+   end
+end
+
+function spawn_unit.boss_spawner(x, y, unit_type, unit_role, side_number)
+   spawn_unit.spawn_unit(x, y, unit_type, side_number, "misc/hero-icon.png", unit_role)
+   local regenerates = wesnoth.get_variable("regenerates")
+   local boss_ability = { T["effect"] { apply_to = "new_ability", {"abilities", regenerates}}}
+   local unit = wesnoth.get_unit(x, y)
+   wesnoth.add_modification(unit, "object", boss_ability)
+end
+
+function spawn_unit.reg_spawner(x, y, unit_type, unit_role, side_number)
+   local unit_cost = wesnoth.unit_types[unit_type].__cfg.cost
+   local summoner = find_summoner(x, y, wesnoth.get_units {side = side_number, role = unit_role})
+   if summoner.hitpoints > unit_cost then
+      summoner.hitpoints = summoner.hitpoints - unit_cost
+      spawn_unit.spawn_unit(x, y, unit_type, side_number)
+      return true
+   else
+      return false
+   end
+end
+
 -- Spawns all the preset units so the huge maps can get populated.
 local function spawn_npc(coord, unit_name)
    spawn_unit.spawn_unit(coord[1], coord[2], unit_name, 6)
