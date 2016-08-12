@@ -1,19 +1,27 @@
-AETHAERYN'S MOD TODO LIST (93.5% Progress)
+AETHAERYN'S MOD TODO LIST (94% Progress)
 When this list is complete/empty, bump to version 0.9
 
-(0) Misc (0.5%)
+(0) Misc (1%)
   - before the next play test:
     - make sure that containers still work
-    - add fast travel boats (cheap) and teleportation spots (expensive)
+    - add fast travel teleportation spots
     - add faction metadata to units so that they can quickly switch sides 1 <-> 6
-    - optional quick-spawn of units (and shops?) on various maps on turn 1
+    - finish the new starting area or switch player spawns back to old spot
+  - new content (0.5%):
+    - quick-spawn of units and shops on turn 1
+      - spawn both genders
+      - give certain units preset traits
+      - spawn shops with inventory already stocked
+      - spawn other objects like chests and gold?
+      - label areas with place names?
+    - complete enough details of the expanded map
 
   - merge "Add to Chest" submenu with add item submenu
 
   - Get rid of the level submenu in unit selection. Flatten it to one
     list and use the level as a section header separator instead.
 
-  - rewrite the mess of multi-turn [objects] and Ale
+  - rewrite the mess of multi-turn [objects]
     - use wesnoth.get_units() to iterate over every unit with some
       stat > 0 each turn and then reapply that effect to last one turn
       while decrementing the counter
@@ -64,27 +72,13 @@ When this list is complete/empty, bump to version 0.9
     - Even the array used to verify interactions doesn't seem to save.
       - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
 
- (2) Interaction (1%)
+ (2) Interaction (0.5%)
   - Let leader units give gold to adjacent leader units.
-  - Bribing
-    - Allow non-leader units to be bribed if on side 1 or 6, or if they are on a hostile team.
-      - For 1.5x their cost in gold, the bribed unit will change to player's team.
-    - Only leader units can bribe other units.
-    - Every time a bribe attempt is made:
-      - 90% chance for spawned, non-summoner, non-loyal level 0s
-      - 15% chance for spawned, non-summoner, non-loyal level 1s
-      - 10% chance for spawned, non-summoner, non-loyal level 2s
-      - Undead, elementals, animals, monsters, etc., cannot be bribed.
-        - Perhaps animals could be tamed.
-    - Bribing will consume all movement and disable attacks and will only be allowed if you haven't attacked.
 
- (3) Inventory (1%)
+ (3) Inventory (0.5%)
   - What happens when a unit is changed with an effect that requires changing a copy and replacing the unit?
     - It seems to overwrite the changes when reapplying the [object]
     - So most of change_unit might need to be fixed.
-  - Ale: "Confidence" ability: +5 max HP for 3 turns.
-    - 25% chance of also becoming drunk (berserk melee) for that duration each time used
-    - The "drunk" ability and [object] use confidence's counter to refresh once triggered.
 
 ***
 
@@ -124,6 +118,8 @@ When this list is complete/empty, bump to version 0.9
     - Also allow selection on an individual basis once the GUI2 is extended (see Future).
 
   - Check how inventory's effects interact if promoted while the effect is still on.
+
+  - Add fast travel boats at the ports?
 
  (5) Issues (2%)
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
@@ -175,7 +171,6 @@ When this list is complete/empty, bump to version 0.9
   * CODE: Log all the numerial change_unit actions in unit variables.
     * Reapply them when certain actions that would wipe them happen, like promotions and the application of [object]s.
 
-
 ***
 
  (6) Future
@@ -185,12 +180,12 @@ When this list is complete/empty, bump to version 0.9
       - Would unsummoning be possible now?
     - Let magical player characters be able to learn summoning.
     - Remove summoning that makes no sense (e.g. human summoning) now that there are other ways to spawn units?
-  * Make spawning units/groups/objects tied to map logic to spawn during variants of the RPG when the host is not omnipotent.
-    - Give the host options for quick placing units on the map or on parts of the map using this same map logic.
-      - So e.g. an area could use orcs, undead, etc.
+  * Give the host options for quick placing units on the map or on parts of the map where the map by default is empty.
+    - Allow preset groups reinforcements to spawn at ports, map edges, etc.
     - And of course this opens the door to quests, preset interactions/messages, etc.
       - Even ones that the host can place.
-    - Including perhaps fancy dialog-driven RPG-style branching texts where you choose responses.
+      - Let certain units temporarily change sides to a player side only for the duration of a quest, and then change back on completion.
+      - Use an overlay marker (the loyal marker?) for units that aren't temporary quest units.
   * Character selection
     * Allow player votes for things like max level or next map instead of leaving all the decisions to the host.
     * Select gender through the same window rather than a separate window.
@@ -226,6 +221,7 @@ When this list is complete/empty, bump to version 0.9
   * Reduce max HP on summoner by 1 per level of active summoned unit?
   * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
   * Should disguising hide the summoner icon if it is present?
+  * Finish all of the map details in the expanded map, including unit spawns
 
  (7) Far Future (Past 1.0?)
   * Leader units should be able to give gold coin items instead of gold to non-leader friendly units, so you can't teleport gold across the map.
