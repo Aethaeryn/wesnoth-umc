@@ -2,6 +2,31 @@
 <<
 spawn_unit = {}
 
+-- Chooses the adjacent summoner with the highest HP.
+local function find_summoner(x, y, summoners)
+   local max_hp = 0
+   for key,value in pairs(summoners) do
+      if summoners[key].x <= x + 1 and summoners[key].x >= x - 1
+         and summoners[key].y <= y + 1 and summoners[key].y >= y - 1
+         and summoners[key].hitpoints > max_hp then
+         max_hp  = summoners[key].hitpoints
+         max_key = key
+      end
+   end
+   return summoners[max_key]
+end
+
+function haste(x, y, moves)
+   wesnoth.add_modification(wesnoth.get_unit(x, y),
+                            "object",
+                            { duration = "turn",
+                              T.effect { apply_to = "movement", increase = moves },
+                              T.effect { apply_to = "attack", increase_attacks = 1 },
+                              T.effect { apply_to = "new_ability",
+                                         T.abilities { T.dummy { name = _ "haste",
+                                                                 description = _ "This unit has extra attacks and movement." } } } })
+end
+
 -- Unit role is summoner type; icon and unit_role are optional.
 function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, gender)
    local unit_stats = {type = unit_type,
