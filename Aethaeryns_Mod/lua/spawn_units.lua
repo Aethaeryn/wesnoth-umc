@@ -571,7 +571,7 @@ function spawn_default_starting_units()
          {49, 123, "Spearman"},
          {49, 122, "Bowman"},
          {50, 122, "Fencer"},
-         {51, 22, "Mage"},
+         {51, 122, "Mage"},
          {52, 121, "Spearman"},
          {57, 122, "Heavy Infantryman"},
          {61, 127, "Cavalryman"},
@@ -873,7 +873,7 @@ function spawn_default_starting_units()
          {80, 93, "Fencer"},
          {82, 94, "Duelist"},
          {78, 88, "Spearman"},
-         {80, 86, "Bowman"},
+         {80, 87, "Bowman"},
          {82, 88, "Spearman"},
          {78, 89, "Swordsman"},
          {80, 90, "Spearman"},
@@ -885,6 +885,64 @@ function spawn_default_starting_units()
          {77, 97, "Dwarvish Runesmith"},
          {82, 97, "Elvish Sylph"},
          -- North forest spawns
+      }
+      local mob_coords = {
+         {138, 6, "Goblin Spearman"},
+         {142, 7, "Goblin Spearman"},
+         {139, 9, "Goblin Spearman"},
+         {135, 9, "Goblin Spearman"},
+         {140, 12, "Goblin Spearman"},
+         {140, 13, "Goblin Spearman"},
+         {146, 14, "Goblin Rouser"},
+         {145, 14, "Goblin Spearman"},
+         {145, 15, "Goblin Spearman"},
+         {146, 15, "Goblin Spearman"},
+         {147, 17, "Goblin Impaler"},
+         {149, 16, "Goblin Impaler"},
+         {124, 10, "Goblin Impaler"},
+         {123, 8, "Goblin Spearman"},
+         {120, 6, "Goblin Rouser"},
+         {121, 6, "Goblin Spearman"},
+         {124, 3, "Wolf Rider"},
+         {123, 4, "Wolf Rider"},
+         {117, 1, "Goblin Impaler"},
+         {119, 2, "Goblin Spearman"},
+         {116, 4, "Goblin Spearman"},
+         {112, 2, "Goblin Spearman"},
+         {109, 2, "Goblin Spearman"},
+         {110, 4, "Goblin Rouser"},
+         {109, 4, "Goblin Spearman"},
+         {109, 5, "Goblin Spearman"},
+         {110, 5, "Goblin Spearman"},
+         {111, 5, "Goblin Spearman"},
+         {111, 4, "Goblin Spearman"},
+         {110, 3, "Goblin Spearman"},
+         {105, 4, "Wolf Rider"},
+         {103, 3, "Goblin Spearman"},
+         {100, 3, "Goblin Impaler"},
+         {122, 3, "Goblin Spearman"},
+         {128, 2, "Goblin Spearman"},
+         {131, 8, "Goblin Rouser"},
+         {132, 8, "Goblin Impaler"},
+         {130, 7, "Goblin Spearman"},
+         {131, 7, "Goblin Spearman"},
+         {130, 8, "Goblin Spearman"},
+         {131, 4, "Goblin Spearman"},
+         {133, 4, "Goblin Spearman"},
+         {135, 2, "Goblin Spearman"},
+         {144, 3, "Goblin Spearman"},
+         {144, 4, "Goblin Spearman"},
+         {143, 4, "Goblin Rouser"},
+         {142, 3, "Goblin Spearman"},
+         {146, 7, "Goblin Spearman"},
+         {144, 9, "Goblin Spearman"},
+         {144, 11, "Wolf Rider"},
+         {147, 12, "Wolf Rider"},
+         {147, 13, "Wolf Rider"},
+         {148, 11, "Goblin Rouser"},
+         {148, 12, "Goblin Spearman"},
+         {148, 10, "Goblin Spearman"},
+         {149, 11, "Goblin Spearman"},
       }
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
@@ -898,8 +956,33 @@ function spawn_default_starting_units()
       for i, coord in ipairs(guard_coords) do
          spawn_unit.spawn_unit(coord[1], coord[2], coord[3], 6)
       end
+      for i, coord in ipairs(mob_coords) do
+         spawn_unit.spawn_unit(coord[1], coord[2], coord[3], 1)
+      end
       -- Disguise the elvish diplomat
       change_unit.transform_keeping_stats(82, 97, wesnoth.get_unit(82, 97), "Elvish Lady")
+      fire.label(138, 5, "Intercontinental Teleporter")
+      fire.label(138, 6, "(Goblin Occupied)")
+      fire.label(54, 117, "Fortress Aethylcyn")
+      fire.label(65, 98, "The Academy")
+      fire.label(95, 102, "Old Labaenry")
+      fire.label(88, 95, "The Citadel")
+      fire.label(80, 96, "Diplomatic Quarter")
+      fire.label(77, 95, "Market District")
+      fire.label(71, 87, "New Labaenry")
+      fire.label(95, 122, "Colony of South Labaenry")
+      fire.label(102, 68, "Town of Seoraedd")
+      fire.label(43, 161, "Town of Blynaerth")
+      fire.label(60, 192, "Town of Luddoc")
+      fire.label(169, 57, "East Rheon")
+      fire.label(154, 52, "Wesrheon")
+      fire.label(208, 36, "Fortress Garn")
+      fire.label(44, 29, "Town of Sellyn")
+      fire.label(49, 27, "Sellyn Teleporter")
+      fire.label(92, 89, "Labaenry Teleporter")
+      fire.label(98, 119, "South Labaenry Teleporter")
+      fire.label(47, 158, "Blynaerth Teleporter")
+      fire.label(172, 53, "Rheon Teleporter")
    -- else
    --    debugOut(wesnoth.get_variable("aeth_scenario_name"))
    end

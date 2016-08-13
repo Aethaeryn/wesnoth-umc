@@ -6,7 +6,6 @@ When this list is complete/empty, bump to version 0.9
     - make sure that containers still work
     - add fast travel teleportation spots
     - add faction metadata to units so that they can quickly switch sides 1 <-> 6
-    - finish the new starting area or switch player spawns back to old spot
   - new content (0.5%):
     - quick-spawn of units and shops on turn 1
       - spawn both genders
