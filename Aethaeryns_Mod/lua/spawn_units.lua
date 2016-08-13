@@ -851,6 +851,39 @@ function spawn_default_starting_units()
          {91, 103, "Fencer"},
          {90, 103, "Thief"},
          {86, 100, "Longbowman"},
+         {75, 99, "Pikeman"},
+         {73, 98, "Longbowman"},
+         {75, 98, "Spearman"},
+         {73, 97, "Spearman"},
+         {71, 97, "Spearman"},
+         {69, 96, "Heavy Infantryman"},
+         {68, 94, "Bowman"},
+         {69, 94, "Cavalryman"},
+         {69, 95, "Horseman"},
+         {70, 94, "Heavy Infantryman"},
+         {69, 93, "Spearman"},
+         {72, 91, "Royal Guard"},
+         {75, 90, "Halberdier"},
+         {75, 93, "Iron Mauler"},
+         {76, 89, "Master Bowman"},
+         {76, 91, "White Mage"},
+         {76, 93, "Duelist"},
+         {78, 92, "Fencer"},
+         {78, 94, "Fencer"},
+         {80, 93, "Fencer"},
+         {82, 94, "Duelist"},
+         {78, 88, "Spearman"},
+         {80, 86, "Bowman"},
+         {82, 88, "Spearman"},
+         {78, 89, "Swordsman"},
+         {80, 90, "Spearman"},
+         {82, 89, "Heavy Infantryman"},
+         {73, 95, "Heavy Infantryman"},
+         {75, 96, "Shock Trooper"},
+         -- Embassies in city
+         {79, 96, "Ghazi"},
+         {77, 97, "Dwarvish Runesmith"},
+         {82, 97, "Elvish Sylph"},
          -- North forest spawns
       }
       for i, coord in ipairs(peasant_coords) do
@@ -865,6 +898,8 @@ function spawn_default_starting_units()
       for i, coord in ipairs(guard_coords) do
          spawn_unit.spawn_unit(coord[1], coord[2], coord[3], 6)
       end
+      -- Disguise the elvish diplomat
+      change_unit.transform_keeping_stats(82, 97, wesnoth.get_unit(82, 97), "Elvish Lady")
    -- else
    --    debugOut(wesnoth.get_variable("aeth_scenario_name"))
    end
