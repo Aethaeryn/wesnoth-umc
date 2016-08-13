@@ -60,7 +60,7 @@ local function spawn_npc(coord, unit_name)
 end
 
 function spawn_default_starting_units()
-   if wesnoth.get_variable("aeth_scenario_name") == "Big Woods" then
+   if wesnoth.get_variable("aeth_scenario_name") == "Woods" then
       local peasant_coords = {
          {70, 129},
          {65, 128},
@@ -153,6 +153,7 @@ function spawn_default_starting_units()
          {63, 90},
          {60, 90},
          {65, 87},
+         {87, 102},
       }
       local woodsman_coords = {
          {23, 44},
@@ -812,6 +813,19 @@ function spawn_default_starting_units()
          {88, 104, "Lieutenant"},
          {86, 103, "Sergeant"},
          {85, 104, "Javelineer"},
+         {83, 103, "Longbowman"},
+         {81, 102, "Swordsman"},
+         {82, 101, "Spearman"},
+         {79, 101, "Royal Guard"},
+         {77, 100, "Halberdier"},
+         {78, 99, "Red Mage"},
+         {79, 98, "Shock Trooper"},
+         {80, 98, "Swordsman"},
+         {89, 102, "Red Mage"},
+         {91, 102, "Fencer"},
+         {91, 103, "Fencer"},
+         {90, 103, "Thief"},
+         {86, 100, "Longbowman"},
          -- North forest spawns
       }
       for i, coord in ipairs(peasant_coords) do
