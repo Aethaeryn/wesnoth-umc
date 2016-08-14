@@ -37,6 +37,18 @@ function fire.set_menu_item(menu_item_table)
                    T["command"] { T["lua"] { code = menu_item_table.command }}})
 end
 
+-- basically a translation of the TELEPORT_TILE macro, but with
+-- animation enabled
+function fire.teleport_tile(old_x, old_y, new_x, new_y)
+   wesnoth.fire("teleport", { T["filter"] {
+                                 x = old_x,
+                                 y = old_y },
+                              animate = true,
+                              x = new_x,
+                              y = new_y })
+   wesnoth.fire("redraw")
+end
+
 function fire.clear_menu_item(id)
    wesnoth.fire("clear_menu_item", { id = id })
 end
