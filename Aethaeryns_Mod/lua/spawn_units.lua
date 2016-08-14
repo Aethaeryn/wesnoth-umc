@@ -887,6 +887,7 @@ function spawn_default_starting_units()
          -- North forest spawns
       }
       local mob_coords = {
+         -- Occupied intercontinental teleporter
          {138, 6, "Goblin Spearman"},
          {142, 7, "Goblin Spearman"},
          {139, 9, "Goblin Spearman"},
@@ -943,6 +944,20 @@ function spawn_default_starting_units()
          {148, 12, "Goblin Spearman"},
          {148, 10, "Goblin Spearman"},
          {149, 11, "Goblin Spearman"},
+         -- Main orcish settlements
+         {107, 120, "Orcish Grunt"},
+         {114, 116, "Orcish Archer"},
+         {119, 118, "Wolf Rider"},
+         {126, 118, "Orcish Archer"},
+         {116, 118, "Goblin Spearman"},
+         {110, 120, "Goblin Spearman"},
+         {114, 121, "Orcish Grunt"},
+         {120, 123, "Goblin Spearman"},
+         {113, 125, "Goblin Spearman"},
+         {110, 125, "Orcish Grunt"},
+         {115, 130, "Wolf Rider"},
+         {111, 131, "Orcish Warrior"},
+         {112, 128, "Goblin Spearman"},
       }
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
