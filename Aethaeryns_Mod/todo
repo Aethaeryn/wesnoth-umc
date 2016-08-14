@@ -2,18 +2,22 @@ AETHAERYN'S MOD TODO LIST (94% Progress)
 When this list is complete/empty, bump to version 0.9
 
 (0) Misc (1%)
-  - before the next play test:
-    - make sure that containers still work
-    - add fast travel teleportation spots
-    - add faction metadata to units so that they can quickly switch sides 1 <-> 6
+  - add fast travel teleportation
+    - you choose which destination from a list of names that match label names
+    - it costs money (20g)
+    - teleporters can be manually disabled/enabled
+    - teleporters default to off if the area is hostile or very far away
+    - teleporting can be blocked if none of the 7 hexes around a teleporter are open
+    - a scroll you can purchase/find lets you teleport from anywhere
+      - otherwise you need to teleport from one of 7 hexes around a teleporter area
+
   - new content (0.5%):
-    - quick-spawn of units and shops on turn 1
-      - spawn both genders
-      - give certain units preset traits
-      - spawn shops with inventory already stocked
-      - spawn other objects like chests and gold?
-      - label areas with place names?
-    - complete enough details of the expanded map
+    - spawn both genders
+    - give certain units preset traits/names
+    - spawn shops with inventory already stocked
+    - spawn other objects like chests and gold?
+
+  - add faction metadata to units so that they can quickly switch sides 1 <-> 6
 
   - merge "Add to Chest" submenu with add item submenu
 
