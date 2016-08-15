@@ -57,7 +57,7 @@ function teleport_unit(x, y, unit, side)
 end
 
 function add_teleporter(x, y, is_active, name)
-   fire.label(x, y, name)
+   fire.label(x, y, "Teleporter")
    if is_active then
       w_items.place_image(x, y, RUNE_ON)
    else
@@ -67,7 +67,9 @@ function add_teleporter(x, y, is_active, name)
 end
 
 function starter_teleporters()
+   -- players start here
    add_teleporter(138,   5, false, "Intercontinental Teleporter")
+   -- close teleporters start unlocked
    add_teleporter( 49,  27, true,  "Sellyn Teleporter")
    add_teleporter( 92,  89, true,  "Labaenry Teleporter")
    add_teleporter( 62,  98, true,  "Academy Teleporter")
@@ -79,11 +81,12 @@ function starter_teleporters()
    add_teleporter(210,  55, true,  "Deranion Teleporter")
    add_teleporter(147,  86, true,  "Elabril Teleporter")
    add_teleporter(202,  72, true,  "Monastery Teleporter")
+   -- far and hostile teleporters start locked
    add_teleporter(141, 122, false, "Vargork Teleporter")
-   add_teleporter(238,  64, false, "Teleporter") -- desert
+   add_teleporter(238,  64, false, "Nuh Teleporter")
    add_teleporter(300,  79, false, "Temple Teleporter")
-   add_teleporter(310, 144, false, "Teleporter") -- drake
-   add_teleporter(214, 116, false, "Teleporter") -- middle elf town
+   -- add_teleporter(310, 144, false, "Drake Teleporter")
+   add_teleporter(214, 116, false, "Elrólas Teleporter")
    add_teleporter(246, 159, false, "Blinadoc Teleporter")
    add_teleporter(214, 171, false, "Vanathion Teleporter")
 end

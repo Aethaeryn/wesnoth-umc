@@ -2,35 +2,65 @@
 <<
 spawn_unit = {}
 
+-- These names are (manually) generated using the name generator built
+-- into Wesnoth, sometimes with small adjustments. These could change
+-- at any moment, especially if they're accidentally too close to some
+-- real name. The easiest way to get the names is to spawn units of
+-- the proper species and pick one that isn't terrible.
 local function place_names()
+   -- Human settlements near Labaenry
    fire.label( 19,  89, "Ruins of Angcyn")
    fire.label( 54, 117, "Fortress Aethylcyn")
+   fire.label( 55,  71, "Fort Saedryn")
+   fire.label( 81,  64, "Fort Gegmyr")
+   fire.label( 51, 100, "Fort Owonyn")
+   fire.label(130,  36, "Fort Leodry")
+   fire.label(171,  13, "Camp Teraec")
+   -- Areas of Labaenry
    fire.label( 65,  98, "The Academy")
    fire.label( 95, 102, "Old Labaenry")
    fire.label( 88,  95, "The Citadel")
    fire.label( 80,  96, "Diplomatic Quarter")
    fire.label( 77,  95, "Market District")
    fire.label( 71,  87, "New Labaenry")
-   fire.label( 95, 122, "Colony of South Labaenry")
-   fire.label(102,  68, "Town of Seoraedd")
-   fire.label( 43, 161, "Town of Blynaerth")
-   fire.label( 60, 192, "Town of Luddoc")
+   fire.label( 95, 122, "South Labaenry")
+   -- Other human settlements in the north/west
+   fire.label(102,  68, "Seoraedd")
+   fire.label( 43, 161, "Blynaerth")
+   fire.label( 60, 192, "Luddoc")
    fire.label( 20, 193, "Fort Owidd")
    fire.label(123,  67, "Fort Gurran")
    fire.label(169,  57, "East Rheon")
    fire.label(154,  52, "Wesrheon")
    fire.label(208,  36, "Fort Garn")
-   fire.label( 44,  29, "Town of Sellyn")
-   fire.label(137,  91, "Elabril")
+   fire.label( 45,  28, "Sellyn")
    fire.label(143,  81, "North Elabril")
+   -- Elvish settlements near the west river
+   fire.label(137,  91, "Elabril")
    fire.label(191,  53, "Deranion")
+   -- Other places
    fire.label(248, 171, "Republic of Blinadoc")
+   fire.label(173, 125, "Gliddryn")
+   fire.label(229, 121, "Blunry")
+   fire.label(250, 129, "Veor")
+   fire.label(242,  67, "Nuh")
    fire.label(296,  72, "Temple Gate")
+   fire.label(299,  75, "Azhan")
+   fire.label(281, 130, "Zuhsil Oasis")
    fire.label(266,  23, "Duldrasiath")
    fire.label(143, 124, "Vargork")
+   fire.label(130, 110, "Pruol")
+   fire.label(127, 124, "Gorg")
+   fire.label(119, 136, "Hanak")
+   fire.label(137, 137, "Pruurk Gate")
+   fire.label(151, 134, "Erurk Gate")
+   fire.label(249,  45, "Grinak")
    fire.label(204,  74, "Monastery of Fire")
+   fire.label(219, 112, "Elrólas")
+   fire.label(237, 126, "Rólas")
    fire.label(201, 178, "Vanathion")
    fire.label(192, 191, "Sanctuary of the Elves")
+   fire.label(236, 188, "Eomyn")
 end
 
 local function starter_shops()
@@ -1363,6 +1393,7 @@ function spawn_default_starting_units()
          {242, 147, "Elvish Scout"},
          {241, 153, "Elvish Shaman"},
          {198, 162, "Elvish Archer"},
+         {202, 165, "Elvish Ranger"},
          {188, 165, "Elvish Archer"},
          {179, 172, "Elvish Archer"},
          {188, 174, "Elvish Archer"},
@@ -1384,6 +1415,8 @@ function spawn_default_starting_units()
          {193, 196, "Wose"},
          {195, 195, "Wose"},
          {191, 189, "Wose"},
+         {192, 191, "Elvish Shyde"},
+         {193, 188, "Elvish Druid"},
          {194, 192, "Elvish Shaman"},
          {189, 194, "Elvish Shaman"},
          {204, 192, "Elvish Fighter"},
@@ -1417,7 +1450,37 @@ function spawn_default_starting_units()
          {238, 183, "Elvish Shaman"},
          {223, 190, "Elvish Fighter"},
          {226, 186, "Elvish Lord"},
+         {225, 187, "Elvish Sorceress"},
+         {224, 187, "Elvish Druid"},
+         {225, 186, "Elvish Rider"},
+         {224, 186, "Elvish Rider"},
+         {226, 188, "Elvish Marksman"},
+         {228, 187, "Elvish Hero"},
+         {228, 186, "Elvish Archer"},
+         {230, 185, "Elvish Fighter"},
+         {230, 183, "Elvish Shaman"},
+         {231, 184, "Elvish Fighter"},
+         {223, 184, "Elvish Ranger"},
+         {214, 189, "Elvish Fighter"},
+         {215, 190, "Elvish Fighter"},
+         {216, 190, "Elvish Fighter"},
+         {214, 190, "Elvish Fighter"},
+         {215, 191, "Elvish Captain"},
+         {217, 190, "Elvish Scout"},
+         {218, 185, "Elvish Archer"},
+         {219, 180, "Elvish Archer"},
+         {218, 177, "Elvish Fighter"},
+         {215, 180, "Elvish Archer"},
+         {215, 181, "Elvish Archer"},
+         {214, 179, "Elvish Fighter"},
+         {213, 176, "Elvish Archer"},
          -- Inner Vanathion
+         {191, 175, "Elvish Champion"},
+         {201, 170, "Elvish Champion"},
+         {211, 175, "Elvish Champion"},
+         {191, 181, "Elvish Avenger"},
+         {198, 188, "Elvish Avenger"},
+         {211, 179, "Elvish Avenger"},
          -- Blinadoc
          {239, 172, "Peasant"},
          {237, 168, "Peasant"},
@@ -1471,6 +1534,9 @@ function spawn_default_starting_units()
          {251, 131, "Spearman"},
          {254, 132, "Woodsman"},
          {232, 100, "Woodsman"},
+         -- Nuh
+         -- Azhan
+         -- Zuhsil Oasis
       }
       local mob_coords = {
          -- Occupied intercontinental teleporter
