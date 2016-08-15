@@ -85,7 +85,7 @@ function starter_teleporters()
    add_teleporter(310, 144, false, "Teleporter") -- drake
    add_teleporter(214, 116, false, "Teleporter") -- middle elf town
    add_teleporter(246, 159, false, "Blinadoc Teleporter")
-   add_teleporter(214, 171, false, "Teleporter") -- south elf city
+   add_teleporter(214, 171, false, "Vanathion Teleporter")
 end
 >>
 #enddef
