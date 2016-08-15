@@ -62,8 +62,8 @@ local function get_sides_with_all()
    return sides
 end
 
--- Finds neighboring units and containers on (x, y) that a unit is
--- allowed to interact with.
+-- Finds neighboring things on (x, y) that a unit is allowed to
+-- interact with.
 local function find_interactions(x, y, blocked, on_hex)
    local interactions = {}
    if containers[x] ~= nil and containers[x][y] ~= nil and not blocked then
@@ -78,6 +78,9 @@ local function find_interactions(x, y, blocked, on_hex)
       elseif containers[x][y]["gold"] ~= nil then
          table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
       end
+   end
+   if teleporters[x] ~= nil and teleporters[x][y] ~= nil then
+      table.insert(interactions, 1, {"Use Teleporter", "attacks/lightbeam.png"})
    end
    local unit = wesnoth.get_unit(x, y)
    if unit ~= nil and not on_hex then
@@ -589,6 +592,14 @@ function mod_menu.interact()
                   }
                end
             }
+         elseif option == "Use Teleporter" then
+            local teleporter_data = wesnoth.get_variable(string.format("mod_teleporters[%d]", teleporters[e.x1][e.y1]))
+            debugOut(teleporter_data)
+            if teleporter_data["active"] then
+               gui2_error("Success")
+            else
+               gui2_error("The teleporter is inactive.")
+            end
          end
       end
    }
@@ -1022,6 +1033,7 @@ end
 
 function set_all_menu_items()
    helper.set_variable_array("mod_containers", {})
+   helper.set_variable_array("mod_teleporters", {})
    -- Generates the toggleable, general menu items.
    for key, menu_item in pairs(mod_menu_items) do
       if menu_item.status then

@@ -1,9 +1,8 @@
-AETHAERYN'S MOD TODO LIST (94% Progress)
+AETHAERYN'S MOD TODO LIST (94.25% Progress)
 When this list is complete/empty, bump to version 0.9
 
 (0) Misc (1%)
   - add fast travel teleportation
-    - right click interact an active teleporter like a shop
     - you choose which destination from a list of active teleporter names
     - if you have 20g, teleport_unit() is attempted
     - teleporters can be manually disabled/enabled by host
@@ -72,7 +71,7 @@ When this list is complete/empty, bump to version 0.9
     - Even the array used to verify interactions doesn't seem to save.
       - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
 
- (2) Interaction (0.5%)
+ (2) Interaction (0.25%)
   - Let leader units give gold to adjacent leader units.
 
  (3) Inventory (0.5%)

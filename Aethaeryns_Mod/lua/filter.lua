@@ -52,13 +52,22 @@ aeth_mod_filter.interact = T["show_if"] {
          side = "$side_number",
          x = "$x1",
          y = "$y1",
-         T["filter_location"] { find_in = "mod_containers" }}},
+         T["filter_location"] {
+               find_in = "mod_containers",
+               T["or"] { find_in = "mod_teleporters" }}}},
    -- menu only shows up adjacent to your unit if a container is there
    T["or"] {
       T["have_location"] {
          x = "$x1",
          y = "$y1",
          find_in = "mod_containers",
+         T["filter_adjacent_location"] {
+            T["filter"] { side = "$side_number" }}}},
+   T["or"] {
+      T["have_location"] {
+         x = "$x1",
+         y = "$y1",
+         find_in = "mod_teleporters",
          T["filter_adjacent_location"] {
             T["filter"] { side = "$side_number" }}}}}
 

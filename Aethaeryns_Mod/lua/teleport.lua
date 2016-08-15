@@ -3,8 +3,19 @@
 local RUNE_ON = "scenery/rune2-glow.png"
 local RUNE_OFF = "scenery/rune2.png"
 
+teleporters = {}
+
 local function add_teleporter_to_list(x, y, is_active, name)
-   return "Stub"
+   local l = wesnoth.get_variable("mod_teleporters.length")
+   wesnoth.set_variable(string.format("mod_teleporters[%d]", l),
+                        { x = x,
+                          y = y,
+                          active = is_active,
+                          name = name })
+   if teleporters[x] == nil then
+      teleporters[x] = {}
+   end
+   teleporters[x][y] = l
 end
 
 local function bad_terrain(x, y)
@@ -31,11 +42,11 @@ end
 -- The first empty, non-impassable/unwalkable hex in the radius is
 -- the destination.
 local function teleport_destination(x, y)
-   local candidate_hexes = wesnoth.get_locations { x = x, y = y, radius = 1 }
    -- check the center first
    if not bad_terrain(x, y) and not occupied_hex(x, y) then
       return {x, y}
    end
+   local candidate_hexes = wesnoth.get_locations { x = x, y = y, radius = 1 }
    -- check the radius (it wastefully checks the center twice)
    for i, hex in ipairs(candidate_hexes) do
       if not bad_terrain(hex[1], hex[2]) and not occupied_hex(hex[1], hex[2]) then
