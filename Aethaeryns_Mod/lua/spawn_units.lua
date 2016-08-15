@@ -33,6 +33,41 @@ local function place_names()
    fire.label(192, 191, "Sanctuary of the Elves")
 end
 
+local function starter_shops()
+   -- Labaenry
+   game_object.simple_place(68, 87, "shop", "scenery/tent-shop-weapons.png", true)
+   game_object.simple_place(79, 93, "shop", "scenery/tent-shop-weapons.png", true)
+   game_object.simple_place(77, 94, "shop", "scenery/tent-shop-weapons.png", true)
+   game_object.simple_place(66, 100, "shop", "scenery/tent-shop-weapons.png", true)
+   game_object.simple_place(72, 103, "shop", "scenery/tent-shop-weapons.png", true)
+   game_object.simple_place(90, 100, "shop", "scenery/tent-shop-weapons.png", true)
+   game_object.simple_place(92, 119, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Blynaerth
+   game_object.simple_place(41, 160, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Luddoc
+   game_object.simple_place(58, 183, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Aethylcyn
+   game_object.simple_place(56, 120, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Sellyn
+   game_object.simple_place(42, 28, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Seoraedd
+   game_object.simple_place(105, 67, "shop", "scenery/tent-shop-weapons.png", true)
+   -- North Elabril
+   game_object.simple_place(142, 78, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Elabril
+   game_object.simple_place(135, 90, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Wesrheon
+   game_object.simple_place(156, 58, "shop", "scenery/tent-shop-weapons.png", true)
+   -- East Rheon
+   game_object.simple_place(174, 58, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Deranion
+   game_object.simple_place(211, 54, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Fort Garn
+   game_object.simple_place(207, 35, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Duldrasiath
+   game_object.simple_place(270, 23, "shop", "scenery/tent-shop-weapons.png", true)
+end
+
 -- Chooses the adjacent summoner with the highest HP.
 local function find_summoner(x, y, summoners)
    local max_hp = 0
@@ -1700,6 +1735,7 @@ function spawn_default_starting_units()
       -- Set the place names and teleporters
       place_names()
       starter_teleporters()
+      starter_shops()
    -- else
    --    debugOut(wesnoth.get_variable("aeth_scenario_name"))
    end

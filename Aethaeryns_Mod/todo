@@ -11,15 +11,10 @@ When this list is complete/empty, bump to version 0.9
 
   - new content (0.5%):
     - spawn both genders
-    - give certain units preset traits/names
-    - spawn shops with inventory already stocked
     - spawn other objects like chests and gold?
     - finish spawns for:
       - three desert settlements
-      - small human settlements along the east river
-      - large elvish city and small elvish town in the south
-
-  - add faction metadata to units so that they can quickly switch sides 1 <-> 6
+      - large elvish city
 
   - merge "Add to Chest" submenu with add item submenu
 
@@ -58,6 +53,7 @@ When this list is complete/empty, bump to version 0.9
     - shops, chests, packs, units
     - when first placing shops/chests/packs, call a template dialog with the default selection as "Empty"
       - except for packs, which can't be empty when placed
+    - every shop that the map starts with should use a template
 
  (1) Inventory Containers (1%)
   - Add code for investigate drop (pack) container.
@@ -128,6 +124,8 @@ When this list is complete/empty, bump to version 0.9
     - just like teleportation, but with a radius of 2 and with water also as an invalid destination
     - it's done at the piers and each will have a boat or ship NPC sitting next to it as a prop
     - each of the three river systems is its own teleportation list, independent of the others
+
+  - Give certain units preset traits/names
 
  (5) Issues (2%)
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
@@ -230,7 +228,8 @@ When this list is complete/empty, bump to version 0.9
   * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
   * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
   * Should disguising hide the summoner icon if it is present?
-  * Finish all of the map details in the expanded map, including unit spawns
+  * Finish all of the map details in the expanded map
+  * Add faction metadata to units so that they can quickly switch sides 1 <-> 6
 
  (7) Far Future (Past 1.0?)
   * Leader units should be able to give gold coin items instead of gold to non-leader friendly units, so you can't teleport gold across the map.
