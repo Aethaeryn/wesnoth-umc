@@ -1687,6 +1687,17 @@ function spawn_default_starting_units()
       change_unit.transform_keeping_stats(82, 97, wesnoth.get_unit(82, 97), "Elvish Lady")
       change_unit.transform_keeping_stats(136, 92, wesnoth.get_unit(136, 92), "Elvish Lady")
       change_unit.transform_keeping_stats(138, 93, wesnoth.get_unit(138, 93), "Elvish Lady")
+      -- Make it less likely for the starting goblins to kill a player so early
+      change_unit.hitpoints(138, 6, 15)
+      change_unit.hitpoints(135, 9, 10)
+      change_unit.moves(135, 9, 0)
+      change_unit.hitpoints(139, 9, 11)
+      change_unit.moves(139, 9, 0)
+      change_unit.hitpoints(142, 7, 10)
+      change_unit.moves(142, 7, 0)
+      change_unit.moves(140, 12, 0)
+      change_unit.moves(140, 13, 0)
+      -- Set the place names and teleporters
       place_names()
       starter_teleporters()
    -- else
