@@ -97,6 +97,12 @@ local function starter_shops()
    game_object.simple_place(207, 35, "shop", "scenery/tent-shop-weapons.png", true)
    -- Duldrasiath
    game_object.simple_place(270, 23, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Nuh
+   game_object.simple_place(241, 66, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Azhan
+   game_object.simple_place(300, 75, "shop", "scenery/tent-shop-weapons.png", true)
+   -- Zuhsil
+   game_object.simple_place(274, 130, "shop", "scenery/tent-shop-weapons.png", true)
 end
 
 -- Chooses the adjacent summoner with the highest HP.
@@ -1182,6 +1188,7 @@ function spawn_default_starting_units()
          {268, 19, "Gryphon Rider"},
          {270, 20, "Dwarvish Steelclad"},
          {273, 19, "Dwarvish Pathfinder"},
+         {268, 21, "Dwarvish Ulfserker"},
          {268, 23, "Dwarvish Thunderer"},
          {268, 27, "Dwarvish Scout"},
          {279, 15, "Dwarvish Scout"},
@@ -1190,6 +1197,7 @@ function spawn_default_starting_units()
          {286, 10, "Dwarvish Runesmith"},
          {277, 6, "Dwarvish Fighter"},
          {279, 6, "Dwarvish Guardsman"},
+         {278, 7, "Dwarvish Ulfserker"},
          {279, 8, "Dwarvish Fighter"},
          {279, 10, "Dwarvish Fighter"},
          {279, 3, "Dwarvish Thunderer"},
@@ -1491,8 +1499,57 @@ function spawn_default_starting_units()
          {254, 132, "Woodsman"},
          {232, 100, "Woodsman"},
          -- Nuh
+         {229, 76, "Jundi"},
+         {241, 81, "Jundi"},
+         {255, 68, "Jundi"},
+         {237, 64, "Jundi"},
          -- Azhan
+         {292, 64, "Jundi"},
+         {307, 82, "Jundi"},
+         {305, 78, "Naffat"},
+         {292, 69, "Rami"},
+         {305, 66, "Arif"},
+         {311, 66, "Hakim"},
+         {310, 63, "Jundi"},
+         {299, 71, "Ghazi"},
+         {297, 73, "Mudafi"},
+         {297, 77, "Arif"},
+         {302, 73, "Faris"},
+         {302, 72, "Arif"},
+         {304, 73, "Jundi"},
+         {304, 75, "Arif"},
+         {302, 76, "Jundi"},
+         {299, 78, "Naffat"},
+         {296, 75, "Hakim"},
+         {302, 70, "Dwarvish Fighter"},
+         {308, 72, "Dwarvish Guardsman"},
+         {307, 70, "Dwarvish Thunderer"},
+         {295, 81, "Arif"},
+         {299, 82, "Fencer"},
+         {293, 87, "Fencer"},
+         {298, 88, "Fencer"},
+         {295, 86, "White Mage"},
+         {296, 88, "White Mage"},
+         {294, 90, "White Mage"},
+         {303, 87, "White Mage"},
+         {291, 86, "White Mage"},
          -- Zuhsil Oasis
+         {270, 131, "Jundi"},
+         {275, 133, "Jundi"},
+         {284, 135, "Mudafi"},
+         {284, 136, "Arif"},
+         {287, 134, "Mudafi"},
+         {288, 133, "Jundi"},
+         {288, 132, "Khaiyal"},
+         {287, 133, "Khaiyal"},
+         {288, 131, "Rami"},
+         {287, 132, "Rami"},
+         {284, 130, "Hakim"},
+         {280, 127, "Hakim"},
+         {282, 127, "Arif"},
+         {277, 126, "Arif"},
+         {276, 126, "Jundi"},
+         {273, 128, "Rami"},
       }
       local mob_coords = {
          -- Occupied intercontinental teleporter
