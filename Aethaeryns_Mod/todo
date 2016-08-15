@@ -14,6 +14,10 @@ When this list is complete/empty, bump to version 0.9
     - give certain units preset traits/names
     - spawn shops with inventory already stocked
     - spawn other objects like chests and gold?
+    - finish spawns for:
+      - three desert settlements
+      - small human settlements along the east river
+      - large elvish city and small elvish town in the south
 
   - add faction metadata to units so that they can quickly switch sides 1 <-> 6
 
@@ -181,6 +185,8 @@ When this list is complete/empty, bump to version 0.9
   * Rebalance summoning.
     - Add a summon cap per summoner.
       - How would deaths of summoned units be tracked back to the summoner?
+      - How would death of summoner be handled?
+      - Reduce max HP on summoner by 1 per level of active summoned unit?
       - Would unsummoning be possible now?
     - Let magical player characters be able to learn summoning.
     - Remove summoning that makes no sense (e.g. human summoning) now that there are other ways to spawn units?
@@ -222,7 +228,6 @@ When this list is complete/empty, bump to version 0.9
       * Change shop price multiplier for buying to shop (for expensive shops)
     * Add more shop graphics for different flavor.
   * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
-  * Reduce max HP on summoner by 1 per level of active summoned unit?
   * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
   * Should disguising hide the summoner icon if it is present?
   * Finish all of the map details in the expanded map, including unit spawns
