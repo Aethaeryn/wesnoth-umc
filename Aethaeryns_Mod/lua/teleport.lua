@@ -59,11 +59,15 @@ end
 
 function teleport_unit(x, y, unit, side)
    local destination = teleport_destination(x, y)
-   if destination then
-      wesnoth.sides[side].gold = wesnoth.sides[side].gold - 20
-      fire.teleport_tile(unit.x, unit.y, destination[1], destination[2])
+   if wesnoth.sides[side].gold >= 20 then
+      if destination then
+         wesnoth.sides[side].gold = wesnoth.sides[side].gold - 20
+         fire.teleport_tile(unit.x, unit.y, destination[1], destination[2])
+      else
+         gui2_error("Teleportation blocked.")
+      end
    else
-      gui2_error("Teleportation blocked.")
+      gui2_error("Insufficient funds.")
    end
 end
 

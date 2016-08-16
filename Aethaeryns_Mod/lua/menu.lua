@@ -23,7 +23,7 @@ mod_menu.place_object_options = {
    {"Place Gold Pile", "items/gold-coins-large.png"},
    {"Clear Hex", "terrain/grass/green-symbol.png"}}
 mod_menu.misc_settings =  {
-   "Modify Container",
+   "Modify Object",
    "Modify Side",
    "Max Starting Level",
    "New Scenario",
@@ -65,6 +65,7 @@ end
 -- Finds neighboring things on (x, y) that a unit is allowed to
 -- interact with.
 local function find_interactions(x, y, blocked, on_hex)
+   debugOut("3")
    local interactions = {}
    if containers[x] ~= nil and containers[x][y] ~= nil and not blocked then
       if containers[x][y]["shop"] ~= nil then
@@ -79,7 +80,7 @@ local function find_interactions(x, y, blocked, on_hex)
          table.insert(interactions, 1, {"Collect Gold", "icons/coins_copper.png"})
       end
    end
-   if teleporters[x] ~= nil and teleporters[x][y] ~= nil then
+   if teleporters[x] ~= nil and teleporters[x][y] ~= nil and not blocked then
       table.insert(interactions, 1, {"Use Teleporter", "attacks/lightbeam.png"})
    end
    local unit = wesnoth.get_unit(x, y)
@@ -436,10 +437,13 @@ function mod_menu.interact()
    local title = _ "Interactions"
    local unit_list, blocked = unit_interaction(e.x1, e.y1, wesnoth.current.side)
    local unit = submenu_interact_unit_selection(unit_list, title)
+   debugOut("0")
    if not unit then
       return
    end
+   debugOut("1")
    local on_hex = unit.x == e.x1 and unit.y == e.y1
+   debugOut("2")
    menu{
       list = find_interactions(e.x1, e.y1, blocked, on_hex),
       title = title,
@@ -593,10 +597,34 @@ function mod_menu.interact()
                end
             }
          elseif option == "Use Teleporter" then
-            local teleporter_data = wesnoth.get_variable(string.format("mod_teleporters[%d]", teleporters[e.x1][e.y1]))
-            debugOut(teleporter_data)
+            local teleporter_id = teleporters[e.x1][e.y1]
+            local teleporter_data = wesnoth.get_variable(string.format("mod_teleporters[%d]", teleporter_id))
+            local last_teleporter_id = wesnoth.get_variable("mod_teleporters.length") - 1
             if teleporter_data["active"] then
-               gui2_error("Success")
+               local destination_teleporters = {}
+               for i = 0, last_teleporter_id do
+                  if i ~= teleporter_id then
+                     local destination_teleporter_data = wesnoth.get_variable(string.format("mod_teleporters[%d]", i))
+                     if destination_teleporter_data["active"] then
+                        table.insert(destination_teleporters,
+                                     1,
+                                     {destination_teleporter_data["name"],
+                                      {destination_teleporter_data["x"],
+                                       destination_teleporter_data["y"]}})
+                     end
+                  end
+               end
+               menu{
+                  list = destination_teleporters,
+                  title = title,
+                  description = _ "Where do you want to teleport to?",
+                  dialog_list = "almost_simple",
+                  sublist_index = 2,
+                  action = function(destination)
+                     -- debugOut(tostring(destination[1] .. ", " .. destination[2]))
+                     teleport_unit(destination[1], destination[2], unit, unit.side)
+                  end
+               }
             else
                gui2_error("The teleporter is inactive.")
             end
@@ -849,11 +877,11 @@ function mod_menu.settings()
       description = _ "What action do you want to do?",
       dialog_list = "simple",
       action = function(option)
-         if option == "Modify Container" then
+         if option == "Modify Object" then
             menu{
                list = find_interactions_to_modify(e.x1, e.y1),
                title = title,
-               description = _ "Which container do you want to modify?",
+               description = _ "Which object do you want to modify?",
                dialog_list = "with_picture",
                sublist_index = 1,
                action = function(interaction)
