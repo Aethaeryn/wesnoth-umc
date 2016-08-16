@@ -149,14 +149,7 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, ge
       unit_stats.gender = gender
    end
    wesnoth.put_unit(x, y, unit_stats)
-   -- Units need an [object] that doubles their MP. That way it stays
-   -- through promotion.
-   local unit = wesnoth.get_unit(x, y)
-   wesnoth.add_modification(unit,
-                            "object", { T["effect"] {
-                                           apply_to = "movement",
-                                           increase = "100%" }})
-   unit.moves = unit.max_moves
+   change_unit.max_moves_doubler(x, y)
 end
 
 function spawn_unit.spawn_group(x, y, units, side_number)

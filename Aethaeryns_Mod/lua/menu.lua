@@ -311,22 +311,30 @@ function mod_menu.select_leader()
    if leaders[1] ~= nil and leaders[1].type == "Peasant" and leaders[1].variables["advancement"] == nil then
       local leader = leaders[1]
       local title = _ "Leader"
+      local max_level
+      if wesnoth.current.side == 1 or wesnoth.current.side == 6 then
+         max_level = 5
+      else
+         max_level = change_unit.max_level
+      end
       -- Lets the player come back to the submenu.
       leader.variables.selection_active = true
       submenu_unit_selection_common{
          title = title,
-         max_level = change_unit.max_level,
+         max_level = max_level,
          action = function(choice)
             change_unit.transform(leader.x, leader.y, choice)
             mod_upgrade.increment(leader)
             leader.variables.dont_make_me_quick = true
             leader.variables.selection_active = false
+            change_unit.max_moves_doubler(leader.x, leader.y)
          end,
          gender_action = function(choice, gender)
             change_unit.transform(leader.x, leader.y, choice, gender)
             mod_upgrade.increment(leader)
             leader.variables.dont_make_me_quick = true
             leader.variables.selection_active = false
+            change_unit.max_moves_doubler(leader.x, leader.y)
          end
       }
    end
