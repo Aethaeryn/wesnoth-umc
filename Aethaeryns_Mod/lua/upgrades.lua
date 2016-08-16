@@ -17,8 +17,6 @@ function event_post_advance()
    -- If it's a regular promotion we need to keep the upgrades that
    -- were set.
    else
-      unit_data.max_moves = unit_data.max_moves * 2
-      wesnoth.put_unit(e.x1, e.y1, unit_data)
       if unit.variables["upgradeSpeed"] ~= nil then
          change_unit.max_moves(e.x1, e.y1, unit_data.max_moves + unit.variables["upgradeSpeed"])
       end
