@@ -7,63 +7,63 @@ spawn_unit = {}
 -- at any moment, especially if they're accidentally too close to some
 -- real name. The easiest way to get the names is to spawn units of
 -- the proper species and pick one that isn't terrible.
-local function place_names()
+local place_names = {
    -- Human settlements near Labaenry
-   fire.label( 19,  89, "Ruins of Angcyn")
-   fire.label( 54, 117, "Fortress Aethylcyn")
-   fire.label( 55,  71, "Fort Saedryn")
-   fire.label( 81,  64, "Fort Gegmyr")
-   fire.label( 51, 100, "Fort Owonyn")
-   fire.label(130,  36, "Fort Leodry")
-   fire.label(171,  13, "Camp Teraec")
+   { 19,  89, "Ruins of Angcyn"},
+   { 54, 117, "Fortress Aethylcyn"},
+   { 55,  71, "Fort Saedryn"},
+   { 81,  64, "Fort Gegmyr"},
+   { 51, 100, "Fort Owonyn"},
+   {130,  36, "Fort Leodry"},
+   {171,  13, "Camp Teraec"},
    -- Areas of Labaenry
-   fire.label( 65,  98, "The Academy")
-   fire.label( 95, 102, "Old Labaenry")
-   fire.label( 88,  95, "The Citadel")
-   fire.label( 80,  96, "Diplomatic Quarter")
-   fire.label( 77,  95, "Market District")
-   fire.label( 71,  87, "New Labaenry")
-   fire.label( 95, 122, "South Labaenry")
+   { 65,  98, "The Academy"},
+   { 95, 102, "Old Labaenry"},
+   { 88,  95, "The Citadel"},
+   { 80,  96, "Diplomatic Quarter"},
+   { 77,  95, "Market District"},
+   { 71,  87, "New Labaenry"},
+   { 95, 122, "South Labaenry"},
    -- Other human settlements in the north/west
-   fire.label(102,  68, "Seoraedd")
-   fire.label( 43, 161, "Blynaerth")
-   fire.label( 60, 192, "Luddoc")
-   fire.label( 20, 193, "Fort Owidd")
-   fire.label(123,  67, "Fort Gurran")
-   fire.label(169,  57, "East Rheon")
-   fire.label(154,  52, "Wesrheon")
-   fire.label(208,  36, "Fort Garn")
-   fire.label( 45,  28, "Sellyn")
-   fire.label(143,  81, "North Elabril")
+   {102,  68, "Seoraedd"},
+   { 43, 161, "Blynaerth"},
+   { 60, 192, "Luddoc"},
+   { 20, 193, "Fort Owidd"},
+   {123,  67, "Fort Gurran"},
+   {169,  57, "East Rheon"},
+   {154,  52, "Wesrheon"},
+   {208,  36, "Fort Garn"},
+   { 45,  28, "Sellyn"},
+   {143,  81, "North Elabril"},
    -- Elvish settlements near the west river
-   fire.label(137,  91, "Elabril")
-   fire.label(191,  53, "Deranion")
+   {137,  91, "Elabril"},
+   {191,  53, "Deranion"},
    -- Other places
-   fire.label(248, 171, "Republic of Blinadoc")
-   fire.label(173, 125, "Gliddryn")
-   fire.label(229, 121, "Blunry")
-   fire.label(250, 129, "Veor")
-   fire.label(242,  67, "Nuh")
-   fire.label(296,  72, "Temple Gate")
-   fire.label(299,  75, "Azhan")
-   fire.label(281, 130, "Zuhsil Oasis")
-   fire.label(171,   2, "Nardurthas")
-   fire.label(266,  23, "Duldrasiath")
-   fire.label(143, 124, "Vargork")
-   fire.label(130, 110, "Pruol")
-   fire.label(127, 124, "Gorg")
-   fire.label(119, 136, "Hanak")
-   fire.label(137, 137, "Pruurk Gate")
-   fire.label(151, 134, "Erurk Gate")
-   fire.label(162, 108, "Grish")
-   fire.label(249,  45, "Grinak")
-   fire.label(204,  74, "Monastery of Fire")
-   fire.label(219, 112, "Elrólas")
-   fire.label(237, 126, "Rólas")
-   fire.label(201, 178, "Vanathion")
-   fire.label(192, 191, "Sanctuary of the Elves")
-   fire.label(236, 188, "Eomyn")
-end
+   {248, 171, "Republic of Blinadoc"},
+   {173, 125, "Gliddryn"},
+   {229, 121, "Blunry"},
+   {250, 129, "Veor"},
+   {242,  67, "Nuh"},
+   {296,  72, "Temple Gate"},
+   {299,  75, "Azhan"},
+   {281, 130, "Zuhsil Oasis"},
+   {171,   2, "Nardurthas"},
+   {266,  23, "Duldrasiath"},
+   {143, 124, "Vargork"},
+   {130, 110, "Pruol"},
+   {127, 124, "Gorg"},
+   {119, 136, "Hanak"},
+   {137, 137, "Pruurk Gate"},
+   {151, 134, "Erurk Gate"},
+   {162, 108, "Grish"},
+   {249,  45, "Grinak"},
+   {204,  74, "Monastery of Fire"},
+   {219, 112, "Elrólas"},
+   {237, 126, "Rólas"},
+   {201, 178, "Vanathion"},
+   {192, 191, "Sanctuary of the Elves"},
+   {236, 188, "Eomyn"},
+}
 
 local function starter_shops()
    -- Labaenry
@@ -1897,7 +1897,9 @@ function spawn_default_starting_units()
       change_unit.transform_keeping_stats(136, 92, wesnoth.get_unit(136, 92), "Elvish Lady")
       change_unit.transform_keeping_stats(138, 93, wesnoth.get_unit(138, 93), "Elvish Lady")
       -- Set the place names and teleporters
-      place_names()
+      for i, place_name in ipairs(place_names) do
+         fire.label(place_name[1], place_name[2], place_name[3])
+      end
       starter_teleporters()
       starter_shops()
    -- else
