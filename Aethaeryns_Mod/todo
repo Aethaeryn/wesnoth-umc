@@ -7,6 +7,7 @@ When this list is complete/empty, bump to version 0.9
     - finish spawns for:
       - Nuh
       - large elvish city
+    - spawn in units over time to reduce CPU usage
 
   - merge "Add to Chest" submenu with add item submenu
 
@@ -123,6 +124,7 @@ When this list is complete/empty, bump to version 0.9
     - e.g. some border hexes can change terrain and some just change (1,1)
     - and all the units spawned on borders spawn on (1,1) instead, potentially overwriting a unit on (1,1)
 
+  * Fix losing all movement on village capture via spawn.
   * BUG: Things stored in lua tables do not have their states saved:
     * Multi-turn potion effects.
     * Shop inventory.

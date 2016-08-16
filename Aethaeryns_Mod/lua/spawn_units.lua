@@ -188,13 +188,76 @@ local function spawn_npc(coord, unit_name)
    spawn_unit.spawn_unit(coord[1], coord[2], unit_name, 6)
 end
 
+-- Make it less likely for the starting goblins to kill a player so early
+local function nerf_starter_goblins()
+   change_unit.hitpoints(138, 6, 15)
+   change_unit.moves(138, 6, 0)
+   change_unit.hitpoints(135, 9, 10)
+   change_unit.moves(135, 9, 0)
+   change_unit.hitpoints(139, 9, 11)
+   change_unit.moves(139, 9, 0)
+   change_unit.hitpoints(142, 7, 10)
+   change_unit.moves(142, 7, 0)
+   change_unit.moves(140, 12, 0)
+   change_unit.moves(140, 13, 0)
+   change_unit.moves(145, 14, 3)
+   change_unit.moves(145, 15, 3)
+   change_unit.moves(146, 14, 3)
+   change_unit.moves(146, 15, 3)
+end
+
+local function npcs_in_sellyn()
+   local units = {
+      {40, 27, "Peasant"},
+      {56, 28, "Peasant"},
+      {43, 30, "Peasant"},
+      {55, 23, "Peasant"},
+      {23, 44, "Woodsman"},
+      {37, 42, "Woodsman"},
+      {35, 48, "Woodsman"},
+      {53, 50, "Woodsman"},
+      {37, 21, "Spearman"},
+      {38, 15, "Spearman"},
+      {53, 15, "Spearman"},
+      {62, 14, "Spearman"},
+      {65, 21, "Spearman"},
+      {69, 33, "Poacher"},
+      {86, 27, "Spearman"},
+      {99, 28, "Bowman"},
+      {40, 26, "Spearman"},
+      {42, 26, "Heavy Infantryman"},
+      {40, 29, "Heavy Infantryman"},
+      {40, 30, "Lieutenant"},
+      {41, 33, "Bowman"},
+      {39, 30, "Spearman"},
+      {39, 31, "Bowman"},
+      {52, 32, "Swordsman"},
+      {52, 30, "Spearman"},
+      {54, 30, "Bowman"},
+      {58, 30, "Spearman"},
+      {53, 29, "Heavy Infantryman"},
+      {54, 25, "Spearman"},
+      {56, 25, "Bowman"},
+      {48, 26, "White Mage"},
+      {44, 27, "Fencer"},
+      {57, 27, "Fencer"},
+      {57, 29, "Mage"},
+      {53, 28, "Knight"},
+      {57, 31, "Cavalryman"},
+      {37, 36, "Bowman"},
+      {34, 52, "Bowman"},
+      {53, 41, "Poacher"},
+      {66, 45, "Poacher"},
+   }
+   for i, coord in ipairs(units) do
+      spawn_unit.spawn_unit(coord[1], coord[2], coord[3], 6)
+   end
+end
+
 function spawn_default_starting_units()
    if wesnoth.get_variable("aeth_scenario_name") == "Woods" then
+      npcs_in_sellyn()
       local peasant_coords = {
-         {40, 27},
-         {56, 28},
-         {43, 30},
-         {55, 23},
          {70, 129},
          {65, 128},
          {58, 125},
@@ -296,15 +359,11 @@ function spawn_default_starting_units()
          {204, 36},
       }
       local woodsman_coords = {
-         {23, 44},
          {31, 72},
          {39, 91},
          {44, 94},
          {23, 124},
          {17, 131},
-         {37, 42},
-         {35, 48},
-         {53, 50},
          {118, 69},
          {123, 70},
          {125, 65},
@@ -356,36 +415,7 @@ function spawn_default_starting_units()
          {171, 60},
          {214, 33},
       }
-      local guard_coords = {
-         -- Mountain spawns
-         {37, 21, "Spearman"},
-         {38, 15, "Spearman"},
-         {53, 15, "Spearman"},
-         {62, 14, "Spearman"},
-         {65, 21, "Spearman"},
-         {69, 33, "Poacher"},
-         {86, 27, "Spearman"},
-         {99, 28, "Bowman"},
-         {40, 26, "Spearman"},
-         {42, 26, "Heavy Infantryman"},
-         {40, 29, "Heavy Infantryman"},
-         {40, 30, "Lieutenant"},
-         {41, 33, "Bowman"},
-         {39, 30, "Spearman"},
-         {39, 31, "Bowman"},
-         {52, 32, "Swordsman"},
-         {52, 30, "Spearman"},
-         {54, 30, "Bowman"},
-         {58, 30, "Spearman"},
-         {53, 29, "Heavy Infantryman"},
-         {54, 25, "Spearman"},
-         {56, 25, "Bowman"},
-         {48, 26, "White Mage"},
-         {44, 27, "Fencer"},
-         {57, 27, "Fencer"},
-         {57, 29, "Mage"},
-         {53, 28, "Knight"},
-         {57, 31, "Cavalryman"},
+      local npc_coords = {
          -- Northwest forest spawns
          {6, 54, "Spearman"},
          {8, 58, "Heavy Infantryman"},
@@ -401,13 +431,9 @@ function spawn_default_starting_units()
          {47, 75, "Horseman"},
          {43, 78, "Horseman"},
          {52, 77, "Cavalryman"},
-         {37, 36, "Bowman"},
-         {34, 52, "Bowman"},
          {38, 59, "Bowman"},
          {39, 61, "Spearman"},
          {41, 63, "Spearman"},
-         {53, 41, "Poacher"},
-         {66, 45, "Poacher"},
          {64, 58, "Poacher"},
          {51, 65, "Bowman"},
          {54, 67, "Bowman"},
@@ -1834,7 +1860,7 @@ function spawn_default_starting_units()
       for i, coord in ipairs(ruffian_coords) do
          spawn_npc(coord, "Ruffian")
       end
-      for i, coord in ipairs(guard_coords) do
+      for i, coord in ipairs(npc_coords) do
          spawn_unit.spawn_unit(coord[1], coord[2], coord[3], 6)
       end
       for i, coord in ipairs(mob_coords) do
@@ -1844,16 +1870,7 @@ function spawn_default_starting_units()
       change_unit.transform_keeping_stats(82, 97, wesnoth.get_unit(82, 97), "Elvish Lady")
       change_unit.transform_keeping_stats(136, 92, wesnoth.get_unit(136, 92), "Elvish Lady")
       change_unit.transform_keeping_stats(138, 93, wesnoth.get_unit(138, 93), "Elvish Lady")
-      -- Make it less likely for the starting goblins to kill a player so early
-      change_unit.hitpoints(138, 6, 15)
-      change_unit.hitpoints(135, 9, 10)
-      change_unit.moves(135, 9, 0)
-      change_unit.hitpoints(139, 9, 11)
-      change_unit.moves(139, 9, 0)
-      change_unit.hitpoints(142, 7, 10)
-      change_unit.moves(142, 7, 0)
-      change_unit.moves(140, 12, 0)
-      change_unit.moves(140, 13, 0)
+      nerf_starter_goblins()
       -- Set the place names and teleporters
       place_names()
       starter_teleporters()
