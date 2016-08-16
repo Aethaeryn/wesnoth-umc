@@ -566,11 +566,12 @@ function mod_menu.interact()
                sidebar = true,
                action = function(item)
                   local item = item.name
+                  local max = containers[e.x1][e.y1]["chest"][item]
                   menu_slider{
                      title = title,
                      description = _ "How much do you want to remove?",
                      label = _ "Quantity",
-                     max = containers[e.x1][e.y1]["chest"][item],
+                     max = max,
                      min = 1,
                      step = 1,
                      value = max,
