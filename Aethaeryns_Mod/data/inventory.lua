@@ -37,6 +37,11 @@ item_table = {
       msg    = "* Allows for the casting of a spell.",
       price  = 100,
    }, {
+      name   = "Scroll (Teleportation)",
+      image  = "icons/scroll_red.png",
+      msg    = "* Lets the user teleport to a teleporter.",
+      price  = 25,
+   }, {
       name   = "Coins",
       image  = "icons/coins_copper.png",
       msg    = "* Adds ten coins to the side total.",

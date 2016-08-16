@@ -638,6 +638,33 @@ function mod_menu.interact()
    }
 end
 
+function mod_menu.teleport_spell(x, y)
+   local title = _ "Spell"
+   local unit = wesnoth.get_unit(x, y)
+   local destination_teleporters = {}
+   local last_teleporter_id = wesnoth.get_variable("mod_teleporters.length") - 1
+   for i = 0, last_teleporter_id do
+      local destination_teleporter_data = wesnoth.get_variable(string.format("mod_teleporters[%d]", i))
+      if destination_teleporter_data["active"] then
+         table.insert(destination_teleporters,
+                      1,
+                      {destination_teleporter_data["name"],
+                       {destination_teleporter_data["x"],
+                        destination_teleporter_data["y"]}})
+      end
+   end
+   menu{
+      list = destination_teleporters,
+      title = title,
+      description = _ "Where do you want to teleport to?",
+      dialog_list = "almost_simple",
+      sublist_index = 2,
+      action = function(destination)
+         teleport_unit_without_cost(destination[1], destination[2], unit)
+      end
+   }
+end
+
 -- Everything a unit can do that isn't interacting with an adjacent
 -- hex.
 function mod_menu.unit_commands()

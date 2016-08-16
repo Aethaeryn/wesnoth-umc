@@ -71,6 +71,15 @@ function teleport_unit(x, y, unit, side)
    end
 end
 
+function teleport_unit_without_cost(x, y, unit)
+   local destination = teleport_destination(x, y)
+   if destination then
+      fire.teleport_tile(unit.x, unit.y, destination[1], destination[2])
+   else
+      gui2_error("Teleportation blocked.")
+   end
+end
+
 function add_teleporter(x, y, is_active, name)
    fire.label(x, y, "Teleporter")
    if is_active then
