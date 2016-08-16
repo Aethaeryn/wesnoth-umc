@@ -135,6 +135,8 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, ge
    local unit_stats = {type = unit_type,
                        side = side_number,
                        upkeep = 0}
+   -- unit_stats.moves = foo
+   unit_stats.max_moves = wesnoth.unit_types[unit_type].max_moves * 2
    if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil then
       fire.capture_village(x, y, side_number)
       unit_stats.moves = 0
