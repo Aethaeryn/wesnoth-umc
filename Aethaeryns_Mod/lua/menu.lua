@@ -65,7 +65,6 @@ end
 -- Finds neighboring things on (x, y) that a unit is allowed to
 -- interact with.
 local function find_interactions(x, y, blocked, on_hex)
-   debugOut("3")
    local interactions = {}
    if containers[x] ~= nil and containers[x][y] ~= nil and not blocked then
       if containers[x][y]["shop"] ~= nil then
@@ -120,7 +119,10 @@ local function unit_interaction(x, y, current_side)
          -- ...but a unit can't interact with itself so there must be
          -- something else on the hex other than a unit to interact
          -- with if a unit is on the hex.
-         if (hex[1] ~= x or hex[2] ~= y) or (containers[x] ~= nil and containers[x][y] ~= nil) then
+         if (hex[1] ~= x or hex[2] ~= y)
+            or (containers[x] ~= nil and containers[x][y] ~= nil)
+            or (teleporters[x] ~= nil and teleporters[x][y] ~= nil)
+         then
             table.insert(unit_list, unit)
          end
       -- A hostile unit blocks all non-unit interactions on that hex.
@@ -437,13 +439,10 @@ function mod_menu.interact()
    local title = _ "Interactions"
    local unit_list, blocked = unit_interaction(e.x1, e.y1, wesnoth.current.side)
    local unit = submenu_interact_unit_selection(unit_list, title)
-   debugOut("0")
    if not unit then
       return
    end
-   debugOut("1")
    local on_hex = unit.x == e.x1 and unit.y == e.y1
-   debugOut("2")
    menu{
       list = find_interactions(e.x1, e.y1, blocked, on_hex),
       title = title,
@@ -621,7 +620,6 @@ function mod_menu.interact()
                   dialog_list = "almost_simple",
                   sublist_index = 2,
                   action = function(destination)
-                     -- debugOut(tostring(destination[1] .. ", " .. destination[2]))
                      teleport_unit(destination[1], destination[2], unit, unit.side)
                   end
                }
