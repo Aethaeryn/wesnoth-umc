@@ -81,6 +81,23 @@ function add_teleporter(x, y, is_active, name)
    add_teleporter_to_list(x, y, is_active, name)
 end
 
+function teleporter_off(x, y)
+   w_items.remove(x, y)
+   w_items.place_image(x, y, RUNE_OFF)
+   local teleporter_stats = wesnoth.get_variable(string.format("mod_teleporters[%d]", teleporters[x][y]))
+   teleporter_stats.active = false
+   wesnoth.set_variable(string.format("mod_teleporters[%d]", teleporters[x][y]), teleporter_stats)
+end
+
+function teleporter_on(x, y)
+   w_items.remove(x, y)
+   w_items.place_image(x, y, RUNE_ON)
+      local teleporter_stats = wesnoth.get_variable(string.format("mod_teleporters[%d]", teleporters[x][y]))
+   teleporter_stats.active = true
+   wesnoth.set_variable(string.format("mod_teleporters[%d]", teleporters[x][y]), teleporter_stats)
+end
+
+
 function starter_teleporters()
    -- players start here
    add_teleporter(138,   5, false, "Intercontinental Teleporter")

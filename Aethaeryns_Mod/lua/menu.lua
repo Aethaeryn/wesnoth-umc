@@ -103,6 +103,13 @@ local function find_interactions_to_modify(x, y)
          table.insert(interactions, 1, {"Modify Gold", "icons/coins_copper.png"})
       end
    end
+   if teleporters[x] ~= nil and teleporters[x][y] ~= nil then
+      if wesnoth.get_variable(string.format("mod_teleporters[%d]", teleporters[x][y]))["active"] then
+         table.insert(interactions, 1, {"Turn Teleporter Off", "attacks/lightbeam.png"})
+      else
+         table.insert(interactions, 1, {"Turn Teleporter On", "attacks/lightbeam.png"})
+      end
+   end
    return interactions
 end
 
@@ -887,6 +894,10 @@ function mod_menu.settings()
                      submenu_add_item(title, containers[e.x1][e.y1]["shop"])
                   elseif interaction == "Modify Chest" then
                      submenu_add_item(title, containers[e.x1][e.y1]["chest"])
+                  elseif interaction == "Turn Teleporter On" then
+                     teleporter_on(e.x1, e.y1)
+                  elseif interaction == "Turn Teleporter Off" then
+                     teleporter_off(e.x1, e.y1)
                   end
                end
             }
