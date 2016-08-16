@@ -135,7 +135,11 @@ local function unit_interaction(x, y, current_side)
       -- A hostile unit blocks all non-unit interactions on that hex.
       elseif unit ~= nil and unit.side ~= current_side
       and wesnoth.sides[unit.side].team_name ~= wesnoth.sides[current_side].team_name then
-         blocked = true
+         -- NPCs don't block for default team adventurers
+         if not(wesnoth.sides[unit.side].team_name == "Adventurers,NPCs" and
+                wesnoth.sides[current_side].team_name == "Adventurers") then
+            blocked = true
+         end
       end
    end
    return unit_list, blocked
@@ -544,11 +548,12 @@ function mod_menu.interact()
                end
             }
          elseif option == "Collect Gold" then
+            local max = containers[e.x1][e.y1]["gold"]
             menu_slider{
                title = title,
                description = _ "How much gold do you want to take?",
                label = _ "Gold",
-               max = containers[e.x1][e.y1]["gold"],
+               max = max,
                min = 10,
                step = 10,
                value = max,
