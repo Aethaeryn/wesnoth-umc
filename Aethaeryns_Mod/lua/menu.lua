@@ -132,14 +132,10 @@ local function unit_interaction(x, y, current_side)
          then
             table.insert(unit_list, unit)
          end
-      -- A hostile unit blocks all non-unit interactions on that hex.
-      elseif unit ~= nil and unit.side ~= current_side
-      and wesnoth.sides[unit.side].team_name ~= wesnoth.sides[current_side].team_name then
-         -- NPCs don't block for default team adventurers
-         if not(wesnoth.sides[unit.side].team_name == "Adventurers,NPCs" and
-                wesnoth.sides[current_side].team_name == "Adventurers") then
-            blocked = true
-         end
+      -- A hostile unit blocks all non-unit interactions on the hex.
+      elseif unit ~= nil and unit.side ~= current_side and
+      not wesnoth.match_side(unit.side, { team_name = wesnoth.sides[current_side]["team_name"] }) then
+         blocked = true
       end
    end
    return unit_list, blocked
