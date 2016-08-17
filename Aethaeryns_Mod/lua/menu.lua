@@ -13,7 +13,6 @@ mod_menu.lich_image = "portraits/undead/transparent/ancient-lich.png"
 mod_menu.gender = {{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}
 mod_menu.scenarios = {
    {"Introduction", "intro"},
-   {"Introduction (Underground)", "intro2"},
    {"Battle", "battle"},
    {"Woods", "big_woods"}}
 mod_menu.place_object_options = {
