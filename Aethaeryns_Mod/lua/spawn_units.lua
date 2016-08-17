@@ -3,44 +3,50 @@
 spawn_unit = {}
 
 local function starter_shops()
-   -- Labaenry
-   game_object.simple_place(68, 87, "shop", "scenery/tent-shop-weapons.png", true)
-   game_object.simple_place(79, 93, "shop", "scenery/tent-shop-weapons.png", true)
-   game_object.simple_place(77, 94, "shop", "scenery/tent-shop-weapons.png", true)
-   game_object.simple_place(66, 100, "shop", "scenery/tent-shop-weapons.png", true)
-   game_object.simple_place(72, 103, "shop", "scenery/tent-shop-weapons.png", true)
-   game_object.simple_place(90, 100, "shop", "scenery/tent-shop-weapons.png", true)
-   game_object.simple_place(92, 119, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Blynaerth
-   game_object.simple_place(41, 160, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Luddoc
-   game_object.simple_place(58, 183, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Aethylcyn
-   game_object.simple_place(56, 120, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Sellyn
-   game_object.simple_place(42, 28, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Seoraedd
-   game_object.simple_place(105, 67, "shop", "scenery/tent-shop-weapons.png", true)
-   -- North Elabril
-   game_object.simple_place(142, 78, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Elabril
-   game_object.simple_place(135, 90, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Wesrheon
-   game_object.simple_place(156, 58, "shop", "scenery/tent-shop-weapons.png", true)
-   -- East Rheon
-   game_object.simple_place(174, 58, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Deranion
-   game_object.simple_place(211, 54, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Fort Garn
-   game_object.simple_place(207, 35, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Duldrasiath
-   game_object.simple_place(270, 23, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Nuh
-   game_object.simple_place(241, 66, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Azhan
-   game_object.simple_place(300, 75, "shop", "scenery/tent-shop-weapons.png", true)
-   -- Zuhsil
-   game_object.simple_place(274, 130, "shop", "scenery/tent-shop-weapons.png", true)
+   local shops = {
+      -- Labaenry
+      {68, 87},
+      {79, 93},
+      {77, 94},
+      {66, 100},
+      {72, 103},
+      {90, 100},
+      {92, 119},
+      -- Blynaerth
+      {41, 160},
+      -- Luddoc
+      {58, 183},
+      -- Aethylcyn
+      {56, 120},
+      -- Sellyn
+      {42, 28},
+      -- Seoraedd
+      {105, 67},
+      -- North Elabril
+      {142, 78},
+      -- Elabril
+      {135, 90},
+      -- Wesrheon
+      {156, 58},
+      -- East Rheon
+      {174, 58},
+      -- Deranion
+      {211, 54},
+      -- Fort Garn
+      {207, 35},
+      -- Duldrasiath
+      {270, 23},
+      -- Nuh
+      {241, 66},
+      -- Azhan
+      {300, 75},
+      -- Zuhsil
+      {274, 130},
+   }
+
+   for i, shop in ipairs(shops) do
+      game_object.simple_place(shop[1], shop[2], "shop", "scenery/tent-shop-weapons.png", true)
+   end
 end
 
 -- Chooses the adjacent summoner with the highest HP.
