@@ -131,5 +131,10 @@ function starter_teleporters()
    add_teleporter(246, 159, false, "Blinadoc Teleporter")
    add_teleporter(214, 171, false, "Vanathion Teleporter")
 end
+
+function battle_starter_teleporters()
+   add_teleporter(11,  3, true, "North Castle")
+   add_teleporter(11, 21, true, "South Castle")
+end
 >>
 #enddef

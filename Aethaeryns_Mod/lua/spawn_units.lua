@@ -49,6 +49,17 @@ local function starter_shops()
    end
 end
 
+local function battle_starter_shops()
+   local shops = {
+      {11, 6},
+      {11, 18},
+   }
+
+   for i, shop in ipairs(shops) do
+      game_object.simple_place(shop[1], shop[2], "shop", "scenery/tent-shop-weapons.png", true)
+   end
+end
+
 -- Chooses the adjacent summoner with the highest HP.
 local function find_summoner(x, y, summoners)
    local max_hp = 0
@@ -1836,6 +1847,9 @@ function spawn_default_starting_units()
       end
       starter_teleporters()
       starter_shops()
+   elseif wesnoth.get_variable("aeth_scenario_name") == "Battle" then
+      battle_starter_teleporters()
+      battle_starter_shops()
    -- else
    --    debugOut(wesnoth.get_variable("aeth_scenario_name"))
    end
