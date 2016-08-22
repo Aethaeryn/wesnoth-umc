@@ -6,11 +6,11 @@ When this list is complete/empty, bump to version 0.9
   - serialize the shop and teleporter location Lua tables on save/load
 
   - new content (0.5%):
-    - spawn both genders
     - finish spawns for:
       - Nuh
       - large elvish city
-    - spawn in units over time to reduce CPU usage
+
+  - spawn in units over time to reduce CPU usage
 
   - merge "Add to Chest" submenu with add item submenu
 
