@@ -126,33 +126,35 @@ When this list is complete/empty, bump to version 0.9
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
     - e.g. some border hexes can change terrain and some just change (1,1)
     - and all the units spawned on borders spawn on (1,1) instead, potentially overwriting a unit on (1,1)
+    - this is blockable only in 1.13 afaik
 
-  * Fix losing all movement on village capture via spawn.
+  * BUG: Fix losing all movement on village capture via spawn.
   * BUG: Things stored in lua tables do not have their states saved:
     * Multi-turn potion effects.
     * Shop inventory.
     * Teleporter locations.
   * BUG: If a unit is transformed to Undead and then to something else they stay Undead in their traits.
-  * BUG: Fix icon size for Summon <foo> and Summon Summoner.
   * BUG: Changing the gender of a unit doesn't change its portrait to the other variant.
     - In fact, it locks the unit into the old portrait even if it promotes.
-  * BUG: If the host has summoners of different types surround a hex, there will be too many Summon <Foo> for that hex and other menu items will start to be cut off.
   * BUG: Objectives don't show up right in the set menu.
+    - This could be fixed by having preset objectives rather than blank text objectives, but that limits quest potential.
   * BUG: Filter out the summoners before the dialog part so there aren't e.g. empty Level 4s for Summon <Foo>
   * BUG: Slider doesn't go all the way over, it just ends about half way through.
   * BUG: If a leader changes player control or is replaced with a new leader unit mid-scenario, it isn't remembered on the next scenario.
   * BUG: Error messages often (always?) show up for all players instead of one player
+  * BUG: side 6 can't pick up gold
 
-  * FEATURE: Add hotkeys to the set_menu_item menu items.
+  * FEATURE: Make valid upgrades more obvious, perhaps with green text vs red text.
+  * FEATURE: Add default hotkeys to the set_menu_item menu items.
   * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
   * FEATURE: AMLAing probably shouldn't increase max experience.
   * FEATURE: Change objectives by subsections (victory, loss, etc.) in a new interface so that formatting can be preserved.
   * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
   * FEATURE: Zombie variations need to be possible instead of just the boring plain zombie.
+    - This means spawned, summoned, and summoner summoned.
   * FEATURE: If possible, units should keep their name when zombified.
   * FEATURE: Let certain leader types be disallowed (e.g. Monsters).
   * FEATURE: Allow pets (e.g. bat, falcon, wolf, etc.).
-  * FEATURE: Allow sharing gold as an option when collecting gold, splitting it evenly among players whose leaders are within a certain radius.
 
   * CODE: Does 1.12 have a better way of dealing with advancement than event_post_advance() and event_advance()?
     * Maybe override [advancement] i.e. AMLA_DEFAULT?
@@ -228,9 +230,8 @@ When this list is complete/empty, bump to version 0.9
   * Add faction metadata to units so that they can quickly switch sides 1 <-> 6
 
  (7) Far Future (Past 1.0?)
-  * Leader units should be able to give gold coin items instead of gold to non-leader friendly units, so you can't teleport gold across the map.
-    - Only leaders should be able to use (cash) those gold coins. Otherwise, they sit in inventory until given to a leader unit.
   * Require download (modification, era, MP campaign(s)), but make the Lua imported in a cleaner way and define some custom WML tags.
+    - This will allow the icon size for the Summon right click menu items to be resized down
     - This will solve the problem of what to do for certain icons, e.g. for potion types, scrolls, and menu items.
     - The current closed scroll icon could be used for unidentified scrolls if it's going to be like roguelikes and require identifying.
     - This means more units can be added.

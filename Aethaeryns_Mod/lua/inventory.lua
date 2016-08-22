@@ -142,21 +142,43 @@ function mod_inventory.shop_sell(unit, x, y, name, quantity, price, side_number)
    mod_inventory.add(name, -1 * quantity, unit.variables)
 end
 
+-- quantity should always be valid due to the slider
 function mod_inventory.collect_gold(x, y, quantity, side)
-   -- todo: gold share with all non-NPC allies with living leaders,
-   -- where the remainder of the division goes to the side that
-   -- actually collected it
+   local share_list = {}
+   local share_counter = 0
 
-   -- for team in helper.all_teams() do
-   --    debugOut(wesnoth.match_side(team.side, { team_name = wesnoth.sides[side]["team_name"] }))
-   -- end
-   if quantity > 0 and quantity <= containers[x][y]["gold"] then
-      wesnoth.sides[side]["gold"] = wesnoth.sides[side]["gold"] + quantity
-      if quantity == containers[x][y]["gold"] then
-         game_object.clear(x, y)
-      else
-         containers[x][y]["gold"] = containers[x][y]["gold"] - quantity
+   -- find allies
+   for team in helper.all_teams() do
+      local same_team = wesnoth.match_side(team.side, { team_name = wesnoth.sides[side]["team_name"] })
+      local usually_exclude_1_and_6 = (team.side ~= 1 and team.side ~= 6) or side == team.side
+      local has_leader = wesnoth.get_units { side = team.side, canrecruit = true }[1] ~= nil
+      if same_team and usually_exclude_1_and_6 and has_leader then
+         table.insert(share_list, team.side)
+         share_counter = share_counter + 1
       end
+   end
+
+   -- any remainder due to rounding goes to the collecting unit,
+   -- otherwise it's evenly split
+   local shared_quantity = math.floor(quantity / share_counter)
+   local finder_bonus = 0
+
+   if (shared_quantity * share_counter) < quantity then
+      finder_bonus = quantity - (shared_quantity * share_counter)
+   end
+
+   -- actually divide the gold
+   for i, target_side in ipairs(share_list) do
+      wesnoth.sides[target_side]["gold"] = wesnoth.sides[target_side]["gold"] + shared_quantity
+      if side == target_side then
+         wesnoth.sides[target_side]["gold"] = wesnoth.sides[target_side]["gold"] + finder_bonus
+      end
+   end
+
+   if quantity == containers[x][y]["gold"] then
+      game_object.clear(x, y)
+   else
+      containers[x][y]["gold"] = containers[x][y]["gold"] - quantity
    end
 end
 
