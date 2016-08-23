@@ -2,6 +2,7 @@ AETHAERYN'S MOD TODO LIST (94.5% Progress)
 When this list is complete/empty, bump to version 0.9
 
 (0) Misc (1%)
+  - find out why p7 couldn't buy in the Elabril shop when in an adjacent hex
   - store shop state in WML so it saves
   - serialize the shop and teleporter location Lua tables on save/load
 
