@@ -3,6 +3,7 @@ When this list is complete/empty, bump to version 0.9
 
 (0) Misc (1%)
   - find out why p7 couldn't buy in the Elabril shop when in an adjacent hex
+  - do shops corrupt saves? the save got corrupted after turn 19 autosave
   - store shop state in WML so it saves
   - serialize the shop and teleporter location Lua tables on save/load
 
