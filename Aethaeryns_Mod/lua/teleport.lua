@@ -126,7 +126,7 @@ function starter_teleporters()
    -- far and hostile teleporters start locked
    add_teleporter(141, 122, false, "Vargork Teleporter")
    add_teleporter(300,  79, false, "Temple Teleporter")
-   -- add_teleporter(310, 144, false, "Drake Teleporter")
+   add_teleporter(310, 144, false, "Kralek Teleporter")
    add_teleporter(214, 116, false, "Elrólas Teleporter")
    add_teleporter(246, 159, false, "Blinadoc Teleporter")
    add_teleporter(214, 171, false, "Vanathion Teleporter")

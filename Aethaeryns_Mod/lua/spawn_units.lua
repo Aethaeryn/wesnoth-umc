@@ -42,6 +42,9 @@ local function starter_shops()
       {300, 75},
       -- Zuhsil
       {274, 130},
+      -- Drake shops
+      {311, 143},
+      {290, 169},
    }
 
    for i, shop in ipairs(shops) do

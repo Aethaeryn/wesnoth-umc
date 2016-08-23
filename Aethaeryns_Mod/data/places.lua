@@ -67,6 +67,10 @@ place_names = {
    {201, 178, "Vanathion"},
    {192, 191, "Sanctuary of the Elves"},
    {236, 188, "Eomyn"},
+   {310, 147, "Kralek"},
+   {292, 170, "Karkon Gash"},
+   {286, 150, "Krath"},
+   {281, 160, "Gakré Ohn"},
 }
 >>
 #enddef
