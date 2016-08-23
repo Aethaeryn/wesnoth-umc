@@ -1240,7 +1240,7 @@ function spawn_default_starting_units()
          {26, 138, "Bowman"},
          {25, 135, "Bowman"},
          {28, 133, "Spearman"},
-         {34, 133, "Cavalryman"},
+         {32, 131, "Cavalryman"},
          {46, 134, "Cavalryman"},
          {36, 95, "Spearman"},
          {35, 96, "Bowman"},
