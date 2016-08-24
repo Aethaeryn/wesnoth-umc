@@ -537,6 +537,26 @@ local function npcs_in_inner_labaenry()
    change_unit.transform_keeping_stats(82, 97, wesnoth.get_unit(82, 97), "Elvish Lady")
 end
 
+local function npcs_in_drake_areas()
+   local units = {
+      {278, 148, "Drake Glider"},
+      {291, 141, "Drake Glider"},
+      {297, 141, "Drake Fighter"},
+      {280, 168, "Drake Fighter"},
+      {288, 172, "Drake Clasher"},
+      {301, 182, "Drake Glider"},
+      {302, 177, "Drake Fighter"},
+      {283, 160, "Drake Clasher"},
+      {309, 167, "Drake Fighter"},
+      {302, 164, "Drake Fighter"},
+      {302, 159, "Drake Fighter"},
+      {305, 156, "Drake Clasher"},
+      {306, 147, "Drake Clasher"},
+      {308, 148, "Drake Clasher"},
+   }
+   spawn_unit.spawn_region(units, 6)
+end
+
 local function mobs_in_occupied_teleporter()
    local units = {
       {138, 6, "Goblin Spearman"},
@@ -840,6 +860,7 @@ function spawn_default_starting_units()
       mobs_in_grinak()
       npcs_in_outer_labaenry()
       npcs_in_inner_labaenry()
+      npcs_in_drake_areas()
       local peasant_coords = {
          {70, 129},
          {65, 128},
