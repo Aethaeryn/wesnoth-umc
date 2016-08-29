@@ -130,6 +130,8 @@ function starter_teleporters()
    add_teleporter(214, 116, false, "Elrólas Teleporter")
    add_teleporter(246, 159, false, "Blinadoc Teleporter")
    add_teleporter(214, 171, false, "Vanathion Teleporter")
+   add_teleporter(313,  18, false, "Cave River Teleporter")
+   add_teleporter(366, 152, false, "Marullyn Swamp")
 end
 
 function battle_starter_teleporters()
