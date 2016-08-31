@@ -537,6 +537,109 @@ local function npcs_in_inner_labaenry()
    change_unit.transform_keeping_stats(82, 97, wesnoth.get_unit(82, 97), "Elvish Lady")
 end
 
+local function npcs_in_deranion()
+   local units = {
+      {216, 52, "Elvish Archer", "female"},
+      {218, 54, "Elvish Fighter"},
+      {212, 51, "Elvish Shaman"},
+      {213, 54, "Elvish Shaman"},
+      {210, 48, "Elvish Archer"},
+      {209, 55, "Elvish Fighter"},
+      {214, 56, "Elvish Archer", "female"},
+      {205, 51, "Elvish Fighter"},
+      {190, 45, "Elvish Fighter"},
+      {178, 50, "Elvish Fighter"},
+      {178, 46, "Elvish Archer"},
+      {185, 52, "Elvish Archer", "female"},
+      {183, 54, "Elvish Fighter"},
+      {182, 56, "Elvish Fighter"},
+      {197, 52, "Elvish Druid"},
+      {195, 55, "Elvish Shaman"},
+      {199, 53, "Elvish Archer"},
+      {187, 50, "Elvish Archer", "female"},
+      {190, 52, "Elvish Fighter"},
+      {192, 54, "Elvish Archer"},
+      {191, 59, "Elvish Lord"},
+      {189, 59, "Elvish Sorceress"},
+      {193, 63, "Elvish Fighter"},
+      {184, 64, "Elvish Archer", "female"},
+      {180, 69, "Elvish Fighter"},
+      {195, 59, "Elvish Scout"},
+   }
+   spawn_unit.spawn_region(units, 6)
+end
+
+local function npcs_between_deranion_and_elabril()
+   local units = {
+      {174, 74, "Elvish Fighter"},
+      {170, 73, "Elvish Archer"},
+      {163, 69, "Elvish Scout"},
+      {155, 74, "Elvish Fighter"},
+      {154, 76, "Elvish Fighter"},
+      {162, 78, "Elvish Archer", "female"},
+      {158, 80, "Elvish Shaman"},
+      {155, 82, "Elvish Fighter"},
+      {153, 84, "Elvish Fighter"},
+      {156, 84, "Elvish Archer"},
+      {169, 82, "Elvish Scout"},
+   }
+   spawn_unit.spawn_region(units, 6)
+end
+
+local function npcs_in_elabril()
+   local units = {
+      {141, 85, "Elvish Hero"},
+      {143, 85, "Elvish Fighter"},
+      {145, 85, "Elvish Fighter"},
+      {147, 85, "Elvish Ranger", "female"},
+      {146, 86, "Elvish Shaman"},
+      {138, 85, "Elvish Ranger"},
+      {131, 85, "Elvish Ranger", "female"},
+      {139, 88, "Wose"},
+      {147, 90, "Wose"},
+      {134, 94, "Wose"},
+      {134, 99, "Wose"},
+      {132, 100, "Elvish Fighter"},
+      {149, 90, "Elvish Fighter"},
+      {149, 94, "Elvish Archer"},
+      {141, 91, "Elvish Druid"},
+      {141, 93, "Elvish Shaman"},
+      {132, 89, "Elvish Druid"},
+      {135, 86, "Elvish High Lord"},
+      {134, 86, "Elvish Enchantress"},
+      {137, 87, "Elvish Captain"},
+      {133, 87, "Elvish Fighter"},
+      {134, 88, "Elvish Archer", "female"},
+      {136, 88, "Elvish Archer"},
+      {138, 87, "Elvish Fighter"},
+      {129, 88, "Elvish Fighter"},
+      {133, 91, "Elvish Rider"},
+      {143, 90, "Elvish Rider"},
+      {132, 95, "Elvish Sorceress"},
+      {131, 96, "Elvish Sorceress"},
+      {132, 93, "Elvish Fighter"},
+      {138, 93, "Elvish Sylph"},
+      {136, 92, "Elvish Shyde"},
+      {144, 91, "Elvish Shaman"},
+      {139, 97, "Elvish Captain"},
+      {137, 99, "Elvish Hero"},
+      {138, 98, "Elvish Fighter"},
+      {139, 98, "Elvish Archer", "female"},
+      {142, 97, "Elvish Fighter"},
+      {146, 96, "Elvish Marksman"},
+      {141, 99, "Elvish Fighter"},
+      {143, 99, "Elvish Fighter"},
+      {147, 98, "Elvish Ranger", "female"},
+      {135, 101, "Elvish Ranger"},
+      {144, 96, "Elvish Scout"},
+      {155, 93, "Elder Wose"},
+
+   }
+   spawn_unit.spawn_region(units, 6)
+   change_unit.transform_keeping_stats(136, 92, wesnoth.get_unit(136, 92), "Elvish Lady")
+   change_unit.transform_keeping_stats(138, 93, wesnoth.get_unit(138, 93), "Elvish Lady")
+end
+
 local function npcs_in_drake_areas()
    local units = {
       {278, 148, "Drake Glider"},
@@ -860,6 +963,9 @@ function spawn_default_starting_units()
       mobs_in_grinak()
       npcs_in_outer_labaenry()
       npcs_in_inner_labaenry()
+      npcs_in_deranion()
+      npcs_between_deranion_and_elabril()
+      npcs_in_elabril()
       npcs_in_drake_areas()
       local peasant_coords = {
          {70, 129},
@@ -1491,91 +1597,6 @@ function spawn_default_starting_units()
          {290, 9, "Dwarvish Fighter"},
          {287, 11, "Dwarvish Thunderer"},
          {287, 9, "Dwarvish Scout"},
-         -- Deranion
-         {216, 52, "Elvish Archer", "female"},
-         {218, 54, "Elvish Fighter"},
-         {212, 51, "Elvish Shaman"},
-         {213, 54, "Elvish Shaman"},
-         {210, 48, "Elvish Archer"},
-         {209, 55, "Elvish Fighter"},
-         {214, 56, "Elvish Archer", "female"},
-         {205, 51, "Elvish Fighter"},
-         {190, 45, "Elvish Fighter"},
-         {178, 50, "Elvish Fighter"},
-         {178, 46, "Elvish Archer"},
-         {185, 52, "Elvish Archer", "female"},
-         {183, 54, "Elvish Fighter"},
-         {182, 56, "Elvish Fighter"},
-         {197, 52, "Elvish Druid"},
-         {195, 55, "Elvish Shaman"},
-         {199, 53, "Elvish Archer"},
-         {187, 50, "Elvish Archer", "female"},
-         {190, 52, "Elvish Fighter"},
-         {192, 54, "Elvish Archer"},
-         {191, 59, "Elvish Lord"},
-         {189, 59, "Elvish Sorceress"},
-         {193, 63, "Elvish Fighter"},
-         {184, 64, "Elvish Archer", "female"},
-         {180, 69, "Elvish Fighter"},
-         {195, 59, "Elvish Scout"},
-         -- Wilderness between Deranion and Elabril
-         {174, 74, "Elvish Fighter"},
-         {170, 73, "Elvish Archer"},
-         {163, 69, "Elvish Scout"},
-         {155, 74, "Elvish Fighter"},
-         {154, 76, "Elvish Fighter"},
-         {162, 78, "Elvish Archer", "female"},
-         {158, 80, "Elvish Shaman"},
-         {155, 82, "Elvish Fighter"},
-         {153, 84, "Elvish Fighter"},
-         {156, 84, "Elvish Archer"},
-         {169, 82, "Elvish Scout"},
-         -- Elabril
-         {141, 85, "Elvish Hero"},
-         {143, 85, "Elvish Fighter"},
-         {145, 85, "Elvish Fighter"},
-         {147, 85, "Elvish Ranger", "female"},
-         {146, 86, "Elvish Shaman"},
-         {138, 85, "Elvish Ranger"},
-         {131, 85, "Elvish Ranger", "female"},
-         {139, 88, "Wose"},
-         {147, 90, "Wose"},
-         {134, 94, "Wose"},
-         {134, 99, "Wose"},
-         {132, 100, "Elvish Fighter"},
-         {149, 90, "Elvish Fighter"},
-         {149, 94, "Elvish Archer"},
-         {141, 91, "Elvish Druid"},
-         {141, 93, "Elvish Shaman"},
-         {132, 89, "Elvish Druid"},
-         {135, 86, "Elvish High Lord"},
-         {134, 86, "Elvish Enchantress"},
-         {137, 87, "Elvish Captain"},
-         {133, 87, "Elvish Fighter"},
-         {134, 88, "Elvish Archer", "female"},
-         {136, 88, "Elvish Archer"},
-         {138, 87, "Elvish Fighter"},
-         {129, 88, "Elvish Fighter"},
-         {133, 91, "Elvish Rider"},
-         {143, 90, "Elvish Rider"},
-         {132, 95, "Elvish Sorceress"},
-         {131, 96, "Elvish Sorceress"},
-         {132, 93, "Elvish Fighter"},
-         {138, 93, "Elvish Sylph"},
-         {136, 92, "Elvish Shyde"},
-         {144, 91, "Elvish Shaman"},
-         {139, 97, "Elvish Captain"},
-         {137, 99, "Elvish Hero"},
-         {138, 98, "Elvish Fighter"},
-         {139, 98, "Elvish Archer", "female"},
-         {142, 97, "Elvish Fighter"},
-         {146, 96, "Elvish Marksman"},
-         {141, 99, "Elvish Fighter"},
-         {143, 99, "Elvish Fighter"},
-         {147, 98, "Elvish Ranger", "female"},
-         {135, 101, "Elvish Ranger"},
-         {144, 96, "Elvish Scout"},
-         {155, 93, "Elder Wose"},
          -- Monastery of Fire
          {200, 72, "Great Mage"},
          {201, 72, "Arch Mage"},
@@ -1843,9 +1864,6 @@ function spawn_default_starting_units()
          spawn_npc(coord, "Ruffian")
       end
       spawn_unit.spawn_region(npc_coords, 6)
-      -- Disguise elves
-      change_unit.transform_keeping_stats(136, 92, wesnoth.get_unit(136, 92), "Elvish Lady")
-      change_unit.transform_keeping_stats(138, 93, wesnoth.get_unit(138, 93), "Elvish Lady")
       -- Set the place names and teleporters
       for i, place_name in ipairs(place_names) do
          fire.label(place_name[1], place_name[2], place_name[3])
