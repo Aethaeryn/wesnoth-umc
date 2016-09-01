@@ -71,6 +71,7 @@ place_names = {
    {292, 170, "Karkon Gash"},
    {286, 150, "Krath"},
    {281, 160, "Gakré Ohn"},
+   {301, 155, "Garrutick"},
 }
 >>
 #enddef

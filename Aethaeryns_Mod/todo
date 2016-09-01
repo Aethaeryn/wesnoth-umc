@@ -11,9 +11,8 @@ When this list is complete/empty, bump to version 0.9
     - finish spawns for:
       - Nuh
       - large elvish city
-      - the drake towns
 
-  - spawn in units over time to reduce CPU usage
+  - spawn in units over time to reduce CPU usage (is this needed?)
 
   - merge "Add to Chest" submenu with add item submenu
 
