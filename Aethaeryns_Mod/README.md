@@ -11,6 +11,11 @@ since one player can control sides 2-5 or you can set sides 3-5 as
 empty and just have one player control side 2. Obviously, it's more
 fun the more players play, though.
 
+Sides 7 and 8 are currently "spare" sides that the host should start
+out in control of. They're useful for if an observer wants to join the
+party or if the host needs to have three or four mutually hostile
+NPC/mob sides.
+
 Currently, no download is required to play this game. All of the Lua
 code is loaded in as WML macros, treating the code as literal strings
 so that people who don't have the add-on installed can download the
@@ -35,15 +40,13 @@ as debug mode combined with a real-time map editor accessible through
 MP. The only real downside is that the UI limitations make the map
 editing slow and inconvenient, which is why there are predawn maps.
 
-The players themselves have access to all the standard tropes in
-Wesnoth RPG add-ons, including inventory, upgrades, money for shops,
-and so on. The main difference (besides the powerful host) is that the
-maps are both huge and open-ended, so no two games will play the
-same. Ideally, you will be able to switch to new maps after you
-complete playing on one map, but that is currently broken beyond the
-first scenario switch. Once it works, games will last until the player
-characters all die or everyone involved gets bored of the current
-game.
+The players themselves have access to the standard mechanics of
+Wesnoth RPG add-ons: inventory, upgrades, money for shops, etc. The
+main difference (besides the powerful host) is that the main map is
+both huge and open-ended, so no two games will play the
+same. Originally, this add-on was intended to be played as an MP
+campaign. Increasingly, the focus is on one very large map,
+temporarily called "Woods".
 
 Death of the player character isn't even necessarily the end, since
 the host has the power to spawn in a new unit and then give it to a
