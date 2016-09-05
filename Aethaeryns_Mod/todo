@@ -1,30 +1,28 @@
 AETHAERYN'S MOD TODO LIST (94.5% Progress)
 When this list is complete/empty, bump to version 0.9
 
-(0) Misc (1%)
-  - find out why p7 couldn't buy in the Elabril shop when in an adjacent hex
-  - do shops corrupt saves? the save got corrupted after turn 19 autosave
-  - store shop state in WML so it saves
-  - serialize the shop and teleporter location Lua tables on save/load
+(*) New content (0.25%)
+  - finish spawns for:
+    - Nuh
+    - large elvish city
 
-  - new content (0.5%):
-    - finish spawns for:
-      - Nuh
-      - large elvish city
-
+(0) Misc (0.5%)
   - spawn in units over time to reduce CPU usage (is this needed?)
+    - at the very least, refactor each area into its own function(s) for units and villages
 
   - merge "Add to Chest" submenu with add item submenu
 
   - Get rid of the level submenu in unit selection. Flatten it to one
     list and use the level as a section header separator instead.
 
-  - rewrite the mess of multi-turn [objects]
-    - use wesnoth.get_units() to iterate over every unit with some
-      stat > 0 each turn and then reapply that effect to last one turn
-      while decrementing the counter
+ (1) Inventory Containers: Saves (0.5%)
+  - store container state in WML so it saves
+    - note: even the array used to verify interactions doesn't seem to save...
+      - ...because its creation needs to go in its own function that's only run once, not in set_all_menu_items
 
- (1) Inventory Containers (1%)
+  - serialize the shop and teleporter location Lua tables on save/load
+
+ (1) Inventory Containers: Host Actions (0.5%)
   - Container changes on host or unit actions:
     - shops:
       - shops start as "Shop (Empty)" if no template is chosen or "Shop" otherwise
@@ -53,28 +51,26 @@ When this list is complete/empty, bump to version 0.9
       - except for packs, which can't be empty when placed
     - every shop that the map starts with should use a template
 
- (1) Inventory Containers (1%)
+ (1) Inventory Containers: Drops (0.5%)
   - Add code for investigate drop (pack) container.
-    - Make sure container code no longer assumes that there is only one container per hex.
-    - The drop is the only container that can coexist with another hex, but it won't be map-visible if it does.
-    - But if the gold pile goes away, will it become visible?
-    - You can remove (with slider) but cannot add to it and if it is empty and visible, it disappears from hex.
-    - Make sure clearing a hex does not wipe out drops if there are drops, but makes the drop visible instead.
+    - You can remove items (with slider) but cannot add to it and if it is empty and visible, it disappears from hex.
 
   - On a unit with inventory's death:
+    - If a unit dies to plague, the inventory stays on the zombie until dead!
+    - If a unit dies on a unwalkable (i.e. chasm, lava) or impassable terrain, there is no drop.
     - If not standing on a hex with container, a pack icon appears and inventory is added to a drop container.
     - If it dies on a hex with an existing pack, the items are added to the pack's items.
-    - If it dies on a hex with another non-pack container, the drop is there in Investigate but is not map-visible.
-    - If a unit dies to plague, the inventory stays on the zombie until dead!
-
-  - Save and load container state so that it works for saves and loads.
-    - Even the array used to verify interactions doesn't seem to save.
-      - Because its creation needs to go in its own function that's only run once, not in set_all_menu_items
+    - If it dies on a hex with another non-pack container, the drop appears on the nearest walkable (including water) non-container hex within reason, or otherwise doesn't appear. Drops never happen on unwalkable (chasm, wall, etc.) terrain.
 
  (2) Interaction (0.25%)
   - Let leader units give gold to adjacent leader units.
 
  (3) Inventory (0.5%)
+  - rewrite the mess of multi-turn [objects]
+    - use wesnoth.get_units() to iterate over every unit with some
+      stat > 0 each turn and then reapply that effect to last one turn
+      while decrementing the counter
+
   - What happens when a unit is changed with an effect that requires changing a copy and replacing the unit?
     - It seems to overwrite the changes when reapplying the [object]
     - So most of change_unit might need to be fixed.
@@ -124,7 +120,7 @@ When this list is complete/empty, bump to version 0.9
 
   - Give certain units preset traits/names
 
- (5) Issues (2%)
+ (5) Issues (1.5%)
   * VERY MAJOR BUG: Block right click menu items on map border because they cause unpredictable bugs.
     - e.g. some border hexes can change terrain and some just change (1,1)
     - and all the units spawned on borders spawn on (1,1) instead, potentially overwriting a unit on (1,1)
@@ -144,6 +140,9 @@ When this list is complete/empty, bump to version 0.9
   * BUG: If a leader changes player control or is replaced with a new leader unit mid-scenario, it isn't remembered on the next scenario.
   * BUG: Error messages often (always?) show up for all players instead of one player
   * BUG: side 6 can't pick up gold
+  * BUG: find out why p7 couldn't buy in the Elabril shop when in an adjacent hex
+  * BUG: do shops corrupt saves? the save got corrupted after turn 19 autosave in one test
+
 
   * FEATURE: Make valid upgrades more obvious, perhaps with green text vs red text.
   * FEATURE: Add default hotkeys to the set_menu_item menu items.
