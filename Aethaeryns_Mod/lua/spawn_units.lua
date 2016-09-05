@@ -103,7 +103,7 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, ge
       unit_stats.gender = gender
    end
    wesnoth.put_unit(x, y, unit_stats)
-   if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil then
+   if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil and wesnoth.get_village_owner(x, y) ~= side_number then
       wesnoth.set_village_owner(x, y, side_number, true)
       change_unit.max_moves_doubler(x, y, true)
    else
