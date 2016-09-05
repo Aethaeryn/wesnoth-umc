@@ -93,10 +93,6 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, ge
    local unit_stats = {type = unit_type,
                        side = side_number,
                        upkeep = 0}
-   if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil then
-      fire.capture_village(x, y, side_number)
-      unit_stats.moves = 0
-   end
    if icon ~= nil then
       unit_stats.overlays = icon
    end
@@ -107,7 +103,12 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, ge
       unit_stats.gender = gender
    end
    wesnoth.put_unit(x, y, unit_stats)
-   change_unit.max_moves_doubler(x, y)
+   if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil then
+      wesnoth.set_village_owner(x, y, side_number, true)
+      change_unit.max_moves_doubler(x, y, true)
+   else
+      change_unit.max_moves_doubler(x, y)
+   end
 end
 
 function spawn_unit.spawn_group(x, y, units, side_number)

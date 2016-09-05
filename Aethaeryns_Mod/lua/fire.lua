@@ -21,13 +21,6 @@ function fire.custom_message(message)
                    message = message })
 end
 
-function fire.capture_village(x, y, side_number)
-   wesnoth.fire("capture_village", {
-                   x = x,
-                   y = y,
-                   side = side_number })
-end
-
 function fire.set_menu_item(menu_item_table)
    wesnoth.fire("set_menu_item", {
                    id = menu_item_table.id,

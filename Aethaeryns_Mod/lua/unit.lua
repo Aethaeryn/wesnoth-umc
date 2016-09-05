@@ -4,13 +4,17 @@ change_unit = {}
 units_with_effects = {}
 change_unit.max_level = 1
 
-function change_unit.max_moves_doubler(x, y)
+function change_unit.max_moves_doubler(x, y, zero_moves)
    local unit = wesnoth.get_unit(x, y)
    wesnoth.add_modification(unit,
                             "object", { T["effect"] {
                                            apply_to = "movement",
                                            increase = "100%" }})
-   unit.moves = unit.max_moves
+   if zero_moves then
+      unit.moves = 0
+   else
+      unit.moves = unit.max_moves
+   end
 end
 
 function change_unit.set_max_level(option)
