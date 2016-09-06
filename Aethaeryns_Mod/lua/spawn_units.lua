@@ -829,6 +829,100 @@ local function npcs_in_inner_vanathion()
    spawn_unit.spawn_region(units, 6)
 end
 
+local function npcs_in_nuh()
+   local units = {
+      {229, 76, "Jundi"},
+      {241, 81, "Jundi"},
+      {255, 68, "Jundi"},
+      {237, 64, "Jundi"},
+      {244, 62, "Arif"},
+      {236, 66, "Naffat"},
+      {239, 66, "Muharib"},
+      {232, 69, "Khaiyal"},
+      {234, 68, "Rami"},
+      {233, 71, "Falcon"},
+      {231, 73, "Arif"},
+      {235, 76, "Naffat"},
+      {238, 75, "Jundi"},
+      {243, 72, "Ghazi"},
+      {246, 69, "Jundi"},
+      {239, 69, "Arif"},
+      {242, 69, "Jundi"},
+      {245, 67, "Khalid"},
+      {246, 65, "Naffat"},
+      {246, 64, "Arif"},
+      {240, 64, "Mudafi"},
+      {243, 64, "Arif"},
+      {241, 68, "Faris"},
+      {239, 73, "Rami"},
+      {236, 70, "Hakim"},
+      {237, 73, "Hakim"},
+      {234, 71, "Tabib"},
+      {240, 70, "Arif"},
+      {240, 73, "Naffat"},
+      {248, 67, "Jundi"},
+      {249, 65, "Monawish"},
+   }
+   spawn_unit.spawn_region(units, 6)
+end
+
+local function npcs_in_azhan()
+   local units = {
+      {292, 64, "Jundi"},
+      {307, 82, "Jundi"},
+      {305, 78, "Naffat"},
+      {292, 69, "Rami"},
+      {305, 66, "Arif"},
+      {311, 66, "Hakim"},
+      {310, 63, "Jundi"},
+      {299, 71, "Ghazi"},
+      {297, 73, "Mudafi"},
+      {297, 77, "Arif"},
+      {302, 73, "Faris"},
+      {302, 72, "Arif"},
+      {304, 73, "Jundi"},
+      {304, 75, "Arif"},
+      {302, 76, "Jundi"},
+      {299, 78, "Naffat"},
+      {296, 75, "Hakim"},
+      {295, 81, "Arif"},
+      {302, 70, "Dwarvish Fighter"},
+      {308, 72, "Dwarvish Guardsman"},
+      {307, 70, "Dwarvish Thunderer"},
+      {299, 82, "Fencer"},
+      {293, 87, "Fencer"},
+      {298, 88, "Fencer"},
+      {295, 86, "White Mage"},
+      {296, 88, "White Mage", "female"},
+      {294, 90, "White Mage"},
+      {303, 87, "White Mage"},
+      {291, 86, "White Mage", "female"},
+   }
+   spawn_unit.spawn_region(units, 6)
+end
+
+local function npcs_in_zuhsil()
+   local units = {
+      {270, 131, "Jundi"},
+      {275, 133, "Jundi"},
+      {284, 135, "Mudafi"},
+      {284, 136, "Arif"},
+      {287, 134, "Mudafi"},
+      {288, 133, "Jundi"},
+      {288, 132, "Khaiyal"},
+      {287, 133, "Khaiyal"},
+      {288, 131, "Rami"},
+      {287, 132, "Rami"},
+      {284, 130, "Hakim"},
+      {280, 127, "Hakim"},
+      {282, 127, "Arif"},
+      {277, 126, "Arif"},
+      {276, 126, "Jundi"},
+      {273, 128, "Rami"},
+   }
+   spawn_unit.spawn_region(units, 6)
+end
+
 local function npcs_in_drake_areas()
    local units = {
       {278, 148, "Drake Glider"},
@@ -1179,6 +1273,9 @@ function spawn_default_starting_units()
       npcs_in_elrolas()
       npcs_in_outer_vanathion()
       npcs_in_inner_vanathion()
+      npcs_in_nuh()
+      npcs_in_azhan()
+      npcs_in_zuhsil()
       npcs_in_drake_areas()
       local peasant_coords = {
          {70, 129},
@@ -1884,58 +1981,6 @@ function spawn_default_starting_units()
          {251, 131, "Spearman"},
          {254, 132, "Woodsman"},
          {232, 100, "Woodsman"},
-         -- Nuh
-         {229, 76, "Jundi"},
-         {241, 81, "Jundi"},
-         {255, 68, "Jundi"},
-         {237, 64, "Jundi"},
-         -- Azhan
-         {292, 64, "Jundi"},
-         {307, 82, "Jundi"},
-         {305, 78, "Naffat"},
-         {292, 69, "Rami"},
-         {305, 66, "Arif"},
-         {311, 66, "Hakim"},
-         {310, 63, "Jundi"},
-         {299, 71, "Ghazi"},
-         {297, 73, "Mudafi"},
-         {297, 77, "Arif"},
-         {302, 73, "Faris"},
-         {302, 72, "Arif"},
-         {304, 73, "Jundi"},
-         {304, 75, "Arif"},
-         {302, 76, "Jundi"},
-         {299, 78, "Naffat"},
-         {296, 75, "Hakim"},
-         {302, 70, "Dwarvish Fighter"},
-         {308, 72, "Dwarvish Guardsman"},
-         {307, 70, "Dwarvish Thunderer"},
-         {295, 81, "Arif"},
-         {299, 82, "Fencer"},
-         {293, 87, "Fencer"},
-         {298, 88, "Fencer"},
-         {295, 86, "White Mage"},
-         {296, 88, "White Mage", "female"},
-         {294, 90, "White Mage"},
-         {303, 87, "White Mage"},
-         {291, 86, "White Mage", "female"},
-         -- Zuhsil Oasis
-         {270, 131, "Jundi"},
-         {275, 133, "Jundi"},
-         {284, 135, "Mudafi"},
-         {284, 136, "Arif"},
-         {287, 134, "Mudafi"},
-         {288, 133, "Jundi"},
-         {288, 132, "Khaiyal"},
-         {287, 133, "Khaiyal"},
-         {288, 131, "Rami"},
-         {287, 132, "Rami"},
-         {284, 130, "Hakim"},
-         {280, 127, "Hakim"},
-         {282, 127, "Arif"},
-         {277, 126, "Arif"},
-         {276, 126, "Jundi"},
-         {273, 128, "Rami"},
       }
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
