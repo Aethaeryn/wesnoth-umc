@@ -4,7 +4,6 @@ When this list is complete/empty, bump to version 0.9
 (*) New content (0.25%)
   - finish spawns for:
     - Nuh
-    - large elvish city
 
 (0) Misc (0.5%)
   - spawn in units over time to reduce CPU usage (is this needed?)
