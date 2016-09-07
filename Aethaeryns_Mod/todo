@@ -219,10 +219,10 @@ When this list is complete/empty, bump to version 0.9
       * Change shop price multiplier for buying to shop (for expensive shops)
     * Add more shop graphics for different flavor.
   * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
-  * Is there a way to make caves properly cave (either whole maps or parts of maps) without imbalancing in favor of chaotic?
   * Should disguising hide the summoner icon if it is present?
   * Finish all of the map details in the expanded map
   * Add faction metadata to units so that they can quickly switch sides 1 <-> 6
+  * In 1.13, allow ToD schedule changing (to e.g. make cave or indoors)
 
  (7) Far Future (Past 1.0?)
   * Require download (modification, era, MP campaign(s)), but make the Lua imported in a cleaner way and define some custom WML tags.
