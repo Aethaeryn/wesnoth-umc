@@ -11,6 +11,7 @@
 mod_menu = {}
 mod_menu.lich_image = "portraits/undead/transparent/ancient-lich.png"
 mod_menu.gender = {{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}
+mod_menu.zombie_variation = {"none", "bat", "drake", "dwarf", "goblin", "gryphon", "mounted", "saurian", "swimmer", "troll", "wose"}
 mod_menu.scenarios = {
    {"Introduction", "intro"},
    {"Battle", "battle"},
@@ -274,7 +275,18 @@ local function submenu_unit_selection_common(arg_table)
                      dialog_list = "unit",
                      sidebar = true,
                      action = function(choice)
-                        if wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
+                        if choice == "Walking Corpse" or choice == "Soulless" then
+                           menu{
+                              list = mod_menu.zombie_variation,
+                              title = arg_table.title,
+                              description = _ "Select a variation.",
+                              dialog_list = "simple",
+                              action = function(variation)
+                                 arg_table.variation_action(choice, variation)
+                                 done = true
+                              end
+                           }
+                        elseif wesnoth.unit_types[choice].__cfg.gender ~= "male,female" then
                            arg_table.action(choice)
                            done = true
                         else
@@ -334,6 +346,13 @@ function mod_menu.select_leader()
             leader.variables.dont_make_me_quick = true
             leader.variables.selection_active = false
             change_unit.max_moves_doubler(leader.x, leader.y)
+         end,
+         variation_action = function(choice, variation)
+            change_unit.transform(leader.x, leader.y, choice, nil, variation)
+            mod_upgrade.increment(leader)
+            leader.variables.dont_make_me_quick = true
+            leader.variables.selection_active = false
+            change_unit.max_moves_doubler(leader.x, leader.y)
          end
       }
    end
@@ -365,6 +384,9 @@ function mod_menu.summon_units()
                end,
                gender_action = function(choice, gender)
                   spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current.side, nil, nil, gender)
+               end,
+               variation_action = function(choice, variation)
+                  spawn_unit.spawn_unit(e.x1, e.y1, choice, wesnoth.current_side, nil, nil, nil, variation)
                end
             }
          end
@@ -769,6 +791,9 @@ function mod_menu.unit_editor()
                action = location_closure(change_unit.transform, e.x1, e.y1),
                gender_action = function(choice, gender)
                   change_unit.transform(e.x1, e.y1, choice, gender)
+               end,
+               variation_action = function(choice, variation)
+                  change_unit.transform(e.x1, e.y1, choice, nil, variation)
                end
             }
          elseif choice == "Role" then

@@ -138,15 +138,13 @@ When this list is complete/empty, bump to version 0.9
   * BUG: find out why p7 couldn't buy in the Elabril shop when in an adjacent hex
   * BUG: do shops corrupt saves? the save got corrupted after turn 19 autosave in one test
 
-
+  * FEATURE: Summoners summoning needs to support gender and zombie variations
   * FEATURE: Make valid upgrades more obvious, perhaps with green text vs red text.
   * FEATURE: Add default hotkeys to the set_menu_item menu items.
   * FEATURE: Max_experience of 1 and 2 will never increase on AMLA'd units. Perhaps set a minimum of 3 or even 10 to avoid many multi-promotions.
   * FEATURE: AMLAing probably shouldn't increase max experience.
   * FEATURE: Change objectives by subsections (victory, loss, etc.) in a new interface so that formatting can be preserved.
   * FEATURE: Replace Ancient Lich picture for menus/submenus in Unit Commands and Interaction.
-  * FEATURE: Zombie variations need to be possible instead of just the boring plain zombie.
-    - This means spawned, summoned, and summoner summoned.
   * FEATURE: If possible, units should keep their name when zombified.
   * FEATURE: Let certain leader types be disallowed (e.g. Monsters).
   * FEATURE: Allow pets (e.g. bat, falcon, wolf, etc.).

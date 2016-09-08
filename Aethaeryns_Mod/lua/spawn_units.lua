@@ -96,7 +96,7 @@ function haste(x, y, moves)
 end
 
 -- Unit role is summoner type; icon and unit_role are optional.
-function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, gender)
+function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, gender, variation)
    local unit_stats = {type = unit_type,
                        side = side_number,
                        upkeep = 0}
@@ -108,6 +108,9 @@ function spawn_unit.spawn_unit(x, y, unit_type, side_number, icon, unit_role, ge
    end
    if gender ~= nil then
       unit_stats.gender = gender
+   end
+   if variation ~= nil and variation ~= "none" then
+      unit_stats.variation = variation
    end
    wesnoth.put_unit(x, y, unit_stats)
    if string.find(wesnoth.get_terrain(x, y), "%^V") ~= nil and wesnoth.get_village_owner(x, y) ~= side_number then

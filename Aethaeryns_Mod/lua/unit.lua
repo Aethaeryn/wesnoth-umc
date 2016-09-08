@@ -117,7 +117,7 @@ function change_unit.leader(x, y)
    end
 end
 
-function change_unit.transform(x, y, new_unit, gender)
+function change_unit.transform(x, y, new_unit, gender, variation)
    local unit = wesnoth.get_unit(x, y)
    -- Only transforms if a valid unit was input.
    for unit_type, unit_data in pairs(wesnoth.unit_types) do
@@ -131,7 +131,15 @@ function change_unit.transform(x, y, new_unit, gender)
          elseif unit_data.__cfg.gender == "male,female" and gender ~= nil then
             change_unit.gender(x, y, gender)
          end
-         wesnoth.transform_unit(unit, new_unit)
+         if variation ~= nil and variation ~= "none" then
+            wesnoth.transform_unit(unit, new_unit)
+            local new_unit_data = wesnoth.get_unit(x, y).__cfg
+            new_unit_data.variation = variation
+            wesnoth.put_unit(x, y, new_unit_data)
+            unit = wesnoth.get_unit(x, y)
+         else
+            wesnoth.transform_unit(unit, new_unit)
+         end
          unit.hitpoints = unit.max_hitpoints
          unit.moves = unit.max_moves
          return
