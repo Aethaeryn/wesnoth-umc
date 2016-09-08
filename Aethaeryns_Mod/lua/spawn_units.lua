@@ -52,6 +52,10 @@ local function starter_shops()
 
    for i, shop in ipairs(shops) do
       game_object.simple_place(shop[1], shop[2], "shop", "scenery/tent-shop-weapons.png", true)
+      -- Temporarily auto-stock all shops with the same thing.
+      mod_inventory.add("Small Healing Potion", 20, containers[shop[1]][shop[2]]["shop"])
+      mod_inventory.add("Healing Potion", 10, containers[shop[1]][shop[2]]["shop"])
+      mod_inventory.add("Scroll (Teleportation)", 5, containers[shop[1]][shop[2]]["shop"])
    end
 end
 
