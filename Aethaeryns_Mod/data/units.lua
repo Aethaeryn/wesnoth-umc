@@ -3,7 +3,7 @@
 -- Translation note: The unit names are translated automatically once
 -- in the GUI2 dialog.
 MOB_SIDE = 1
-NPC_SIDE = 6
+NPC_SIDE = 9
 
 SIDES = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 
