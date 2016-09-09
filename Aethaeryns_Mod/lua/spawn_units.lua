@@ -166,7 +166,7 @@ end
 -- Spawns all the preset units so the huge maps can get populated.
 -- todo: remove
 local function spawn_npc(coord, unit_name)
-   spawn_unit.spawn_unit(coord[1], coord[2], unit_name, 6)
+   spawn_unit.spawn_unit(coord[1], coord[2], unit_name, NPC_SIDE)
 end
 
 -- Make it less likely for the starting goblins to kill a player so early
@@ -220,7 +220,7 @@ local function npcs_in_sellyn()
       {37, 36, "Bowman"},
       {53, 41, "Poacher"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_outer_labaenry()
@@ -430,7 +430,7 @@ local function npcs_in_outer_labaenry()
       {70, 87, "Duelist"},
       {66, 84, "Fencer"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_inner_labaenry()
@@ -539,7 +539,7 @@ local function npcs_in_inner_labaenry()
       {98, 97, "Woodsman"},
       {87, 102, "Peasant"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
    change_unit.transform_keeping_stats(82, 97, wesnoth.get_unit(82, 97), "Elvish Lady")
 end
 
@@ -572,7 +572,7 @@ local function npcs_in_deranion()
       {180, 69, "Elvish Fighter"},
       {195, 59, "Elvish Scout"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_between_deranion_and_elabril()
@@ -589,7 +589,7 @@ local function npcs_between_deranion_and_elabril()
       {156, 84, "Elvish Archer"},
       {169, 82, "Elvish Scout"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_elabril()
@@ -641,7 +641,7 @@ local function npcs_in_elabril()
       {155, 93, "Elder Wose"},
 
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
    change_unit.transform_keeping_stats(136, 92, wesnoth.get_unit(136, 92), "Elvish Lady")
    change_unit.transform_keeping_stats(138, 93, wesnoth.get_unit(138, 93), "Elvish Lady")
 end
@@ -680,7 +680,7 @@ local function npcs_in_elrolas()
       {214, 97, "Elvish Archer", "female"},
       {225, 103, "Elvish Archer"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_outer_vanathion()
@@ -774,7 +774,7 @@ local function npcs_in_outer_vanathion()
       {214, 179, "Elvish Fighter"},
       {213, 176, "Elvish Archer"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_inner_vanathion()
@@ -833,7 +833,7 @@ local function npcs_in_inner_vanathion()
       {200, 179, "Elvish Enchantress"},
       {202, 179, "Elvish Enchantress"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_nuh()
@@ -870,7 +870,7 @@ local function npcs_in_nuh()
       {248, 67, "Jundi"},
       {249, 65, "Monawish"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_azhan()
@@ -905,7 +905,7 @@ local function npcs_in_azhan()
       {303, 87, "White Mage"},
       {291, 86, "White Mage", "female"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_zuhsil()
@@ -927,7 +927,7 @@ local function npcs_in_zuhsil()
       {276, 126, "Jundi"},
       {273, 128, "Rami"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function npcs_in_drake_areas()
@@ -971,7 +971,7 @@ local function npcs_in_drake_areas()
       {296, 173, "Drake Burner"},
       {285, 180, "Drake Glider"},
    }
-   spawn_unit.spawn_region(units, 6)
+   spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
 local function mobs_in_occupied_teleporter()
@@ -1030,7 +1030,7 @@ local function mobs_in_occupied_teleporter()
       {148, 10, "Goblin Spearman"},
       {149, 11, "Goblin Spearman"},
    }
-   spawn_unit.spawn_region(units, 1)
+   spawn_unit.spawn_region(units, MOB_SIDE)
    nerf_starter_goblins()
 end
 
@@ -1078,7 +1078,7 @@ local function mobs_in_fort_owidd()
       {25, 179, "Ruffian"},
       {36, 185, "Poacher"},
    }
-   spawn_unit.spawn_region(units, 1)
+   spawn_unit.spawn_region(units, MOB_SIDE)
 end
 
 local function mobs_around_vargork()
@@ -1229,7 +1229,7 @@ local function mobs_around_vargork()
       {159, 139, "Wolf Rider"},
    }
 
-   spawn_unit.spawn_region(units, 1)
+   spawn_unit.spawn_region(units, MOB_SIDE)
 end
 
 local function mobs_in_grinak()
@@ -1262,7 +1262,7 @@ local function mobs_in_grinak()
       {232, 52, "Goblin Pillager"},
    }
 
-   spawn_unit.spawn_region(units, 1)
+   spawn_unit.spawn_region(units, MOB_SIDE)
 end
 
 function spawn_default_starting_units()
@@ -1998,7 +1998,7 @@ function spawn_default_starting_units()
       for i, coord in ipairs(ruffian_coords) do
          spawn_npc(coord, "Ruffian")
       end
-      spawn_unit.spawn_region(npc_coords, 6)
+      spawn_unit.spawn_region(npc_coords, NPC_SIDE)
       -- Set the place names and teleporters
       for i, place_name in ipairs(place_names) do
          fire.label(place_name[1], place_name[2], place_name[3])
