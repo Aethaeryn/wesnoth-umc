@@ -13,8 +13,9 @@ fun the more players play, though.
 
 Sides 7 and 8 are currently "spare" sides that the host should start
 out in control of. They're useful for if an observer wants to join the
-party or if the host needs to have three or four mutually hostile
-NPC/mob sides.
+party, or if the host needs to have three or four mutually hostile
+NPC/mob sides, or if the host wants to use side 7 so that the players
+can share the vision with certain NPC units.
 
 Currently, no download is required to play this game. All of the Lua
 code is loaded in as WML macros, treating the code as literal strings
