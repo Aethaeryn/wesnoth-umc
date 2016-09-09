@@ -4,8 +4,8 @@
 -- verbose WML metatables don't clutter the rest of the mod.
 aeth_mod_filter = {}
 aeth_mod_filter.bad_summon_terrain = "X*, Q*, *^Xm, Mv"
-aeth_mod_filter.host1 = T["variable"] { name = "side_number", equals = 1 }
-aeth_mod_filter.host2 = T["or"] { T["variable"] { name = "side_number", equals = 6 }}
+aeth_mod_filter.host1 = T["variable"] { name = "side_number", equals = MOB_SIDE }
+aeth_mod_filter.host2 = T["or"] { T["variable"] { name = "side_number", equals = NPC_SIDE }}
 aeth_mod_filter.host = T["show_if"] { aeth_mod_filter.host1, aeth_mod_filter.host2 }
 aeth_mod_filter.unit = T["show_if"] {
    T["have_unit"] {

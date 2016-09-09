@@ -4,6 +4,10 @@ containers = {}
 mod_inventory = {}
 game_object = {}
 
+local SELL_PRICE_MODIFIER = 0.8
+local SMALL_HEALING_QUANTITY = 6
+local NORMAL_HEALING_QUANTITY = 14
+
 function mod_inventory.transfer_item(unit, x, y, name, quantity)
    if quantity <= unit.variables[name] then
       local target_unit = wesnoth.get_unit(x, y)
@@ -94,9 +98,9 @@ function mod_inventory.use(x, y, name)
    if name == "Coins" then
       wesnoth.sides[wesnoth.current.side].gold = wesnoth.sides[wesnoth.current.side].gold + 10
    elseif name == "Small Healing Potion" then
-      change_unit.heal(x, y, 6)
+      change_unit.heal(x, y, SMALL_HEALING_QUANTITY)
    elseif name == "Healing Potion" then
-      change_unit.heal(x, y, 14)
+      change_unit.heal(x, y, NORMAL_HEALING_QUANTITY)
    elseif name == "Small Haste Potion" then
       change_unit.haste(x, y, "haste", 1)
    elseif name == "Scroll (Teleportation)" then
@@ -137,7 +141,7 @@ function mod_inventory.shop_buy(unit, x, y, name, quantity, price, side_number)
 end
 
 function mod_inventory.shop_sell(unit, x, y, name, quantity, price, side_number)
-   wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + math.floor(price * quantity * 0.8)
+   wesnoth.sides[side_number]["gold"] = wesnoth.sides[side_number]["gold"] + math.floor(price * quantity * SELL_PRICE_MODIFIER)
    mod_inventory.add(name, quantity, containers[x][y]["shop"])
    mod_inventory.add(name, -1 * quantity, unit.variables)
 end
@@ -150,9 +154,9 @@ function mod_inventory.collect_gold(x, y, quantity, side)
    -- find allies
    for team in helper.all_teams() do
       local same_team = wesnoth.match_side(team.side, { team_name = wesnoth.sides[side]["team_name"] })
-      local usually_exclude_1_and_6 = (team.side ~= 1 and team.side ~= 6) or side == team.side
+      local usually_exclude_mobs_and_npcs = (team.side ~= MOB_SIDE and team.side ~= NPC_SIDE) or side == team.side
       local has_leader = wesnoth.get_units { side = team.side, canrecruit = true }[1] ~= nil
-      if same_team and usually_exclude_1_and_6 and has_leader then
+      if same_team and usually_exclude_mobs_and_npcs and has_leader then
          table.insert(share_list, team.side)
          share_counter = share_counter + 1
       end

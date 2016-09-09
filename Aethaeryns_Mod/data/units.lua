@@ -2,7 +2,10 @@
 <<
 -- Translation note: The unit names are translated automatically once
 -- in the GUI2 dialog.
-SIDES = {1, 2, 3, 4, 5, 6, 7, 8}
+MOB_SIDE = 1
+NPC_SIDE = 6
+
+SIDES = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 
 SUMMON_ROLES = {"Undead", "Nature", "Elves", "Fire", "Loyalists", "Outlaws",
                 "Orcs", "Dwarves", "Earth", "Swamp", "Water", "Khalifate"}

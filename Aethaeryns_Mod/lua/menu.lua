@@ -323,7 +323,7 @@ function mod_menu.select_leader()
       local leader = leaders[1]
       local title = _ "Leader"
       local max_level
-      if wesnoth.current.side == 1 or wesnoth.current.side == 6 then
+      if wesnoth.current.side == MOB_SIDE or wesnoth.current.side == NPC_SIDE then
          max_level = 5
       else
          max_level = change_unit.max_level
