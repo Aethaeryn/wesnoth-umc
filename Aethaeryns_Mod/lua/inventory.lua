@@ -101,10 +101,10 @@ function mod_inventory.use(x, y, name)
       change_unit.heal(x, y, SMALL_HEALING_QUANTITY)
    elseif name == "Healing Potion" then
       change_unit.heal(x, y, NORMAL_HEALING_QUANTITY)
-   elseif name == "Small Haste Potion" then
-      change_unit.haste(x, y, "haste", 1)
    elseif name == "Scroll (Teleportation)" then
       mod_menu.teleport_spell(x, y)
+   -- elseif name == "Small Haste Potion" then
+   --    change_unit.haste(x, y, "haste", 1)
    -- elseif name == "Haste Potion" then
    --    change_unit.haste(x, y, "haste", 2)
    -- elseif name == "Ale" then
