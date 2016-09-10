@@ -171,24 +171,6 @@ local function spawn_npc(coord, unit_name)
    spawn_unit.spawn_unit(coord[1], coord[2], unit_name, NPC_SIDE)
 end
 
--- Make it less likely for the starting goblins to kill a player so early
-local function nerf_starter_goblins()
-   change_unit.hitpoints(138, 6, 15)
-   change_unit.moves(138, 6, 0)
-   change_unit.hitpoints(135, 9, 10)
-   change_unit.moves(135, 9, 0)
-   change_unit.hitpoints(139, 9, 11)
-   change_unit.moves(139, 9, 0)
-   change_unit.hitpoints(142, 7, 10)
-   change_unit.moves(142, 7, 0)
-   change_unit.moves(140, 12, 0)
-   change_unit.moves(140, 13, 0)
-   change_unit.moves(145, 14, 3)
-   change_unit.moves(145, 15, 3)
-   change_unit.moves(146, 14, 3)
-   change_unit.moves(146, 15, 3)
-end
-
 local function npcs_in_sellyn()
    local units = {
       {40, 27, "Peasant"},
@@ -685,6 +667,99 @@ local function npcs_in_elrolas()
    spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
+local function npc_dwarvish_spawns()
+   local units = {
+      -- Narduthas, Aigatsil, and north tunnel
+      {158, 6, "Dwarvish Scout"},
+      {161, 3, "Dwarvish Guardsman"},
+      {167, 2, "Dwarvish Guardsman"},
+      {169, 3, "Dwarvish Fighter"},
+      {177, 2, "Dwarvish Scout"},
+      {174, 2, "Dwarvish Guardsman"},
+      {187, 1, "Dwarvish Guardsman"},
+      {201, 2, "Dwarvish Guardsman"},
+      {206, 4, "Dwarvish Guardsman"},
+      {221, 3, "Dwarvish Scout"},
+      {222, 2, "Dwarvish Guardsman"},
+      {231, 2, "Dwarvish Guardsman"},
+      {242, 2, "Dwarvish Guardsman"},
+      {243, 6, "Dwarvish Guardsman"},
+      {247, 8, "Dwarvish Fighter"},
+      {246, 2, "Dwarvish Scout"},
+      {247, 5, "Dwarvish Guardsman"},
+      {246, 10, "Dwarvish Guardsman"},
+      -- Duldrasiath (entrances)
+      {250, 27, "Dwarvish Guardsman"},
+      {256, 14, "Dwarvish Thunderer"},
+      {252, 21, "Dwarvish Scout"},
+      {255, 17, "Dwarvish Guardsman"},
+      {261, 27, "Dwarvish Guardsman"},
+      {263, 28, "Dwarvish Fighter"},
+      {273, 26, "Dwarvish Guardsman"},
+      {274, 27, "Dwarvish Guardsman"},
+      {290, 24, "Dwarvish Guardsman"},
+      {290, 16, "Dwarvish Guardsman"},
+      {292, 14, "Dwarvish Guardsman"},
+      {288, 14, "Dwarvish Guardsman"},
+      {287, 12, "Dwarvish Guardsman"},
+      {292, 5, "Dwarvish Guardsman"},
+      {294, 6, "Dwarvish Guardsman"},
+      {258, 2, "Dwarvish Guardsman"},
+      {259, 5, "Dwarvish Guardsman"},
+      {262, 3, "Dwarvish Fighter"},
+      {270, 2, "Dwarvish Guardsman"},
+      {259, 10, "Dwarvish Guardsman"},
+      {315, 14, "Dwarvish Scout"},
+      {306, 16, "Dwarvish Fighter"},
+      -- Duldrasiath (other spawns)
+      {260, 24, "Dwarvish Fighter"},
+      {259, 22, "Dwarvish Fighter"},
+      {259, 20, "Dwarvish Thunderer"},
+      {257, 18, "Dwarvish Scout"},
+      {260, 15, "Dwarvish Stalwart"},
+      {264, 14, "Dwarvish Guardsman"},
+      {260, 13, "Dwarvish Fighter"},
+      {262, 13, "Dwarvish Fighter"},
+      {267, 13, "Dwarvish Thunderer"},
+      {265, 11, "Dwarvish Fighter"},
+      {263, 9, "Dwarvish Fighter"},
+      {271, 7, "Dwarvish Scout"},
+      {274, 3, "Dwarvish Scout"},
+      {274, 11, "Dwarvish Fighter"},
+      {263, 18, "Dwarvish Lord"},
+      {262, 18, "Dwarvish Arcanister"},
+      {262, 19, "Dwarvish Steelclad"},
+      {267, 16, "Dwarvish Sentinel"},
+      {259, 18, "Gryphon Rider"},
+      {268, 19, "Gryphon Rider"},
+      {270, 20, "Dwarvish Steelclad"},
+      {273, 19, "Dwarvish Pathfinder"},
+      {268, 21, "Dwarvish Ulfserker"},
+      {268, 23, "Dwarvish Thunderer"},
+      {268, 27, "Dwarvish Scout"},
+      {279, 15, "Dwarvish Scout"},
+      {263, 25, "Dwarvish Scout"},
+      {281, 19, "Dwarvish Fighter"},
+      {286, 10, "Dwarvish Runesmith"},
+      {277, 6, "Dwarvish Fighter"},
+      {279, 6, "Dwarvish Guardsman"},
+      {278, 7, "Dwarvish Ulfserker"},
+      {279, 8, "Dwarvish Fighter"},
+      {279, 10, "Dwarvish Fighter"},
+      {279, 3, "Dwarvish Thunderer"},
+      {281, 4, "Dwarvish Fighter"},
+      {282, 3, "Dwarvish Fighter"},
+      {281, 7, "Dwarvish Fighter"},
+      {285, 8, "Dwarvish Guardsman"},
+      {288, 8, "Dwarvish Fighter"},
+      {290, 9, "Dwarvish Fighter"},
+      {287, 11, "Dwarvish Thunderer"},
+      {287, 9, "Dwarvish Scout"},
+   }
+   spawn_unit.spawn_region(units, NPC_SIDE)
+end
+
+
 local function npcs_in_outer_vanathion()
    local units = {
       {169, 167, "Elvish Scout"},
@@ -1033,7 +1108,6 @@ local function mobs_in_occupied_teleporter()
       {149, 11, "Goblin Spearman"},
    }
    spawn_unit.spawn_region(units, MOB_SIDE)
-   nerf_starter_goblins()
 end
 
 local function mobs_in_fort_owidd()
@@ -1279,6 +1353,7 @@ function spawn_default_starting_units()
       npcs_in_deranion()
       npcs_between_deranion_and_elabril()
       npcs_in_elabril()
+      npc_dwarvish_spawns()
       npcs_in_elrolas()
       npcs_in_outer_vanathion()
       npcs_in_inner_vanathion()
@@ -1827,92 +1902,6 @@ function spawn_default_starting_units()
          {216, 32, "Knight"},
          {206, 36, "Horseman"},
          {208, 34, "White Mage"},
-         -- North dwarves
-         {158, 6, "Dwarvish Scout"},
-         {161, 3, "Dwarvish Guardsman"},
-         {167, 2, "Dwarvish Guardsman"},
-         {169, 3, "Dwarvish Fighter"},
-         {177, 2, "Dwarvish Scout"},
-         {174, 2, "Dwarvish Guardsman"},
-         {187, 1, "Dwarvish Guardsman"},
-         {201, 2, "Dwarvish Guardsman"},
-         {206, 4, "Dwarvish Guardsman"},
-         {221, 3, "Dwarvish Scout"},
-         {222, 2, "Dwarvish Guardsman"},
-         {231, 2, "Dwarvish Guardsman"},
-         {242, 2, "Dwarvish Guardsman"},
-         {243, 6, "Dwarvish Guardsman"},
-         {247, 8, "Dwarvish Fighter"},
-         {246, 2, "Dwarvish Scout"},
-         {247, 5, "Dwarvish Guardsman"},
-         {246, 10, "Dwarvish Guardsman"},
-         -- Dwarvish City (entrances)
-         {250, 27, "Dwarvish Guardsman"},
-         {256, 14, "Dwarvish Thunderer"},
-         {252, 21, "Dwarvish Scout"},
-         {255, 17, "Dwarvish Guardsman"},
-         {261, 27, "Dwarvish Guardsman"},
-         {263, 28, "Dwarvish Fighter"},
-         {273, 26, "Dwarvish Guardsman"},
-         {274, 27, "Dwarvish Guardsman"},
-         {290, 24, "Dwarvish Guardsman"},
-         {290, 16, "Dwarvish Guardsman"},
-         {292, 14, "Dwarvish Guardsman"},
-         {288, 14, "Dwarvish Guardsman"},
-         {287, 12, "Dwarvish Guardsman"},
-         {292, 5, "Dwarvish Guardsman"},
-         {294, 6, "Dwarvish Guardsman"},
-         {258, 2, "Dwarvish Guardsman"},
-         {259, 5, "Dwarvish Guardsman"},
-         {262, 3, "Dwarvish Fighter"},
-         {270, 2, "Dwarvish Guardsman"},
-         {259, 10, "Dwarvish Guardsman"},
-         {315, 14, "Dwarvish Scout"},
-         {306, 16, "Dwarvish Fighter"},
-         -- Dwarvish City (other spawns)
-         {260, 24, "Dwarvish Fighter"},
-         {259, 22, "Dwarvish Fighter"},
-         {259, 20, "Dwarvish Thunderer"},
-         {257, 18, "Dwarvish Scout"},
-         {260, 15, "Dwarvish Stalwart"},
-         {264, 14, "Dwarvish Guardsman"},
-         {260, 13, "Dwarvish Fighter"},
-         {262, 13, "Dwarvish Fighter"},
-         {267, 13, "Dwarvish Thunderer"},
-         {265, 11, "Dwarvish Fighter"},
-         {263, 9, "Dwarvish Fighter"},
-         {271, 7, "Dwarvish Scout"},
-         {274, 3, "Dwarvish Scout"},
-         {274, 11, "Dwarvish Fighter"},
-         {263, 18, "Dwarvish Lord"},
-         {262, 18, "Dwarvish Arcanister"},
-         {262, 19, "Dwarvish Steelclad"},
-         {267, 16, "Dwarvish Sentinel"},
-         {259, 18, "Gryphon Rider"},
-         {268, 19, "Gryphon Rider"},
-         {270, 20, "Dwarvish Steelclad"},
-         {273, 19, "Dwarvish Pathfinder"},
-         {268, 21, "Dwarvish Ulfserker"},
-         {268, 23, "Dwarvish Thunderer"},
-         {268, 27, "Dwarvish Scout"},
-         {279, 15, "Dwarvish Scout"},
-         {263, 25, "Dwarvish Scout"},
-         {281, 19, "Dwarvish Fighter"},
-         {286, 10, "Dwarvish Runesmith"},
-         {277, 6, "Dwarvish Fighter"},
-         {279, 6, "Dwarvish Guardsman"},
-         {278, 7, "Dwarvish Ulfserker"},
-         {279, 8, "Dwarvish Fighter"},
-         {279, 10, "Dwarvish Fighter"},
-         {279, 3, "Dwarvish Thunderer"},
-         {281, 4, "Dwarvish Fighter"},
-         {282, 3, "Dwarvish Fighter"},
-         {281, 7, "Dwarvish Fighter"},
-         {285, 8, "Dwarvish Guardsman"},
-         {288, 8, "Dwarvish Fighter"},
-         {290, 9, "Dwarvish Fighter"},
-         {287, 11, "Dwarvish Thunderer"},
-         {287, 9, "Dwarvish Scout"},
          -- Monastery of Fire
          {200, 72, "Great Mage"},
          {201, 72, "Arch Mage"},
