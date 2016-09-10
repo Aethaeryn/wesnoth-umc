@@ -307,6 +307,13 @@ local function submenu_unit_selection_common(arg_table)
    end
 end
 
+local function setup_the_new_leader(leader)
+   mod_upgrade.increment(leader)
+   leader.variables.dont_make_me_quick = true
+   leader.variables.selection_active = false
+   change_unit.max_moves_doubler(leader.x, leader.y)
+end
+
 -- Transforms the peasant leader unit on the start of game into a unit
 -- that the character selects. The unit then gets a free upgrade
 -- point. The existence of upgrade points is later used to verify that
@@ -330,24 +337,15 @@ function mod_menu.select_leader()
          max_level = max_level,
          action = function(choice)
             change_unit.transform(leader.x, leader.y, choice)
-            mod_upgrade.increment(leader)
-            leader.variables.dont_make_me_quick = true
-            leader.variables.selection_active = false
-            change_unit.max_moves_doubler(leader.x, leader.y)
+            setup_the_new_leader(leader)
          end,
          gender_action = function(choice, gender)
             change_unit.transform(leader.x, leader.y, choice, gender)
-            mod_upgrade.increment(leader)
-            leader.variables.dont_make_me_quick = true
-            leader.variables.selection_active = false
-            change_unit.max_moves_doubler(leader.x, leader.y)
+            setup_the_new_leader(leader)
          end,
          variation_action = function(choice, variation)
             change_unit.transform(leader.x, leader.y, choice, nil, variation)
-            mod_upgrade.increment(leader)
-            leader.variables.dont_make_me_quick = true
-            leader.variables.selection_active = false
-            change_unit.max_moves_doubler(leader.x, leader.y)
+            setup_the_new_leader(leader)
          end
       }
    end
