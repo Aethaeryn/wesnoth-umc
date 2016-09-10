@@ -106,11 +106,11 @@ function teleporter_on(x, y)
    wesnoth.set_variable(string.format("mod_teleporters[%d]", teleporters[x][y]), teleporter_stats)
 end
 
-
 function starter_teleporters()
    -- players start here
-   add_teleporter(138,   5, false, "Intercontinental Teleporter")
+   add_teleporter(390, 189, false, "Intercontinental Teleporter")
    -- close teleporters start unlocked
+   add_teleporter(138,   5, true,  "Ruined Teleporter")
    add_teleporter( 49,  27, true,  "Sellyn Teleporter")
    add_teleporter( 92,  89, true,  "Labaenry Teleporter")
    add_teleporter( 62,  98, true,  "Academy Teleporter")

@@ -12,10 +12,6 @@ mod_menu = {}
 mod_menu.lich_image = "portraits/undead/transparent/ancient-lich.png"
 mod_menu.gender = {{_ "Male ♂", "male"}, {_ "Female ♀", "female"}}
 mod_menu.zombie_variation = {"none", "bat", "drake", "dwarf", "goblin", "gryphon", "mounted", "saurian", "swimmer", "troll", "wose"}
-mod_menu.scenarios = {
-   {"Introduction", "intro"},
-   {"Battle", "battle"},
-   {"Woods", "big_woods"}}
 mod_menu.place_object_options = {
    {"Place Shop", "scenery/tent-shop-weapons.png"},
    {"Place Chest", "items/chest-plain-closed.png"},
@@ -26,7 +22,6 @@ mod_menu.misc_settings =  {
    "Modify Object",
    "Modify Side",
    "Max Starting Level",
-   "New Scenario",
    "Toggle Summon Summoners",
    "Toggle Summon Units",
    "Toggle Unit Editor",
@@ -1032,15 +1027,6 @@ function mod_menu.settings()
                step = 1,
                value = 1,
                action = change_unit.set_max_level
-            }
-         elseif option == "New Scenario" then
-            menu{
-               list = mod_menu.scenarios,
-               title = title,
-               description = _ "Which scenario do you want to start?",
-               dialog_list = "almost_simple",
-               sublist_index = 2,
-               action = fire.end_scenario
             }
          elseif option == "Toggle Summon Summoners" then
             mod_menu.toggle("summon_summoner")
