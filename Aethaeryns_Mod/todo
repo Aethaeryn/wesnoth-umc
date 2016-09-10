@@ -2,6 +2,8 @@ AETHAERYN'S MOD TODO LIST (94.75% Progress)
 When this list is complete/empty, bump to version 0.9
 
  (0) Misc (0.5%)
+  - in the starting area, remove all of the impassable barriers except for the exit and reactivate the teleporter once all of the characters are selected
+
   - find out what is OOSing the new replays and was breaking the old ones
 
   - spawn in units over time to reduce CPU usage (is this needed?)
