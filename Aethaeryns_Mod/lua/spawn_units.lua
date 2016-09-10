@@ -4,6 +4,8 @@ spawn_unit = {}
 
 local function starter_shops()
    local shops = {
+      -- Starting area
+      {391, 197},
       -- Labaenry
       {68, 87},
       {79, 93},
@@ -1989,6 +1991,8 @@ function spawn_default_starting_units()
          {254, 132, "Woodsman"},
          {232, 100, "Woodsman"},
       }
+      game_object.simple_place(394, 185, "chest", "items/chest-plain-closed.png", true)
+      game_object.simple_place(385, 186, "chest", "items/chest-plain-closed.png", true)
       for i, coord in ipairs(peasant_coords) do
          spawn_npc(coord, "Peasant")
       end
