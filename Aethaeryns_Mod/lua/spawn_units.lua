@@ -1998,6 +1998,7 @@ function spawn_default_starting_units()
       end
       starter_teleporters()
       starter_shops()
+      w_items.place_image(387, 184, "scenery/gate-rusty-se.png")
    elseif wesnoth.get_variable("aeth_scenario_name") == "Battle" then
       battle_starter_teleporters()
       battle_starter_shops()
