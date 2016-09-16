@@ -1007,6 +1007,65 @@ local function npcs_in_zuhsil()
    spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
+local function npc_humans_on_east_river()
+   local units = {
+      -- Blinadoc
+      {239, 172, "Peasant"},
+      {237, 168, "Peasant"},
+      {239, 175, "Peasant"},
+      {243, 177, "Peasant"},
+      {245, 172, "Cavalryman"},
+      {246, 174, "Bowman"},
+      {240, 179, "Woodsman"},
+      {238, 178, "Woodsman"},
+      {233, 173, "Woodsman"},
+      {233, 170, "Woodsman"},
+      {237, 166, "Woodsman"},
+      {234, 167, "Sergeant"},
+      {241, 175, "Mage", "female"},
+      {252, 170, "Spearman"},
+      {248, 165, "Ruffian"},
+      {248, 163, "Ruffian"},
+      {250, 163, "Peasant"},
+      {250, 166, "Woodsman"},
+      {250, 162, "Mage"},
+      {236, 170, "Horseman"},
+      {224, 158, "Footpad"},
+      -- Humans northwest of Blinadoc
+      {215, 140, "Poacher"},
+      {212, 138, "Woodsman"},
+      {210, 136, "Ruffian"},
+      {227, 128, "Footpad"},
+      {227, 123, "Spearman"},
+      {224, 120, "Woodsman"},
+      {227, 119, "Woodsman"},
+      {232, 119, "Poacher"},
+      {231, 123, "Woodsman"},
+      {230, 121, "Peasant"},
+      {227, 120, "Ruffian"},
+      {204, 121, "Mage", "female"},
+      {199, 121, "Mage"},
+      {202, 121, "Mage"},
+      {186, 123, "Spearman"},
+      {186, 127, "Thug"},
+      {183, 130, "Woodsman"},
+      {176, 128, "Woodsman"},
+      {177, 126, "Woodsman"},
+      {173, 127, "Peasant"},
+      {171, 124, "Sergeant"},
+      {169, 125, "Peasant"},
+      {173, 124, "Ruffian"},
+      {248, 127, "Sergeant"},
+      {249, 127, "Peasant"},
+      {250, 126, "Woodsman"},
+      {252, 129, "Ruffian"},
+      {251, 131, "Spearman"},
+      {254, 132, "Woodsman"},
+      {232, 100, "Woodsman"},
+   }
+   spawn_unit.spawn_region(units, NPC_SIDE)
+end
+
 local function npcs_in_drake_areas()
    local units = {
       {278, 148, "Drake Glider"},
@@ -1361,6 +1420,7 @@ function spawn_default_starting_units()
       npcs_in_azhan()
       npcs_in_zuhsil()
       npcs_in_drake_areas()
+      npc_humans_on_east_river()
       local peasant_coords = {
          {70, 129},
          {65, 128},
@@ -1926,59 +1986,6 @@ function spawn_default_starting_units()
          {206, 67, "Fire Guardian"},
          {198, 75, "Fire Guardian"},
          {208, 74, "Fire Guardian"},
-         -- Blinadoc
-         {239, 172, "Peasant"},
-         {237, 168, "Peasant"},
-         {239, 175, "Peasant"},
-         {243, 177, "Peasant"},
-         {245, 172, "Cavalryman"},
-         {246, 174, "Bowman"},
-         {240, 179, "Woodsman"},
-         {238, 178, "Woodsman"},
-         {233, 173, "Woodsman"},
-         {233, 170, "Woodsman"},
-         {237, 166, "Woodsman"},
-         {234, 167, "Sergeant"},
-         {241, 175, "Mage", "female"},
-         {252, 170, "Spearman"},
-         {248, 165, "Ruffian"},
-         {248, 163, "Ruffian"},
-         {250, 163, "Peasant"},
-         {250, 166, "Woodsman"},
-         {250, 162, "Mage"},
-         {236, 170, "Horseman"},
-         {224, 158, "Footpad"},
-         -- Humans northwest of Blinadoc
-         {215, 140, "Poacher"},
-         {212, 138, "Woodsman"},
-         {210, 136, "Ruffian"},
-         {227, 128, "Footpad"},
-         {227, 123, "Spearman"},
-         {224, 120, "Woodsman"},
-         {227, 119, "Woodsman"},
-         {232, 119, "Poacher"},
-         {231, 123, "Woodsman"},
-         {230, 121, "Peasant"},
-         {227, 120, "Ruffian"},
-         {204, 121, "Mage", "female"},
-         {199, 121, "Mage"},
-         {202, 121, "Mage"},
-         {186, 123, "Spearman"},
-         {186, 127, "Thug"},
-         {183, 130, "Woodsman"},
-         {176, 128, "Woodsman"},
-         {177, 126, "Woodsman"},
-         {173, 127, "Peasant"},
-         {171, 124, "Sergeant"},
-         {169, 125, "Peasant"},
-         {173, 124, "Ruffian"},
-         {248, 127, "Sergeant"},
-         {249, 127, "Peasant"},
-         {250, 126, "Woodsman"},
-         {252, 129, "Ruffian"},
-         {251, 131, "Spearman"},
-         {254, 132, "Woodsman"},
-         {232, 100, "Woodsman"},
       }
       game_object.simple_place(394, 185, "chest", "items/chest-plain-closed.png", true)
       game_object.simple_place(385, 186, "chest", "items/chest-plain-closed.png", true)
