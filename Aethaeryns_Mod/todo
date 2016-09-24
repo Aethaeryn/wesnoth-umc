@@ -221,14 +221,14 @@ When this list is complete/empty, bump to version 0.9
       * Change shop price multiplier for selling to shop
       * Change shop price multiplier for buying to shop (for expensive shops)
     * Add more shop graphics for different flavor.
-  * Allow saving/import of units/etc. saved in persistant variables. (Across campaigns!)
   * Should disguising hide the summoner icon if it is present?
   * Finish all of the map details in the expanded map
   * Add faction metadata to units so that they can quickly switch sides 1 <-> 6
   * In 1.13, allow ToD schedule changing (to e.g. make cave or indoors)
+  * Find a way to enable the optional upgrades for units that have them.
 
  (7) Far Future (Past 1.0?)
-  * Require download (modification, era, MP campaign(s)), but make the Lua imported in a cleaner way and define some custom WML tags.
+  * Require download, but make the Lua imported in a cleaner way and define some custom WML tags.
     - This will allow the icon size for the Summon right click menu items to be resized down
     - This will solve the problem of what to do for certain icons, e.g. for potion types, scrolls, and menu items.
     - The current closed scroll icon could be used for unidentified scrolls if it's going to be like roguelikes and require identifying.
