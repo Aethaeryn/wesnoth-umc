@@ -667,7 +667,7 @@ local function npcs_in_elrolas()
    spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
-local function npc_dwarvish_spawns()
+local function npc_north_dwarvish_spawns()
    local units = {
       -- Narduthas, Aigatsil, and north tunnel
       {158, 6, "Dwarvish Scout"},
@@ -759,6 +759,30 @@ local function npc_dwarvish_spawns()
    spawn_unit.spawn_region(units, NPC_SIDE)
 end
 
+local function npc_south_dwarvish_spawns()
+   local units = {
+      {310, 193, "Dwarvish Guardsman"},
+      {310, 195, "Dwarvish Guardsman"},
+      {314, 193, "Dwarvish Fighter"},
+      {315, 195, "Dwarvish Stalwart"},
+      {318, 194, "Dwarvish Stalwart"},
+      {317, 198, "Dwarvish Fighter"},
+      {321, 200, "Dwarvish Steelclad"},
+      {321, 198, "Dwarvish Guardsman"},
+      {323, 195, "Dwarvish Guardsman"},
+      {323, 197, "Dwarvish Fighter"},
+      {326, 196, "Dwarvish Guardsman"},
+      {333, 200, "Dwarvish Guardsman"},
+      {334, 199, "Dwarvish Thunderer"},
+      {330, 197, "Dwarvish Scout"},
+      {328, 198, "Gryphon Rider"},
+      {331, 198, "Gryphon Rider"},
+      {330, 198, "Gryphon Rider"},
+      {333, 199, "Gryphon Master"},
+      {327, 194, "Dwarvish Thunderer"},
+   }
+   spawn_unit.spawn_region(units, NPC_SIDE)
+end
 
 local function npcs_in_outer_vanathion()
    local units = {
@@ -1412,7 +1436,8 @@ function spawn_default_starting_units()
       npcs_in_deranion()
       npcs_between_deranion_and_elabril()
       npcs_in_elabril()
-      npc_dwarvish_spawns()
+      npc_north_dwarvish_spawns()
+      npc_south_dwarvish_spawns()
       npcs_in_elrolas()
       npcs_in_outer_vanathion()
       npcs_in_inner_vanathion()
