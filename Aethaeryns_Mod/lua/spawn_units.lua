@@ -50,6 +50,8 @@ local function starter_shops()
       -- Vanathion
       {210, 170},
       {195, 178},
+      -- south cave village
+      {327, 192},
    }
 
    for i, shop in ipairs(shops) do
@@ -761,6 +763,17 @@ end
 
 local function npc_south_dwarvish_spawns()
    local units = {
+      {303, 195, "Dwarvish Fighter"},
+      {302, 195, "Dwarvish Scout"},
+      {303, 198, "Gryphon Rider"},
+      {292, 198, "Footpad"},
+      {291, 196, "Thug"},
+      {289, 195, "Thug"},
+      {291, 193, "Woodsman"},
+      {288, 191, "Woodsman"},
+      {286, 195, "Poacher"},
+      {283, 192, "Footpad"},
+      {285, 193, "Ruffian"},
       {310, 193, "Dwarvish Guardsman"},
       {310, 195, "Dwarvish Guardsman"},
       {314, 193, "Dwarvish Fighter"},
@@ -780,6 +793,31 @@ local function npc_south_dwarvish_spawns()
       {330, 198, "Gryphon Rider"},
       {333, 199, "Gryphon Master"},
       {327, 194, "Dwarvish Thunderer"},
+      {333, 193, "Dwarvish Guardsman"},
+      {336, 194, "Dwarvish Fighter"},
+      {338, 197, "Dwarvish Scout"},
+      {354, 196, "Dwarvish Stalwart"},
+      {353, 195, "Dwarvish Guardsman"},
+      {354, 195, "Dwarvish Thunderer"},
+      {351, 198, "Dwarvish Fighter"},
+      {362, 198, "Dwarvish Fighter"},
+      {366, 189, "Dwarvish Scout"},
+      {372, 183, "Dwarvish Fighter"},
+      {351, 177, "Dwarvish Fighter"},
+      {347, 179, "Dwarvish Guardsman"},
+      {341, 180, "Dwarvish Fighter"},
+      {347, 190, "Dwarvish Thunderer"},
+      {355, 191, "Dwarvish Guardsman"},
+      {330, 174, "Dwarvish Scout"},
+      {316, 173, "Dwarvish Fighter"},
+      {326, 178, "Dwarvish Guardsman"},
+      {328, 182, "Dwarvish Scout"},
+      {336, 179, "Dwarvish Thunderer"},
+      {336, 185, "Dwarvish Guardsman"},
+      {342, 190, "Dwarvish Fighter"},
+      {339, 188, "Dwarvish Thunderer"},
+      {334, 190, "Dwarvish Guardsman"},
+      {333, 189, "Dwarvish Fighter"},
    }
    spawn_unit.spawn_region(units, NPC_SIDE)
 end
