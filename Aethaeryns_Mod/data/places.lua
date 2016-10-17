@@ -58,6 +58,7 @@ place_names = {
    {171,   2, "Nardurthas"},
    {206,   2, "Aigatsil"},
    {266,  23, "Duldrasiath"},
+   {329, 191, "Augthdralis"},
    {143, 124, "Vargork"},
    {130, 110, "Pruol"},
    {127, 124, "Gorg"},

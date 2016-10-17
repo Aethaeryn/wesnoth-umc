@@ -133,6 +133,7 @@ function starter_teleporters()
    add_teleporter(171, 193, false, "Sanctuary Teleporter")
    add_teleporter(313,  18, false, "Cave River Teleporter")
    add_teleporter(366, 152, false, "Marullyn Swamp")
+   add_teleporter(329, 191, false, "Augthdralis Teleporter")
 end
 
 function battle_starter_teleporters()
