@@ -763,6 +763,24 @@ end
 
 local function npc_south_dwarvish_spawns()
    local units = {
+      -- Outside
+      {269, 198, "Dwarvish Scout"},
+      {271, 197, "Poacher"},
+      {272, 195, "Footpad"},
+      {266, 195, "Thug"},
+      {268, 194, "Ruffian"},
+      {269, 196, "Ruffian"},
+      {271, 194, "Woodsman"},
+      {265, 194, "Woodsman"},
+      {256, 195, "Dwarvish Fighter"},
+      {241, 197, "Ruffian"},
+      {240, 199, "Ruffian"},
+      {240, 200, "Thug"},
+      {243, 198, "Poacher"},
+      {242, 196, "Thug"},
+      {246, 196, "Poacher"},
+      {250, 196, "Dwarvish Fighter"},
+      {251, 200, "Poacher"},
       {303, 195, "Dwarvish Fighter"},
       {302, 195, "Dwarvish Scout"},
       {303, 198, "Gryphon Rider"},
@@ -774,6 +792,7 @@ local function npc_south_dwarvish_spawns()
       {286, 195, "Poacher"},
       {283, 192, "Footpad"},
       {285, 193, "Ruffian"},
+      -- Inside
       {310, 193, "Dwarvish Guardsman"},
       {310, 195, "Dwarvish Guardsman"},
       {314, 193, "Dwarvish Fighter"},
