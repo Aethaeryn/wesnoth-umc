@@ -173,6 +173,39 @@ local function spawn_npc(coord, unit_name)
    spawn_unit.spawn_unit(coord[1], coord[2], unit_name, NPC_SIDE)
 end
 
+local function npcs_on_southeast_of_west_river()
+   local units = {
+      {75, 143, "Spearman"},
+      {71, 149, "Cavalryman"},
+      {72, 154, "Footpad"},
+      {65, 155, "Poacher"},
+      {63, 164, "Poacher"},
+      {67, 169, "Thug"},
+      {69, 170, "Thug"},
+      {69, 172, "Footpad"},
+      {68, 173, "Footpad"},
+      {67, 170, "Ruffian"},
+      {68, 171, "Ruffian"},
+      {75, 170, "Poacher"},
+      {75, 171, "Spearman"},
+      {74, 173, "Cavalryman"},
+      {72, 170, "Woodsman"},
+      {75, 174, "Peasant"},
+      {78, 183, "Footpad"},
+      {86, 193, "Footpad"},
+      {84, 199, "Poacher"},
+      {84, 198, "Ruffian"},
+      {86, 197, "Thug"},
+      {89, 196, "Woodsman"},
+      {84, 196, "Spearman"},
+      {82, 195, "Bowman"},
+      {82, 198, "Ruffian"},
+      {82, 196, "Ruffian"},
+      {83, 200, "Peasant"},
+   }
+   spawn_unit.spawn_region(units, NPC_SIDE)
+end
+
 local function npcs_in_sellyn()
    local units = {
       {40, 27, "Peasant"},
@@ -1508,6 +1541,7 @@ end
 
 function spawn_default_starting_units()
    if wesnoth.get_variable("aeth_scenario_name") == "Woods" then
+      npcs_on_southeast_of_west_river()
       npcs_in_sellyn()
       mobs_in_occupied_teleporter()
       mobs_in_fort_owidd()
